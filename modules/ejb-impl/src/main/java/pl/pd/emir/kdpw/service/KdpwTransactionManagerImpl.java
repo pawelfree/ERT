@@ -63,7 +63,6 @@ import pl.pd.emir.modules.kdpw.adapter.api.TransactionWriter;
 import pl.pd.emir.modules.kdpw.adapter.model.TransactionWriterResult;
 import pl.pd.emir.register.TransactionManager;
 import pl.pd.emir.register.TransactionToCancelManager;
-import pl.pd.emir.register.TransactionWithBankChangeManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -102,9 +101,6 @@ public class KdpwTransactionManagerImpl implements KdpwTransactionManager {
 
     @EJB
     protected transient TransactionManager transactionManager;
-
-    @EJB
-    private transient TransactionWithBankChangeManager changesManager;
 
     @EJB
     private transient TransactionToCancelManager cancelManager;
