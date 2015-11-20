@@ -39,7 +39,7 @@ public class ProtectionImportProcessor extends ImportProcessor implements IImpor
     public ProtectionImportProcessor() {
         try {
             InitialContext ic = new InitialContext();
-            transactionManager = (TransactionManager) ic.lookup("java:global/emir/ejb-impl-1.0-SNAPSHOT/TransactionManagerImpl");
+            transactionManager = (TransactionManager) ic.lookup("java:global/emir/ejb-impl-1.0-SNAPSHOT/TransactionManager");
 
         } catch (NamingException ex) {
             LOGGER.error("Managers can't be found", ex);

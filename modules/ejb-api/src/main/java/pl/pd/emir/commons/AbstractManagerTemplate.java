@@ -240,7 +240,7 @@ public abstract class AbstractManagerTemplate<E extends Identifiable<Long>> impl
         }
     }
 
-    protected final Path<Object> getPath(final Path<E> from, final String sortField) {
+    private Path<Object> getPath(final Path<E> from, final String sortField) {
         final String[] fields = sortField.split(FIELD_DELIMITER);
         Path<Object> result = from.get(fields[0]);
         if (fields.length > 1) {

@@ -18,9 +18,8 @@ import pl.pd.emir.bean.BeanHelper;
 import pl.pd.emir.commons.DateUtils;
 import pl.pd.emir.enums.ImportScope;
 import pl.pd.emir.enums.ParameterKey;
-import pl.pd.emir.exceptions.EMIRException;
-import pl.pd.emir.imports.ImportCsvManager;
 import pl.pd.emir.imports.ImportOverview;
+import pl.pd.emir.imports.ImportCsvManager;
 
 @ViewScoped
 @ManagedBean(name = "importBean")
@@ -28,6 +27,7 @@ public class ImportBean implements Serializable {
 
     @EJB
     private transient ImportCsvManager importCsvManager;
+    
     @EJB
     private ParameterManager parameterManager;
     @ManagedProperty(value = "#{importListBean}")
@@ -74,12 +74,12 @@ public class ImportBean implements Serializable {
         allSelected.addAll(clientSelectedScope);
         allSelected.addAll(transactionSelectedScope);
 
-        try {
+//        try {
             importOverview = importCsvManager.importCsv(allSelected, DateUtils.getDayBegin(extractDate), backloading);
-        } catch (EMIRException eMIRException) {
-            //Do zmiany ....
-            BeanHelper.addErrorMessage(eMIRException.getMessage());
-        }
+//        } catch (EMIRException eMIRException) {
+//            //Do zmiany ....
+//            BeanHelper.addErrorMessage(eMIRException.getMessage());
+//        }
     }
 
     public String finishImport() {

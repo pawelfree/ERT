@@ -26,6 +26,12 @@
             <scope>provided</scope>
         </dependency> 
         <dependency>
+            <groupId>pl.pd.emir</groupId>
+            <artifactId>ejb-impl</artifactId>
+            <scope>provided</scope>
+            <type>ejb</type>
+        </dependency> 
+        <dependency>
             <groupId>javax</groupId>
             <artifactId>javaee-web-api</artifactId>
             <version>7.0</version>

@@ -1,6 +1,5 @@
 package pl.pd.emir.register;
 
-import pl.pd.emir.register.ClientManager;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -21,8 +20,7 @@ import pl.pd.emir.enums.EventType;
 import org.slf4j.Logger;
 
 @Stateless
-@Local(ClientManager.class)
-public class ClientManagerImpl extends AbstractManagerTemplate<Client> implements ClientManager {
+public class ClientManager extends AbstractManagerTemplate<Client>  {
 
     @Inject
     private transient Logger log;
@@ -30,11 +28,10 @@ public class ClientManagerImpl extends AbstractManagerTemplate<Client> implement
     @EJB
     protected transient EventLogManager eventLogManager;
 
-    public ClientManagerImpl() {
+    public ClientManager() {
         super(Client.class);
     }
 
-    @Override
     public Client getClientByOrginalId(String orginalId) {
         Query query = entityManager.createNamedQuery("Client.getByOriginalId");
         query.setParameter("originalId", orginalId);
@@ -46,7 +43,6 @@ public class ClientManagerImpl extends AbstractManagerTemplate<Client> implement
         }
     }
 
-    @Override
     public Client saveByOrginalId(Client client) {
         Client currentClient = getClientByOrginalId(client.getOriginalId());
         if (currentClient != null) {
@@ -55,7 +51,7 @@ public class ClientManagerImpl extends AbstractManagerTemplate<Client> implement
         return save(client);
     }
 
-    @Override
+
     public List<Client> saveAllByOrginalId(List<Client> clientList) {
         List<Client> resultList = new ArrayList<>();
         clientList.stream().forEach((client) -> {
@@ -64,7 +60,6 @@ public class ClientManagerImpl extends AbstractManagerTemplate<Client> implement
         return resultList;
     }
 
-    @Override
     public List<Client> getClientByFilenameAndDate(String filename, Date date) {
         return entityManager.createNamedQuery("Client.importRaport")
                 .setParameter("file", filename)
@@ -97,7 +92,6 @@ public class ClientManagerImpl extends AbstractManagerTemplate<Client> implement
         }
     }
 
-    @Override
     public List<Client> getClientBatchByOrginalId(List<String> originalIdList) {
         return entityManager.createNamedQuery("Client.getClientBatchByOriginalId")
                 .setParameter("originalIdList", originalIdList)
@@ -138,21 +132,18 @@ public class ClientManagerImpl extends AbstractManagerTemplate<Client> implement
         return oldValue != null && !oldValue.equals(newValue);
     }
 
-    @Override
     public List<Client> getUniquenessIdOriginal(final String id) {
         return getEntityManager().createNamedQuery("Client.getByOriginalId")
                 .setParameter("originalId", id)
                 .getResultList();
     }
 
-    @Override
     public List<Client> getClientByImportLog(final ImportLog idImportLog) {
         return getEntityManager().createNamedQuery("Client.getClientByImportLog")
                 .setParameter("importLog", idImportLog)
                 .getResultList();
     }
 
-    @Override
     public HashMap<String, Client> getAllKeyOriginalId() {
         List<Client> resultAll = getEntityManager().createNamedQuery("Client.getAll")
                 .getResultList();

@@ -45,8 +45,8 @@ public class TransactionImportProcessor extends ImportProcessor implements IImpo
     public TransactionImportProcessor() {
         try {
             InitialContext ic = new InitialContext();
-            transactionManager = (TransactionManager) ic.lookup("java:global/emir/ejb-impl-1.0-SNAPSHOT/TransactionManagerImpl");
-            clientManager = (ClientManager) ic.lookup("java:global/emir/ejb-impl-1.0-SNAPSHOT/ClientManagerImpl");
+            transactionManager = (TransactionManager) ic.lookup("java:global/emir/ejb-impl-1.0-SNAPSHOT/TransactionManager");
+            clientManager = (ClientManager) ic.lookup("java:global/emir/ejb-impl-1.0-SNAPSHOT/ClientManager");
 
         } catch (NamingException ex) {
             LOGGER.error("Managers (client and or transaction) can't be found", ex);
@@ -56,7 +56,7 @@ public class TransactionImportProcessor extends ImportProcessor implements IImpo
     @Override
     public void process(Reader reader, BaseCsvParser parser, String fileName, Date importFileDate,
             ImportLog importLog, boolean backloading,
-            ProcessingWarnings warnings, ImportOverview overview) throws IOException {
+            ProcessingWarnings warnings, ImportOverview overview) throws IOException {        
         parser.setRowNum(0);
         CSVReader<ImportResult<Transaction>> csvTransactionReader = new CSVReaderBuilder<ImportResult<Transaction>>(reader).entryParser(parser).build();
         List<Transaction> batch = new ArrayList<>();

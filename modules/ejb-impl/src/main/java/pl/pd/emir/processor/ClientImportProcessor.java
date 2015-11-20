@@ -35,7 +35,7 @@ public class ClientImportProcessor extends ImportProcessor implements IImportPro
     public ClientImportProcessor() {
         try {
             InitialContext ic = new InitialContext();
-            clientManager = (ClientManager) ic.lookup("java:global/emir/ejb-impl-1.0-SNAPSHOT/ClientManagerImpl");
+            clientManager = (ClientManager) ic.lookup("java:global/emir/ejb-impl-1.0-SNAPSHOT/ClientManager");
 
         } catch (NamingException ex) {
             LOGGER.error("Managers can't be found", ex);

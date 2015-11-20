@@ -15,7 +15,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 import javax.ejb.EJB;
-import javax.ejb.Local;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
@@ -49,10 +48,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 @Stateless
-@Local(ImportCsvManager.class)
-public class ImportCsvManagerImpl implements ImportCsvManager {
+public class ImportCsvManager {
 
-    protected static final Logger LOGGER = LoggerFactory.getLogger(ImportCsvManagerImpl.class);
+    protected static final Logger LOGGER = LoggerFactory.getLogger(ImportCsvManager.class);
 
     protected static final int BATCH_SIZE = 100;
 
@@ -82,7 +80,7 @@ public class ImportCsvManagerImpl implements ImportCsvManager {
     private ProcessingWarnings warnings;
     private ImportOverview overview;
 
-    public ImportCsvManagerImpl() {
+    public ImportCsvManager() {
         processors.put(ImportScope.BANK_E, new BankImportProcessor());
         processors.put(ImportScope.CLIENT_E, new ClientImportProcessor());
         processors.put(ImportScope.TRANSACTION_E, new TransactionImportProcessor());
@@ -98,7 +96,6 @@ public class ImportCsvManagerImpl implements ImportCsvManager {
         parsers.put(ImportScope.VALUATION_E, new ValuationParser());
     }
 
-    @Override
     @TransactionAttribute(TransactionAttributeType.NEVER)
     public ImportOverview importCsv(List<ImportScope> importScope, Date importFileDate, boolean backloading) {
         inputDirectory = Paths.get(parameterManager.getValue(ParameterKey.IMPORT_INPUT_URI));

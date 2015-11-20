@@ -1,7 +1,5 @@
 package pl.pd.emir.register;
 
-import pl.pd.emir.register.ClientManager;
-import pl.pd.emir.register.TransactionManager;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
@@ -9,7 +7,6 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Properties;
 import javax.ejb.EJB;
-import javax.ejb.Local;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.persistence.NoResultException;
@@ -38,20 +35,19 @@ import pl.pd.emir.enums.ProcessingStatus;
 import org.slf4j.Logger;
 
 @Stateless
-@Local(TransactionManager.class)
-public class TransactionManagerImpl extends AbstractManagerTemplateControlDate<Transaction> implements TransactionManager {
+public class TransactionManager extends AbstractManagerTemplateControlDate<Transaction> {
 
     @Inject
     Logger LOGGER;
 
     private static final String PROPERTY_FILE = "history-details.properties";
 
-    private static final Properties PROPERTIES = PropertyUtils.getProperties(TransactionManagerImpl.class, PROPERTY_FILE);
+    private static final Properties PROPERTIES = PropertyUtils.getProperties(TransactionManager.class, PROPERTY_FILE);
 
     @EJB
     private transient ClientManager clientService;
 
-    public TransactionManagerImpl() {
+    public TransactionManager() {
         super(Transaction.class);
     }
 
@@ -60,7 +56,6 @@ public class TransactionManagerImpl extends AbstractManagerTemplateControlDate<T
         return this.save(transaction, false, false);
     }
 
-    @Override
     public List<Transaction> saveAll(final List<Transaction> transactionList) {
         List<Transaction> resultList = new ArrayList<>();
         transactionList.stream().forEach((transaction) -> {
@@ -69,19 +64,16 @@ public class TransactionManagerImpl extends AbstractManagerTemplateControlDate<T
         return resultList;
     }
 
-    @Override
     public Transaction update(Transaction transaction) {
         setClientVersion(transaction);
         processEmptyObjects(transaction);
         return super.save(transaction);
     }
 
-    @Override
     public Transaction updateOnlyMerge(Transaction transaction) {
         return getEntityManager().merge(transaction);
     }
 
-    @Override
     public Transaction getNewestVersion(Date transactionDate, String originalId) {
         try {
             return (Transaction) getEntityManager().createNamedQuery("Transaction.getByNewestVersion")
@@ -94,7 +86,6 @@ public class TransactionManagerImpl extends AbstractManagerTemplateControlDate<T
         }
     }
 
-    @Override
     public final Transaction save(final Transaction transaction, final boolean isMutation, final boolean isValuation) {
         setClientVersion(transaction);
         LOGGER.debug("Saving transaction. mutation - " + isMutation + ", valuation - " + isValuation
@@ -133,7 +124,6 @@ public class TransactionManagerImpl extends AbstractManagerTemplateControlDate<T
         super.delete(transaction);
     }
 
-    @Override
     public Transaction saveTransaction(Transaction entity, boolean isMutation, boolean isValuation) {
         boolean logAddTransactionFlag = false;
 
@@ -198,14 +188,12 @@ public class TransactionManagerImpl extends AbstractManagerTemplateControlDate<T
         return entity;
     }
 
-    @Override
     public Boolean isExistsItemYesterday(Long itemId, String innerId) {
         List<AbstractFilterTO> filtersTemp = new ArrayList<>();
         filtersTemp.add(FilterStringTO.valueOf("", "originalId", "=", innerId));
         return DaoUtil.isExistsItemYesterday(this, itemId, filtersTemp);
     }
 
-    @Override
     public Boolean isExistsItem(Long itemId, String innerId, Date transactionDate, Integer extractVersion) {
         List<AbstractFilterTO> filtersTemp = new ArrayList<>();
         filtersTemp.add(FilterStringTO.valueOf("", "originalId", "=", innerId));
@@ -215,7 +203,6 @@ public class TransactionManagerImpl extends AbstractManagerTemplateControlDate<T
         return DaoUtil.isExistsItem(this, filtersTemp);
     }
 
-    @Override
     public boolean isYoungerMutation(String innerId, Date transactionDate, Integer extractVersion) {
         boolean result = false;
         final Query query = entityManager.createNamedQuery("Transaction.getNewerMutationsCount")
@@ -231,7 +218,6 @@ public class TransactionManagerImpl extends AbstractManagerTemplateControlDate<T
         return result;
     }
 
-    @Override
     public boolean isNewerVersion(Transaction transaction) {
         boolean result = false;
         final Query query = entityManager.createNamedQuery("Transaction.getNewerVersionCount")
@@ -248,7 +234,6 @@ public class TransactionManagerImpl extends AbstractManagerTemplateControlDate<T
         return result;
     }
 
-    @Override
     public Transaction findNewestConfirmed(String sourceTransId, Long currentId) {
         Transaction result = null;
         final Query query = entityManager.createNamedQuery("Transaction.findNewestConfirmed")
@@ -263,7 +248,6 @@ public class TransactionManagerImpl extends AbstractManagerTemplateControlDate<T
         return result;
     }
 
-    @Override
     public Long countDistinctTransactionForDay(Long idClient, String instrumentType, Date day) {
         return (Long) entityManager.createNamedQuery("Transaction.countDistinctTransactionForDay")
                 .setParameter("idClient", idClient)
@@ -271,7 +255,6 @@ public class TransactionManagerImpl extends AbstractManagerTemplateControlDate<T
                 .setParameter("day", day).getSingleResult();
     }
 
-    @Override
     public List<Object[]> sumAmountTransactionForDay(Long idClient, String instrumentType, Date day) {
         return entityManager.createNamedQuery("Transaction.sumAmountNewestTransactionForDay")
                 .setParameter("idClient", idClient)
@@ -279,7 +262,6 @@ public class TransactionManagerImpl extends AbstractManagerTemplateControlDate<T
                 .setParameter("day", day).getResultList();
     }
 
-    @Override
     public List<Transaction> getByDateAndOriginalId(String originalId, Date transactionDate) {
         return entityManager.createNamedQuery("Transaction.getByDateAndOriginalId")
                 .setParameter("originalId", originalId)
@@ -288,7 +270,6 @@ public class TransactionManagerImpl extends AbstractManagerTemplateControlDate<T
                 .getResultList();
     }
 
-    @Override
     public List<Transaction> getByDate(Date transactionDate, Integer startIndex, Integer resultSize) {
         Query query = entityManager.createNamedQuery("Transaction.getByDate")
                 .setParameter("transactionDateFrom", DateUtils.getDayBegin(transactionDate))
@@ -303,14 +284,12 @@ public class TransactionManagerImpl extends AbstractManagerTemplateControlDate<T
         return query.getResultList();
     }
 
-    @Override
     public List<Transaction> getTransactionByImportLog(final ImportLog idImportLog) {
         return entityManager.createNamedQuery("Transaction.getTransactionByImportLog")
                 .setParameter("importLog", idImportLog)
                 .getResultList();
     }
 
-    @Override
     public Long getCountTransactionByClient(Client client) {
         Long count = null;
         try {
@@ -322,7 +301,6 @@ public class TransactionManagerImpl extends AbstractManagerTemplateControlDate<T
         return count;
     }
 
-    @Override
     public List<Transaction> getTransactionByFilenameAndDate(String filename, Date date) {
         return entityManager.createNamedQuery("Transaction.importRaport")
                 .setParameter("file", filename)
@@ -340,7 +318,6 @@ public class TransactionManagerImpl extends AbstractManagerTemplateControlDate<T
         }
     }
 
-    @Override
     public final Transaction findOtherProcessingNew(final Long currentId, final String sourceTransId, final Date maxDate) {
         final Query query = getEntityManager().createNamedQuery("Transaction.findOtherProcessingNew");
         query.setParameter("currentId", currentId);
@@ -349,7 +326,6 @@ public class TransactionManagerImpl extends AbstractManagerTemplateControlDate<T
         return getSingle(query);
     }
 
-    @Override
     public final Transaction findNewestOtherVersion(final Long currentId, final String sourceTransId,
             final Date maxDate, final ProcessingStatus... statuses) {
         final Query query = getEntityManager().createQuery("SELECT t FROM Transaction t"
@@ -365,14 +341,12 @@ public class TransactionManagerImpl extends AbstractManagerTemplateControlDate<T
         return getSingle(query);
     }
 
-    @Override
     public final List<Transaction> getByOriginalId(final String originalId) {
         return getEntityManager().createNamedQuery("Transaction.getByOriginalId")
                 .setParameter("originalId", originalId)
                 .getResultList();
     }
 
-    @Override
     public final Transaction getByOriginalIdMaxVersion(final String originalId) {
         final Query query = getEntityManager().createNamedQuery("Transaction.getByOriginalIdMaxVersion").setParameter("originalId", originalId);
         Transaction result = null;
@@ -386,7 +360,6 @@ public class TransactionManagerImpl extends AbstractManagerTemplateControlDate<T
         return result;
     }
 
-    @Override
     public final Transaction getBySourceNrRefMaxVersion(final String sourceNrRef) {
         final Query query = getEntityManager().createNamedQuery("Transaction.getBySourceNrRefMaxVersion").setParameter("sourceNrRef", sourceNrRef);
         Transaction result = null;
@@ -400,7 +373,6 @@ public class TransactionManagerImpl extends AbstractManagerTemplateControlDate<T
         return result;
     }
 
-    @Override
     public Transaction getSentByOriginalIdAndDate(final String originalId, final Date transactionDate) {
         final Query query = getEntityManager().createNamedQuery("Transaction.getSentByOriginalIdAndDate")
                 .setParameter("originalId", originalId)
@@ -416,7 +388,6 @@ public class TransactionManagerImpl extends AbstractManagerTemplateControlDate<T
         return result;
     }
 
-    @Override
     public Transaction findForVersion(final String originalId, final Date transactionDate,
             final DataType dataType, final ProcessingStatus... statuses) {
         final String queryString = "SELECT t FROM Transaction t"
@@ -431,7 +402,6 @@ public class TransactionManagerImpl extends AbstractManagerTemplateControlDate<T
         return getSingle(query);
     }
 
-    @Override
     public Transaction findOtherVersion(final Long currentId, final String originalId, final Date transactionDate,
             final DataType dataType, final ProcessingStatus... statuses) {
         final String queryString = "SELECT t FROM Transaction t"
@@ -448,14 +418,12 @@ public class TransactionManagerImpl extends AbstractManagerTemplateControlDate<T
         return getSingle(query);
     }
 
-    @Override
     public List<Transaction> getUniquenessIdOriginal(final String originalId) {
         return getEntityManager().createNamedQuery("Transaction.getByOriginalId")
                 .setParameter("originalId", originalId)
                 .getResultList();
     }
 
-    @Override
     public Integer getNewestVersionTransaction(final String originalId, final Date transactionDate) {
         return (Integer) getEntityManager().createNamedQuery("Transaction.getNewestVersionTransaction")
                 .setParameter("originalId", originalId)
@@ -463,7 +431,6 @@ public class TransactionManagerImpl extends AbstractManagerTemplateControlDate<T
                 .getSingleResult();
     }
 
-    @Override
     public List<Object[]> isPossibilityDeleteTransaction(final String originalId) {
         return entityManager.createNamedQuery("Transaction.isPossibilityDeleteTransaction")
                 .setParameter("originalId", originalId)
@@ -490,7 +457,6 @@ public class TransactionManagerImpl extends AbstractManagerTemplateControlDate<T
         }
     }
 
-    @Override
     public boolean isMutation(Transaction transaction) {
         Integer count = (Integer) getEntityManager().createNamedQuery("Transaction.getNewestVersionTransaction")
                 .setParameter("originalId", transaction.getOriginalId())
@@ -554,7 +520,6 @@ public class TransactionManagerImpl extends AbstractManagerTemplateControlDate<T
         }
     }
 
-    @Override
     public List<Transaction> findProcessedByKDPW(String tradIdId, Date eligDate) {
         return getEntityManager().createNamedQuery("Transaction.findProcessedByKDPW")
                 .setParameter("tradeIdId", tradIdId)
@@ -562,7 +527,6 @@ public class TransactionManagerImpl extends AbstractManagerTemplateControlDate<T
                 .getResultList();
     }
 
-    @Override
     public boolean checkForStatusTr(Transaction transaction, Date reportingDate) {
         List<ProcessingStatus> statusList = new ArrayList<>();
         statusList.add(ProcessingStatus.REJECTED);
@@ -588,7 +552,6 @@ public class TransactionManagerImpl extends AbstractManagerTemplateControlDate<T
         return count > 0L;
     }
 
-    @Override
     public Transaction findNewestTransaction(String tradIdId, Date eligDate, Date eligDate1) {
         try {
             Query query = getEntityManager().createNamedQuery("Transaction.findNewestVersion")
@@ -603,28 +566,24 @@ public class TransactionManagerImpl extends AbstractManagerTemplateControlDate<T
         return null;
     }
 
-    @Override
     public Long getTransactionsCountForADay(Date transactionDate) {
         return (Long) entityManager.createNamedQuery("Transaction.countImported")
                 .setParameter("transactionDate", transactionDate)
                 .getSingleResult();
     }
 
-    @Override
     public Long getNewTransactionsCountForADay(Date transactionDate) {
         return (Long) entityManager.createNamedQuery("Transaction.countImportedNew")
                 .setParameter("transactionDate", transactionDate)
                 .getSingleResult();
     }
 
-    @Override
     public Long getMaturedTransactionsCountForADay(Date transactionDate) {
         return (Long) entityManager.createNamedQuery("Transaction.countImportedMature")
                 .setParameter("transactionDate", transactionDate)
                 .getSingleResult();
     }
 
-    @Override
     public Long getKdpwReportsCountForADay(Date transactionDate) {
         Long count = (Long) entityManager.createNamedQuery("Transaction.countKdpwClientReports")
                 .setParameter("transactionDate", transactionDate).getSingleResult();

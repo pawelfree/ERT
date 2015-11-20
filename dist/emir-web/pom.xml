@@ -35,6 +35,12 @@
             <artifactId>ejb-api</artifactId>
             <scope>provided</scope>
         </dependency> 
+        <dependency>
+            <groupId>pl.pd.emir</groupId>
+            <artifactId>ejb-impl</artifactId>
+            <scope>provided</scope>
+            <type>ejb</type>
+        </dependency> 
         <dependency>               
             <groupId>org.eclipse.persistence</groupId>
             <artifactId>eclipselink</artifactId>

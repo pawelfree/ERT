@@ -2,7 +2,6 @@ package pl.pd.emir.parsers;
 
 import java.util.Arrays;
 import java.util.Objects;
-import java.util.logging.Logger;
 import pl.pd.emir.commons.StringUtil;
 import pl.pd.emir.embeddable.BusinessEntityData;
 import pl.pd.emir.embeddable.CommodityTradeData;
@@ -25,7 +24,6 @@ import org.apache.commons.lang3.ArrayUtils;
 
 public class TransactionCsvParserTmb extends TransactionCsvParser {
 
-    private static final Logger LOG = Logger.getLogger(TransactionCsvParserTmb.class.getName());
     private final transient ClientManager clientMng;
 
     public TransactionCsvParserTmb(ClientManager clientMng) {
