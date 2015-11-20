@@ -128,7 +128,8 @@
     <modules>
         <module>modules</module>
         <module>commons</module>
-        <module>dist</module>
+        <module>emir-web</module>
+        <module>emir-ear</module>
     </modules>
 
     <properties>
@@ -217,7 +218,7 @@
                 <type>jar</type>
             </dependency>
             <dependency>
-                <groupId>pl.pd.emir.dist</groupId>
+                <groupId>pl.pd.emir</groupId>
                 <artifactId>emir-web</artifactId>
                 <version>${project.version}</version>
                 <type>war</type>
