@@ -1,0 +1,609 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns="urn:kdpw:xsd:trar.rqs.001.02" targetNamespace="urn:kdpw:xsd:trar.rqs.001.02" elementFormDefault="qualified" attributeFormDefault="unqualified">
+	<xs:annotation>
+		<xs:documentation>Komunikat zgłoszenia przepytującego do Repozytorium</xs:documentation>
+		<xs:appinfo>
+			<NmPL>Komunikat zgłoszenia przepytującego do Repozytorium</NmPL>
+		</xs:appinfo>
+	</xs:annotation>
+	<xs:element name="KDPWDocument" type="KDPWDocument">
+		<xs:annotation>
+			<xs:documentation>Komunikat systemu KDPW</xs:documentation>
+			<xs:appinfo>
+				<NmPL>Komunikat systemu KDPW</NmPL>
+			</xs:appinfo>
+		</xs:annotation>
+	</xs:element>
+	<xs:simpleType name="Code4Text">
+		<xs:annotation>
+			<xs:documentation>Kwalifikator, kod</xs:documentation>
+			<xs:appinfo>
+				<NmPL>Kwalifikator</NmPL>
+			</xs:appinfo>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:whiteSpace value="collapse"/>
+			<xs:minLength value="4"/>
+			<xs:maxLength value="4"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:complexType name="DateAndDateTimeChoice">
+		<xs:annotation>
+			<xs:documentation>Data i czas</xs:documentation>
+			<xs:appinfo>
+				<NmPL>Data i czas</NmPL>
+			</xs:appinfo>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:choice>
+				<xs:element name="Dt" type="ISODate">
+					<xs:annotation>
+						<xs:documentation>Data</xs:documentation>
+						<xs:appinfo>
+							<NmPL>Data</NmPL>
+						</xs:appinfo>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="DtTm" type="ISODateTime">
+					<xs:annotation>
+						<xs:documentation>Data i czas</xs:documentation>
+						<xs:appinfo>
+							<NmPL>Data i czas</NmPL>
+						</xs:appinfo>
+					</xs:annotation>
+				</xs:element>
+			</xs:choice>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="FilterInformation">
+		<xs:annotation>
+			<xs:documentation>Informacje do filtra transakcji</xs:documentation>
+			<xs:appinfo>
+				<NmPL>Informacje do filtra transakcji</NmPL>
+			</xs:appinfo>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:choice>
+				<xs:element name="TradLstId" type="TradeListIdentification">
+					<xs:annotation>
+						<xs:documentation>Filtr dotyczący listy transakcji</xs:documentation>
+						<xs:appinfo>
+							<NmPL>Filtr dotyczący listy transakcji</NmPL>
+						</xs:appinfo>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="TradId" type="TradeIdentification">
+					<xs:annotation>
+						<xs:documentation>Filtr dotyczący jednej transakcji</xs:documentation>
+						<xs:appinfo>
+							<NmPL>Filtr dotyczący jednej transakcji</NmPL>
+						</xs:appinfo>
+					</xs:annotation>
+				</xs:element>
+			</xs:choice>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:simpleType name="FunctionOfMessage">
+		<xs:annotation>
+			<xs:documentation>Funkcja komunikatu</xs:documentation>
+			<xs:appinfo>
+				<NmPL>Funkcja komunikatu</NmPL>
+			</xs:appinfo>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="NEWM">
+				<xs:annotation>
+					<xs:documentation>Nowy komunikat</xs:documentation>
+					<xs:appinfo>
+						<NmPL>Nowy komunikat</NmPL>
+					</xs:appinfo>
+				</xs:annotation>
+			</xs:enumeration>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:complexType name="GeneralInformation">
+		<xs:annotation>
+			<xs:documentation>Informacje ogólne</xs:documentation>
+			<xs:appinfo>
+				<NmPL>Informacje ogólne</NmPL>
+			</xs:appinfo>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="TRRprtId" type="TRInstitutionCode">
+				<xs:annotation>
+					<xs:documentation>Wewnętrzny identyfikator RT podmiotu raportującego budowany na Primary ID i Secondary ID.</xs:documentation>
+					<xs:appinfo>
+						<NmPL>Identyfikator RT wystawcy komunikatu </NmPL>
+					</xs:appinfo>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="SndrMsgRef" type="Max16Text">
+				<xs:annotation>
+					<xs:documentation>Identyfikator komunikatu utworzony przez nadawcę</xs:documentation>
+					<xs:appinfo>
+						<NmPL>Identyfikator komunikatu</NmPL>
+					</xs:appinfo>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="FuncOfMsg" type="FunctionOfMessage">
+				<xs:annotation>
+					<xs:documentation>Funkcja komunikatu</xs:documentation>
+					<xs:appinfo>
+						<NmPL>Funkcja komunikatu</NmPL>
+					</xs:appinfo>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="CreDtTm" type="DateAndDateTimeChoice" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Data utworzenia komunikatu</xs:documentation>
+					<xs:appinfo>
+						<NmPL>Data utworzenia komunikatu</NmPL>
+					</xs:appinfo>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="ReqTp" type="Max1Text">
+				<xs:annotation>
+					<xs:documentation>Znacznik wyboru trybu zapytania - zapytanie o transakcje (T)</xs:documentation>
+					<xs:appinfo>
+						<NmPL>Znacznik wyboru trybu zapytania</NmPL>
+					</xs:appinfo>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="InstitutionCode">
+		<xs:annotation>
+			<xs:documentation>Identyfikator instytucji</xs:documentation>
+			<xs:appinfo>
+				<NmPL>Identyfikator instytucji</NmPL>
+			</xs:appinfo>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="Id" type="Max50Text">
+				<xs:annotation>
+					<xs:documentation>Identyfikator instytucji:identyfikator podmiotu prawnego (LEI) (20 A);
+						tymczasowy identyfikator podmiotu (20 A);
+						kod identyfikacyjny jednostki (BIC) (11A); 
+						kod klienta (50A).
+					</xs:documentation>
+					<xs:appinfo>
+						<NmPL>Identyfikator instytucji</NmPL>
+					</xs:appinfo>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Tp" type="Code4Text">
+				<xs:annotation>
+					<xs:documentation>Dopuszczalne wartości:
+						- LEIC	identyfikator podmiotu prawnego;
+						- PLEI	tymczasowy identyfikator podmiotu;
+						- BICC kod identyfikacyjny jednostki (BIC);
+						- OTHR kod klienta (50A).
+					</xs:documentation>
+					<xs:appinfo>
+						<NmPL>Rodzaj użytego identyfikatora</NmPL>
+					</xs:appinfo>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:simpleType name="ISODate">
+		<xs:annotation>
+			<xs:documentation>Data</xs:documentation>
+			<xs:appinfo>
+				<NmPL>Data</NmPL>
+			</xs:appinfo>
+		</xs:annotation>
+		<xs:restriction base="xs:date"/>
+	</xs:simpleType>
+	<xs:simpleType name="ISODateTime">
+		<xs:annotation>
+			<xs:documentation>Data i czas</xs:documentation>
+			<xs:appinfo>
+				<NmPL>Data i czas</NmPL>
+			</xs:appinfo>
+		</xs:annotation>
+		<xs:restriction base="xs:dateTime"/>
+	</xs:simpleType>
+	<xs:complexType name="KDPWDocument">
+		<xs:annotation>
+			<xs:documentation>Komunikat systemu KDPW</xs:documentation>
+			<xs:appinfo>
+				<NmPL>Komunikat systemu KDPW</NmPL>
+			</xs:appinfo>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="trar.rqs.001.02" type="trar.rqs.001.02" maxOccurs="10000">
+				<xs:annotation>
+					<xs:documentation>Komunikat zgłoszenia przepytującego do Repozytorium</xs:documentation>
+					<xs:appinfo>
+						<NmPL>Komunikat zgłoszenia przepytującego do Repozytorium</NmPL>
+					</xs:appinfo>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+		<xs:attribute name="Sndr" type="KDPWMemberIdentifier" use="required">
+			<xs:annotation>
+				<xs:documentation>Nadawca w postaci kodu KDPW</xs:documentation>
+				<xs:appinfo>
+					<NmPL>Nadawca</NmPL>
+				</xs:appinfo>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="Rcvr" type="KDPWMemberIdentifier" use="required">
+			<xs:annotation>
+				<xs:documentation>Odbiorca w postaci kodu KDPW</xs:documentation>
+				<xs:appinfo>
+					<NmPL>Odbiorca</NmPL>
+				</xs:appinfo>
+			</xs:annotation>
+		</xs:attribute>
+	</xs:complexType>
+	<xs:simpleType name="KDPWMemberIdentifier">
+		<xs:annotation>
+			<xs:documentation>Identyfikator uczestnika KDPW</xs:documentation>
+			<xs:appinfo>
+				<NmPL>Identyfikator uczestnika KDPW</NmPL>
+			</xs:appinfo>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:whiteSpace value="collapse"/>
+			<xs:minLength value="4"/>
+			<xs:maxLength value="4"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="Max1Text">
+		<xs:annotation>
+			<xs:documentation>Tekst o długości 1 znaku</xs:documentation>
+			<xs:appinfo>
+				<NmPL>Tekst</NmPL>
+			</xs:appinfo>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:whiteSpace value="collapse"/>
+			<xs:minLength value="1"/>
+			<xs:maxLength value="1"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="Max4Text">
+		<xs:annotation>
+			<xs:documentation>Tekst o maksymalnej długości 4 znaków</xs:documentation>
+			<xs:appinfo>
+				<NmPL>Tekst</NmPL>
+			</xs:appinfo>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:whiteSpace value="collapse"/>
+			<xs:minLength value="1"/>
+			<xs:maxLength value="4"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="Max16Text">
+		<xs:annotation>
+			<xs:documentation>Tekst o maksymalnej długości 16 znaków</xs:documentation>
+			<xs:appinfo>
+				<NmPL>Tekst</NmPL>
+			</xs:appinfo>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:whiteSpace value="collapse"/>
+			<xs:minLength value="1"/>
+			<xs:maxLength value="16"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="Max20Text">
+		<xs:annotation>
+			<xs:documentation>Tekst o maksymalnej długości 20 znaków</xs:documentation>
+			<xs:appinfo>
+				<NmPL>Tekst</NmPL>
+			</xs:appinfo>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:whiteSpace value="collapse"/>
+			<xs:minLength value="1"/>
+			<xs:maxLength value="20"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="Max40Text">
+		<xs:annotation>
+			<xs:documentation>Tekst o maksymalnej długości 40 znaków</xs:documentation>
+			<xs:appinfo>
+				<NmPL>Tekst</NmPL>
+			</xs:appinfo>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:whiteSpace value="collapse"/>
+			<xs:minLength value="1"/>
+			<xs:maxLength value="40"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="Max50Text">
+		<xs:annotation>
+			<xs:documentation>Tekst o maksymalnej długości 50 znaków</xs:documentation>
+			<xs:appinfo>
+				<NmPL>Tekst</NmPL>
+			</xs:appinfo>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:whiteSpace value="collapse"/>
+			<xs:minLength value="1"/>
+			<xs:maxLength value="50"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="Max52Text">
+		<xs:annotation>
+			<xs:documentation>Tekst o maksymalnej długości 52 znaków</xs:documentation>
+			<xs:appinfo>
+				<NmPL>Tekst</NmPL>
+			</xs:appinfo>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:whiteSpace value="collapse"/>
+			<xs:minLength value="1"/>
+			<xs:maxLength value="52"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:complexType name="Period">
+		<xs:annotation>
+			<xs:documentation>Okres</xs:documentation>
+			<xs:appinfo>
+				<NmPL>Okres</NmPL>
+			</xs:appinfo>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="FrDt" type="ISODate">
+				<xs:annotation>
+					<xs:documentation>Data od</xs:documentation>
+					<xs:appinfo>
+						<NmPL>Data od</NmPL>
+					</xs:appinfo>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="ToDt" type="ISODate">
+				<xs:annotation>
+					<xs:documentation>Data do</xs:documentation>
+					<xs:appinfo>
+						<NmPL>Data do</NmPL>
+					</xs:appinfo>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="TradeIdentification">
+		<xs:annotation>
+			<xs:documentation>Identyfikacja transakcji</xs:documentation>
+			<xs:appinfo>
+				<NmPL>Identyfikacja transakcji</NmPL>
+			</xs:appinfo>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="Id" type="Max52Text">
+				<xs:annotation>
+					<xs:documentation>Kod identyfikacyjny transakcji</xs:documentation>
+					<xs:appinfo>
+						<NmPL>Kod identyfikacyjny transakcji</NmPL>
+					</xs:appinfo>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="PrvsId" type="Max52Text" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Poprzedni kod identyfikacyjny transakcji</xs:documentation>
+					<xs:appinfo>
+						<NmPL>Poprzedni kod identyfikacyjny transakcji</NmPL>
+					</xs:appinfo>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="TradRefNb" type="Max40Text">
+				<xs:annotation>
+					<xs:documentation>Numer referencyjny transakcji. Dla niektórych typów zmian pole to może być polem bezwzględnie wymaganym. </xs:documentation>
+					<xs:appinfo>
+						<NmPL>Numer referencyjny transakcji </NmPL>
+					</xs:appinfo>
+				</xs:annotation>
+			</xs:element>
+			<xs:choice>
+				<xs:element name="EligDt" type="ISODate">
+					<xs:annotation>
+						<xs:documentation>Data obowiązywania</xs:documentation>
+						<xs:appinfo>
+							<NmPL>Data obowiązywania</NmPL>
+						</xs:appinfo>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="Prd" type="Period">
+					<xs:annotation>
+						<xs:documentation>Okres</xs:documentation>
+						<xs:appinfo>
+							<NmPL>Okres</NmPL>
+						</xs:appinfo>
+					</xs:annotation>
+				</xs:element>
+			</xs:choice>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="TradeListIdentification">
+		<xs:annotation>
+			<xs:documentation>Filtr dotyczący listy transakcji</xs:documentation>
+			<xs:appinfo>
+				<NmPL>Filtr dotyczący listy transakcji</NmPL>
+			</xs:appinfo>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:choice>
+				<xs:element name="EligDt" type="ISODate">
+					<xs:annotation>
+						<xs:documentation>Data obowiązywania</xs:documentation>
+						<xs:appinfo>
+							<NmPL>Data obowiązywania</NmPL>
+						</xs:appinfo>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="Prd" type="Period">
+					<xs:annotation>
+						<xs:documentation>Okres</xs:documentation>
+						<xs:appinfo>
+							<NmPL>Okres</NmPL>
+						</xs:appinfo>
+					</xs:annotation>
+				</xs:element>
+			</xs:choice>
+			<xs:element name="CtrPtyTRId" type="InstitutionCode" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Identyfikator strony transakcji</xs:documentation>
+					<xs:appinfo>
+						<NmPL>Identyfikator strony transakcji</NmPL>
+					</xs:appinfo>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="OthrCtrPtyTRId" type="InstitutionCode" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Identyfikator drugiej strony transakcji</xs:documentation>
+					<xs:appinfo>
+						<NmPL>Identyfikator drugiej strony transakcji</NmPL>
+					</xs:appinfo>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="OthrCtrPtyInd" type="Max1Text" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Czy druga strona jest osobą fizyczną</xs:documentation>
+					<xs:appinfo>
+						<NmPL>Czy druga strona jest osobą fizyczną</NmPL>
+					</xs:appinfo>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="NonEEACtrPty" type="Max1Text" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Kontrakt z kontrahentem spoza EOG </xs:documentation>
+					<xs:appinfo>
+						<NmPL>Kontrakt z kontrahentem spoza EOG </NmPL>
+					</xs:appinfo>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Txnm" type="Max1Text" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Stosowana klasyfikacja</xs:documentation>
+					<xs:appinfo>
+						<NmPL>Stosowana klasyfikacja</NmPL>
+					</xs:appinfo>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="PrdctId1" type="Max20Text" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Kod identyfikacyjny produktu nr 1</xs:documentation>
+					<xs:appinfo>
+						<NmPL>Kod identyfikacyjny produktu nr 1</NmPL>
+					</xs:appinfo>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="PrdctId2" type="Max20Text" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Kod identyfikacyjny produktu nr 2</xs:documentation>
+					<xs:appinfo>
+						<NmPL>Kod identyfikacyjny produktu nr 2</NmPL>
+					</xs:appinfo>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Undrlyg" type="Max20Text" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Instrument bazowy</xs:documentation>
+					<xs:appinfo>
+						<NmPL>Instrument bazowy</NmPL>
+					</xs:appinfo>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="VenueOfExc" type="Max4Text" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Miejsce realizacji transakcji</xs:documentation>
+					<xs:appinfo>
+						<NmPL>Miejsce realizacji transakcji</NmPL>
+					</xs:appinfo>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="RcrdSts" type="Max1Text" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Status rekordu</xs:documentation>
+					<xs:appinfo>
+						<NmPL>Status rekordu</NmPL>
+					</xs:appinfo>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="TRInstitutionCode">
+		<xs:annotation>
+			<xs:documentation>Identyfikator instytucji RT</xs:documentation>
+			<xs:appinfo>
+				<NmPL>Identyfikator instytucji RT</NmPL>
+			</xs:appinfo>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="Id" type="Max20Text">
+				<xs:annotation>
+					<xs:documentation>Identyfikator instytucji</xs:documentation>
+					<xs:appinfo>
+						<NmPL>Identyfikator instytucji</NmPL>
+					</xs:appinfo>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Tp" type="Code4Text">
+				<xs:annotation>
+					<xs:documentation>Rodzaj użytego identyfikatora</xs:documentation>
+					<xs:appinfo>
+						<NmPL>Rodzaj użytego identyfikatora</NmPL>
+					</xs:appinfo>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="TRInstitutionCode2">
+		<xs:annotation>
+			<xs:documentation>Identyfikator instytucji RT</xs:documentation>
+			<xs:appinfo>
+				<NmPL>Identyfikator instytucji RT</NmPL>
+			</xs:appinfo>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="Id" type="Max50Text">
+				<xs:annotation>
+					<xs:documentation>Identyfikator instytucji</xs:documentation>
+					<xs:appinfo>
+						<NmPL>Identyfikator instytucji</NmPL>
+					</xs:appinfo>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Tp" type="Code4Text">
+				<xs:annotation>
+					<xs:documentation>Rodzaj użytego identyfikatora</xs:documentation>
+					<xs:appinfo>
+						<NmPL>Rodzaj użytego identyfikatora</NmPL>
+					</xs:appinfo>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="trar.rqs.001.02">
+		<xs:annotation>
+			<xs:documentation>Komunikat zgłoszenia przepytującego do Repozytorium</xs:documentation>
+			<xs:appinfo>
+				<NmPL>Komunikat zgłoszenia przepytującego do Repozytorium</NmPL>
+			</xs:appinfo>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="GnlInf" type="GeneralInformation">
+				<xs:annotation>
+					<xs:documentation>Blok informacji ogólnych</xs:documentation>
+					<xs:appinfo>
+						<NmPL>Informacje ogólne</NmPL>
+					</xs:appinfo>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="FltrInf" type="FilterInformation">
+				<xs:annotation>
+					<xs:documentation>Informacje do filtra transakcji</xs:documentation>
+					<xs:appinfo>
+						<NmPL>Informacje do filtra transakcji</NmPL>
+					</xs:appinfo>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+</xs:schema>

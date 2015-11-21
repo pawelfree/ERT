@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<facelet-taglib version="2.0" xmlns="http://java.sun.com/xml/ns/javaee"
+                xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-facelettaglibrary_2_0.xsd">
+
+    <namespace>http://java.sun.com/jsf/composite/emirCOMP</namespace>
+
+    <tag>
+        <tag-name>ajaxWaitingDialog</tag-name>
+        <source>emirComp/ajaxWaitingDialog.xhtml</source>
+        <description>Kontrolka blokujaca ekran podczas długotrwałych operacji</description>
+        <attribute>
+            <description>czy wyświetlać obrazek - domyślnie: true</description>
+            <name>showLoadingImage</name>
+            <type>boolean</type>
+            <required>false</required>
+        </attribute>
+    </tag>
+    <tag>
+        <tag-name>facesMessageSeverity</tag-name>
+        <source>emirComp/facesMessageSeverity.xhtml</source>
+        <description>Pare zbednych funkcji</description>
+    </tag>
+</facelet-taglib>

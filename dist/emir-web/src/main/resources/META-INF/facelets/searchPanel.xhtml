@@ -1,0 +1,50 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:c="http://java.sun.com/jsp/jstl/core"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                >
+
+    <ui:remove>
+        <!--Panel wyszukiwania-->
+
+        <!--domyślnie: searchPanel | wymagane: nie-->
+        id: String
+        <!--domyślnie: | wymagane: tak | bean obsługujący listę-->
+        bean: pl.pd.emir.bean.AbstractListBean
+        <!--domyślnie: | wymagane: nie | co odświerzyć po wyszukaniu rekordów-->
+        updateAfterSearch: String
+        <!--domyślnie: | wymagane: nie | co odświerzyć po wyczyszczeniu-->
+        updateAfterClean: String
+        <!--domyślnie: 3 | wymagane: nie | ilość kolumn z polami kryteriów-->
+        columns: Integer
+        <!--domyślnie: true | wymagane: nie-->
+        rendered: Boolean
+    </ui:remove>
+
+    <c:if test="#{empty id}">
+        <ui:param name="id" value="searchPanel" />
+    </c:if>
+    <c:if test="#{empty columns}">
+        <ui:param name="columns" value="3" />
+    </c:if>
+    <ui:param name="columns" value="#{2 * columns}" />
+    <c:if test="#{empty rendered}">
+        <ui:param name="rendered" value="#{true}" />
+    </c:if>
+
+    <p:panel id="#{id}" header="#{msgs['commons.search']}" toggleable="true" toggleSpeed="100" rendered="#{rendered}">
+        <h:panelGrid columns="#{columns}">
+            <ui:insert />
+        </h:panelGrid>
+
+        <p:panel styleClass="buttonsPanel">
+            <p:commandButton value="#{msgs['button.search']}" action="#{bean.setFirstPage()}" update="#{updateAfterSearch}" process="@form" />
+            <p:commandButton value="#{msgs['button.clean']}" action="#{bean.cleanSearchCriteria()}" update="#{id} #{updateAfterClean}" process="@this"/>
+        </p:panel>
+
+    </p:panel>
+
+</ui:composition>

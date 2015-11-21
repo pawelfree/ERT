@@ -1,0 +1,60 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<ui:composition   template="/templates/main.xhtml"
+                  xmlns="http://www.w3.org/1999/xhtml"
+                  xmlns:h="http://java.sun.com/jsf/html"
+                  xmlns:f="http://java.sun.com/jsf/core"
+                  xmlns:ui="http://java.sun.com/jsf/facelets"
+                  xmlns:p="http://primefaces.org/ui"
+                  xmlns:emir="http://pl.pd/emir">
+
+    <ui:define name="pageTitle">
+        <h:outputLabel value="#{msgs['admin.userList.title']}"/>
+    </ui:define>
+    <ui:define name="body"  >
+
+        <h:form id="userList" >
+
+            <emir:searchPanel bean="#{userListBean}" updateAfterSearch="usersTable" columns="1" >
+                <p:outputLabel value="#{msgs['admin.user.login']}"/>
+                <p:inputText value="#{userListBean.criteria.login}"/>
+
+                <p:outputLabel value="#{msgs['admin.user.firstName']}"/>
+                <p:inputText value="#{userListBean.criteria.firstName}"/>
+
+                <p:outputLabel value="#{msgs['admin.user.lastName']}"/>
+                <p:inputText value="#{userListBean.criteria.lastName}"/>
+
+                <p:outputLabel value="#{msgs['admin.user.active']}"/>
+                <p:selectOneMenu value="#{userListBean.criteria.activeWrapper}" >
+                    <f:selectItem itemValue="NULL" itemLabel="#{msgs['commons.select']}" />
+                    <f:selectItem itemValue="T" itemLabel="#{msgs['admin.user.filter.active']}" />
+                    <f:selectItem itemValue="F" itemLabel="#{msgs['admin.user.filter.inactive']}" />
+                </p:selectOneMenu>
+            </emir:searchPanel>
+
+            <p:toolbar>
+                <p:toolbarGroup align="left">
+                    <p:commandButton value="#{msgs['admin.users.add']}" action="#{userFormBean.init('New')}"/>
+                    <p:commandButton id="downloadExcel" value="#{msgs['button.excel']}" ajax="false"
+                                     actionListener="#{reportBean.generateTableReport(userListBean.reportType,reportBean.xlsFormat,userListBean.reportData)}"
+                                     icon="ui-icon-arrowthichk-s">
+                        <p:fileDownload value="#{reportBean.file}" />
+                    </p:commandButton>
+                </p:toolbarGroup>
+            </p:toolbar>
+
+            <emir:resultsPanel id="usersTable" tableId="usersTable" var="item" bean="#{userListBean}" >
+                <emir:column value="#{item.login}" header="#{msgs['admin.user.login']}" />
+                <emir:column value="#{item.firstName}" header="#{msgs['admin.user.firstName']}" />
+                <emir:column value="#{item.lastName}" header="#{msgs['admin.user.lastName']}" />
+                <emir:column value="#{userListBean.getTranslateActive(item.active)}" header="#{msgs['admin.user.active']}" />
+                <emir:actionColumn columns="3" rendered="true">
+                    <p:commandButton title="#{msgs['button.details']}" icon="ui-icon-pencil"
+                                     action="#{userFormBean.init('View', item.id)}"
+                                     styleClass="nowrap"
+                                     rendered="true"/>
+                </emir:actionColumn>
+            </emir:resultsPanel>
+        </h:form>
+    </ui:define>
+</ui:composition>

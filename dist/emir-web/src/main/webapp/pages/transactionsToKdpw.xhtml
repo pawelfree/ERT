@@ -1,0 +1,118 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<ui:composition   template="/templates/main.xhtml"
+                  xmlns="http://www.w3.org/1999/xhtml"
+                  xmlns:h="http://java.sun.com/jsf/html"
+                  xmlns:f="http://java.sun.com/jsf/core"
+                  xmlns:ui="http://java.sun.com/jsf/facelets"
+                  xmlns:p="http://primefaces.org/ui"
+                  xmlns:emir="http://java.sun.com/jsf/composite/facelets"
+                  xmlns:tempui="http://pl.pd/emir"
+                  >
+    <ui:define name="pageTitle">
+        <h:outputLabel value="#{msgs['transaction.kdpw.message.title']}"/>
+    </ui:define>
+
+    <ui:define name="body" >
+        <p:tabView id="resultTab">
+
+            <ui:remove>
+                <!-- Zakładka 'REJESTRACJA/ZMIANA' -->
+            </ui:remove>
+            <p:tab title="#{msgs['transaction.kdpw.message.tabs.new']}" >
+                <h:form id="registerForm" >
+
+                    <emir:kdpwTransListSearchPanel panelId="ktsp"
+                                                   id="ktspId"
+                                                   bean="#{kdpwTransRegisterListBean}" 
+                                                   toUpdate=":resultTab:registerForm:resultPanelId:resultPanel :resultTab:registerForm:buttonsPanel"
+                                                   backloading="#{kdpwTransRegisterListBean.backloadingOptionShown}"
+                                                   />
+
+                    <p:toolbar id="buttonsPanel">
+                        <p:toolbarGroup align="left">
+                            <p:commandButton value="#{msgs['transaction.kdpw.message.button.new']}"
+                                             icon="ui-icon-document-b"
+                                             actionListener="#{kdpwTransRegisterListBean.createNewMode()}"
+                                             update=":registerDialogForm:messageDialogMessagePanel"
+                                             title="#{msgs['transaction.kdpw.message.button.new.title']}"
+                                             />
+                        </p:toolbarGroup>
+                    </p:toolbar>
+
+                    <emir:kdpwTransResultPanel id="resultPanelId"
+                                               bean="#{kdpwTransRegisterListBean}"
+                                               tableId="resultPanel"
+                                               renderAfterSelectAll=":resultTab:registerForm:resultPanelId:resultPanel"
+                                               renderAfterRowSelect=":resultTab:registerForm:resultPanelId:resultPanel"
+                                               />
+                </h:form>
+            </p:tab>
+        </p:tabView>
+
+        <h:form id="registerDialogForm">
+            <p:dialog widgetVar="registerConfirmDialog" width="400"
+                      header="#{msgs['commons.MessageDialogType.CONFIRM']}"
+                      id="registerConfirmDialog"
+                      resizable="false" closable="true" modal="true">
+                <p:panel id="messageDialogMessagePanel">
+                    <h:outputText value="#{kdpwTransRegisterListBean.confirmationMessage}" />
+                </p:panel>
+                <p:panel styleClass="buttonsPanel">
+                    <p:commandButton value="#{msgs['button.yes']}" 
+                                     process="@this" 
+                                     actionListener="#{kdpwTransRegisterListBean.generateRegistration()}" 
+                                     oncomplete="PF('registerConfirmDialog').hide(); PF('registerResultDialog').show();" 
+                                     update=":registerResultForm :resultTab:registerForm:resultPanelId:resultPanel :resultTab:registerForm:ktspId:ktsp"
+                                     />
+                    <p:commandButton value="#{msgs['button.no']}" 
+                                     onclick="PF('registerConfirmDialog').hide();" 
+                                     immediate="true" />                                
+                </p:panel>        
+            </p:dialog>
+        </h:form>
+
+        <h:form id="registerResultForm">
+            <p:dialog widgetVar="registerResultDialog" width="900"
+                      header="Komunikat"
+                      resizable="false" closable="true" modal="true">
+                <p:panel id="messageDialogMessagePanel">
+                    <h:outputText value="#{kdpwTransRegisterListBean.resultMessage}" />
+                    <p:dataTable var="sendResult" value="#{kdpwTransRegisterListBean.sendResultList}"
+                                 rendered="#{kdpwTransRegisterListBean.anyError}"
+                                 paginator="true" 
+                                 paginatorPosition="#{applicationBean.paginatorPosition}"
+                                 rows="#{applicationBean.dataTableRows}"
+                                 resizableColumns="true"
+                                 rowsPerPageTemplate="#{applicationBean.dataTableRowsPerTableTemplate}">
+                        <p:column headerText="#{msgs['transaction.kdpw.send.result.transactionId']}" 
+                                  styleClass="wrap"
+                                  >
+                            <h:outputText value="#{sendResult.orignalId}" />
+                        </p:column>
+                        <p:column headerText="#{msgs['transaction.kdpw.send.result.message']}" 
+                                  width="60%" 
+                                  styleClass="wrap" 
+                                  >
+                            <h:outputText value="#{msgs[sendResult.errorReason.msg]} #{sendResult.errorDetails}" />
+                        </p:column>
+                    </p:dataTable>
+                </p:panel>
+
+                <tempui:popupButtons dialogId="registerResultDialog" cancel="false" />
+            </p:dialog>
+        </h:form>
+
+        <h:form id="noSelectedItemsForm">
+            <p:dialog widgetVar="noSelectedDialog" width="500"
+                      header="Komunikat"
+                      resizable="false" closable="true" modal="true">
+                <p:panel id="messageDialogMessagePanel">
+                    <h:outputText value="Nie wybrano transakcji do wysyłki!" />
+                </p:panel>
+
+                <tempui:popupButtons dialogId="noSelectedDialog" cancel="false" />
+            </p:dialog>
+        </h:form>
+    </ui:define>
+
+</ui:composition>

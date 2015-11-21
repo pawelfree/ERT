@@ -1,0 +1,215 @@
+body{
+    padding: 0px 5px 0px 5px;
+}
+
+#mainBody{
+    width: 100%;
+    max-width: 100% !important;
+}
+
+#clientList .ui-button-icon-only, #importList .ui-button-icon-only, #mainForm .ui-button-icon-only,
+#valuationsFilter .ui-button-icon-only, #userList .ui-button-icon-only {
+    font-size: 8px !important;
+}
+
+.ui-widget, .ui-widget .ui-widget
+{
+    font-size: 12px !important;
+}
+
+.ui-menu-dynamic {
+    width: 200px !important;
+    white-space: nowrap;
+}
+
+.tilte {
+    font-family: Segoe UI Semibold;
+}
+
+.dateClass {
+    text-align	:	center;
+    display     :	block;
+}
+
+.alignTop {
+    vertical-align: top;
+}
+
+.nowrap {
+    white-space: nowrap;
+}
+
+.right {
+    text-align: right !important;
+}
+
+.amountClass{
+    white-space: nowrap;
+    text-align: right;
+    display: block;
+}
+
+.timeField input {
+    width:40px;
+}
+
+.timeFieldInput {
+    width:35px;
+}
+
+.dateFieldInput input {
+    width:80px;
+}
+
+.subtable table thead tr {
+    display: none;
+}
+
+.ui-widget-header a {
+    cursor: default !important;
+    text-decoration: none;
+    font-size: 8pt;
+}
+.selectManyChkbxWidth table {
+    width: 247px !important;
+}
+
+.buttonsPanel{
+    margin: 1px;
+    border: none;
+    padding: 1px !important;
+}
+
+.sortColumnUp {
+    /*    background-image: url("/emir/javax.faces.resource/images/ui-icons_eeeeee_256x240.png.xhtml?ln=primefaces-cupertino") !important;*/
+    background-position: 1px 20px;
+    width: 16px;
+    height: 16px;
+}
+
+.requiredInput{
+    color: #F00;
+}
+
+.ui-panel-titlebar-icon{
+    float:left !important;
+    margin-left: 10px;
+}
+
+.gridWithoutBorder tr, .gridWithoutBorder td {
+    border: none!important;
+    border-bottom-style: none!important;
+    border-top-style: none!important;
+    border-left-style: none!important;
+    border-right-style: none!important;
+    padding: 0px !important;
+}
+
+/*.gridWithoutBorder td {
+    padding: 0px !important;
+    font-size: 10px;
+}*/
+
+.ui-growl-item .ui-growl-icon-close{
+    display:none !important;
+}
+
+.input-grid td:nth-of-type(2n){
+    width: 160px;
+}
+input:not(.hasDatepicker), .calendar{
+    width:150px;
+}
+.ui-selectonemenu{
+    width: 150px!important;
+}
+.field-label{
+    width: 150px;
+    display:inline-block;
+}
+
+div.ui-messages-error-EMIR div.ui-messages div.ui-messages-info {
+    color: #b94a48 !important;
+    border-top-color: #eed3d7 !important;
+    border-right-color: #eed3d7 !important;
+    border-bottom-color: #eed3d7 !important;
+    border-left-color: #eed3d7 !important;
+    background-color: rgb(242, 222, 222) !important;
+}
+
+div.ui-messages-error-EMIR div.ui-messages div.ui-messages-info .ui-messages-info-icon {
+    background-position: 0 -52px !important;
+}
+
+.ui-growl-item .ui-growl-image-info {
+    background-position: 0 -0px !important;
+}
+
+
+ul.ui-menu-child{
+    white-space: nowrap;
+    width: auto !important;
+}
+
+div[id*="valuationsFilter:processingStatusListId_panel"] .ui-selectonemenu-items-wrapper{
+    width: 100% !important;
+    height: 100% !important;
+    overflow: visible;
+}
+
+.processingStatusList {
+    width: 200px !important;
+}
+
+.ui-selectonemenu-panel .ui-selectonemenu-items-wrapper{
+    width: 100% !important;
+    overflow: visible;
+}
+
+.kdpwFileLink {
+    color: blue;
+}
+
+
+.wideMenu .ui-menu {
+    width:100% !important;
+    white-space: nowrap;
+
+}
+.wideMenu .ui-accordion-content {
+    padding:0 !important;
+    overflow:inherit !important;
+    white-space: nowrap;
+}
+
+.wideMenu .ui-helper-clearfix:after {
+    height:inherit !important;
+}
+
+.ui-menu .ui-menu-list .ui-menuitem {
+    border: none;
+    float: right;
+}
+
+.ui-menu .ui-menu-parent {
+    position: relative;
+    float: left !important;
+}
+
+.fileinput-button input {
+    -moz-transform : none !important;
+    border : none !important;
+    border-width : 0 !important;
+    transform : translate(-300px, 0) scale(4) !important;
+    font-size : 23px !important;
+}
+* + html .fileinput-button {
+    line-height : none !important;
+    padding : 2px 15px !important;
+}
+
+/* Zawijanie wierszy w komórce tabeli*/
+.ui-datatable tbody td.wrap {
+    white-space: normal;
+}
+

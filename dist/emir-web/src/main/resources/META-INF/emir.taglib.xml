@@ -1,0 +1,804 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<facelet-taglib version="2.0" xmlns="http://java.sun.com/xml/ns/javaee"
+                xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-facelettaglibrary_2_0.xsd">
+
+    <namespace>http://pl.pd/emir</namespace>
+
+    <tag>
+        <tag-name>detailsPanel</tag-name>
+        <source>facelets/detailsPanel.xhtml</source>
+        <description>Kontrolka do wyświetlania szczegółów wraz z nazwą</description>
+        <attribute>
+            <description>czy wyświetlać komponent - domyślnie: true</description>
+            <name>rendered</name>
+            <type>boolean</type>
+            <required>false</required>
+        </attribute>
+        <attribute>
+            <description>Nazwa górnego podpisu kontrolki</description>
+            <name>label</name>
+            <type>java.lang.String</type>
+            <required>false</required>
+        </attribute>
+        <attribute>
+            <description>Liczba kolumn</description>
+            <name>columns</name>
+            <type>integer</type>
+            <required>false</required>
+        </attribute>
+    </tag>
+
+    <tag>
+        <tag-name>resultsPanel</tag-name>
+        <source>facelets/resultsPanel.xhtml</source>
+        <description>Tabelka z lista wyników</description>
+        <attribute>
+            <description>Tytuł panelu</description>
+            <name>title</name>
+            <type>java.lang.String</type>
+            <required>false</required>
+        </attribute>
+        <attribute>
+            <name>addScroller</name>
+            <type>java.lang.String</type>
+            <required>false</required>
+            <description>czy dodawać scroller - domyślnie: true</description>
+        </attribute>
+        <attribute>
+            <description>Bean (DataModel) obsługujący tabelkę</description>
+            <name>bean</name>
+            <type>pl.pd.emir.report.bean.ReportBean</type>
+            <required>true</required>
+        </attribute>
+        <attribute>
+            <description>Id tabelki z danymi; domyślnie: results</description>
+            <name>tableId</name>
+            <type>java.lang.String</type>
+            <required>false</required>
+        </attribute>
+        <attribute>
+            <description>czy wyświetlać komponent - domyślnie: true</description>
+            <name>rendered</name>
+            <type>boolean</type>
+            <required>false</required>
+        </attribute>
+        <attribute>
+            <description>nazwa EL wiersza tabeli</description>
+            <name>var</name>
+            <type>java.lang.String</type>
+            <required>true</required>
+        </attribute>
+        <attribute>
+            <description>Opcja zaznaczania wierszy przez kolumne checkbox'ow</description>
+            <name>selectable</name>
+            <type>boolean</type>
+            <required>false</required>
+        </attribute>
+        <attribute>
+            <description>ID komponentów do odświeżenia po kliknięciu checkbox'a 'zaznacz wszystko'; używane tylko w przypadku,gdy selectable=true</description>
+            <name>renderAfterSelectAll</name>
+            <type>java.lang.String</type>
+            <required>false</required>
+        </attribute>
+        <attribute>
+            <description>Id komponentów do renderowania po zaznaczeniu wiersza; tylko dla selectable=true</description>
+            <name>renderAfterRowSelect</name>
+            <type>java.lang.String</type>
+            <required>false</required>
+        </attribute>
+        <attribute>
+            <description>Styl paginatora</description>
+            <name>paginatorTemplate</name>
+            <type>java.lang.String</type>
+            <required>false</required>
+        </attribute>
+        <attribute>
+            <description>Opcje menu z ilością rekordów na stronie</description>
+            <name>rowsPerPageTemplate</name>
+            <type>java.lang.String</type>
+            <required>false</required>
+        </attribute>
+        <attribute>
+            <description>Pozycja paginatora wzgledem tabeli; możliwe opcje: top, bottom, both</description>
+            <name>paginatorPosition</name>
+            <type>java.lang.String</type>
+            <required>false</required>
+        </attribute>
+        <attribute>
+            <description>Domyślna ilość wierszy prezentowanych na stronie</description>
+            <name>dataTableRows</name>
+            <type>java.lang.String</type>
+            <required>false</required>
+        </attribute>
+        <attribute>
+            <description>Prezentacja informacji o aktualnej stronie i liczbie wierszy</description>
+            <name>currentpageReportTemplate</name>
+            <type>java.lang.String</type>
+            <required>false</required>
+        </attribute>
+        <attribute>
+            <description>domyślnie: wartość table.empty | wymagane: nie | masseges dla pustej tabeli</description>
+            <name>emptyMessage</name>
+            <type>java.lang.String</type>
+            <required>false</required>
+        </attribute>
+    </tag>
+
+    <tag>
+        <tag-name>actionColumn</tag-name>
+        <source>facelets/actionColumn.xhtml</source>
+        <description>kolumna z akcjami</description>
+        <attribute>
+            <description>czy wyświetlać komponent - domyślnie: true</description>
+            <name>rendered</name>
+            <type>boolean</type>
+        </attribute>
+        <attribute>
+            <description>ilosc kolumn</description>
+            <name>columns</name>
+            <type>integer</type>
+        </attribute>
+        <attribute>
+            <description>wybrany wiersz ma ustawiony styl selectedRow</description>
+            <name>selected</name>
+            <type>boolean</type>
+            <required>false</required>
+        </attribute>
+    </tag>
+
+    <tag>
+        <tag-name>column</tag-name>
+        <source>facelets/column.xhtml</source>
+        <description>Kolumna tabelki</description>
+        <attribute>
+            <description>Nagłówek: wartość obowiązkowa dla wszystkich formatów oprócz multiselect</description>
+            <name>header</name>
+            <type>java.lang.String</type>
+            <required>false</required>
+        </attribute>
+        <attribute>
+            <description>Wartość wyświetlana w kolumnie; wymagana dla wszystkich formatów oprócz multiselect</description>
+            <name>value</name>
+            <type>java.lang.Object</type>
+            <required>false</required>
+        </attribute>
+        <attribute>
+            <description>Bean obsługujący tabelkę</description>
+            <name>bean</name>
+            <type>pl.pd.emir.bean.AbstractListBean</type>
+            <required>false</required>
+        </attribute>
+        <attribute>
+            <description>Id tabelki - wartość obowiązkowa, jeśli używamy sortowania</description>
+            <name>tableId</name>
+            <type>java.lang.String</type>
+            <required>false</required>
+        </attribute>
+        <attribute>
+            <description>format danych: możliwe wartości: text, datetime, date, time, timeNoSec, money, yesNo, checkbox, custom, number, multiselect, logdetail; domyslnie: text</description>
+            <name>format</name>
+            <type>java.lang.String</type>
+            <required>false</required>
+        </attribute>
+        <attribute>
+            <description>Czy wyświetlać komponent - domyślnie: true</description>
+            <name>rendered</name>
+            <type>boolean</type>
+            <required>false</required>
+        </attribute>
+        <attribute>
+            <description>Pole sortowania lub 'none', żeby nie sortować</description>
+            <name>sortBy</name>
+            <type>java.lang.String</type>
+            <required>false</required>
+        </attribute>
+        <attribute>
+            <description>Styl</description>
+            <name>style</name>
+            <type>java.lang.String</type>
+            <required>false</required>
+        </attribute>
+        <attribute>
+            <description>Wybrany wiersz ma ustawiony styl selectedRow</description>
+            <name>selected</name>
+            <type>boolean</type>
+            <required>false</required>
+        </attribute>
+        <attribute>
+            <description>Id komponentów do renderowania po kliknieciu 'zaznacz wszystko'; tylko dla selectable=true</description>
+            <name>renderAfterSelectAll</name>
+            <type>java.lang.String</type>
+            <required>false</required>
+        </attribute>
+        <attribute>
+            <description>Id komponentów do renderowania po zaznaczeniu wiersza; tylko dla selectable=true</description>
+            <name>renderAfterRowSelect</name>
+            <type>java.lang.String</type>
+            <required>false</required>
+        </attribute>
+    </tag>
+
+    <tag>
+        <tag-name>searchPanel</tag-name>
+        <source>facelets/searchPanel.xhtml</source>
+        <description>Panel wyszukiwania</description>
+        <attribute>
+            <description></description>
+            <name>id</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>bean obsługujący listę</description>
+            <name>bean</name>
+            <required>false</required>
+            <type>pl.pd.emir.bean.AbstractListBean</type>
+        </attribute>
+        <attribute>
+            <description>co odświerzyć po wyszukaniu rekordów</description>
+            <name>updateAfterSearch</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>co odświerzyć po wyczyszczeniu</description>
+            <name>updateAfterClean</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>ilość kolumn z polami kryteriów</description>
+            <name>columns</name>
+            <required>false</required>
+            <type>java.lang.Integer</type>
+        </attribute>
+        <attribute>
+            <description></description>
+            <name>rendered</name>
+            <required>false</required>
+            <type>java.lang.Boolean</type>
+        </attribute>
+    </tag>
+
+    <tag>
+        <tag-name>popupButtons</tag-name>
+        <source>facelets/popupButtons.xhtml</source>
+        <description>Dolny panel na popup'ach</description>
+        <attribute>
+            <description>Id panelu</description>
+            <name>panelId</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>Id okna</description>
+            <name>dialogId</name>
+            <required>true</required>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>Czy przycisk Anuluj zamiast Zamknij</description>
+            <name>cancel</name>
+            <required>false</required>
+            <type>java.lang.String</type>
+        </attribute>
+    </tag>
+
+    <tag>
+        <tag-name>inputText</tag-name>
+        <source>facelets/inputText.xhtml</source>
+        <description>Pole do wprowadzania danych tekstowych</description>
+        <attribute>
+            <description>id komponentu - wymagane</description>
+            <name>id</name>
+            <type>java.lang.String</type>
+            <required>true</required>
+        </attribute>
+        <attribute>
+            <description>czy renderować - domyślnie true</description>
+            <name>rendered</name>
+            <type>java.lang.Boolean</type>
+            <required>false</required>
+        </attribute>
+        <attribute>
+            <description>czy nieaktywne - domyślnie false</description>
+            <name>disabled</name>
+            <type>java.lang.Boolean</type>
+            <required>false</required>
+        </attribute>
+        <attribute>
+            <description>czy wartość jest wymagana - domyślnie false</description>
+            <name>required</name>
+            <type>java.lang.Boolean</type>
+            <required>false</required>
+        </attribute>
+        <attribute>
+            <description>readonly - domyślnie false</description>
+            <name>readonly</name>
+            <type>java.lang.Boolean</type>
+            <required>false</required>
+        </attribute>
+        <attribute>
+            <description>wartość komponentu</description>
+            <name>value</name>
+            <type>java.lang.String</type>
+            <required>true</required>
+        </attribute>
+        <attribute>
+            <description>etykieta komponentu - wymagane</description>
+            <name>label</name>
+            <type>java.lang.String</type>
+            <required>true</required>
+        </attribute>
+        <attribute>
+            <description>styl pola input</description>
+            <name>style</name>
+            <type>java.lang.String</type>
+            <required>false</required>
+        </attribute>
+        <attribute>
+            <description>maksymalna liczba znaków, która może być wprowadzona do pola tekstowego - domyślnie 100</description>
+            <name>maxlength</name>
+            <type>java.lang.Integer</type>
+            <required>false</required>
+        </attribute>
+        <attribute>
+            <description>minimalna liczba znaków, która może być wprowadzona do pola tekstowego - domyślnie 0</description>
+            <name>minlength</name>
+            <type>java.lang.Integer</type>
+            <required>false</required>
+        </attribute>
+        <attribute>
+            <description>opis komponentu - domyślnie puste</description>
+            <name>info</name>
+            <type>java.lang.String</type>
+            <required>false</required>
+        </attribute>
+        <attribute>
+            <description>convert - domyślnie TrimConverter</description>
+            <name>convert</name>
+            <type>java.lang.Boolean</type>
+            <required>false</required>
+        </attribute>
+    </tag>
+
+    <tag>
+        <tag-name>inputSelect</tag-name>
+        <description>Lista jednokrotnego wyboru</description>
+        <source>facelets/inputSelect.xhtml</source>
+        <attribute>
+            <description>id komponentu - wymagane</description>
+            <name>id</name>
+            <type>java.lang.String</type>
+            <required>true</required>
+        </attribute>
+        <attribute>
+            <description>czy renderować - domyślnie true</description>
+            <name>rendered</name>
+            <type>java.lang.Boolean</type>
+            <required>false</required>
+        </attribute>
+        <attribute>
+            <description>czy nieaktywne - domyślnie false</description>
+            <name>disabled</name>
+            <type>java.lang.Boolean</type>
+            <required>false</required>
+        </attribute>
+        <attribute>
+            <description>czy dopuszczać pustą wartość - domyślnie false</description>
+            <name>allowEmpty</name>
+            <type>java.lang.Boolean</type>
+            <required>false</required>
+        </attribute>
+        <attribute>
+            <description>wartość komponentu - wymagane</description>
+            <name>value</name>
+            <type>java.lang.Object</type>
+            <required>true</required>
+        </attribute>
+        <attribute>
+            <description>etykieta komponentu - wymagane</description>
+            <name>label</name>
+            <type>java.lang.String</type>
+            <required>true</required>
+        </attribute>
+        <attribute>
+            <description>co przerenderować po wyborze pozycji</description>
+            <name>update</name>
+            <type>java.lang.String</type>
+            <required>false</required>
+        </attribute>
+        <attribute>
+            <description>czy wartość jest wymagana - domyślnie false</description>
+            <name>required</name>
+            <type>java.lang.Boolean</type>
+            <required>false</required>
+        </attribute>
+        <attribute>
+            <description>konwerter</description>
+            <name>converter</name>
+            <type>javax.faces.Converter</type>
+            <required>false</required>
+        </attribute>
+        <attribute>
+            <description>klasy styli dla komponentu</description>
+            <name>styleClass</name>
+            <type>java.lang.String</type>
+            <required>false</required>
+        </attribute>
+        <attribute>
+            <description>opis komponentu - domyślnie puste</description>
+            <name>info</name>
+            <type>java.lang.String</type>
+            <required>false</required>
+        </attribute>
+        <attribute>
+            <description>czy wyświetlać pole do filtrowania elementów</description>
+            <name>filter</name>
+            <type>java.lang.String</type>
+            <required>false</required>
+        </attribute>
+        <attribute>
+            <description>styl dla komponentu</description>
+            <name>style</name>
+            <type>java.lang.String</type>
+            <required>false</required>
+        </attribute>        
+        <attribute>
+            <description>changeListener</description>
+            <name>changeListener</name>
+            <method-signature>void changeListener(javax.el.ValueChangeEvent)</method-signature>
+            <required>false</required>
+        </attribute>           
+    </tag>
+
+    <tag>
+        <tag-name>inputDate</tag-name>
+        <description>Pole do wprowadzania dat</description>
+        <source>facelets/inputDate.xhtml</source>
+        <attribute>
+            <description>id komponentu - wymagane</description>
+            <name>id</name>
+            <type>java.lang.String</type>
+            <required>true</required>
+        </attribute>
+        <attribute>
+            <description>czy renderować - domyślnie true</description>
+            <name>rendered</name>
+            <type>java.lang.Boolean</type>
+            <required>false</required>
+        </attribute>
+        <attribute>
+            <description>czy nieaktywne - domyślnie false</description>
+            <name>disabled</name>
+            <type>java.lang.Boolean</type>
+            <required>false</required>
+        </attribute>
+        <attribute>
+            <description>wartość komponentu - wymagane</description>
+            <name>value</name>
+            <type>java.lang.Object</type>
+            <required>true</required>
+        </attribute>
+        <attribute>
+            <description>etykieta komponentu - wymagane</description>
+            <name>label</name>
+            <type>java.lang.String</type>
+            <required>true</required>
+        </attribute>
+        <attribute>
+            <description>Format wyświetlania daty - domyślnie yyyy-MM-dd</description>
+            <name>pattern</name>
+            <type>java.lang.String</type>
+            <required>false</required>
+        </attribute>
+        <attribute>
+            <description>Najwcześniejsza dopuszczalna data - domyślnie dzień dzisiejszy</description>
+            <name>mindate</name>
+            <type>java.util.Date</type>
+            <required>false</required>
+        </attribute>
+        <attribute>
+            <description>Najpóźniejsza dopuszczalna data - domyślnie dzień dzisiejszy plu 200 lat</description>
+            <name>maxdate</name>
+            <type>java.util.Date</type>
+            <required>false</required>
+        </attribute>
+        <attribute>
+            <description>czy wartość jest wymagana - domyślnie false</description>
+            <name>required</name>
+            <type>java.lang.Boolean</type>
+            <required>false</required>
+        </attribute>
+        <attribute>
+            <description>opis komponentu - domyślnie puste</description>
+            <name>info</name>
+            <type>java.lang.String</type>
+            <required>false</required>
+        </attribute>
+        <attribute>
+            <description>Czy możliwe manualne wpisanie daty</description>
+            <name>readonlyInput</name>
+            <type>java.lang.Boolean</type>
+            <required>false</required>
+        </attribute>
+    </tag>
+
+    <tag>
+        <tag-name>labeledOutput</tag-name>
+        <description>Pole z etykietą</description>
+        <source>facelets/labeledOutput.xhtml</source>
+        <attribute>
+            <description>id komponentu - wymagane</description>
+            <name>id</name>
+            <type>java.lang.String</type>
+            <required>true</required>
+        </attribute>
+        <attribute>
+            <description>czy renderować - domyślnie true</description>
+            <name>rendered</name>
+            <type>java.lang.Boolean</type>
+            <required>false</required>
+        </attribute>
+        <attribute>
+            <description>wartość komponentu - wymagane</description>
+            <name>value</name>
+            <type>java.lang.Object</type>
+            <required>true</required>
+        </attribute>
+        <attribute>
+            <description>etykieta komponentu - wymagane</description>
+            <name>label</name>
+            <type>java.lang.String</type>
+            <required>true</required>
+        </attribute>
+        <attribute>
+            <description>opis komponentu - domyślnie puste</description>
+            <name>info</name>
+            <type>java.lang.String</type>
+            <required>false</required>
+        </attribute>
+    </tag>
+
+    <tag>
+        <tag-name>dateFilter</tag-name>
+        <description>Pole do wprowadzania dat na filtrach</description>
+        <source>facelets/dateFilter.xhtml</source>
+        <attribute>
+            <description>id komponentu - wymagane</description>
+            <name>id</name>
+            <type>java.lang.String</type>
+            <required>true</required>
+        </attribute>
+        <attribute>
+            <description>czy renderować - domyślnie true</description>
+            <name>rendered</name>
+            <type>java.lang.Boolean</type>
+            <required>false</required>
+        </attribute>
+        <attribute>
+            <description>czy nieaktywne - domyślnie false</description>
+            <name>disabled</name>
+            <type>java.lang.Boolean</type>
+            <required>false</required>
+        </attribute>
+        <attribute>
+            <description>wartość komponentu - wymagane</description>
+            <name>value</name>
+            <type>java.lang.Object</type>
+            <required>true</required>
+        </attribute>
+        <attribute>
+            <description>etykieta komponentu - wymagane</description>
+            <name>label</name>
+            <type>java.lang.String</type>
+            <required>true</required>
+        </attribute>
+        <attribute>
+            <description>Format wyświetlania daty: 'date' - data, 'datetime' - data i czas w ustandaryzowanym patternie</description>
+            <name>pattern</name>
+            <type>java.lang.String</type>
+            <required>false</required>
+        </attribute>
+        <attribute>
+            <description>czy wartość jest wymagana - domyślnie false</description>
+            <name>required</name>
+            <type>java.lang.Boolean</type>
+            <required>false</required>
+        </attribute>
+        <attribute>
+            <description>opis komponentu - domyślnie puste</description>
+            <name>info</name>
+            <type>java.lang.String</type>
+            <required>false</required>
+        </attribute>
+    </tag>
+
+    <tag>
+        <tag-name>selectFilter</tag-name>
+        <description>Lista jednokrotnego wyboru</description>
+        <source>facelets/selectFilter.xhtml</source>
+        <attribute>
+            <description>id komponentu - wymagane</description>
+            <name>id</name>
+            <type>java.lang.String</type>
+            <required>true</required>
+        </attribute>
+        <attribute>
+            <description>czy renderować - domyślnie true</description>
+            <name>rendered</name>
+            <type>java.lang.Boolean</type>
+            <required>false</required>
+        </attribute>
+        <attribute>
+            <description>czy nieaktywne - domyślnie false</description>
+            <name>disabled</name>
+            <type>java.lang.Boolean</type>
+            <required>false</required>
+        </attribute>
+        <attribute>
+            <description>czy dopuszczać pustą wartość - domyślnie false</description>
+            <name>allowEmpty</name>
+            <type>java.lang.Boolean</type>
+            <required>false</required>
+        </attribute>
+        <attribute>
+            <description>wartość komponentu - wymagane</description>
+            <name>value</name>
+            <type>java.lang.Object</type>
+            <required>true</required>
+        </attribute>
+        <attribute>
+            <description>etykieta komponentu - wymagane</description>
+            <name>label</name>
+            <type>java.lang.String</type>
+            <required>true</required>
+        </attribute>
+        <attribute>
+            <description>co przerenderować po wyborze pozycji</description>
+            <name>update</name>
+            <type>java.lang.String</type>
+            <required>false</required>
+        </attribute>
+        <attribute>
+            <description>czy wartość jest wymagana - domyślnie false</description>
+            <name>required</name>
+            <type>java.lang.Boolean</type>
+            <required>false</required>
+        </attribute>
+        <attribute>
+            <description>konwerter</description>
+            <name>converter</name>
+            <type>javax.faces.Converter</type>
+            <required>false</required>
+        </attribute>
+        <attribute>
+            <description>klasy styli dla komponentu</description>
+            <name>styleClass</name>
+            <type>java.lang.String</type>
+            <required>false</required>
+        </attribute>
+        <attribute>
+            <description>opis komponentu - domyślnie puste</description>
+            <name>info</name>
+            <type>java.lang.String</type>
+            <required>false</required>
+        </attribute>
+        <attribute>
+            <description>czy wyświetlać pole do filtrowania elementów</description>
+            <name>filter</name>
+            <type>java.lang.String</type>
+            <required>false</required>
+        </attribute>
+    </tag>
+
+    <tag>
+        <tag-name>eventLogPanel</tag-name>
+        <description>Panel historii modyfikacji wskazanego typu danych</description>
+        <source>facelets/eventLogPanel.xhtml</source>
+        <attribute>
+            <description>id komponentu - wymagane</description>
+            <name>id</name>
+            <type>java.lang.String</type>
+            <required>true</required>
+        </attribute>
+        <attribute>
+            <description>czy renderować - domyślnie true</description>
+            <name>rendered</name>
+            <type>java.lang.Boolean</type>
+            <required>false</required>
+        </attribute>
+        <attribute>
+            <description>bean obsługujący - wymagane</description>
+            <name>bean</name>
+            <type>pl.pd.emir.admin.bean.AbstractEventLogBean</type>
+            <required>true</required>
+        </attribute>
+    </tag>
+
+    <tag>
+        <tag-name>inputPassword</tag-name>
+        <source>facelets/inputPassword.xhtml</source>
+        <description>Pole do wprowadzania danych tekstowych</description>
+        <attribute>
+            <description>id komponentu - wymagane</description>
+            <name>id</name>
+            <type>java.lang.String</type>
+            <required>true</required>
+        </attribute>
+        <attribute>
+            <description>czy renderować - domyślnie true</description>
+            <name>rendered</name>
+            <type>java.lang.Boolean</type>
+            <required>false</required>
+        </attribute>
+        <attribute>
+            <description>czy nieaktywne - domyślnie false</description>
+            <name>disabled</name>
+            <type>java.lang.Boolean</type>
+            <required>false</required>
+        </attribute>
+        <attribute>
+            <description>czy wartość jest wymagana - domyślnie false</description>
+            <name>required</name>
+            <type>java.lang.Boolean</type>
+            <required>false</required>
+        </attribute>
+        <attribute>
+            <description>readonly - domyślnie false</description>
+            <name>readonly</name>
+            <type>java.lang.Boolean</type>
+            <required>false</required>
+        </attribute>
+        <attribute>
+            <description>wartość komponentu</description>
+            <name>value</name>
+            <type>java.lang.String</type>
+            <required>false</required>
+        </attribute>
+        <attribute>
+            <description>binding</description>
+            <name>binding</name>
+            <type>java.lang.String</type>
+            <required>false</required>
+        </attribute>
+        <attribute>
+            <description>etykieta komponentu - wymagane</description>
+            <name>label</name>
+            <type>java.lang.String</type>
+            <required>true</required>
+        </attribute>
+        <attribute>
+            <description>styl pola input</description>
+            <name>style</name>
+            <type>java.lang.String</type>
+            <required>false</required>
+        </attribute>
+        <attribute>
+            <description>maksymalna liczba znaków, która może być wprowadzona do pola tekstowego - domyślnie 100</description>
+            <name>maxlength</name>
+            <type>java.lang.Integer</type>
+            <required>false</required>
+        </attribute>
+        <attribute>
+            <description>minimalna liczba znaków, która może być wprowadzona do pola tekstowego - domyślnie 0</description>
+            <name>minlength</name>
+            <type>java.lang.Integer</type>
+            <required>false</required>
+        </attribute>
+        <attribute>
+            <description>opis komponentu - domyślnie puste</description>
+            <name>info</name>
+            <type>java.lang.String</type>
+            <required>false</required>
+        </attribute>
+        <attribute>
+            <description>convert - domyślnie TrimConverter</description>
+            <name>convert</name>
+            <type>java.lang.Boolean</type>
+            <required>false</required>
+        </attribute>
+    </tag>
+
+</facelet-taglib>

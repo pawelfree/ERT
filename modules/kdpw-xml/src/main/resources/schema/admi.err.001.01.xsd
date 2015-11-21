@@ -1,0 +1,333 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns="urn:kdpw:xsd:admi.err.001.01" targetNamespace="urn:kdpw:xsd:admi.err.001.01" elementFormDefault="qualified" attributeFormDefault="unqualified">
+	<xs:annotation>
+		<xs:documentation>Komunikat błędu formalnego jest przesyłany z systemu KDPW w odpowiedzi na błędny komunikat, niezgodny z zadeklarowanym schematem XML Schema.</xs:documentation>
+		<xs:appinfo>
+			<NmPL>Błąd formalny</NmPL>
+		</xs:appinfo>
+	</xs:annotation>
+	<xs:element name="KDPWDocument" type="KDPWDocument">
+		<xs:annotation>
+			<xs:documentation>Komunikat systemu KDPW</xs:documentation>
+			<xs:appinfo>
+				<NmPL>Komunikat systemu KDPW</NmPL>
+			</xs:appinfo>
+		</xs:annotation>
+	</xs:element>
+	<xs:simpleType name="Code4Text">
+		<xs:annotation>
+			<xs:documentation>Kwalifikator, kod</xs:documentation>
+			<xs:appinfo>
+				<NmPL>Kwalifikator</NmPL>
+			</xs:appinfo>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:whiteSpace value="collapse"/>
+			<xs:minLength value="4"/>
+			<xs:maxLength value="4"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:complexType name="DateAndDateTimeChoice">
+		<xs:annotation>
+			<xs:documentation>Data i czas</xs:documentation>
+			<xs:appinfo>
+				<NmPL>Data i czas</NmPL>
+			</xs:appinfo>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:choice>
+				<xs:element name="Dt" type="ISODate">
+					<xs:annotation>
+						<xs:documentation>Data</xs:documentation>
+						<xs:appinfo>
+							<NmPL>Data</NmPL>
+						</xs:appinfo>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="DtTm" type="ISODateTime">
+					<xs:annotation>
+						<xs:documentation>Data i czas</xs:documentation>
+						<xs:appinfo>
+							<NmPL>Data i czas</NmPL>
+						</xs:appinfo>
+					</xs:annotation>
+				</xs:element>
+			</xs:choice>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="ErrorDetails">
+		<xs:annotation>
+			<xs:documentation>Szczegółowe informacje dotyczące błędu</xs:documentation>
+			<xs:appinfo>
+				<NmPL>Szczegóły błędu</NmPL>
+			</xs:appinfo>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="ErrCd" type="Code4Text">
+				<xs:annotation>
+					<xs:documentation>Kod błędu</xs:documentation>
+					<xs:appinfo>
+						<NmPL>Kod błędu</NmPL>
+					</xs:appinfo>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="LnNb" type="Max5Int" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Numer linii komunikatu, w której wykryto błąd</xs:documentation>
+					<xs:appinfo>
+						<NmPL>Numer linii</NmPL>
+					</xs:appinfo>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Pos" type="Max4Int" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Numer znaku w linii, w której wykryto błąd</xs:documentation>
+					<xs:appinfo>
+						<NmPL>Pozycja</NmPL>
+					</xs:appinfo>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="AddtlInf" type="Max140Text" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Dodatkowe informacje</xs:documentation>
+					<xs:appinfo>
+						<NmPL>Dodatkowe informacje</NmPL>
+					</xs:appinfo>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="FileInformation">
+		<xs:annotation>
+			<xs:documentation>Infomacje o pliku</xs:documentation>
+			<xs:appinfo>
+				<NmPL>Informacje o pliku</NmPL>
+			</xs:appinfo>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="Nm" type="Max128Text">
+				<xs:annotation>
+					<xs:documentation>Nazwa pliku/komunikatu</xs:documentation>
+					<xs:appinfo>
+						<NmPL>Nazwa pliku/komunikatu</NmPL>
+					</xs:appinfo>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Sndr" type="KDPWMemberIdentifier">
+				<xs:annotation>
+					<xs:documentation>Nadawca pliku/komunikatu</xs:documentation>
+					<xs:appinfo>
+						<NmPL>Nadawca pliku</NmPL>
+					</xs:appinfo>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="RcvDtTm" type="ISODateTime">
+				<xs:annotation>
+					<xs:documentation>Data otrzymania</xs:documentation>
+					<xs:appinfo>
+						<NmPL>Data otrzymania</NmPL>
+					</xs:appinfo>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="GeneralInformation">
+		<xs:annotation>
+			<xs:documentation>Informacje ogólne</xs:documentation>
+			<xs:appinfo>
+				<NmPL>Informacje ogólne</NmPL>
+			</xs:appinfo>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="SndrMsgRef" type="Max16Text">
+				<xs:annotation>
+					<xs:documentation>Identyfikator komunikatu utworzony przez nadawcę</xs:documentation>
+					<xs:appinfo>
+						<NmPL>Identyfikator komunikatu</NmPL>
+					</xs:appinfo>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="CreDtTm" type="DateAndDateTimeChoice" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Data utworzenia komunikatu</xs:documentation>
+					<xs:appinfo>
+						<NmPL>Data utworzenia komunikatu</NmPL>
+					</xs:appinfo>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:simpleType name="ISODate">
+		<xs:annotation>
+			<xs:documentation>Data</xs:documentation>
+			<xs:appinfo>
+				<NmPL>Data</NmPL>
+			</xs:appinfo>
+		</xs:annotation>
+		<xs:restriction base="xs:date"/>
+	</xs:simpleType>
+	<xs:simpleType name="ISODateTime">
+		<xs:annotation>
+			<xs:documentation>Data i czas</xs:documentation>
+			<xs:appinfo>
+				<NmPL>Data i czas</NmPL>
+			</xs:appinfo>
+		</xs:annotation>
+		<xs:restriction base="xs:dateTime"/>
+	</xs:simpleType>
+	<xs:complexType name="KDPWDocument">
+		<xs:annotation>
+			<xs:documentation>Komunikat systemu KDPW</xs:documentation>
+			<xs:appinfo>
+				<NmPL>Komunikat systemu KDPW</NmPL>
+			</xs:appinfo>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="admi.err.001.01" type="admi.err.001.01" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>Błąd formalny instrukcji</xs:documentation>
+					<xs:appinfo>
+						<NmPL>Błąd formalny instrukcji</NmPL>
+					</xs:appinfo>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+		<xs:attribute name="Sndr" type="KDPWMemberIdentifier" use="required">
+			<xs:annotation>
+				<xs:documentation>Nadawca w postaci kodu KDPW</xs:documentation>
+				<xs:appinfo>
+					<NmPL>Nadawca</NmPL>
+				</xs:appinfo>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="Rcvr" type="KDPWMemberIdentifier" use="required">
+			<xs:annotation>
+				<xs:documentation>Odbiorca w postaci kodu KDPW</xs:documentation>
+				<xs:appinfo>
+					<NmPL>Odbiorca</NmPL>
+				</xs:appinfo>
+			</xs:annotation>
+		</xs:attribute>
+	</xs:complexType>
+	<xs:simpleType name="KDPWMemberIdentifier">
+		<xs:annotation>
+			<xs:documentation>Identyfikator uczestnika KDPW</xs:documentation>
+			<xs:appinfo>
+				<NmPL>Identyfikator uczestnika KDPW</NmPL>
+			</xs:appinfo>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:whiteSpace value="collapse"/>
+			<xs:minLength value="4"/>
+			<xs:maxLength value="4"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="Max4Int">
+		<xs:annotation>
+			<xs:documentation>Liczba całkowita o maksymalnej długości 4 znaków</xs:documentation>
+			<xs:appinfo>
+				<NmPL>Liczba</NmPL>
+			</xs:appinfo>
+		</xs:annotation>
+		<xs:restriction base="xs:integer">
+			<xs:totalDigits value="4"/>
+			<xs:minInclusive value="0"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="Max5Int">
+		<xs:annotation>
+			<xs:documentation>Liczba całkowita o maksymalnej długości 5 znaków</xs:documentation>
+			<xs:appinfo>
+				<NmPL>Liczba</NmPL>
+			</xs:appinfo>
+		</xs:annotation>
+		<xs:restriction base="xs:integer">
+			<xs:totalDigits value="5"/>
+			<xs:minInclusive value="0"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="Max4Text">
+		<xs:annotation>
+			<xs:documentation>Tekst o maksymalnej długości 4 znaków</xs:documentation>
+			<xs:appinfo>
+				<NmPL>Tekst</NmPL>
+			</xs:appinfo>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:whiteSpace value="collapse"/>
+			<xs:minLength value="1"/>
+			<xs:maxLength value="4"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="Max16Text">
+		<xs:annotation>
+			<xs:documentation>Tekst o maksymalnej długości 16 znaków</xs:documentation>
+			<xs:appinfo>
+				<NmPL>Tekst</NmPL>
+			</xs:appinfo>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:minLength value="1"/>
+			<xs:maxLength value="16"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="Max128Text">
+		<xs:annotation>
+			<xs:documentation>Tekst o maksymalnej długości 128 znaków</xs:documentation>
+			<xs:appinfo>
+				<NmPL>Tekst</NmPL>
+			</xs:appinfo>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:whiteSpace value="collapse"/>
+			<xs:minLength value="1"/>
+			<xs:maxLength value="128"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="Max140Text">
+		<xs:annotation>
+			<xs:documentation>Tekst o maksymalnej długości 140 znaków</xs:documentation>
+			<xs:appinfo>
+				<NmPL>Tekst</NmPL>
+			</xs:appinfo>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:minLength value="1"/>
+			<xs:maxLength value="140"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:complexType name="admi.err.001.01">
+		<xs:annotation>
+			<xs:documentation>Błąd formalny instrukcji</xs:documentation>
+			<xs:appinfo>
+				<NmPL>Błąd formalny instrukcji</NmPL>
+			</xs:appinfo>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="GnlInf" type="GeneralInformation">
+				<xs:annotation>
+					<xs:documentation>Blok informacji ogólnych</xs:documentation>
+					<xs:appinfo>
+						<NmPL>Informacje ogólne</NmPL>
+					</xs:appinfo>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="FileInf" type="FileInformation">
+				<xs:annotation>
+					<xs:documentation>Informacje o pliku</xs:documentation>
+					<xs:appinfo>
+						<NmPL>Informacje o pliku</NmPL>
+					</xs:appinfo>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="ErrDtls" type="ErrorDetails">
+				<xs:annotation>
+					<xs:documentation>Szczegóły błędu</xs:documentation>
+					<xs:appinfo>
+						<NmPL>Szczegóły błędu</NmPL>
+					</xs:appinfo>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+</xs:schema>

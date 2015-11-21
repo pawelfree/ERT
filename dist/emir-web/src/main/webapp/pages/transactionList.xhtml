@@ -1,0 +1,200 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<ui:composition   template="/templates/main.xhtml"
+                  xmlns="http://www.w3.org/1999/xhtml"
+                  xmlns:h="http://java.sun.com/jsf/html"
+                  xmlns:f="http://java.sun.com/jsf/core"
+                  xmlns:ui="http://java.sun.com/jsf/facelets"
+                  xmlns:p="http://primefaces.org/ui"
+                  xmlns:emir="http://pl.pd/emir">
+    <f:metadata>
+        <f:event type="preRenderView" listener="#{transactionListBean.addedTransactionInfo}"/>
+    </f:metadata>
+
+    <ui:define name="pageTitle">
+        <h:outputLabel value="#{msgs['register.sets.transaction.head']}"/>
+    </ui:define>
+    <ui:define name="body"> 
+    
+        <h:form id="valuationsFilter" >
+        
+            <emir:searchPanel bean="#{transactionListBean}" columns="1" id="searchPanel" updateAfterSearch="transactionTable">
+                <p:panel toggleable="false">
+                    <p:panelGrid columns="6">
+                        <p:outputLabel value="#{msgs['register.transaction.search.transactionId']}"/>
+                        <p:inputText value="#{transactionListBean.criteria.transactionId}" maxlength="52" style="width: 250px;"/>
+
+                        <p:outputLabel value="#{msgs['register.transaction.search.originalClientId']}"/>
+                        <p:inputText value="#{transactionListBean.criteria.originalClientId}" maxlength="18"/>
+
+                        <p:outputLabel value="#{msgs['register.transaction.search.dataToSend']}"/>
+                        <p:selectOneMenu  value="#{transactionListBean.criteria.dataToSend}">
+                            <f:selectItem itemLabel="#{msgs['commons.select']}" value="#{null}" itemDisabled="false"/>
+                            <f:selectItems itemLabel="#{msgs[option.msgKey]}" value="#{transactionListBean.yesNo}"
+                                           var="option" itemValue="#{option}" />
+                        </p:selectOneMenu>
+
+                        <p:outputLabel value="#{msgs['register.transaction.search.dateStart']}"/>
+                        <p:calendar value="#{transactionListBean.criteria.dateStart}"
+                                    pattern="#{applicationBean.dateFormat}" showOn="button"  />
+
+                        <p:outputLabel value="#{msgs['register.transaction.search.dateEnd']}"/>
+                        <p:calendar value="#{transactionListBean.criteria.dateEnd}"
+                                    pattern="#{applicationBean.dateFormat}" showOn="button"  />
+                    </p:panelGrid>
+                </p:panel>
+                <p:panel visible="false"></p:panel>
+
+                <p:panel toggleable="true" collapsed="true" >
+                    <f:facet name="header">
+                        #{msgs['register.search.transaction.extraCriteria']}
+                    </f:facet>
+                    <p:panelGrid columns="8">
+
+                        <p:outputLabel value="#{msgs['register.transaction.search.dataType']}"/>
+                        <p:selectOneMenu value="#{transactionListBean.criteria.dataType}">
+                            <f:selectItem itemLabel="#{msgs['commons.select']}" value="#{null}" itemDisabled="false"/>
+                            <f:selectItems value="#{transactionListBean.dataType}" var="option"
+                                           itemLabel="#{msgs[option.msgKey]}" itemValue="#{option}" />
+                        </p:selectOneMenu>
+
+                        <p:outputLabel value="#{msgs['register.transaction.search.processingStatus']}"/>
+                        <p:selectOneMenu value="#{transactionListBean.criteria.processingStatus}"
+                                         id="processingStatusListId"
+                                         styleClass="processingStatusList"
+                                         >
+                            <f:selectItem itemLabel="#{msgs['commons.select']}" value="#{null}" itemDisabled="false"/>
+                            <f:selectItems value="#{transactionListBean.processingStatus}" var="option"
+                                           itemLabel="#{msgs[option.msgKey]}" itemValue="#{option}" />
+                        </p:selectOneMenu>
+
+                        <p:outputLabel value="#{msgs['register.transaction.search.validationStatus']}"/>
+                        <p:selectOneMenu  value="#{transactionListBean.criteria.validationStatus}">
+                            <f:selectItem itemLabel="#{msgs['commons.select']}" value="#{null}" itemDisabled="false"/>
+                            <f:selectItems value="#{transactionListBean.validationStatus}" var="option"
+                                           itemLabel="#{msgs[option.msgKey]}" itemValue="#{option}" />
+                        </p:selectOneMenu>
+
+                        <p:outputLabel value="#{msgs['register.transaction.search.confirmed']}"/>
+                        <p:selectOneMenu  value="#{transactionListBean.criteria.confirmed}">
+                            <f:selectItems itemLabel="#{msgs[option.msgKey]}" value="#{transactionListBean.confirmedStatus}"
+                                           var="option" itemValue="#{option}" />
+                        </p:selectOneMenu>
+
+                    </p:panelGrid>
+                </p:panel>
+
+                <p:panel visible="false"></p:panel>
+                <p:messages id="messages" showDetail="false" autoUpdate="true" closable="true" />
+            </emir:searchPanel>
+
+            <p:panel styleClass="buttonsPanel">
+                <p:commandButton id="downloadExcel" value="#{msgs['button.excel']}" ajax="false"
+                                 actionListener="#{reportBean.generateTableReport(transactionListBean.reportType,reportBean.xlsFormat,transactionListBean.reportData)}"
+                                 icon="ui-icon-arrowthichk-s">
+                    <p:fileDownload value="#{reportBean.file}" />
+                </p:commandButton>
+                <p:commandButton  value="#{msgs['register.transactionForm.new']}" action="#{transactionFormBean.init()}"
+                                  styleClass="nowrap" rendered="true"/>
+            </p:panel>
+
+            <emir:resultsPanel bean="#{transactionListBean}" tableId="transactionTable" addScroller="true" var="transaction" selectable="false">
+                <p:ajax event="rowToggle" listener="#{transactionListBean.onRowToggle}"
+                        />
+                <p:column style="width:2%">
+                    <p:rowToggler rendered="#{transaction.alreadySent}"/>
+                </p:column>
+
+                <p:rowExpansion>
+                    <p:dataTable var="kdpwMsg" value="#{transactionListBean.msgItems}"
+                                 lazy="true"
+                                 >
+                        <emir:column value="#{kdpwMsg.messageLog.messageTime}"
+                                       header="Data i czas komunikatu"
+                                       format="datetime"
+                                       />
+                        <emir:column value="#{kdpwMsg.messageLog.fileId}"
+                                       header="Identyfikator pliku"
+                                       format="text"
+                                       />
+                        <emir:column value="#{kdpwMsg.sndrMsgRef}"
+                                       header="Identyfikator komunikatu"
+                                       format="text"
+                                       />
+                        <emir:column value="#{kdpwMsg.requestDetails.transMsgType.value}"
+                                       header="Typ komunikatu"
+                                       format="text"
+                                       />
+                        <emir:column value="#{msgs[kdpwMsg.status.msgKey]}"
+                                       header="Status"
+                                       format="text"
+                                       />
+                    </p:dataTable>
+                </p:rowExpansion>
+
+                <emir:column header="#{msgs['register.transactionForm.basicData.sourceTransId']}"
+                               bean="#{transactionListBean}"
+                               sortBy="transactionDetails.sourceTransId"
+                               value="#{transaction.transactionDetails.sourceTransId}"/>
+
+                <emir:column header="#{msgs['register.transactionForm.basicData.originalId']}"
+                               sortBy="originalId"
+                               value="#{transaction.originalId}" />
+
+                <emir:column header="#{msgs['register.transactionForm.basicData.transactionDate']}"
+                               format="date"
+                               sortBy="transactionDate"
+                               value="#{transaction.transactionDate}" />
+
+                <emir:column header="#{msgs['register.transactionForm.basicData.originalClientId']}"
+                               sortBy="originalId"
+                               value="#{transaction.client.originalId}" />
+
+                <emir:column header="#{msgs['register.transactionForm.basicData.dataType']}"
+                               sortBy="dataType"
+                               value="#{msgs[transaction.dataType.msgKey]}" />
+
+                <emir:column header="#{msgs['register.transactionForm.basicData.processingStatus']}"
+                               sortBy="processingStatus"
+                               value="#{msgs[transaction.processingStatus.msgKey]}" />
+
+                <emir:column header="#{msgs['register.transactionForm.basicData.validationStatus']}"
+                               sortBy="validationStatus"
+                               value="#{msgs[transaction.validationStatus.msgKey]}" />
+
+                <emir:column header="#{msgs['register.transactionForm.basicData.clientValidationStatus']}"
+                               sortBy="client.validationStatus"
+                               value="#{transaction.client ne null
+                                        ? msgs['client.'.concat(transaction.client.validationStatus.msgKey)]
+                                        : msgs['register.transactionForm.basicData.noClient']}" />
+
+                <emir:column header="#{msgs['register.transactionForm.column.confirmed']}"
+                               sortBy="confirmed"
+                               value="#{msgs[transaction.getConfirmed().msgKey]}"/>
+                <ui:remove>
+                    <!--Wersja – wersja danych transakcji na dany dzień-->
+                </ui:remove>
+                <emir:column header="Wersja"
+                               sortBy="extractVersion"
+                               value="#{transaction.extractVersion}" />
+
+                <emir:column header="#{msgs['register.sets.search.dateSupply']}"
+                               format="datetime"
+                               sortBy="dateSupply"
+                               value="#{transaction.dateSupply}"/>
+                <emir:actionColumn columns="3" rendered="true">
+                    <p:commandButton title="#{msgs['button.details']}" icon="ui-icon-pencil" action="#{transactionFormBean.init('View', transaction.id)}" styleClass="nowrap" rendered="true"/>
+                    <p:commandButton title="#{msgs['commons.history']}" icon="ui-icon-document" action="#{transactionHistoryBean.init(transaction)}" />
+                    <p:commandButton title="#{msgs['commons.remove']}" icon="ui-icon-trash" disabled="#{!transactionListBean.canRemove(transaction.processingStatus)}" onclick="PF('deleteDialogTransaction#{transaction.id}').show();"  />
+                    <p:confirmDialog id="deleteDialogTransaction#{transaction.id}" widgetVar="deleteDialogTransaction#{transaction.id}" message="#{msgs['register.sets.deleteRecordTransactionConfirm']}" header="#{msgs['register.sets.deleteRecordConfirm.title']}">
+                        <p:commandButton value="#{msgs['button.yes']}" action="#{transactionListBean.removeById(transaction.id,transaction.originalId)}" ajax="true" update="transactionTable" oncomplete="PF('deleteDialogTransaction#{transaction.id}').hide();"/>
+                        <p:commandButton value="#{msgs['button.no']}" onclick="PF('deleteDialogTransaction#{transaction.id}').hide();" type="button"/>
+                    </p:confirmDialog>
+                </emir:actionColumn>
+            </emir:resultsPanel>
+            <p:confirmDialog id="confirmDialogError" widgetVar="confirmDialogError" message="#{transactionListBean.infoWindow}" header="#{msgs['commons.MessageDialogType.INFO']}">
+                <p:commandButton value="#{msgs['button.close']}" action="#{transactionListBean.getAction()}" oncomplete="PF('confirmDialogError').hide();" immediate="false" ajax="true" />
+            </p:confirmDialog>
+        </h:form>
+    </ui:define>
+
+</ui:composition>

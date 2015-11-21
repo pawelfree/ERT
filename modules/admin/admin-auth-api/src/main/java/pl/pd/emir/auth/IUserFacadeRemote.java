@@ -1,0 +1,54 @@
+package pl.pd.emir.auth;
+
+import java.util.List;
+
+public interface IUserFacadeRemote {
+
+    /**
+     * Sprzwdzanie poprawnosci hasla i loginu w repozytorium wynikajacym z konfiguracji (db, ldap)
+     *
+     * @param username
+     * @param password
+     * @return
+     */
+    boolean isUsernamePasswordValid(String username, String password);
+
+    /**
+     * Pobranie listy wszystkich rol z bazy danych.
+     *
+     * @return
+     */
+    List<String> getAllRoles();
+
+    /**
+     * Metoda sprawdzająca czy użytkownik o danym loginie, znajduje się w bazie.
+     *
+     * @param loginName
+     * @return true - jeśli znaliziono użytkownika, false - gdy nie znaleziono użytkownika.
+     */
+    boolean isLoginRegistered(String loginName);
+
+    /**
+     * Pobranie listy rol, przemapowanie grup na liste rol (poprzez baze danych)
+     *
+     * @param username
+     * @return
+     */
+    List<String> getUserRoles(String username);
+
+    /**
+     * Wyszukanie uzytkownikow - na potrzeby logowania WAS
+     *
+     * @param pattern
+     * @param size
+     * @return
+     */
+    List<String> getUsers(String pattern, int size);
+
+    /**
+     * Metoda synchronizujaca uzytkownika w bazie dannych.
+     *
+     * @param login - ogin uzytkownika
+     */
+    void synchronizeUserWithDB(String login);
+}

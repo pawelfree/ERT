@@ -1,0 +1,133 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:c="http://java.sun.com/jsp/jstl/core"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui">
+
+    <ui:remove>
+        <!--Tabela z listą danych -->
+
+        <!-- domyślnie:  | wymagane: nie | Nagłówek tabeli -->
+        title: String
+
+        <!-- domyślnie: true | wymagane: nie | włączenie/wyłączenie paginacji -->
+        addScroller: Boolean
+
+        <!-- domyślnie:  | wymagane: tak |  Bean rozszerzający AbstractListBean - model danych -->
+        bean: pl.pd.emir.bean.AbstractListBean
+
+        <!-- domyślnie: results | wymagane: nie | id komponentu -->
+        tableId: String
+
+        <!--domyślnie: true | wymagane: nie-->
+        rendered: Boolean 
+
+        <!-- domyślnie: | wymagane: tak | nazwa EL wiersza tabeli -->
+        var: String:
+
+        <!-- domyślnie: false | wymagane: nie | czy możliwe zazanaczanie wierszy - kolumna z checkbox'ami -->
+        selectable: Boolean
+
+        <!-- domyślnie: | wymagane: nie | ID komponentów do odświeżenia po kliknięciu checkbox'a 'zaznacz wszystko'; używane tylko w przypadku,gdy selectable=true -->
+        renderAfterSelectAll: String
+
+        <!-- domyślnie: wartość z ApplicationBean | wymagane: nie | styl paginatora -->
+        paginatorTemplate: String
+
+        <!-- domyślnie: wartość z ApplicationBean | wymagane: nie | lista dostępnych opcji prezentacji pozycji na stronie -->
+        rowsPerPageTemplate: String
+
+        <!-- domyślnie: bottom | wymagane: nie | pozycja paginatora wzgledem tabeli; możliwe opcje: top, bottom, both -->
+        paginatorPosition: String
+
+        <!-- domyślnie: wartość z ApplicationBean | wymagane: nie | domyślna ilość wierszy prezentowanych na stronie -->
+        dataTableRows: String
+
+        <!-- domyślnie: wartość z ApplicationBean | wymagane: nie | prezentacja informacji o aktualnej stronie i liczbie wierszy -->
+        currentpageReportTemplate: String
+        <!-- domyślnie: wartość table.empty | wymagane: nie | masseges dla pustej tabeli -->
+        emptyMessage: String
+
+
+    </ui:remove>
+
+    <c:if test="#{empty rendered}">
+        <ui:param name="rendered" value="#{true}" />
+    </c:if>
+    <c:if test="#{empty tableId}">
+        <ui:param name="tableId" value="results" />
+    </c:if>
+    <c:if test="#{empty selectable}">
+        <ui:param name="selectable" value="#{false}" />
+    </c:if>
+    <c:if test="#{empty addScroller}">
+        <ui:param name="addScroller" value="true" />
+    </c:if>
+    <c:if test="#{empty paginatorTemplate}" >
+        <ui:param name="paginatorTemplate" value="#{applicationBean.dataTablePaginatorTemplate}" />
+    </c:if>
+    <c:if test="#{empty rowsPerPageTemplate}" >
+        <ui:param name="rowsPerPageTemplate" value="#{applicationBean.dataTableRowsPerTableTemplate}" />
+    </c:if>
+    <c:if test="#{empty currentpageReportTemplate}" >
+        <ui:param name="currentpageReportTemplate" value="#{applicationBean.currentpageReportTemplate}" />
+    </c:if>
+    <c:if test="#{empty dataTableRows}" >
+        <ui:param name="dataTableRows" value="#{applicationBean.dataTableRows}" />
+    </c:if>
+    <c:if test="#{empty paginatorPosition}" >
+        <ui:param name="paginatorPosition" value="#{applicationBean.paginatorPosition}" />
+    </c:if>
+    <c:if test="#{empty emptyMessage}" >
+        <ui:param name="emptyMessage" value="#{msgs['table.empty']}" />
+    </c:if>
+
+    <ui:param name="#{var}" value="#{tableRow}"/>
+
+    <p:panel rendered="#{rendered}">
+        <f:facet name="header" rendered="#{not empty title}">
+            <h:outputText value="#{title}" />
+        </f:facet>
+
+        <p:dataTable id="#{tableId}" var="tableRow" value="#{bean}"  
+                     lazy="true"  
+                     emptyMessage="#{emptyMessage}"
+                     paginator="#{addScroller}"
+                     rows="#{dataTableRows}"
+                     paginatorPosition="#{paginatorPosition}"
+                     paginatorTemplate="#{paginatorTemplate}"  
+                     rowsPerPageTemplate="#{rowsPerPageTemplate}"
+                     currentPageReportTemplate="#{currentpageReportTemplate}"
+                     selection="#{bean.selected}"
+                     >
+
+            <p:column rendered="#{selectable}" id="selectAllColumn">
+                <f:facet name="header" id="facetHeader" >
+                    <p:selectBooleanCheckbox id="headerOneCb"
+                                             value="#{bean.selectAllCheckBoxValue}" 
+                                             style="width: 12px;"
+                                             disabled="#{bean.noResults()}"
+                                             >
+                        <p:ajax update="#{renderAfterSelectAll}" 
+                                listener="#{bean.selectAllListener}"/>
+                    </p:selectBooleanCheckbox>
+                </f:facet>
+
+                <p:selectBooleanCheckbox value="#{tableRow.selected}" 
+                                         style="width: 12px;"
+                                         >
+                    <p:ajax update="selectAllColumn #{renderAfterRowSelect}" 
+                            listener="#{bean.selectRowListener(empty tableRow ? null : tableRow['id'])}"  />
+                </p:selectBooleanCheckbox>
+            </p:column>
+
+
+            <ui:insert />
+
+        </p:dataTable>
+    </p:panel>
+
+</ui:composition>

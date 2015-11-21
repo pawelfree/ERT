@@ -1,0 +1,87 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<ui:composition   template="/templates/main.xhtml"
+                  xmlns="http://www.w3.org/1999/xhtml"
+                  xmlns:h="http://java.sun.com/jsf/html"
+                  xmlns:f="http://java.sun.com/jsf/core"
+                  xmlns:ui="http://java.sun.com/jsf/facelets"
+                  xmlns:p="http://primefaces.org/ui"
+                  xmlns:emir="http://pl.pd/emir">
+    <ui:define name="pageTitle">
+        <h:outputLabel value="#{msgs['register.client.title']}"/>
+    </ui:define>
+    <ui:define name="body" >
+        <h:form id="clientList">
+            <emir:searchPanel bean="#{clientListBean}"
+                                columns="2"
+                                id="clientSearchPanel"
+                                updateAfterSearch="clientsTable"
+                                updateAfterClean="clientsTable">
+                <p:column>
+                    <p:outputLabel value="#{msgs['register.client.originalId']}"/>
+                </p:column>
+                <p:column>
+                    <p:inputText value="#{clientListBean.criteria.originalId}"/>
+                </p:column>
+
+                <p:column>
+                    <p:outputLabel value="#{msgs['register.client.validationStatus']}"/>
+                </p:column>
+                <p:column >
+                    <p:selectOneMenu  value="#{clientListBean.criteria.validationStatus}">
+                        <f:selectItem itemLabel="#{msgs['commons.select']}" value="#{null}" itemDisabled="false"/>
+                        <f:selectItems value="#{clientListBean.validationStatus}" var="option"
+                                       itemLabel="#{msgs[option.msgKey]}" itemValue="#{option}" />
+                    </p:selectOneMenu>
+                </p:column>
+
+            </emir:searchPanel>
+            <p:panel id="buttonsPanel">
+
+                <p:commandButton id="downloadExcel" value="#{msgs['button.excel']}" ajax="false"
+                                 actionListener="#{reportBean.generateTableReport(clientListBean.reportType,reportBean.xlsFormat,clientListBean.reportData)}"
+                                 icon="ui-icon-arrowthichk-s">
+                    <p:fileDownload value="#{reportBean.file}" />
+                </p:commandButton>
+                <p:commandButton  value="#{msgs['menu.register.client']}" action="#{clientFormBean.init('New')}" styleClass="nowrap" rendered="true"/>
+
+            </p:panel>
+            <emir:resultsPanel id="dataTable" bean="#{clientListBean}" tableId="clientsTable" addScroller="true" var="client" selectable="false">
+                <emir:column header="#{msgs['register.client.originalId']}"
+                               bean="#{clientListBean}"
+                               sortBy="originalId"
+                               value="#{client.originalId}" />
+
+                <emir:column header="#{msgs['register.client.clientName']}"
+                               bean="#{clientListBean}"
+                               sortBy="clientName"
+                               value="#{client.clientName}" />
+
+                <emir:column header="#{msgs['register.client.businessEntity.subjectNip']}"
+                               bean="#{clientListBean}"
+                               value="#{client.businessEntity.subjectNip}" />
+
+                <emir:column header="#{msgs['register.client.businessEntity.subjectRegon']}"
+                               bean="#{clientListBean}"
+                               value="#{client.businessEntity.subjectRegon}" />
+
+                <emir:column header="#{msgs['register.client.institution.institutionData.institutionId']}"
+                               bean="#{clientListBean}"
+                               value="#{client.institution.institutionData.institutionId}" />
+
+                <emir:column header="#{msgs['register.client.validationStatus']}"
+                               sortBy="validationStatus"
+                               value="#{msgs[client.validationStatus.msgKey]}" />
+
+                <emir:actionColumn columns="3" rendered="true">
+                    <p:commandButton title="#{msgs['button.details']}" icon="ui-icon-pencil" action="#{clientFormBean.init('View', client.id)}" styleClass="nowrap" rendered="true"/>
+                    <p:commandButton title="#{msgs['commons.history']}" icon="ui-icon-document" action="#{clientHistoryBean.init(client)}" />
+                    <p:commandButton title="#{msgs['commons.remove']}" icon="ui-icon-trash" disabled="#{not(clientListBean.canRemove(client.originalId))}" onclick="PF('deleteDialogClient#{client.id}').show();" />
+                    <p:confirmDialog id="deleteDialogClient#{client.id}" widgetVar="deleteDialogClient#{client.id}" message="#{msgs['register.sets.deleteRecordConfirm']}" header="#{msgs['register.sets.deleteRecordConfirm.title']}">
+                        <p:commandButton value="#{msgs['button.yes']}" oncomplete="PF('deleteDialogClient#{client.id}').hide();"  update="clientsTable" ajax="true" action="#{clientListBean.removeById(client.id)}"/>
+                        <p:commandButton value="#{msgs['button.no']}" onclick="PF('deleteDialogClient#{client.id}').hide();" type="button"/>
+                    </p:confirmDialog>
+                </emir:actionColumn>
+            </emir:resultsPanel>
+        </h:form>
+    </ui:define>
+</ui:composition>

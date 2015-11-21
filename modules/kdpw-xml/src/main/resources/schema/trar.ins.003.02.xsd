@@ -1,0 +1,525 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns="urn:kdpw:xsd:trar.ins.003.02" targetNamespace="urn:kdpw:xsd:trar.ins.003.02" elementFormDefault="qualified" attributeFormDefault="unqualified">
+	<xs:annotation>
+		<xs:documentation>Raportowanie zabezpieczeń</xs:documentation>
+		<xs:appinfo>
+			<NmPL>Raportowanie zabezpieczeń</NmPL>
+		</xs:appinfo>
+	</xs:annotation>
+	<xs:element name="KDPWDocument" type="KDPWDocument">
+		<xs:annotation>
+			<xs:documentation>Komunikat systemu KDPW</xs:documentation>
+			<xs:appinfo>
+				<NmPL>Komunikat systemu KDPW</NmPL>
+			</xs:appinfo>
+		</xs:annotation>
+	</xs:element>
+	<xs:simpleType name="Code4Text">
+		<xs:annotation>
+			<xs:documentation>Kwalifikator, kod</xs:documentation>
+			<xs:appinfo>
+				<NmPL>Kwalifikator</NmPL>
+			</xs:appinfo>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:whiteSpace value="collapse"/>
+			<xs:minLength value="4"/>
+			<xs:maxLength value="4"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:complexType name="CollateralInformation">
+		<xs:annotation>
+			<xs:documentation>Charakterystyka zabezpieczenia</xs:documentation>
+			<xs:appinfo>
+				<NmPL>Charakterystyka zabezpieczenia</NmPL>
+			</xs:appinfo>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="APrtfId" type="Max35Text">
+				<xs:annotation>
+					<xs:documentation>Kod portfela analitycznego</xs:documentation>
+					<xs:appinfo>
+						<NmPL>Kod portfela analitycznego</NmPL>
+					</xs:appinfo>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="SPrtfId" type="Max35Text" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Kod portfela syntetycznego</xs:documentation>
+					<xs:appinfo>
+						<NmPL>Kod portfela syntetycznego</NmPL>
+					</xs:appinfo>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="CollVal" type="Max20Dec5">
+				<xs:annotation>
+					<xs:documentation>Wartość zabezpieczenia</xs:documentation>
+					<xs:appinfo>
+						<NmPL>Wartość zabezpieczenia</NmPL>
+					</xs:appinfo>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="CollCcy" type="CurrencyCode">
+				<xs:annotation>
+					<xs:documentation>Waluta wartości zabezpieczenia </xs:documentation>
+					<xs:appinfo>
+						<NmPL>Waluta wartości zabezpieczenia </NmPL>
+					</xs:appinfo>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+		<xs:attribute name="DeltnInd" type="YesNoIndicator" use="optional">
+			<xs:annotation>
+				<xs:documentation>Żądanie usunięcia. Wartość Y oznacza żądanie usunięcia elementu.</xs:documentation>
+				<xs:appinfo>
+					<NmPL>Żądanie usunięcia</NmPL>
+				</xs:appinfo>
+			</xs:annotation>
+		</xs:attribute>
+	</xs:complexType>
+	<xs:simpleType name="CurrencyCode">
+		<xs:annotation>
+			<xs:documentation>Kod waluty</xs:documentation>
+			<xs:appinfo>
+				<NmPL>Kod waluty</NmPL>
+			</xs:appinfo>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:pattern value="[A-Z]{3,3}"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:complexType name="DateAndDateTimeChoice">
+		<xs:annotation>
+			<xs:documentation>Data i czas</xs:documentation>
+			<xs:appinfo>
+				<NmPL>Data i czas</NmPL>
+			</xs:appinfo>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:choice>
+				<xs:element name="Dt" type="ISODate">
+					<xs:annotation>
+						<xs:documentation>Data</xs:documentation>
+						<xs:appinfo>
+							<NmPL>Data</NmPL>
+						</xs:appinfo>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="DtTm" type="ISODateTime">
+					<xs:annotation>
+						<xs:documentation>Data i czas</xs:documentation>
+						<xs:appinfo>
+							<NmPL>Data i czas</NmPL>
+						</xs:appinfo>
+					</xs:annotation>
+				</xs:element>
+			</xs:choice>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:simpleType name="FunctionOfMessage">
+		<xs:annotation>
+			<xs:documentation>Funkcja komunikatu</xs:documentation>
+			<xs:appinfo>
+				<NmPL>Funkcja komunikatu</NmPL>
+			</xs:appinfo>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="NEWM">
+				<xs:annotation>
+					<xs:documentation>Nowy komunikat</xs:documentation>
+					<xs:appinfo>
+						<NmPL>Nowy komunikat</NmPL>
+					</xs:appinfo>
+				</xs:annotation>
+			</xs:enumeration>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:complexType name="GeneralInformation">
+		<xs:annotation>
+			<xs:documentation>Informacje ogólne</xs:documentation>
+			<xs:appinfo>
+				<NmPL>Informacje ogólne</NmPL>
+			</xs:appinfo>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="TRRprtId" type="TRInstitutionCode">
+				<xs:annotation>
+					<xs:documentation>Wewnętrzny identyfikator RT podmiotu raportującego budowany na Primary ID i Secondary ID.</xs:documentation>
+					<xs:appinfo>
+						<NmPL>Identyfikator RT wystawcy komunikatu </NmPL>
+					</xs:appinfo>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="SndrMsgRef" type="Max16Text">
+				<xs:annotation>
+					<xs:documentation>Identyfikator komunikatu utworzony przez nadawcę</xs:documentation>
+					<xs:appinfo>
+						<NmPL>Identyfikator komunikatu</NmPL>
+					</xs:appinfo>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="FuncOfMsg" type="FunctionOfMessage">
+				<xs:annotation>
+					<xs:documentation>Funkcja komunikatu</xs:documentation>
+					<xs:appinfo>
+						<NmPL>Funkcja komunikatu</NmPL>
+					</xs:appinfo>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="ActnTp" type="Max1Text">
+				<xs:annotation>
+					<xs:documentation>Rodzaj zmiany. Dopuszczalna wartość: V. </xs:documentation>
+					<xs:appinfo>
+						<NmPL>Rodzaj zmiany</NmPL>
+					</xs:appinfo>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="ActnTpDtls" type="Max50Text" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Szczegółowe informacje dotyczące zmiany.</xs:documentation>
+					<xs:appinfo>
+						<NmPL>Szczegółowe informacje dotyczące zmiany</NmPL>
+					</xs:appinfo>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="CreDtTm" type="DateAndDateTimeChoice" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Data utworzenia komunikatu</xs:documentation>
+					<xs:appinfo>
+						<NmPL>Data utworzenia komunikatu</NmPL>
+					</xs:appinfo>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="EligDt" type="ISODate">
+				<xs:annotation>
+					<xs:documentation>Data obowiązywania zgłoszenia</xs:documentation>
+					<xs:appinfo>
+						<NmPL>Data obowiązywania zgłoszenia</NmPL>
+					</xs:appinfo>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="DtlLvl" type="Max1Text">
+				<xs:annotation>
+					<xs:documentation>Flaga identyfikująca rodzaj odpowiedzi ( S  - oznacza odpowiedź zbiorczą bez szczegółów, D -  oznacza odpowiedź ze szczegółami dokonanych zapisów) </xs:documentation>
+					<xs:appinfo>
+						<NmPL>Poziom szczegółowości odpowiedzi</NmPL>
+					</xs:appinfo>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Lnk" type="Linkages" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Referencje</xs:documentation>
+					<xs:appinfo>
+						<NmPL>Referencje</NmPL>
+					</xs:appinfo>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="InstitutionCode">
+		<xs:annotation>
+			<xs:documentation>Identyfikator instytucji</xs:documentation>
+			<xs:appinfo>
+				<NmPL>Identyfikator instytucji</NmPL>
+			</xs:appinfo>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="Id" type="Max50Text">
+				<xs:annotation>
+					<xs:documentation>Identyfikator instytucji:identyfikator podmiotu prawnego (LEI) (20 A);
+						tymczasowy identyfikator podmiotu (20 A);
+						kod identyfikacyjny jednostki (BIC) (11A); 
+						kod klienta (50A).
+					</xs:documentation>
+					<xs:appinfo>
+						<NmPL>Identyfikator instytucji</NmPL>
+					</xs:appinfo>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Tp" type="Code4Text">
+				<xs:annotation>
+					<xs:documentation>Dopuszczalne wartości:
+						- LEIC	identyfikator podmiotu prawnego;
+						- PLEI	tymczasowy identyfikator podmiotu;
+						- BICC kod identyfikacyjny jednostki (BIC);
+						- OTHR kod klienta (50A).
+					</xs:documentation>
+					<xs:appinfo>
+						<NmPL>Rodzaj użytego identyfikatora</NmPL>
+					</xs:appinfo>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:simpleType name="ISODate">
+		<xs:annotation>
+			<xs:documentation>Data</xs:documentation>
+			<xs:appinfo>
+				<NmPL>Data</NmPL>
+			</xs:appinfo>
+		</xs:annotation>
+		<xs:restriction base="xs:date"/>
+	</xs:simpleType>
+	<xs:simpleType name="ISODateTime">
+		<xs:annotation>
+			<xs:documentation>Data i czas</xs:documentation>
+			<xs:appinfo>
+				<NmPL>Data i czas</NmPL>
+			</xs:appinfo>
+		</xs:annotation>
+		<xs:restriction base="xs:dateTime"/>
+	</xs:simpleType>
+	<xs:complexType name="KDPWDocument">
+		<xs:annotation>
+			<xs:documentation>Komunikat systemu KDPW</xs:documentation>
+			<xs:appinfo>
+				<NmPL>Komunikat systemu KDPW</NmPL>
+			</xs:appinfo>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="trar.ins.003.02" type="trar.ins.003.02" maxOccurs="10000">
+				<xs:annotation>
+					<xs:documentation>Raportowanie zabezpieczeń</xs:documentation>
+					<xs:appinfo>
+						<NmPL>Raportowanie zabezpieczeń</NmPL>
+					</xs:appinfo>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+		<xs:attribute name="Sndr" type="KDPWMemberIdentifier" use="required">
+			<xs:annotation>
+				<xs:documentation>Nadawca w postaci kodu KDPW</xs:documentation>
+				<xs:appinfo>
+					<NmPL>Nadawca</NmPL>
+				</xs:appinfo>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="Rcvr" type="KDPWMemberIdentifier" use="required">
+			<xs:annotation>
+				<xs:documentation>Odbiorca w postaci kodu KDPW</xs:documentation>
+				<xs:appinfo>
+					<NmPL>Odbiorca</NmPL>
+				</xs:appinfo>
+			</xs:annotation>
+		</xs:attribute>
+	</xs:complexType>
+	<xs:simpleType name="KDPWMemberIdentifier">
+		<xs:annotation>
+			<xs:documentation>Identyfikator uczestnika KDPW</xs:documentation>
+			<xs:appinfo>
+				<NmPL>Identyfikator uczestnika KDPW</NmPL>
+			</xs:appinfo>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:whiteSpace value="collapse"/>
+			<xs:minLength value="4"/>
+			<xs:maxLength value="4"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:complexType name="Linkages">
+		<xs:annotation>
+			<xs:documentation>Powiązania z innymi komunikatami</xs:documentation>
+			<xs:appinfo>
+				<NmPL>Referencje</NmPL>
+			</xs:appinfo>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="PrvsRef" type="PreviousReference" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Identyfikator poprzedniego raportu</xs:documentation>
+					<xs:appinfo>
+						<NmPL>Identyfikator poprzedniego raportu</NmPL>
+					</xs:appinfo>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:simpleType name="Max20Dec5">
+		<xs:annotation>
+			<xs:documentation>Liczba o max. długości 20 znaków, w tym 5 znaków po przecinku</xs:documentation>
+			<xs:appinfo>
+				<NmPL>Liczba o max. długości 20 znaków, w tym 5 znaków po przecinku</NmPL>
+			</xs:appinfo>
+		</xs:annotation>
+		<xs:restriction base="xs:decimal">
+			<xs:minInclusive value="0"/>
+			<xs:maxExclusive value="1000000000000000"/>
+			<xs:fractionDigits value="5"/>
+			<xs:totalDigits value="20"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="Max1Text">
+		<xs:annotation>
+			<xs:documentation>Tekst o długości 1 znaku</xs:documentation>
+			<xs:appinfo>
+				<NmPL>Tekst</NmPL>
+			</xs:appinfo>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:whiteSpace value="collapse"/>
+			<xs:minLength value="1"/>
+			<xs:maxLength value="1"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="Max4Text">
+		<xs:annotation>
+			<xs:documentation>Tekst o maksymalnej długości 4 znaków</xs:documentation>
+			<xs:appinfo>
+				<NmPL>Tekst</NmPL>
+			</xs:appinfo>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:whiteSpace value="collapse"/>
+			<xs:minLength value="1"/>
+			<xs:maxLength value="4"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="Max16Text">
+		<xs:annotation>
+			<xs:documentation>Tekst o maksymalnej długości 16 znaków</xs:documentation>
+			<xs:appinfo>
+				<NmPL>Tekst</NmPL>
+			</xs:appinfo>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:whiteSpace value="collapse"/>
+			<xs:minLength value="1"/>
+			<xs:maxLength value="16"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="Max20Text">
+		<xs:annotation>
+			<xs:documentation>Tekst o maksymalnej długości 20 znaków</xs:documentation>
+			<xs:appinfo>
+				<NmPL>Tekst</NmPL>
+			</xs:appinfo>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:whiteSpace value="collapse"/>
+			<xs:minLength value="1"/>
+			<xs:maxLength value="20"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="Max35Text">
+		<xs:annotation>
+			<xs:documentation>Tekst o maksymalnej długości 35 znaków</xs:documentation>
+			<xs:appinfo>
+				<NmPL>Tekst</NmPL>
+			</xs:appinfo>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:whiteSpace value="collapse"/>
+			<xs:minLength value="1"/>
+			<xs:maxLength value="35"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="Max50Text">
+		<xs:annotation>
+			<xs:documentation>Tekst o maksymalnej długości 50 znaków</xs:documentation>
+			<xs:appinfo>
+				<NmPL>Tekst</NmPL>
+			</xs:appinfo>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:whiteSpace value="collapse"/>
+			<xs:minLength value="1"/>
+			<xs:maxLength value="50"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:complexType name="PreviousReference">
+		<xs:annotation>
+			<xs:documentation>Identyfikator poprzedniego raportu </xs:documentation>
+			<xs:appinfo>
+				<NmPL>Identyfikator poprzedniego raportu </NmPL>
+			</xs:appinfo>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="PrvsSndrMsgRef" type="Max16Text">
+				<xs:annotation>
+					<xs:documentation>Identyfikator komunikatu</xs:documentation>
+					<xs:appinfo>
+						<NmPL>Identyfikator komunikatu</NmPL>
+					</xs:appinfo>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="TRInstitutionCode">
+		<xs:annotation>
+			<xs:documentation>Identyfikator instytucji RT</xs:documentation>
+			<xs:appinfo>
+				<NmPL>Identyfikator instytucji RT</NmPL>
+			</xs:appinfo>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="Id" type="Max20Text">
+				<xs:annotation>
+					<xs:documentation>Identyfikator instytucji</xs:documentation>
+					<xs:appinfo>
+						<NmPL>Identyfikator instytucji</NmPL>
+					</xs:appinfo>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Tp" type="Code4Text">
+				<xs:annotation>
+					<xs:documentation>Rodzaj użytego identyfikatora</xs:documentation>
+					<xs:appinfo>
+						<NmPL>Rodzaj użytego identyfikatora</NmPL>
+					</xs:appinfo>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:simpleType name="YesNoIndicator">
+		<xs:annotation>
+			<xs:documentation>Znacznik tak/nie</xs:documentation>
+			<xs:appinfo>
+				<NmPL>Znacznik tak/nie</NmPL>
+			</xs:appinfo>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="Y">
+				<xs:annotation>
+					<xs:documentation>Prawda (tak)</xs:documentation>
+					<xs:appinfo>
+						<NmPL>Prawda (tak)</NmPL>
+					</xs:appinfo>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="N">
+				<xs:annotation>
+					<xs:documentation>Fałsz (nie)</xs:documentation>
+					<xs:appinfo>
+						<NmPL>Fałsz (nie)</NmPL>
+					</xs:appinfo>
+				</xs:annotation>
+			</xs:enumeration>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:complexType name="trar.ins.003.02">
+		<xs:annotation>
+			<xs:documentation>Raportowanie zabezpieczeń</xs:documentation>
+			<xs:appinfo>
+				<NmPL>Raportowanie zabezpieczeń</NmPL>
+			</xs:appinfo>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="GnlInf" type="GeneralInformation">
+				<xs:annotation>
+					<xs:documentation>Blok informacji ogólnych</xs:documentation>
+					<xs:appinfo>
+						<NmPL>Informacje ogólne</NmPL>
+					</xs:appinfo>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="CollDtls" type="CollateralInformation">
+				<xs:annotation>
+					<xs:documentation>Charakterystyka zabezpieczenia </xs:documentation>
+					<xs:appinfo>
+						<NmPL>Charakterystyka zabezpieczenia </NmPL>
+					</xs:appinfo>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+</xs:schema>

@@ -1,0 +1,40 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+
+<html xmlns="http://www.w3.org/1999/xhtml"   
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:composite="http://java.sun.com/jsf/composite"
+      xmlns:p="http://primefaces.org/ui">
+    
+    <composite:interface>
+        <composite:attribute name="dialogId" type="java.lang.String" required="false" default="messageDialog" />
+        <composite:attribute name="dialogType" type="pl.pd.emir.clientutils.MessageDialogType" required="false" default="INFO" />
+        <composite:attribute name="dialogWidth" type="java.lang.Integer" required="false" default="400" />
+        <composite:attribute name="message" type="java.lang.String" required="true" />
+        <composite:attribute name="messageId" type="java.lang.String" required="false" default="messageDialogMessage" />
+        <composite:attribute name="addCloseButton" type="java.lang.Boolean" required="false" default="true" />
+        <composite:attribute name="closeButtonLabel" type="java.lang.String" required="false" default="#{msgs['button.close']}" />
+        <composite:attribute name="closable" type="java.lang.Boolean" required="false" default="true" />
+        <composite:attribute name="update" type="java.lang.String" required="false"/>
+    </composite:interface>
+    
+    <composite:implementation>
+        <p:dialog widgetVar="#{cc.attrs.dialogId}" width="#{cc.attrs.dialogWidth}"
+                  resizable="false" closable="#{cc.attrs.closable}" modal="true">
+            
+            <f:facet name="header">
+                <h:outputText value="#{msgs[cc.attrs.dialogType.msgKey]}" />
+            </f:facet>
+            
+            <p:panel id="messageDialogMessagePanel">
+                <h:outputText value="#{cc.attrs.message}" id="#{cc.attrs.messageId}"/>
+            </p:panel>
+            
+            <p:panel styleClass="buttonsPanel">
+                <composite:insertChildren />
+                <p:commandButton value="#{cc.attrs.closeButtonLabel}" onclick="#{cc.attrs.dialogId}.hide();" update="#{cc.attrs.update}" immediate="true" process="@this" rendered="#{cc.attrs.addCloseButton}"/>                                
+            </p:panel>        
+        </p:dialog>
+    </composite:implementation>
+    
+</html>

@@ -1,0 +1,54 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:c="http://java.sun.com/jsp/jstl/core"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                >
+
+    <ui:remove>
+        <!--Kontrolka do wyświetlania szczegółów wraz z nazwą-->
+
+        <!--Czy wyświetlać komponent
+        domyślnie: true
+        wymagane: nie-->
+        boolean rendered
+        <!--Nazwa górnego podpisu kontrolki
+        domyślnie:
+        wymagane: nie-->
+        String label
+        <!--Liczba kolumn
+        domyślnie: 2
+        wymagane: nie-->
+        int columns
+        
+        columns: String : 
+    </ui:remove>
+
+
+    <c:if test="#{empty rendered}">
+        <ui:param name="rendered" value="#{true}" />
+    </c:if>
+    <c:if test="#{empty columns}">
+        <ui:param name="columns" value="6" />
+    </c:if>
+
+    <c:if test="#{empty selected}">
+        <ui:param name="selected" value="#{false}" />
+    </c:if>
+    <ui:param name="dataId" value="#{empty tableRow ? null : tableRow['id']}"/>
+    <ui:param name="selected" value="#{empty dataId ? selected : dataId eq bean.selectedId}" />
+
+    <p:column rendered="#{rendered}"
+              style="#{selected ? 'font-weight: bold; background-color: #EAF0F8;' : ''}">
+        <f:facet name="header">
+            <h:outputText value="#{msgs['commons.action']}" />
+        </f:facet>
+        <h:panelGrid styleClass="gridWithoutBorder" style="width: auto;" columns="#{columns}">
+            <ui:insert />
+        </h:panelGrid>
+    </p:column>
+
+</ui:composition>

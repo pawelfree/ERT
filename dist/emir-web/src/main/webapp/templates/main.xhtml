@@ -1,0 +1,73 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:emirCOMP="http://java.sun.com/jsf/composite/emirCOMP"
+      xmlns:emir="http://java.sun.com/jsf/composite/facelets">
+    <f:view contentType="text/html" locale="pl">
+        <h:head>
+            <title>emir</title>
+            <meta http-equiv="content-type" content="text/xhtml; charset=UTF-8" />
+            <h:outputScript library="script" name="PrimeFaces_locale.js" />
+            <h:outputScript library="script" name="func.js" />
+            <h:outputStylesheet library="css" name="application.css"/>
+            <h:outputStylesheet library="css" name="main.css"/>
+            <style type="text/css">
+                html, body{
+                    min-width: 400px;
+                    height: 100%;
+                    width: 100%;
+                    margin: 0px;
+                    padding: 0px;
+                    background-image: url("/emir/resources/images/material2.jpg");
+                }
+
+                .ui-corner-all {
+                    border-radius: 0px;
+                }
+
+                tr {
+                    border: 0px !important;
+                }
+                td {
+                    border: 0px !important;
+                }
+            </style>
+        </h:head>
+
+        <h:body>
+            <ui:include src="/templates/button-style.xhtml" />
+            <p:growl id="messages"  showDetail="false" autoUpdate="true"
+                     escape="false"  life="10000" showSummary="true" globalOnly="true" for="growlError"/>
+            <emirCOMP:ajaxWaitingDialog/>
+            <emirCOMP:facesMessageSeverity id="facesMessageSeverity" />
+            <table border="0" cellpadding="5" cellspacing="0" id="mainBody" align="center">
+                <tbody>
+                    <tr>
+                        <td>
+                            <ui:include src="/templates/menu.xhtml" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <p:panel style="background-color: rgba(255,255,255,0.3);">
+                                <f:facet name="header">
+                                    <ui:insert name="pageTitle">emir</ui:insert>
+                                </f:facet>
+                                <ui:insert name="body">Default content</ui:insert>
+                            </p:panel>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <h:form id="aboutForm">
+                <emir:aboutDialog dialogId="aboutDialog" />
+            </h:form>
+            <h:form id="hideForm">
+                <h:inputHidden id="growlError" value="#{msgs['form.errorField']}"/>
+            </h:form>
+        </h:body>
+    </f:view>
+</html>

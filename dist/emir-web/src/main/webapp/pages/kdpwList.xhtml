@@ -1,0 +1,172 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<ui:composition   template="/templates/main.xhtml"
+                  xmlns:h="http://java.sun.com/jsf/html"
+                  xmlns:f="http://java.sun.com/jsf/core"
+                  xmlns:ui="http://java.sun.com/jsf/facelets"
+                  xmlns:p="http://primefaces.org/ui"
+                  xmlns:emirui="http://pl.pd/emir"
+                  xmlns:emir="http://java.sun.com/jsf/composite/facelets"
+                  >
+
+    <ui:define name="pageTitle">
+        <h:outputLabel value="#{msgs['kdpw.messages.head']}"/>
+    </ui:define>
+
+    <ui:define name="body">
+
+        <h:form id="criteriaForm">
+            <emirui:searchPanel bean="#{kdpwListBean}" columns="3" id="searchPanel" updateAfterSearch=":mainForm:messagesTable">
+
+                <emirui:dateFilter id="dataDateFromFilter"
+                                   pattern="datetime"
+                                   value="#{kdpwListBean.criteria.messageTimeFrom}"
+                                   label="#{msgs['kdpw.messages.sc.dataDateFrom']}" />
+
+                <emirui:dateFilter id="dataDateToFilter"
+                                   pattern="datetime"
+                                   value="#{kdpwListBean.criteria.messageTimeTo}"
+                                   label="#{msgs['kdpw.messages.sc.dataDateTo']}" />
+
+                <emirui:selectFilter id="dataScopeFilter"
+                                     label="#{msgs['kdpw.messages.sc.messagType']}"
+                                     allowEmpty="true"
+                                     value="#{kdpwListBean.criteria.messageType}" >
+                    <f:selectItems value="#{kdpwListBean.messageTypes}" var="option"
+                                   itemLabel="#{option.msgName}" itemValue="#{option}" />
+                </emirui:selectFilter>
+
+                <h:outputLabel value="#{msgs['kdpw.messages.sc.user.userLogin']}" />
+                <p:inputText value="#{kdpwListBean.criteria.userLogin}"/>
+
+                <emirui:selectFilter id="statusFilter"
+                                     label="#{msgs['kdpw.messages.sc.status']}"
+                                     allowEmpty="true"
+                                     value="#{kdpwListBean.criteria.status}"
+                                     styleClass="processingStatusList"
+                                     >
+                    <f:selectItems value="#{kdpwListBean.fileStatus}" var="option"
+                                   itemLabel="#{msgs[option.msgKey]}" itemValue="#{option}" />
+                </emirui:selectFilter>
+
+                <h:outputLabel value="#{msgs['kdpw.messages.sc.fileId']}" />
+                <p:inputText value="#{kdpwListBean.criteria.fileId}"/>
+            </emirui:searchPanel>
+        </h:form>
+
+        <h:form id="toolbarForm">
+            <p:toolbar id="mainToolbar">
+                <p:toolbarGroup align="left">
+                    <p:commandButton id="downloadExcel" value="#{msgs['button.excel']}" ajax="false"
+                                     actionListener="#{reportBean.generateTableReport(kdpwListBean.reportType,reportBean.xlsFormat,kdpwListBean.reportData)}"
+                                     icon="ui-icon-arrowthichk-s">
+                        <p:fileDownload value="#{reportBean.file}" />
+                    </p:commandButton>
+                    <p:commandButton value="#{msgs['kdpw.message.buttons.load']}"
+                                     icon="ui-icon-folder-open"
+                                     oncomplete="PF('fileUploadDialog').show();"
+                                     ajax="true"
+                                     update="fileUploadDialog"
+                                     />
+                </p:toolbarGroup>
+                <p:toolbarGroup align="right" rendered="#{kdpwListBean.inRelatedView}">
+                    <h:outputLabel value="#{msgs['kdpw.message.view.link']}"
+                                   style="color: red;"
+                                   rendered="#{kdpwListBean.inRelatedView}" />
+                    <p:commandButton value="Powrót"
+                                     actionListener="#{kdpwListBean.restoreSearchCriteria()}"
+                                     rendered="#{kdpwListBean.inRelatedView}"
+                                     update=":mainForm:messagesTable :toolbarForm:mainToolbar :criteriaForm:searchPanel"
+                                     />
+
+                </p:toolbarGroup>
+            </p:toolbar>
+
+            <p:dialog id="fileUploadDialog"
+                      header="#{msgs['kdpw.message.dialog.upload.header']}"
+                      widgetVar="fileUploadDialog"
+                      resizable="false"
+                      closable="true"
+                      width="700"
+                      modal="true"
+                      >
+                <p:fileUpload fileUploadListener="#{kdpwMessageBean.handleFileUpload}"
+                              mode="advanced"
+                              dragDropSupport="false"
+                              auto="true"
+                              multiple="true"
+                              cancelLabel="#{msgs['button.cancel']}"
+                              invalidFileMessage="#{msgs['importFile.error.invalidFile']}"
+                              invalidSizeMessage="#{msgs['importFile.error.invalidSize']}"
+                              label="#{msgs['importFile.browse']}"
+                              uploadLabel="#{msgs['importFile.button.upload']}"
+                              oncomplete="PF('fileUploadDialog').hide();"
+                              update=":mainForm:messagesTable"
+                              />
+                <emirui:popupButtons dialogId="fileUploadDialog" cancel="false" />
+            </p:dialog>
+        </h:form>
+
+
+        <h:form id="mainForm">
+            <emirui:resultsPanel bean="#{kdpwListBean}"
+                                 tableId="messagesTable"
+                                 addScroller="true"
+                                 var="messageLog"
+                                 selectable="false"
+                                 >
+
+                <emirui:column header="#{msgs['kdpw.message.table.fileTime']}"
+                               format="datetime"
+                               sortBy="messageTime"
+                               value="#{messageLog.messageTime}" />
+
+
+                <emirui:column header="#{msgs['kdpw.message.table.userLogin']}"
+                               format="text"
+                               sortBy="userLogin"
+                               value="#{messageLog.userLogin}" />
+
+                <p:column headerText="#{msgs['kdpw.message.table.messageName']}">
+                    <p:commandLink value="#{messageLog.messageName}"
+                                   styleClass="kdpwFileLink"
+                                   actionListener="#{kdpwListBean.addToSave(messageLog)}"
+                                   ajax="false"
+                                   >
+                        <p:fileDownload value="#{kdpwListBean.file}" />
+                    </p:commandLink>
+                </p:column>
+
+                <emirui:column header="#{msgs['kdpw.message.table.status']}"
+                               format="text"
+                               sortBy="fileStatus"
+                               value="#{msgs[messageLog.fileStatus.msgKey]}" />
+
+                <emirui:column header="#{msgs['kdpw.message.table.fileId']}"
+                               format="text"
+                               sortBy="#{messageLog.fileId}"
+                               value="#{messageLog.fileId}"
+                               />
+
+                <emirui:actionColumn columns="2" rendered="true">
+                    <p:commandButton id="downloadKDPWResponseReport"
+                                     title="#{msgs['kdpw.message.table.action.report']}"
+                                     ajax="false"
+                                     icon="ui-icon-document"
+                                     actionListener="#{reportBean.generateTableReport(kdpwListBean.reportKDPWType,reportBean.xlsFormat,kdpwListBean.getReportKDPWResponseData(messageLog))}"
+                                     >
+                        <p:fileDownload value="#{reportBean.file}" />
+                    </p:commandButton>
+                    <p:commandButton title="#{msgs['kdpw.message.table.action.link']}"
+                                     rendered="#{not kdpwListBean.inRelatedView and messageLog.hasResponse}"
+                                     icon="ui-icon-extlink"
+                                     ajax="true"
+                                     actionListener="#{kdpwListBean.addToSearchCriteria(messageLog)}"
+                                     update=":mainForm:messagesTable :toolbarForm:mainToolbar :criteriaForm:searchPanel"
+                                     />
+                </emirui:actionColumn>
+            </emirui:resultsPanel>
+        </h:form>
+
+    </ui:define>
+
+</ui:composition>

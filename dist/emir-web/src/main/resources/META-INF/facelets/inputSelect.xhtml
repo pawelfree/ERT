@@ -1,0 +1,103 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:c="http://java.sun.com/jsp/jstl/core"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                >
+
+    <ui:remove>
+        <!--Lista jednokrotnego wyboru-->
+
+        <!--domyślnie: | wymagane: tak-->
+        id: String
+        <!--domyślnie: false | wymagane: nie-->
+        rendered: Boolean
+        <!--domyślnie: false | wymagane: nie-->
+        disabled: Boolean
+        <!--domyślnie: false | wymagane: nie | czy dopuszczać pustą wartość-->
+        allowEmpty: Boolean
+        <!--domyślnie: | wymagane: tak | wartość komponentu-->
+        value: Object
+        <!--domyślnie: | wymagane: tak | etykieta komponentu-->
+        label: String
+        <!--domyślnie: | wymagane: nie | co przerenderować po wyborze pozycji-->
+        update: String
+        <!--domyślnie: false| wymagane: nie | czy wartość jest wymagana-->
+        required: String
+        <!--domyślnie: | wymagane: nie | konwerter-->
+        coverter: String
+        <!--domyślnie: | wymagane: nie | klasy styli dla komponentu-->
+        styleClass: String
+        <!--domyślnie: | wymagane: nie | opis wyświetlany po najechaniu na pole -->
+        info: String
+        <!--domyślnie: | wymagane: nie | czy wyświetlić pole do filtrowania elementów -->
+        filter: String
+        <!--domyślnie: | wymagane: nie | styl dla instancji-->
+        style: String
+        <!--domyślnie: | wymagane: nie | valueChangeListener -->
+        changeListener: method-signature
+    </ui:remove>
+
+    <c:if test="#{empty required}">
+        <ui:param name="required" value="#{false}" />
+    </c:if>
+    <c:if test="#{empty rendered}">
+        <ui:param name="rendered" value="#{true}" />
+    </c:if>
+    <c:if test="#{empty disabled}">
+        <ui:param name="disabled" value="#{false}" />
+    </c:if>
+    <c:if test="#{empty allowEmpty}">
+        <ui:param name="allowEmpty" value="#{false}" />
+    </c:if>
+    <c:if test="#{empty filter}">
+        <ui:param name="filter" value="#{false}" />
+    </c:if>
+
+    <h:outputLabel value="#{label}" rendered="#{rendered}"/>
+
+    <p:panelGrid id="#{id}" rendered="#{rendered}" columns="3" styleClass="gridWithoutBorder">
+        <h:outputText value="*" styleClass="#{'requiredInput'}" rendered="#{required}" />
+        <h:outputText rendered="#{not required}" />
+
+        <c:if test="#{not empty changeListener}">
+            <p:selectOneMenu  id="#{id}_inputSelect" value="#{value}" label="#{disabled ? '' : msgs['commons.select']}" 
+                              required="false" styleClass="#{styleClass}" disabled="#{disabled}" converter="#{converter}"
+                              filter="#{filter}" style="#{style}" valueChangeListener="#{changeListener}">
+                <c:if test="#{allowEmpty eq true}">
+                    <f:selectItem  itemLabel="#{msgs['commons.select']}" itemValue="#{null}" />
+                </c:if>
+                <c:if test="#{required eq true}">
+                    <f:validator validatorId="pl.pd.emir.clientutils.validators.RequierWarningEnumValidator"/>
+                </c:if>
+                <ui:insert />
+                <p:ajax event="change" update="#{update}" disabled="#{empty update}" process="@this" />
+                <f:attribute name="label" value="#{label}" rendered="#{not empty label}" />
+                <f:attribute name="title" value="#{info}" rendered="#{not empty info}" />
+            </p:selectOneMenu>
+        </c:if>
+        <c:if test="#{empty changeListener}">
+            <p:selectOneMenu  id="#{id}_inputSelect" value="#{value}" label="#{disabled ? '' : msgs['commons.select']}" 
+                              required="false" styleClass="#{styleClass}" disabled="#{disabled}" converter="#{converter}"
+                              filter="#{filter}" style="#{style}">
+                <c:if test="#{allowEmpty eq true}">
+                    <f:selectItem  itemLabel="#{msgs['commons.select']}" itemValue="#{null}" />
+                </c:if>
+                <c:if test="#{required eq true}">
+                    <f:validator validatorId="pl.pd.emir.clientutils.validators.RequierWarningEnumValidator"/>
+                </c:if>
+                <ui:insert />
+                <p:ajax event="change" update="#{update}" disabled="#{empty update}" process="@this" />
+                <f:attribute name="label" value="#{label}" rendered="#{not empty label}" />
+                <f:attribute name="title" value="#{info}" rendered="#{not empty info}" />
+            </p:selectOneMenu>
+        </c:if>
+
+
+        <p:message for="#{id}_inputSelect" showSummary="true" showDetail="false" display="text" />
+    </p:panelGrid>
+
+</ui:composition>

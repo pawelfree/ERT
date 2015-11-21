@@ -1,0 +1,125 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:c="http://java.sun.com/jsp/jstl/core"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:emirfn="http://pl.pd/emir-fn"
+                >
+
+    <ui:remove>
+        <!-- Kolumna tabelki -->
+
+        <!-- domyślnie: | wymagane: nie | Nagłówek: wartość obowiązkowa dla wszystkich formatów oprócz multiselect -->
+        header: java.lang.String
+
+        <!-- domyślnie: | wymagane: nie | Wartość wyświetlana w kolumnie; wymagana dla wszystkich formatów oprócz multiselect -->
+        value: java.lang.Object
+
+        <!-- wymagane: nie | Bean obsługujący tablele - dataModel -->
+        bean: pl.pd.emir.bean.AbstractListBean
+
+        <!-- domyślnie: | wymangane: nie | Id tabelki - wartość obowiązkowa, jeśli używamy sortowania -->
+        tableId: java.lang.String
+
+        <!-- domyślnie: text | wymagane: nie | Format danych -->
+        format: java.lang.String
+
+        <!-- domyślnie: true | wymagane: nie | Czy wyświetlać komponent -->
+        rendered: boolean
+
+        <!-- wymagane: nie | Pole sortowania lub 'none', żeby nie sortować -->
+        sortBy: java.lang.String
+
+        <!-- wymagane: nie | Styl -->
+        style: java.lang.String
+
+        <!-- wymagane: nie | Wybrany wiersz ma ustawiony styl selectedRow -->
+        selected: boolean
+
+        <!-- wymagane: nie | Id komponentów do renderowania po kliknieciu 'zaznacz wszystko'; tylko dla selectable=true -->
+        renderAfterSelectAll: java.lang.String
+
+        <!-- wymagane: nie | Id komponentów do renderowania po zaznaczeniu wiersza; tylko dla selectable=true -->
+        renderAfterRowSelect: java.lang.Stringzz
+
+    </ui:remove>
+
+    <c:if test="#{empty format or not emirfn:inSet(format, 'text,datetime,date,time,timeNoSec,custom,number,multiselect')}">
+        <ui:param name="format" value="text" />
+    </c:if>
+    <c:if test="#{empty rendered}">
+        <ui:param name="rendered" value="#{true}" />
+    </c:if>
+    <c:if test="#{empty sortBy}">
+        <ui:param name="sortBy" value="none" />
+    </c:if>
+
+    <ui:param name="selected" value="#{empty dataId ? selected : dataId eq bean.selectedId}" />
+
+    <p:column style="#{emirfn:inSet(format, 'datetime,date,time,timeNoSec,checkbox')?'text-align: center;':''} #{style} #{emirfn:inSet(format, 'number,money')?'text-align: right;':''} #{selected ? 'font-weight: normal; background-color: #EAF0F8;' : ''}"
+              rendered="#{rendered}">
+        <f:facet name="header" id="facetHeader">
+            <ui:remove>
+                <!-- Sortowanie -->
+            </ui:remove>
+            <p:commandButton rendered="#{sortBy ne 'none' and format ne 'multiselect' and (bean.sortField ne sortBy or bean.sortOrder eq 'UNSORTED')}"
+                             action="#{bean.setSortField(sortBy)}"
+                             update="#{tableId}" process="@this"
+                             icon="ui-icon-triangle-2-n-s"
+                             value="#{header}"
+                             style="border: none; width: auto; height: auto;"
+                             />
+            <p:commandButton rendered="#{sortBy ne 'none' and format ne 'multiselect' and bean.sortField eq sortBy and  bean.sortOrder eq 'ASCENDING'}"
+                             action="#{bean.setSortField(sortBy)}"
+                             update="#{tableId}" process="@this"
+                             icon="ui-icon-triangle-1-n"
+                             value="#{header}"
+                             style="border: none; width: auto; height: auto;"
+                             />
+            <p:commandButton rendered="#{sortBy ne 'none' and format ne 'multiselect' and bean.sortField eq sortBy  and bean.sortOrder eq 'DESCENDING'}"
+                             action="#{bean.setSortField(sortBy)}"
+                             update="#{tableId}" process="@this"
+                             icon="ui-icon-triangle-1-s"
+                             value="#{header}"
+                             style="border: none; width: auto; height: auto;"
+                             />
+            <h:outputText value="#{header}" rendered="#{sortBy eq 'none' and format ne 'multiselect'}" />
+
+        </f:facet>
+
+        <ui:remove>
+            <!-- Formatowanie -->
+        </ui:remove>
+
+        <h:outputText value="#{value}" rendered="#{format eq 'text'}"/>
+        <h:outputText value="#{value}" rendered="#{format eq 'datetime' and value ne null}">
+            <f:convertDateTime pattern="#{applicationBean.dateTimePattern}" timeZone="#{applicationBean.timeZone}"/>
+        </h:outputText>
+        <h:outputText value="#{value}" rendered="#{format eq 'date'}">
+            <f:convertDateTime pattern="#{applicationBean.datePattern}" timeZone="#{applicationBean.timeZone}"/>
+        </h:outputText>
+        <h:outputText value="#{value}" rendered="#{format eq 'time'}">
+            <f:convertDateTime pattern="#{applicationBean.timePattern}" timeZone="#{applicationBean.timeZone}"/>
+        </h:outputText>
+        <h:outputText value="#{value}" rendered="#{format eq 'timeNoSec'}">
+            <f:convertDateTime pattern="#{applicationBean.timeWithoutSecondsPattern}" timeZone="#{applicationBean.timeZone}"/>
+        </h:outputText>
+        <h:outputText value="#{value}" rendered="#{format eq 'number'}">
+        </h:outputText>
+        <h:panelGroup rendered="#{format eq 'custom'}">
+            <ui:insert/>
+        </h:panelGroup>
+
+        <ui:remove>
+            <!-- Formatowanie koniec-->
+        </ui:remove>
+
+        <f:facet name="footer">
+            <ui:insert name="footer" />
+        </f:facet>
+
+    </p:column>
+</ui:composition>

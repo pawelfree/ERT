@@ -1,0 +1,31 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:composite="http://java.sun.com/jsf/composite"
+                xmlns:emir="http://pl.pd/emir"
+                xmlns:f="http://java.sun.com/jsf/core">
+
+    <composite:interface>
+        <composite:attribute name="bean" type="pl.pd.emir.register.bean.TransactionFormBean" required="true" />
+    </composite:interface>
+
+    <composite:implementation>	     
+
+        <ui:remove><!--Data rozwiązania zgłaszanego kontraktu--></ui:remove>
+
+        <emir:labeledOutput id="terminationDateOutput" 
+                             value="#{cc.attrs.bean.entity.transactionDetails.terminationDate}" 
+                             label="#{msgs['register.transactionForm.generalData.terminationDate']}" 
+                             rendered="#{cc.attrs.bean.formType == 'View'}">
+            <f:convertDateTime pattern="#{applicationBean.dateTimePattern}"/>
+        </emir:labeledOutput>
+        <emir:inputDate id="terminationDateInput" 
+                         rendered="#{not (cc.attrs.bean.formType == 'View')}"
+                         value="#{cc.attrs.bean.entity.transactionDetails.terminationDate}" 
+                         label="#{msgs['register.transactionForm.generalData.terminationDate']}" 
+                         pattern="#{applicationBean.dateTimePattern}"
+                         readonlyInput="true"
+                         mindate="#{cc.attrs.bean.dateAfterTransactonDate(cc.attrs.bean.entity.transactionDate)}"
+                         info="#{msgs['register.transactionForm.tabs.contractType']}->#{msgs['register.transactionForm.contractType.section.detailsTransaction']}->#{msgs['register.transactionForm.generalData.terminationDate']}"
+                         />
+    </composite:implementation>
+</ui:composition>

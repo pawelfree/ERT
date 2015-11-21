@@ -1,0 +1,55 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:composite="http://java.sun.com/jsf/composite"
+                xmlns:emir="http://pl.pd/emir">
+
+    <composite:interface>
+        <composite:attribute name="bean" type="pl.pd.emir.kdpw.bean.AbstractKdpwListBean" required="true" />
+        <composite:attribute name="tableId" type="java.lang.String" required="true" />
+        <composite:attribute name="renderAfterSelectAll" type="java.lang.String" required="false" />
+        <composite:attribute name="renderAfterRowSelect" type="java.lang.String" required="false" />
+    </composite:interface>
+
+    <composite:implementation>	     
+
+        <emir:resultsPanel bean="#{cc.attrs.bean}" 
+                            var="transaction" 
+                            tableId="#{cc.attrs.tableId}" 
+                            addScroller="true" 
+                            selectable="true" 
+                            renderAfterSelectAll="#{cc.attrs.renderAfterSelectAll}"
+                            renderAfterRowSelect="#{cc.attrs.renderAfterRowSelect}"
+                            >
+            <emir:column header="#{msgs['register.transactionForm.basicData.sourceTransId']}" 
+                          sortBy="transactionDetails.sourceTransId"
+                          value="#{transaction.transactionDetails.sourceTransId}"/>
+
+            <emir:column header="#{msgs['register.transactionForm.basicData.originalId']}" 
+                          sortBy="originalId"
+                          value="#{transaction.originalId}" />
+
+            <emir:column header="#{msgs['register.transactionForm.basicData.transactionDate']}" 
+                          format="date" 
+                          sortBy="transactionDate"
+                          value="#{transaction.transactionDate}" />
+
+            <emir:column header="#{msgs['register.transactionForm.basicData.dataType']}" 
+                          sortBy="transaction.dataType"
+                          value="#{msgs[transaction.dataType.msgKey]}" />
+
+            <emir:column header="#{msgs['register.transactionForm.basicData.processingStatus']}" 
+                          sortBy="processingStatus"
+                          value="#{msgs[transaction.processingStatus.msgKey]}" />
+
+            <emir:column header="#{msgs['register.transactionForm.basicData.validationStatus']}" 
+                          sortBy="validationStatus"
+                          value="#{msgs[transaction.validationStatus.msgKey]}" />
+            
+            <emir:column header="#{msgs['register.transactionForm.basicData.clientValidationStatus']}" 
+                              sortBy="client.validationStatus"
+                              value="#{transaction.client ne null
+                                       ? msgs['client.'.concat(transaction.client.validationStatus.msgKey)]
+                                       : msgs['register.transactionForm.basicData.noClient']}" />
+        </emir:resultsPanel>
+    </composite:implementation>
+</ui:composition>

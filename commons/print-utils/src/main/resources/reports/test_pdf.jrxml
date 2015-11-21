@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Simple_Report" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="30" bottomMargin="30" uuid="3f698c55-5953-47c6-abc3-379d677124cb">
+	<property name="ireport.zoom" value="1.464100000000001"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<style name="table">
+		<box>
+			<pen lineWidth="1.0" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table_TH" mode="Opaque" backcolor="#F0F8FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table_CH" mode="Opaque" backcolor="#BFE1FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table_TD" mode="Opaque" backcolor="#FFFFFF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<parameter name="reportName" class="java.lang.String" isForPrompting="false"/>
+	<field name="name" class="java.lang.String"/>
+	<field name="lastname" class="java.lang.String"/>
+	<field name="age" class="java.lang.Integer"/>
+	<variable name="SUM_AGE" class="java.lang.Integer" calculation="Sum">
+		<variableExpression><![CDATA[$F{age}]]></variableExpression>
+	</variable>
+	<group name="params">
+		<groupHeader>
+			<band height="70" splitType="Stretch">
+				<staticText>
+					<reportElement uuid="2f9705a3-b383-4088-99ed-1d5180a54677" mode="Transparent" x="0" y="0" width="50" height="30"/>
+					<textElement>
+						<font size="14" pdfEncoding="Cp1250"/>
+					</textElement>
+					<text><![CDATA[Raport: ]]></text>
+				</staticText>
+				<textField>
+					<reportElement uuid="175ab213-b2f7-4583-9010-a2b8a8af9968" x="50" y="0" width="505" height="30"/>
+					<textElement>
+						<font size="14" isBold="true" pdfEncoding="Cp1250"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$P{reportName}]]></textFieldExpression>
+				</textField>
+			</band>
+		</groupHeader>
+		<groupFooter>
+			<band height="50">
+				<textField>
+					<reportElement uuid="a73e316a-c59c-4d1a-941b-4e2f1542c861" x="366" y="10" width="100" height="20"/>
+					<textElement/>
+					<textFieldExpression><![CDATA[$V{SUM_AGE}]]></textFieldExpression>
+				</textField>
+			</band>
+		</groupFooter>
+	</group>
+	<detail>
+		<band height="69">
+			<textField>
+				<reportElement uuid="d2f542ea-458d-4c08-9a36-acfaa4aab77f" x="166" y="7" width="100" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$F{name}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="e082e47c-81c4-4574-8df3-ab4835ce245e" x="266" y="7" width="100" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$F{lastname}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="592afc07-ca4f-494c-834e-39a569ede942" x="366" y="7" width="100" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$F{age}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<pageFooter>
+		<band height="50"/>
+	</pageFooter>
+	<lastPageFooter>
+		<band height="50">
+			<staticText>
+				<reportElement uuid="f1b10e41-f2b0-4605-b8ef-b4457542ff4e" x="0" y="0" width="555" height="50"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[KONCOWA STRONA]]></text>
+			</staticText>
+		</band>
+	</lastPageFooter>
+</jasperReport>

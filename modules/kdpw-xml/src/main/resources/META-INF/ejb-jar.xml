@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<ejb-jar xmlns = "http://java.sun.com/xml/ns/javaee"
+         version = "3.0"
+         xmlns:xsi = "http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation = "http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/ejb-jar_3_0.xsd">
+
+    <enterprise-beans>
+        <session>
+            <ejb-name>XmlTransactionWriterImpl</ejb-name>
+            <business-local>pl.pd.emir.modules.kdpw.adapter.api.TransactionWriter</business-local>
+            <ejb-class>pl.pd.emir.kdpw.xml.parser.XmlTransactionWriterImpl</ejb-class>
+            <session-type>Stateless</session-type>
+        </session>
+    </enterprise-beans>
+
+</ejb-jar>

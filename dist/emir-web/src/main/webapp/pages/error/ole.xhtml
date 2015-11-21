@@ -1,0 +1,20 @@
+<ui:composition
+    template="/templates/main.xhtml"
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:p="http://primefaces.org/ui"
+    xmlns:sescm="http://java.sun.com/jsf/composite/sescm"
+	xmlns:fn="http://java.sun.com/jsp/jstl/functions">
+
+    <ui:define name="pageTitle">
+        <h:outputLabel value="#{msgs['ole.title']}"/>
+    </ui:define>
+    <ui:define name="body">
+		<h:outputText value="#{msgs['ole.message']}" />
+		<br/>
+   	<h:outputText value="#{msgs['ole.linkBack']}" /> <a href="#{sessionScope['javax.servlet.error.request_uri']}">#{sessionScope['javax.servlet.error.request_uri']}</a>
+    </ui:define>
+
+</ui:composition>

@@ -1,0 +1,99 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<ui:composition   template="/templates/main.xhtml"
+                  xmlns="http://www.w3.org/1999/xhtml"
+                  xmlns:h="http://java.sun.com/jsf/html"
+                  xmlns:f="http://java.sun.com/jsf/core"
+                  xmlns:ui="http://java.sun.com/jsf/facelets"
+                  xmlns:p="http://primefaces.org/ui">
+
+    <ui:define name="pageTitle">
+        <h:outputLabel value="#{msgs['importPanel.head']}"/>
+    </ui:define>
+    <ui:define name="body">
+
+        <style type="text/css">
+            .importPanelCol1{ width: 80px;}
+            .importPanelCol2{}
+        </style>
+
+        <h:form id="importPanelForm" >
+
+            <p:panel styleClass="buttonsPanel">
+                <p:commandButton  value="#{msgs['importPanel.button.import']}"
+                                  actionListener="#{importBean.importExtract()}"
+                                  oncomplete="PF('confirmImportDialog').show();"
+                                  update="clientInputMessages :confirmImportForm:messageDialogMessagePanel"
+                                  styleClass="nowrap" />
+            </p:panel>
+
+            <p:message id="clientInputMessages" for="clientScopeInput" />
+            <!--<p:messages id="importMessages" autoUpdate="true" closable="true" />-->
+
+            <p:panel header="#{msgs['importPanel.parametersProcess']}">
+                <p:panelGrid columns="2" styleClass="gridWithoutBorder" columnClasses="importPanelCol1, importPanelCol2">
+
+                    <p:outputLabel value="#{msgs['importPanel.importScope']}" />
+                    <p:selectManyCheckbox binding="#{importBean.clientScopeInput}" id="clientScopeInput" value="#{importBean.clientSelectedScope}" layout="pageDirection" converter="importScopeConverter" >
+                        <f:selectItems value="#{importBean.clientDisplayScope}" var="item" itemLabel="#{msgs[item.msgKey]}" itemValue="#{item}" />
+                        <f:validator binding="#{importBean.scopeCrossValidator}" />
+                    </p:selectManyCheckbox>
+
+                </p:panelGrid>
+            </p:panel>
+            <p:panel header="#{msgs['importPanel.transactionData']}">
+                <p:panelGrid columns="2" styleClass="gridWithoutBorder" columnClasses="importPanelCol1, importPanelCol2">
+
+                    <p:outputLabel value="#{msgs['importPanel.dataDate']}"/>
+                    <p:calendar value="#{importBean.extractDate}" pattern="#{applicationBean.dateFormat}" showOn="button" required="true" />
+
+                    <p:outputLabel value="#{msgs['importPanel.importScope']}" />
+                    <p:selectManyCheckbox binding="#{importBean.transactionScopeInput}" value="#{importBean.transactionSelectedScope}" layout="pageDirection" converter="importScopeConverter">
+                        <f:selectItems value="#{importBean.transactionDisplayScope}" var="item" itemLabel="#{msgs[item.msgKey]}" itemValue="#{item}" />
+                    </p:selectManyCheckbox>
+
+                    <p:outputLabel value="#{msgs['importPanel.backloading']}" rendered="#{importBean.backloadingOptionShown}" />
+                    <p:selectBooleanCheckbox value="#{importBean.backloading}" rendered="#{importBean.backloadingOptionShown}" style="padding-left: 10px;" />
+
+                </p:panelGrid>
+            </p:panel>
+        </h:form>
+
+        <h:form id="confirmImportForm">
+            <p:dialog widgetVar="confirmImportDialog"
+                      header="Komunikat"
+                      resizable="false" closable="true" modal="true">
+                <p:panel id="messageDialogMessagePanel">
+                    <p:panelGrid columns="2">
+                        <h:outputText value="Liczba rekordów w plikach : " />
+                        <h:outputText value=""/>
+                        <h:outputText value="Z transakcjami"/>
+                        <h:outputText value="#{importBean.importOverview.itemsInTransaction}" />
+                        <h:outputText value="Z zabezpieczeniami"/>
+                        <h:outputText value="#{importBean.importOverview.itemsInProtection}" />
+                        <h:outputText value="Z wycenami"/>
+                        <h:outputText value="#{importBean.importOverview.itemsInValuation}" />
+
+                        <h:outputText value=" "/><h:outputText value=" "/>
+                        <h:outputText value="Liczba transakcji na dzień : "/>
+                        <h:outputText value="#{importBean.extractDate}" >
+                            <f:convertDateTime pattern="#{applicationBean.datePattern}" timeZone="#{applicationBean.timeZone}"/>
+                        </h:outputText>
+                        <h:outputText value="Wszystkich"/>
+                        <h:outputText value="#{importBean.importOverview.existingTransactions}" />
+                        <h:outputText value="Nowych"/>
+                        <h:outputText value="#{importBean.importOverview.newTransactions}" />
+                        <h:outputText value="Trwających"/>
+                        <h:outputText value="#{importBean.importOverview.ongoingTransactions}" />
+                        <h:outputText value="Wygasłych"/>
+                        <h:outputText value="#{importBean.importOverview.expiredTransactions}" />
+                    </p:panelGrid>
+                </p:panel>
+                <p:commandButton value="#{msgs['button.close']}"
+                                 onclick="PF('confirmImportDialog').hide();"
+                                 action ="#{importBean.finishImport()}"
+                                 immediate="true"
+                                 />
+            </p:dialog>
+        </h:form>
+    </ui:define>
+</ui:composition>

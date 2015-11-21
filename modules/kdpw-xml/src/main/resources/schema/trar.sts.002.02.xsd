@@ -1,0 +1,394 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns="urn:kdpw:xsd:trar.sts.002.02" targetNamespace="urn:kdpw:xsd:trar.sts.002.02" elementFormDefault="qualified" attributeFormDefault="unqualified">
+	<xs:annotation>
+		<xs:documentation>Komunikat ze statusem przetworzenia komunikatu</xs:documentation>
+		<xs:appinfo>
+			<NmPL>Komunikat ze statusem przetworzenia komunikatu</NmPL>
+		</xs:appinfo>
+	</xs:annotation>
+	<xs:element name="KDPWDocument" type="KDPWDocument">
+		<xs:annotation>
+			<xs:documentation>Komunikat systemu KDPW</xs:documentation>
+			<xs:appinfo>
+				<NmPL>Komunikat systemu KDPW</NmPL>
+			</xs:appinfo>
+		</xs:annotation>
+	</xs:element>
+	<xs:simpleType name="Code4Text">
+		<xs:annotation>
+			<xs:documentation>Kwalifikator, kod</xs:documentation>
+			<xs:appinfo>
+				<NmPL>Kwalifikator</NmPL>
+			</xs:appinfo>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:whiteSpace value="collapse"/>
+			<xs:minLength value="4"/>
+			<xs:maxLength value="4"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:complexType name="DateAndDateTimeChoice">
+		<xs:annotation>
+			<xs:documentation>Data i czas</xs:documentation>
+			<xs:appinfo>
+				<NmPL>Data i czas</NmPL>
+			</xs:appinfo>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:choice>
+				<xs:element name="Dt" type="ISODate">
+					<xs:annotation>
+						<xs:documentation>Data</xs:documentation>
+						<xs:appinfo>
+							<NmPL>Data</NmPL>
+						</xs:appinfo>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="DtTm" type="ISODateTime">
+					<xs:annotation>
+						<xs:documentation>Data i czas</xs:documentation>
+						<xs:appinfo>
+							<NmPL>Data i czas</NmPL>
+						</xs:appinfo>
+					</xs:annotation>
+				</xs:element>
+			</xs:choice>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:simpleType name="FunctionOfMessage">
+		<xs:annotation>
+			<xs:documentation>Funkcja komunikatu</xs:documentation>
+			<xs:appinfo>
+				<NmPL>Funkcja komunikatu</NmPL>
+			</xs:appinfo>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="NEWM">
+				<xs:annotation>
+					<xs:documentation>Nowy komunikat</xs:documentation>
+					<xs:appinfo>
+						<NmPL>Nowy komunikat</NmPL>
+					</xs:appinfo>
+				</xs:annotation>
+			</xs:enumeration>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:complexType name="GeneralInformation">
+		<xs:annotation>
+			<xs:documentation>Informacje ogólne</xs:documentation>
+			<xs:appinfo>
+				<NmPL>Informacje ogólne</NmPL>
+			</xs:appinfo>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="SndrMsgRef" type="Max16Text">
+				<xs:annotation>
+					<xs:documentation>Identyfikator komunikatu utworzony przez nadawcę</xs:documentation>
+					<xs:appinfo>
+						<NmPL>Identyfikator komunikatu</NmPL>
+					</xs:appinfo>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="FuncOfMsg" type="FunctionOfMessage">
+				<xs:annotation>
+					<xs:documentation>Funkcja komunikatu</xs:documentation>
+					<xs:appinfo>
+						<NmPL>Funkcja komunikatu</NmPL>
+					</xs:appinfo>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="CreDtTm" type="DateAndDateTimeChoice" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Data utworzenia komunikatu</xs:documentation>
+					<xs:appinfo>
+						<NmPL>Data utworzenia komunikatu</NmPL>
+					</xs:appinfo>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="ActnTp" type="Max1Text">
+				<xs:annotation>
+					<xs:documentation>Rodzaj zmiany.Dopuszczalne wartości ze standardu ESMA</xs:documentation>
+					<xs:appinfo>
+						<NmPL>Rodzaj zmiany</NmPL>
+					</xs:appinfo>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="ActnTpDtls" type="Max50Text" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Szczegółowe informacje dotyczące zmiany. Pole obowiązkowe jeżeli w polu 4 (Rodzaj zmiany/ Action type) podana wartość = O.</xs:documentation>
+					<xs:appinfo>
+						<NmPL>Szczegółowe informacje dotyczące zmiany</NmPL>
+					</xs:appinfo>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="RepDtTm" type="DateAndDateTimeChoice" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Data przyjęcia zgłoszenia przez repozytorium</xs:documentation>
+					<xs:appinfo>
+						<NmPL>Data przyjęcia zgłoszenia przez repozytorium</NmPL>
+					</xs:appinfo>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="EligDt" type="ISODate" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Data obowiązywania zgłoszenia</xs:documentation>
+					<xs:appinfo>
+						<NmPL>Data obowiązywania zgłoszenia</NmPL>
+					</xs:appinfo>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Lnk" type="Linkages">
+				<xs:annotation>
+					<xs:documentation>Powiązania z innymi komunikatami</xs:documentation>
+					<xs:appinfo>
+						<NmPL>Referencje</NmPL>
+					</xs:appinfo>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:simpleType name="ISODate">
+		<xs:annotation>
+			<xs:documentation>Data</xs:documentation>
+			<xs:appinfo>
+				<NmPL>Data</NmPL>
+			</xs:appinfo>
+		</xs:annotation>
+		<xs:restriction base="xs:date"/>
+	</xs:simpleType>
+	<xs:simpleType name="ISODateTime">
+		<xs:annotation>
+			<xs:documentation>Data i czas</xs:documentation>
+			<xs:appinfo>
+				<NmPL>Data i czas</NmPL>
+			</xs:appinfo>
+		</xs:annotation>
+		<xs:restriction base="xs:dateTime"/>
+	</xs:simpleType>
+	<xs:complexType name="KDPWDocument">
+		<xs:annotation>
+			<xs:documentation>Komunikat systemu KDPW</xs:documentation>
+			<xs:appinfo>
+				<NmPL>Komunikat systemu KDPW</NmPL>
+			</xs:appinfo>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="trar.sts.002.02" type="trar.sts.002.02" maxOccurs="10000">
+				<xs:annotation>
+					<xs:documentation>Komunikat ze statusem przetworzenia komunikatu</xs:documentation>
+					<xs:appinfo>
+						<NmPL>Komunikat ze statusem przetworzenia komunikatu</NmPL>
+					</xs:appinfo>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+		<xs:attribute name="Sndr" type="KDPWMemberIdentifier" use="required">
+			<xs:annotation>
+				<xs:documentation>Nadawca w postaci kodu KDPW</xs:documentation>
+				<xs:appinfo>
+					<NmPL>Nadawca</NmPL>
+				</xs:appinfo>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="Rcvr" type="KDPWMemberIdentifier" use="required">
+			<xs:annotation>
+				<xs:documentation>Odbiorca w postaci kodu KDPW</xs:documentation>
+				<xs:appinfo>
+					<NmPL>Odbiorca</NmPL>
+				</xs:appinfo>
+			</xs:annotation>
+		</xs:attribute>
+	</xs:complexType>
+	<xs:simpleType name="KDPWMemberIdentifier">
+		<xs:annotation>
+			<xs:documentation>Identyfikator uczestnika KDPW</xs:documentation>
+			<xs:appinfo>
+				<NmPL>Identyfikator uczestnika KDPW</NmPL>
+			</xs:appinfo>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:whiteSpace value="collapse"/>
+			<xs:minLength value="4"/>
+			<xs:maxLength value="4"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:complexType name="Linkages">
+		<xs:annotation>
+			<xs:documentation>Powiązania z innymi komunikatami</xs:documentation>
+			<xs:appinfo>
+				<NmPL>Referencje</NmPL>
+			</xs:appinfo>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="RltdRef" type="RelatedReference">
+				<xs:annotation>
+					<xs:documentation>Identyfikator przesłanego raportu</xs:documentation>
+					<xs:appinfo>
+						<NmPL>Identyfikator przesłanego raportu</NmPL>
+					</xs:appinfo>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:simpleType name="Max1Text">
+		<xs:annotation>
+			<xs:documentation>Tekst o długości 1 znaku</xs:documentation>
+			<xs:appinfo>
+				<NmPL>Tekst</NmPL>
+			</xs:appinfo>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:whiteSpace value="collapse"/>
+			<xs:minLength value="1"/>
+			<xs:maxLength value="1"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="Max4Text">
+		<xs:annotation>
+			<xs:documentation>Tekst o maksymalnej długości 4 znaków</xs:documentation>
+			<xs:appinfo>
+				<NmPL>Tekst</NmPL>
+			</xs:appinfo>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:whiteSpace value="collapse"/>
+			<xs:minLength value="1"/>
+			<xs:maxLength value="4"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="Max16Text">
+		<xs:annotation>
+			<xs:documentation>Tekst o maksymalnej długości 16 znaków</xs:documentation>
+			<xs:appinfo>
+				<NmPL>Tekst</NmPL>
+			</xs:appinfo>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:whiteSpace value="collapse"/>
+			<xs:minLength value="1"/>
+			<xs:maxLength value="16"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="Max50Text">
+		<xs:annotation>
+			<xs:documentation>Tekst o maksymalnej długości 50 znaków</xs:documentation>
+			<xs:appinfo>
+				<NmPL>Tekst</NmPL>
+			</xs:appinfo>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:whiteSpace value="collapse"/>
+			<xs:minLength value="1"/>
+			<xs:maxLength value="50"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="Max140Text">
+		<xs:annotation>
+			<xs:documentation>Tekst o maksymalnej długości 140 znaków</xs:documentation>
+			<xs:appinfo>
+				<NmPL>Tekst</NmPL>
+			</xs:appinfo>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:whiteSpace value="collapse"/>
+			<xs:minLength value="1"/>
+			<xs:maxLength value="140"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:complexType name="Reason">
+		<xs:annotation>
+			<xs:documentation>Przyczyna</xs:documentation>
+			<xs:appinfo>
+				<NmPL>Przyczyna</NmPL>
+			</xs:appinfo>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="RsnCd" type="Code4Text" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Kod przyczyny</xs:documentation>
+					<xs:appinfo>
+						<NmPL>Kod przyczyny</NmPL>
+					</xs:appinfo>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="RsnTxt" type="Max140Text" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Opis przyczyny</xs:documentation>
+					<xs:appinfo>
+						<NmPL>Opis przyczyny</NmPL>
+					</xs:appinfo>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="RelatedReference">
+		<xs:annotation>
+			<xs:documentation>Identyfikator przesłanego raportu </xs:documentation>
+			<xs:appinfo>
+				<NmPL>Identyfikator przesłanego raportu </NmPL>
+			</xs:appinfo>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="PrvsSndrMsgRef" type="Max16Text">
+				<xs:annotation>
+					<xs:documentation>Identyfikator poprzedniego komunikatu</xs:documentation>
+					<xs:appinfo>
+						<NmPL>Identyfikator poprzedniego komunikatu</NmPL>
+					</xs:appinfo>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="Status">
+		<xs:annotation>
+			<xs:documentation>Status</xs:documentation>
+			<xs:appinfo>
+				<NmPL>Status</NmPL>
+			</xs:appinfo>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="StsCd" type="Code4Text">
+				<xs:annotation>
+					<xs:documentation>Kod statusu</xs:documentation>
+					<xs:appinfo>
+						<NmPL>Kod statusu</NmPL>
+					</xs:appinfo>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Rsn" type="Reason" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Przyczyna</xs:documentation>
+					<xs:appinfo>
+						<NmPL>Przyczyna</NmPL>
+					</xs:appinfo>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="trar.sts.002.02">
+		<xs:annotation>
+			<xs:documentation>Komunikat ze statusem przetworzenia komunikatu</xs:documentation>
+			<xs:appinfo>
+				<NmPL>Komunikat ze statusem przetworzenia komunikatu</NmPL>
+			</xs:appinfo>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="GnlInf" type="GeneralInformation">
+				<xs:annotation>
+					<xs:documentation>Blok informacji ogólnych</xs:documentation>
+					<xs:appinfo>
+						<NmPL>Informacje ogólne</NmPL>
+					</xs:appinfo>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Sts" type="Status">
+				<xs:annotation>
+					<xs:documentation>Status</xs:documentation>
+					<xs:appinfo>
+						<NmPL>Status</NmPL>
+					</xs:appinfo>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+</xs:schema>

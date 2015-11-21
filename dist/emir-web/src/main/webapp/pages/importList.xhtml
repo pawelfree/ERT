@@ -1,0 +1,98 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<ui:composition   template="/templates/main.xhtml"
+                  xmlns="http://www.w3.org/1999/xhtml"
+                  xmlns:h="http://java.sun.com/jsf/html"
+                  xmlns:f="http://java.sun.com/jsf/core"
+                  xmlns:ui="http://java.sun.com/jsf/facelets"
+                  xmlns:p="http://primefaces.org/ui"
+                  xmlns:emir="http://pl.pd/emir">
+
+    <ui:define name="pageTitle">
+        <h:outputLabel value="#{msgs['importList.head']}"/>
+    </ui:define>
+    <ui:define name="body">
+        <h:form id="importList" >
+            <emir:searchPanel bean="#{importListBean}"
+                                columns="4"
+                                id="importSearchPanel"
+                                updateAfterSearch="importsTable">
+
+
+                <emir:dateFilter id="searchImportDateFrom"
+                                   pattern="datetime"
+                                   value="#{importListBean.criteria.importDateFrom}"
+                                   label="#{msgs['importSearch.importDateFrom']}" />
+                <emir:dateFilter id="searchImportTransactionFrom"
+                                   pattern="date"
+                                   value="#{importListBean.criteria.transactionDateFrom}"
+                                   label="#{msgs['importSearch.transactionDateFrom']}:" />
+                <p:outputLabel value="#{msgs['importSearch.importUser']}:"/>
+                <p:inputText value="#{importListBean.criteria.importUser}"/>
+
+
+                <emir:selectFilter id="searchImportStatus"
+                                     label="#{msgs['importSearch.importStatus']}:"
+                                     allowEmpty="true"
+                                     value="#{importListBean.criteria.importStatus}" >
+                    <f:selectItems value="#{importListBean.importStatus}" var="importStatus"
+                                   itemLabel="#{msgs[importStatus.msgKey]}" itemValue="#{importStatus}" />
+                </emir:selectFilter>
+                <emir:dateFilter id="searchImportDateTo"
+                                   pattern="datetime"
+                                   value="#{importListBean.criteria.importDateTo}"
+                                   label="#{msgs['importSearch.importDateTo']}:" />
+                <emir:dateFilter id="searchImportTransactionDateT"
+                                   pattern="date"
+                                   value="#{importListBean.criteria.transactionDateTo}"
+                                   label="#{msgs['importSearch.transactionDateTo']}:" />
+                <emir:selectFilter id="searchImportScope"
+                                     label="#{msgs['importSearch.importScope']}:"
+                                     allowEmpty="true"
+                                     value="#{importListBean.criteria.importScope}" >
+                    <f:selectItems value="#{importListBean.importScope}" var="importScope"
+                                   itemLabel="#{msgs[importScope.msgKey]}" itemValue="#{importScope}" />
+                </emir:selectFilter>
+
+
+            </emir:searchPanel>
+
+            <p:toolbar>
+                <p:toolbarGroup align="left">
+                    <p:commandButton id="downloadExcel" value="#{msgs['button.excel']}" ajax="false"
+                                     actionListener="#{reportBean.generateTableReport(importListBean.reportType,reportBean.xlsFormat,importListBean.reportData)}"
+                                     icon="ui-icon-arrowthichk-s">
+                        <p:fileDownload value="#{reportBean.file}" />
+                    </p:commandButton>
+                </p:toolbarGroup>
+            </p:toolbar>
+
+            <emir:resultsPanel id="dataTable" bean="#{importListBean}" tableId="importsTable" addScroller="true" var="import" selectable="false">
+                <emir:column header="#{msgs['importList.importDate']}"
+                               bean="#{importListBean}"
+                               format="datetime"
+                               sortBy="importDate"
+                               value="#{import.importDate}"/>
+                <emir:column header="#{msgs['importList.importUser']}"
+                               bean="#{importListBean}"
+                               value="#{import.importUser}"/>
+                <emir:column header="#{msgs['importList.importScope']}"
+                               bean="#{importListBean}"
+                               value="#{msgs[import.importScope.msgKey]}"/>
+                <emir:column header="#{msgs['importList.transactionDate']}"
+                               bean="#{importListBean}"
+                               format="date"
+                               value="#{import.transactionDate}"/>
+                <emir:column header="#{msgs['importList.importStatus']}"
+                               bean="#{importListBean}"
+                               value="#{msgs[import.importStatus.msgKey]}"/>
+                <emir:actionColumn rendered="true">
+                    <p:commandButton id="raportButton"
+                                     ajax="false"
+                                     action="#{importListReportBean.initReportDetails(import.id)}"
+                                     title="Raport"
+                                     icon="ui-icon-document" />
+                </emir:actionColumn>
+            </emir:resultsPanel>
+        </h:form>
+    </ui:define>
+</ui:composition>

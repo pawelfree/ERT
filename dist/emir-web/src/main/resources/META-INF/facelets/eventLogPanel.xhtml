@@ -1,0 +1,100 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:c="http://java.sun.com/jsp/jstl/core"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:emir="http://pl.pd/emir">
+
+    <ui:remove>
+        <!--Panel historii modyfikacji wskazanego typu danych-->
+
+        <!--domyślnie: eventLogPanel | wymagane: nie-->
+        id: String
+        <!--domyślnie: true | wymagane: nie-->
+        rendered: Boolean
+        <!--domyślnie: | wymagane: tak | bean obsługujący-->
+        bean: pl.pd.emir.admin.bean.AbstractEventLogBean
+
+    </ui:remove>
+
+    <c:if test="#{empty id}">
+        <ui:param name="id" value="eventLogPanel" />
+    </c:if>
+    <c:if test="#{empty rendered}">
+        <ui:param name="rendered" value="#{true}" />
+    </c:if>
+    <ui:param name="tableId" value="#{id}_eventLogTable" />
+
+    <h:panelGroup id="#{id}" rendered="#{rendered}">
+
+        <emir:searchPanel bean="#{bean}" columns="4" id="#{id}_searchPanel"
+                            updateAfterSearch="#{tableId}" rendered="#{bean.eventLogType eq null}">
+            <emir:dateFilter id="#{id}_searchPanel_eventDateFromFilter"
+                               pattern="datetime"
+                               value="#{bean.criteria.eventDateFrom}"
+                               label="#{msgs['eventLog.list.sc.eventDateFrom']}" />
+            <emir:dateFilter id="#{id}_searchPanel_eventDateToFilter"
+                               pattern="datetime"
+                               value="#{bean.criteria.eventDateTo}"
+                               label="#{msgs['eventLog.list.sc.eventDateTo']}" />
+            <emir:selectFilter id="#{id}_searchPanel_logTypeFilter"
+                                 label="#{msgs['eventLog.list.sc.logType']}"
+                                 allowEmpty="false"
+                                 value="#{bean.criteria.logType}" >
+                <f:selectItem itemLabel="#{msgs['commons.search.all']}" itemValue="#{null}"/>
+                <f:selectItems value="#{bean.eventLogTypes}" var="logType"
+                               itemLabel="#{msgs[logType.msgKey]}" itemValue="#{logType}" />
+            </emir:selectFilter>
+        </emir:searchPanel>
+
+        <p:toolbar rendered="#{bean.eventLogType eq null}">
+            <p:toolbarGroup align="left">
+                <p:commandButton id="downloadExcel" value="#{msgs['button.excel']}" ajax="false"
+                                 actionListener="#{reportBean.generateTableReport(eventLogListBean.reportType,reportBean.xlsFormat,eventLogListBean.reportData)}"
+                                 icon="ui-icon-arrowthichk-s">
+                    <p:fileDownload value="#{reportBean.file}" />
+                </p:commandButton>
+            </p:toolbarGroup>
+        </p:toolbar>
+
+        <emir:resultsPanel bean="#{bean}" tableId="#{tableId}" addScroller="true" var="eventLog"
+                             selectable="false" emptyMessage="#{msgs['table.empty.eventLog']}">
+
+            <emir:column header="#{msgs['eventLog.list.column.dateTime']}" format="datetime" sortBy="date"
+                           value="#{eventLog.date}" rendered="#{bean.eventLogType eq null}" />
+
+            <emir:column header="#{msgs['eventLog.list.column.logType']}" format="text" sortBy="logType"
+                           value="#{msgs[eventLog.logType.msgKey]}" rendered="#{bean.eventLogType eq null}" />
+
+            <emir:column header="#{msgs['eventLog.list.column.eventType']}" format="text" sortBy="eventType"
+                           value="#{msgs[eventLog.eventType.msgKey]}" rendered="#{bean.eventLogType eq null}" />
+
+            <emir:column header="#{msgs['eventLog.list.column.eventSubject']}" format="text"
+                           value="#{bean.getSubject(eventLog)}" rendered="#{bean.eventLogType eq null}" />
+
+            <emir:column header="#{msgs['eventLog.list.column.fieldName']}" format="text" sortBy="changeLog.fieldName"
+                           value="#{eventLog.changeLog.fieldName}" rendered="#{bean.eventLogType ne null}" />
+
+            <emir:column header="#{msgs['eventLog.list.column.oldValue']}" format="text" sortBy="changeLog.oldValue"
+                           value="#{eventLog.changeLog.oldValue}" rendered="#{bean.eventLogType ne null}" />
+
+            <emir:column header="#{msgs['eventLog.list.column.newValue']}" format="text" sortBy="changeLog.newValue"
+                           value="#{eventLog.changeLog.newValue}" rendered="#{bean.eventLogType ne null}" />
+
+            <emir:column header="#{msgs['eventLog.list.column.dateTime']}" format="datetime" sortBy="date"
+                           value="#{eventLog.date}" rendered="#{bean.eventLogType ne null}" />
+
+            <emir:column header="#{msgs['eventLog.list.column.user']}" format="text" sortBy="changeLog.newValue"
+                           value="#{eventLog.user.login}" />
+
+            <emir:column header="#{msgs['eventLog.list.column.details']}" format="text" sortBy="details" style="white-space: normal;"
+                           value="#{empty eventLog.details ? msgs['commons.none'] : eventLog.details}" rendered="#{bean.eventLogType eq null}" />
+
+        </emir:resultsPanel>
+
+    </h:panelGroup>
+
+</ui:composition>

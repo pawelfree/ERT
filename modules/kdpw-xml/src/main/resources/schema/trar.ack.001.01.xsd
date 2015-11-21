@@ -1,0 +1,247 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns="urn:kdpw:xsd:trar.ack.001.01" targetNamespace="urn:kdpw:xsd:trar.ack.001.01" elementFormDefault="qualified" attributeFormDefault="unqualified">
+	<xs:annotation>
+		<xs:documentation>Komunikat potwierdzający przyjęcie komunikatu do RT po kontroli formalnej (komunikat zwrotny I stopnia).</xs:documentation>
+		<xs:appinfo>
+			<NmPL>Komunikat przyjęcia komunikatu do RT po kontroli formalnej </NmPL>
+		</xs:appinfo>
+	</xs:annotation>
+	<xs:element name="KDPWDocument" type="KDPWDocument">
+		<xs:annotation>
+			<xs:documentation>Komunikat systemu KDPW</xs:documentation>
+			<xs:appinfo>
+				<NmPL>Komunikat systemu KDPW</NmPL>
+			</xs:appinfo>
+		</xs:annotation>
+	</xs:element>
+	<xs:complexType name="DateAndDateTimeChoice">
+		<xs:annotation>
+			<xs:documentation>Data i czas</xs:documentation>
+			<xs:appinfo>
+				<NmPL>Data i czas</NmPL>
+			</xs:appinfo>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:choice>
+				<xs:element name="Dt" type="ISODate">
+					<xs:annotation>
+						<xs:documentation>Data</xs:documentation>
+						<xs:appinfo>
+							<NmPL>Data</NmPL>
+						</xs:appinfo>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="DtTm" type="ISODateTime">
+					<xs:annotation>
+						<xs:documentation>Data i czas</xs:documentation>
+						<xs:appinfo>
+							<NmPL>Data i czas</NmPL>
+						</xs:appinfo>
+					</xs:annotation>
+				</xs:element>
+			</xs:choice>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="FileInformation">
+		<xs:annotation>
+			<xs:documentation>Infomacje o pliku</xs:documentation>
+			<xs:appinfo>
+				<NmPL>Informacje o pliku</NmPL>
+			</xs:appinfo>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="Nm" type="Max128Text">
+				<xs:annotation>
+					<xs:documentation>Nazwa pliku/komunikatu</xs:documentation>
+					<xs:appinfo>
+						<NmPL>Nazwa pliku/komunikatu</NmPL>
+					</xs:appinfo>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Sndr" type="KDPWMemberIdentifier">
+				<xs:annotation>
+					<xs:documentation>Nadawca pliku/komunikatu</xs:documentation>
+					<xs:appinfo>
+						<NmPL>Nadawca pliku</NmPL>
+					</xs:appinfo>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="RcvDtTm" type="ISODateTime">
+				<xs:annotation>
+					<xs:documentation>Data otrzymania</xs:documentation>
+					<xs:appinfo>
+						<NmPL>Data otrzymania</NmPL>
+					</xs:appinfo>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="GeneralInformation">
+		<xs:annotation>
+			<xs:documentation>Informacje ogólne</xs:documentation>
+			<xs:appinfo>
+				<NmPL>Informacje ogólne</NmPL>
+			</xs:appinfo>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="SndrMsgRef" type="Max16Text">
+				<xs:annotation>
+					<xs:documentation>Identyfikator komunikatu utworzony przez nadawcę</xs:documentation>
+					<xs:appinfo>
+						<NmPL>Identyfikator komunikatu</NmPL>
+					</xs:appinfo>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="CreDtTm" type="DateAndDateTimeChoice" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Data utworzenia komunikatu</xs:documentation>
+					<xs:appinfo>
+						<NmPL>Data utworzenia komunikatu</NmPL>
+					</xs:appinfo>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:simpleType name="ISODate">
+		<xs:annotation>
+			<xs:documentation>Data</xs:documentation>
+			<xs:appinfo>
+				<NmPL>Data</NmPL>
+			</xs:appinfo>
+		</xs:annotation>
+		<xs:restriction base="xs:date"/>
+	</xs:simpleType>
+	<xs:simpleType name="ISODateTime">
+		<xs:annotation>
+			<xs:documentation>Data i czas</xs:documentation>
+			<xs:appinfo>
+				<NmPL>Data i czas</NmPL>
+			</xs:appinfo>
+		</xs:annotation>
+		<xs:restriction base="xs:dateTime"/>
+	</xs:simpleType>
+	<xs:complexType name="KDPWDocument">
+		<xs:annotation>
+			<xs:documentation>Komunikat systemu KDPW</xs:documentation>
+			<xs:appinfo>
+				<NmPL>Komunikat systemu KDPW</NmPL>
+			</xs:appinfo>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="trar.ack.001.01" type="trar.ack.001.01" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>Komunikat przyjęcia komunikatu do RT po kontroli formalnej </xs:documentation>
+					<xs:appinfo>
+						<NmPL>Komunikat przyjęcia komunikatu do RT po kontroli formalnej </NmPL>
+					</xs:appinfo>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+		<xs:attribute name="Sndr" type="KDPWMemberIdentifier" use="required">
+			<xs:annotation>
+				<xs:documentation>Nadawca w postaci kodu KDPW</xs:documentation>
+				<xs:appinfo>
+					<NmPL>Nadawca</NmPL>
+				</xs:appinfo>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="Rcvr" type="KDPWMemberIdentifier" use="required">
+			<xs:annotation>
+				<xs:documentation>Odbiorca w postaci kodu KDPW</xs:documentation>
+				<xs:appinfo>
+					<NmPL>Odbiorca</NmPL>
+				</xs:appinfo>
+			</xs:annotation>
+		</xs:attribute>
+	</xs:complexType>
+	<xs:simpleType name="KDPWMemberIdentifier">
+		<xs:annotation>
+			<xs:documentation>Identyfikator uczestnika KDPW</xs:documentation>
+			<xs:appinfo>
+				<NmPL>Identyfikator uczestnika KDPW</NmPL>
+			</xs:appinfo>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:whiteSpace value="collapse"/>
+			<xs:minLength value="4"/>
+			<xs:maxLength value="4"/>
+		</xs:restriction>
+	</xs:simpleType>
+	
+	<xs:simpleType name="Max4Text">
+		<xs:annotation>
+			<xs:documentation>Tekst o maksymalnej długości 4 znaków</xs:documentation>
+			<xs:appinfo>
+				<NmPL>Tekst</NmPL>
+			</xs:appinfo>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:whiteSpace value="collapse"/>
+			<xs:minLength value="1"/>
+			<xs:maxLength value="4"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="Max16Text">
+		<xs:annotation>
+			<xs:documentation>Tekst o maksymalnej długości 16 znaków</xs:documentation>
+			<xs:appinfo>
+				<NmPL>Tekst</NmPL>
+			</xs:appinfo>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:minLength value="1"/>
+			<xs:maxLength value="16"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="Max128Text">
+		<xs:annotation>
+			<xs:documentation>Tekst o maksymalnej długości 128 znaków</xs:documentation>
+			<xs:appinfo>
+				<NmPL>Tekst</NmPL>
+			</xs:appinfo>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:whiteSpace value="collapse"/>
+			<xs:minLength value="1"/>
+			<xs:maxLength value="128"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="Max140Text">
+		<xs:annotation>
+			<xs:documentation>Tekst o maksymalnej długości 140 znaków</xs:documentation>
+			<xs:appinfo>
+				<NmPL>Tekst</NmPL>
+			</xs:appinfo>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:minLength value="1"/>
+			<xs:maxLength value="140"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:complexType name="trar.ack.001.01">
+		<xs:annotation>
+			<xs:documentation>Komunikat przyjęcia komunikatu do RT po kontroli formalnej</xs:documentation>
+			<xs:appinfo>
+				<NmPL>Komunikat przyjęcia komunikatu do RT po kontroli formalnej</NmPL>
+			</xs:appinfo>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="GnlInf" type="GeneralInformation">
+				<xs:annotation>
+					<xs:documentation>Blok informacji ogólnych</xs:documentation>
+					<xs:appinfo>
+						<NmPL>Informacje ogólne</NmPL>
+					</xs:appinfo>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="FileInf" type="FileInformation">
+				<xs:annotation>
+					<xs:documentation>Informacje o pliku</xs:documentation>
+					<xs:appinfo>
+						<NmPL>Informacje o pliku</NmPL>
+					</xs:appinfo>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+</xs:schema>

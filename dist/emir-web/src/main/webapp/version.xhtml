@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTDXHTML1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:emirCOMP="http://java.sun.com/jsf/composite/emirCOMP"
+      template="/templates/main.xhtml">
+    <h:head>
+        <title>Version - Bank of Tokyo-Mitsubishi UFJ (Polska) S.A. - emir - 2014</title>
+        <link rel="shortcut icon" href="#{request.contextPath}/images/favicon.ico"/>
+        <style type="text/css">
+            body {
+                height: 100%;
+                width: 100%;
+                margin: 0px;
+                padding: 0px;
+            }
+
+            #centeredcontent {
+                position: absolute;
+                top: 45%;
+                left: 45%;
+                margin-top: -10.5em;
+                margin-left: -20.5em;
+
+                width: 21em;
+                height: 9em;
+
+                color: #000;
+                background-color: white;
+                border: 0px;
+            }
+
+        </style>
+    </h:head>
+
+    <body>
+        <div id="centeredcontent" style="width:50%;height:50%" align="center">
+            <p:panel header="European Market Infrastructure Regulation reporting tool" style="width:100%;height:100%">
+
+                <div align="left" style="width:100%;height:100%">
+                    <b>VENDOR</b>
+                    <ul>
+                        <li>Version: VERSION_NUMBER</li>
+                        <li>Build time: EXECUTION_DATE_TIME</li>
+                        <li>Local addr: #{request.localAddr}</li>
+                        <li>Remote addr: #{request.remoteAddr}</li>
+                    </ul>
+                </div>
+            </p:panel>
+        </div>
+    </body>
+
+</html>
+

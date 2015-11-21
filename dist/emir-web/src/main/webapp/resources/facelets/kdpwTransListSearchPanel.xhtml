@@ -1,0 +1,67 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:composite="http://java.sun.com/jsf/composite"
+                xmlns:emir="http://pl.pd/emir"
+                xmlns:f="http://java.sun.com/jsf/core">
+
+    <composite:interface>
+        <composite:attribute name="bean" type="pl.pd.emir.kdpw.bean.AbstractKdpwListBean" required="true" />
+        <composite:attribute name="toUpdate" type="java.lang.String" required="false" />
+        <composite:attribute name="panelId" type="java.lang.String" required="true" />
+        <composite:attribute name="backloading" type="java.lang.Boolean" required="false" default="false" />
+    </composite:interface>
+
+    <composite:implementation>
+
+        <emir:searchPanel bean="#{cc.attrs.bean}" columns="2"
+                            id="#{cc.attrs.panelId}" updateAfterSearch="#{cc.attrs.toUpdate}">
+            <h:panelGrid columns="1" id="h1">
+                <h:panelGrid columns="3" id="h2">
+                    <h:outputLabel value="#{msgs['transaction.kdpw.sc.transactionDate']}" rendered="#{true}"/>
+                    <p:calendar id="transactionDateFilter_calendar"
+                                value="#{cc.attrs.bean.criteria.transactionDate}"
+                                showOn="button"
+                                disabled="#{false}"
+                                label="#{msgs['transaction.kdpw.sc.transactionDate']}"
+                                pattern="#{applicationBean.dateFormat}"
+                                size="14"
+                                locale="pl"
+                                title="#{info}">
+                        <f:validator validatorId="pl.pd.emir.kdpw.validators.FilterDateValidator"/>
+                    </p:calendar>
+                    <h:panelGroup>
+                        <p:message for="transactionDateFilter_calendar" />
+                        <h:outputText value="#{cc.attrs.bean.transactionDateScopeMsg}" />
+                    </h:panelGroup>
+                    <h:outputText />
+                </h:panelGrid>
+                <h:panelGrid columns="2" id="h3">
+                    <h:outputLabel value="#{msgs['transaction.kdpw.sc.sourceIdTrans']}" rendered="#{true}"/>
+                    <p:inputText id="originalIdFilter_inputText" value="#{cc.attrs.bean.criteria.sourceTransId}"/>
+
+
+                    <h:outputLabel value="#{msgs['transaction.kdpw.sc.dataType']}" />
+                    <h:panelGrid columns="2" id="h4">
+                        <p:selectBooleanCheckbox value="#{cc.attrs.bean.criteria.neww}" />
+                        <p:outputLabel value="#{msgs['DataType.NEW']}" />
+
+                        <p:selectBooleanCheckbox value="#{cc.attrs.bean.criteria.ongoing}" />
+                        <p:outputLabel value="#{msgs['DataType.ONGOING']}" />
+
+                        <p:selectBooleanCheckbox value="#{cc.attrs.bean.criteria.completed}" />
+                        <p:outputLabel value="#{msgs['DataType.COMPLETED']}" />
+
+                    </h:panelGrid>
+
+                    <p:outputLabel value="#{msgs['transaction.kdpw.sc.backloading']}" rendered="#{cc.attrs.backloading}" />
+                    <p:selectBooleanCheckbox value="#{cc.attrs.bean.criteria.backloading}" rendered="#{cc.attrs.backloading}" style="padding-left: 3px;" />
+
+                </h:panelGrid>
+            </h:panelGrid>
+        </emir:searchPanel>
+
+    </composite:implementation>
+
+</ui:composition>

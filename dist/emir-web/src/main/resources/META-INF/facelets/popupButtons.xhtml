@@ -1,0 +1,29 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:c="http://java.sun.com/jsp/jstl/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                >
+    <ui:remove>
+        <!-- Dolny panel na popup'ach -->    
+        panelId : type="java.lang.String" required="false" default="popupButtons"
+    </ui:remove>
+
+    <c:if test="#{empty panelId}" >
+        <ui:param name="panelId" value="popupButtons" />
+    </c:if>
+    <c:if test="#{empty cancel}" >
+        <ui:param name="cancel" value="false" />
+    </c:if>
+
+
+    <p:panel styleClass="buttonsPanel" >
+        <ui:insert/>
+        <p:commandButton value="#{msgs['button.close']}" onclick="#{dialogId}.hide();"
+                         rendered="#{not cancel}" immediate="true"
+                         />
+        <p:commandButton value="#{msgs['button.cancel']}" onclick="#{dialogId}.hide();" 
+                         rendered="#{cancel}" immediate="true"
+                         />
+    </p:panel>        
+</ui:composition>

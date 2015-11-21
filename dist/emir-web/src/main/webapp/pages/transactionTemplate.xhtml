@@ -1,0 +1,858 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<ui:composition   template="/templates/main.xhtml"
+                  xmlns="http://www.w3.org/1999/xhtml"
+                  xmlns:h="http://java.sun.com/jsf/html"
+                  xmlns:f="http://java.sun.com/jsf/core"
+                  xmlns:ui="http://java.sun.com/jsf/facelets"
+                  xmlns:p="http://primefaces.org/ui"
+                  xmlns:emir="http://pl.pd/emir">    
+    <ui:define name="pageTitle">
+        <h:outputLabel value="#{msgs['admin.template.head']}"/>
+    </ui:define>
+    <ui:define name="body">
+        <h:form id="form1">
+            <p:panel id="buttonsPanel" styleClass="buttonsPanel">
+                <p:commandButton value="#{msgs['button.save']}" 
+                                 id="buttonSave"
+                                 ajax="true"
+                                 action="#{transactionTemplateBean.save()}"
+                                 immediate="false"
+                                 update="#{p:component('confirmDialog')}"
+                                 />
+            </p:panel>
+            <p:tabView id="tv" widgetVar="tv" cache="false">
+                <p:tab title="#{msgs['register.transactionForm.tabs.transactionBaseData']}">
+                    <p:panel toggleable="true">
+                        <f:facet name="header">#{msgs['register.transactionForm.basicData.section.generalData']}</f:facet>
+                        <p:panelGrid columns="2" id="transactionBaseDataPg1">
+                            <ui:remove><!--Identyfikator transakcji--></ui:remove>
+                            <emir:inputText id="sourceTransIdInput" rendered="#{not (transactionTemplateBean.formType == 'View')}" maxlength="52" 
+                                             value="#{transactionTemplateBean.entity.transactionDetails.sourceTransId}" 
+                                             label="#{msgs['register.transactionForm.basicData.sourceTransId']}" 
+                                             info="#{msgs['register.transactionForm.tabs.transactionBaseData']}->#{msgs['register.transactionForm.basicData.section.generalData']}->#{msgs['register.transactionForm.basicData.sourceTransId']}" />
+                            
+                             <ui:remove><!--Poprzedni kod transakcji--></ui:remove>
+                             <emir:inputText id="previousSourceTransIdInput" 
+                                             maxlength="52" 
+                                             value="#{transactionTemplateBean.entity.transactionDetails.previousSourceTransId}" 
+                                             label="#{msgs['register.transactionForm.basicData.previousSourceTransId']}" 
+                                             info="#{msgs['register.transactionForm.tabs.transactionBaseData']}->#{msgs['register.transactionForm.basicData.section.generalData']}->#{msgs['register.transactionForm.basicData.previousSourceTransId']}" 
+                                             />
+                            
+                            <ui:remove><!--Numer referencyjny transakcji--></ui:remove>
+                            <emir:inputText id="sourceTransRefNrInput" rendered="#{not (transactionTemplateBean.formType == 'View')}" maxlength="40"
+                                             value="#{transactionTemplateBean.entity.transactionDetails.sourceTransRefNr}" 
+                                             label="#{msgs['register.transactionForm.basicData.sourceTransRefNr']}" 
+                                             info="#{msgs['register.transactionForm.tabs.transactionBaseData']}->#{msgs['register.transactionForm.basicData.section.generalData']}->#{msgs['register.transactionForm.basicData.sourceTransRefNr']}" />
+
+                            <ui:remove><!--Identyfikator klienta--></ui:remove>
+                            <emir:inputText id="originalClientIdInput" rendered="#{not (transactionTemplateBean.formType == 'View')}" maxlength="40"
+                                             value="#{transactionTemplateBean.entity.originalClientId}" 
+                                             label="#{msgs['register.transactionForm.basicData.originalClientId']}" 
+                                             info="#{msgs['register.transactionForm.tabs.transactionBaseData']}->#{msgs['register.transactionForm.basicData.section.generalData']}->#{msgs['register.transactionForm.basicData.originalClientId']}" />                              
+
+                            <ui:remove><!--Typ danych--></ui:remove>
+
+                            <ui:remove><!--Statusy--></ui:remove>
+
+                            <ui:remove><!--Strona transakcji--></ui:remove>
+                            <emir:inputSelect id="transactionPartyInput" rendered="#{not (transactionTemplateBean.formType == 'View')}"
+                                               value="#{transactionTemplateBean.entity.transactionParty}" 
+                                               label="#{msgs['register.transactionForm.basicData.transactionParty']}" 
+                                               info="#{msgs['register.transactionForm.tabs.transactionBaseData']}->#{msgs['register.transactionForm.basicData.section.generalData']}->#{msgs['register.transactionForm.basicData.transactionParty']}"
+                                               allowEmpty="true"
+                                               >
+                                <f:selectItems itemLabel="#{option}" value="#{transactionTemplateBean.importTransactionParty}" var="option" itemValue="#{option}" />
+                            </emir:inputSelect>
+
+                            <ui:remove><!--Transakcja potwierdzona--></ui:remove>
+                            <emir:inputSelect id="confirmedInput" rendered="#{not (transactionTemplateBean.formType == 'View')}"
+                                               value="#{transactionTemplateBean.confirmedStatus}" 
+                                               label="#{msgs['register.transactionForm.basicData.confirmed']}" 
+                                               info="#{msgs['register.transactionForm.tabs.transactionBaseData']}->#{msgs['register.transactionForm.basicData.section.generalData']}->#{msgs['register.transactionForm.basicData.confirmed']}"  
+                                               allowEmpty="false"
+                                               >
+                                <f:selectItem itemValue="EMPTY" itemLabel="#{msgs['ConfirmedStatus.EMPTY']}"/>
+                                <f:selectItem itemValue="CONFIRMED" itemLabel="#{msgs['ConfirmedStatus.CONFIRMED']}"/>
+                                <f:selectItem itemValue="UNCONFIRMED" itemLabel="#{msgs['ConfirmedStatus.UNCONFIRMED']}"/>
+                            </emir:inputSelect>
+                        </p:panelGrid>
+                    </p:panel>
+                </p:tab>
+
+                <p:tab title="#{msgs['register.transactionForm.tabs.valuation']}" id="tValuation">
+                    <h:panelGroup id="valuationPg1">
+                        <p:panel toggleable="true">
+                            <f:facet name="header">#{msgs['register.transactionForm.valuation.section.valuation']}</f:facet>
+                            <p:panelGrid columns="2">
+                                <ui:remove><!--Waluta wyceny--></ui:remove>
+                                <emir:inputSelect filter="true" id="valuationCurrencyCodeInput" allowEmpty="true" 
+                                                   rendered="#{not (transactionTemplateBean.formType == 'View')}"
+                                                   value="#{transactionTemplateBean.entity.currencyCode}" 
+                                                   label="#{msgs['register.transactionForm.valuation.currencyCode']}" 
+                                                   info="#{msgs['register.transactionForm.tabs.valuation']}->#{msgs['register.transactionForm.valuation.section.valuation']}->#{msgs['register.transactionForm.valuation.currencyCode']}" >
+                                    <f:selectItems value="#{transactionTemplateBean.importCurrencyCode}" var="option" itemLabel="#{option}" itemValue="#{option}"/>
+                                </emir:inputSelect>  
+                                <ui:remove><!--Data i godzina wyceny--></ui:remove>
+                                <emir:inputDate id="valuationDateInput" 
+                                                 value="#{transactionTemplateBean.entity.valuationDate}" 
+                                                 pattern="yyyy-MM-dd hh:mm:ss"
+                                                 label="#{msgs['register.transactionForm.valuation.valuationDate']}"
+                                                 info="#{msgs['register.transactionForm.tabs.valuation']}->#{msgs['register.transactionForm.valuation.section.valuation']}->#{msgs['register.transactionForm.valuation.valuationDate']}" 
+                                                 rendered="#{not (transactionTemplateBean.formType == 'View')}"
+                                                 mindate="#{msgs['commons.utilsClient.minimalData']}"/>
+                                <ui:remove><!--Rodzaj wyceny--></ui:remove>
+                                <emir:inputSelect filter="true" id="valuationTypeInput" allowEmpty="true" 
+                                                   rendered="#{not (transactionTemplateBean.formType == 'View')}"
+                                                   value="#{transactionTemplateBean.entity.valuationType}" 
+                                                   label="#{msgs['register.transactionForm.valuation.valuationType']}" 
+                                                   info="#{msgs['register.transactionForm.tabs.valuation']}->#{msgs['register.transactionForm.valuation.section.valuation']}->#{msgs['register.transactionForm.valuation.valuationType']}" >
+                                    <f:selectItems value="#{transactionTemplateBean.importValuationType}" var="option" itemLabel="#{option}" itemValue="#{option}"/>
+                                </emir:inputSelect>
+
+                                <ui:remove><!--Wartość wyceny instytucji raportującej--></ui:remove>
+                                <emir:inputText id="valuationAmountInput" rendered="#{not (transactionTemplateBean.formType == 'View')}" 
+                                                 value="#{transactionTemplateBean.entity.amount}" 
+                                                 label="#{msgs['register.transactionForm.valuation.amount']}" 
+                                                 info="#{msgs['register.transactionForm.tabs.valuation']}->#{msgs['register.transactionForm.valuation.section.valuation']}->#{msgs['register.transactionForm.valuation.amount']}"  >
+                                    <f:convertNumber maxFractionDigits="5" maxIntegerDigits="20"  />
+                                </emir:inputText>
+
+                                <ui:remove><!--Wartość wyceny kontrahenta--></ui:remove>
+                                <emir:inputText id="valuationamountClientInput" rendered="#{not (transactionTemplateBean.formType == 'View')}" 
+                                                 value="#{transactionTemplateBean.entity.clientAmount}" 
+                                                 label="#{msgs['register.transactionForm.valuation.amountClient']}" 
+                                                 info="#{msgs['register.transactionForm.tabs.valuation']}->#{msgs['register.transactionForm.valuation.section.valuation']}->#{msgs['register.transactionForm.valuation.amountClient']}"  >
+                                    <f:convertNumber maxFractionDigits="5" maxIntegerDigits="20"  />
+                                </emir:inputText>
+                            </p:panelGrid>
+                        </p:panel>   
+                    </h:panelGroup>
+                </p:tab>
+                <p:tab title="#{msgs['register.transactionForm.tabs.protection']}" id="tProtection">
+                    <h:panelGroup id="protectionPg1">
+                        <p:panel toggleable="true">
+                            <f:facet name="header">#{msgs['register.transactionForm.protection.section.protection']}</f:facet>
+                            <p:panelGrid columns="2">
+                                <ui:remove><!--Dokonano zabezpieczenia--></ui:remove>
+                                <emir:inputSelect filter="true" id="protectionInput" rendered="#{not (transactionTemplateBean.formType == 'View')}"
+                                                   value="#{transactionTemplateBean.entity.protection.isProtection}" allowEmpty="true" 
+                                                   label="#{msgs['register.transactionForm.protection.protection']}" 
+                                                   info="#{msgs['register.transactionForm.tabs.protection']}->#{msgs['register.transactionForm.protection.section.protection']}->#{msgs['register.transactionForm.protection.protection']}" >                                
+                                    <f:selectItems value="#{transactionTemplateBean.importDoProtection}" var="option" itemLabel="#{option}" itemValue="#{option}"/>
+                                </emir:inputSelect>
+
+                                <ui:remove><!--Dokonano zabezpieczenia na poziomie portfela--></ui:remove>
+                                <emir:inputSelect filter="true" id="walletProtectionInput" rendered="#{not (transactionTemplateBean.formType == 'View')}"
+                                                   value="#{transactionTemplateBean.entity.protection.walletProtection}" allowEmpty="true" 
+                                                   label="#{msgs['register.transactionForm.protection.walletProtection']}" 
+                                                   info="#{msgs['register.transactionForm.tabs.protection']}->#{msgs['register.transactionForm.protection.section.protection']}->#{msgs['register.transactionForm.protection.walletProtection']}" >
+                                    <f:selectItems value="#{transactionTemplateBean.importYesNo}" var="option" itemLabel="#{msgs[option.msgKey]}" itemValue="#{option}"/>
+                                </emir:inputSelect>
+
+
+                                <ui:remove><!--Kod portfela--></ui:remove>
+                                <emir:inputText id="walletIdInput" rendered="#{not (transactionTemplateBean.formType == 'View')}" maxlength="35"
+                                                 value="#{transactionTemplateBean.entity.protection.walletId}" 
+                                                 label="#{msgs['register.transactionForm.protection.walletId']}" 
+                                                 info="#{msgs['register.transactionForm.tabs.protection']}->#{msgs['register.transactionForm.protection.section.protection']}->#{msgs['register.transactionForm.protection.walletId']}"  />
+
+                                <ui:remove><!--Waluta zabezpiecenia--></ui:remove>
+                                <emir:inputSelect filter="true" id="protectionCurrencyCodeInput" rendered="#{not (transactionTemplateBean.formType == 'View')}"
+                                                   value="#{transactionTemplateBean.entity.protection.currencyCode}" allowEmpty="true"
+                                                   label="#{msgs['register.transactionForm.protection.currencyCode']}" 
+                                                   info="#{msgs['register.transactionForm.tabs.protection']}->#{msgs['register.transactionForm.protection.section.protection']}->#{msgs['register.transactionForm.protection.currencyCode']}" >
+                                    <f:selectItems value="#{transactionTemplateBean.importCurrencyCode}" var="option" itemLabel="#{option}" itemValue="#{option}"/>
+                                </emir:inputSelect>
+
+                                <ui:remove><!--Wartość zabezpieczenia instytucji raportującej--></ui:remove>
+                                <emir:inputText id="protectionAmountInput" rendered="#{not (transactionTemplateBean.formType == 'View')}" 
+                                                 value="#{transactionTemplateBean.entity.protection.amount}" 
+                                                 label="#{msgs['register.transactionForm.protection.amount']}" 
+                                                 info="#{msgs['register.transactionForm.tabs.protection']}->#{msgs['register.transactionForm.protection.section.protection']}->#{msgs['register.transactionForm.protection.amount']}"  >
+                                    <f:convertNumber maxFractionDigits="2" maxIntegerDigits="20"  />
+                                </emir:inputText>
+
+                                <ui:remove><!--Wartość zabezpieczenia kontrahenta--></ui:remove>
+                                <emir:inputText id="protectionAmountClientInput" rendered="#{not (transactionTemplateBean.formType == 'View')}" 
+                                                 value="#{transactionTemplateBean.entity.protection.clientAmount}" 
+                                                 label="#{msgs['register.transactionForm.protection.amountClient']}" 
+                                                 info="#{msgs['register.transactionForm.tabs.protection']}->#{msgs['register.transactionForm.protection.section.protection']}->#{msgs['register.transactionForm.protection.amountClient']}"  >
+                                    <f:convertNumber maxFractionDigits="2" maxIntegerDigits="20"  />
+                                </emir:inputText>
+                            </p:panelGrid>
+                        </p:panel>
+                    </h:panelGroup>
+                </p:tab>
+
+
+                <p:tab title="#{msgs['register.transactionForm.tabs.generalData']}" id="tGeneralData">
+                    <h:panelGroup id="generalDataPg1">
+                        <p:panel toggleable="true">
+                            <f:facet name="header">#{msgs['register.transactionForm.generalData.section.reportingInstitutionsData']}</f:facet>
+                            <p:panel toggleable="true">
+                                <f:facet name="header">#{msgs['register.transactionForm.generalData.subsection.brokerData']}</f:facet>
+                                <p:panelGrid columns="2">
+                                    <ui:remove><!--Kod identyfikacyjny--></ui:remove>
+                                    <emir:inputText id="bankDataIdCodeInput" maxlength="50" rendered="#{not (transactionTemplateBean.formType == 'View')}"
+                                                     value="#{transactionTemplateBean.entity.bankData.idCode}" 
+                                                     label="#{msgs['register.transactionForm.generalData.idCode']}" 
+                                                     info="#{msgs['register.transactionForm.tabs.generalData']}->#{msgs['register.transactionForm.generalData.section.reportingInstitutionsData']}->#{msgs['register.transactionForm.generalData.subsection.brokerData']}->#{msgs['register.transactionForm.generalData.idCode']}" />
+
+                                    <ui:remove><!--Typ identyfikacyjny--></ui:remove>
+                                    <emir:inputSelect filter="true" id="bankDataIdCodeTypeInput" rendered="#{not (transactionTemplateBean.formType == 'View')}"
+                                                       value="#{transactionTemplateBean.entity.bankData.idCodeType}" 
+                                                       label="#{msgs['register.transactionForm.generalData.idCodeType']}" 
+                                                       info="#{msgs['register.transactionForm.tabs.generalData']}->#{msgs['register.transactionForm.generalData.section.reportingInstitutionsData']}->#{msgs['register.transactionForm.generalData.subsection.brokerData']}->#{msgs['register.transactionForm.generalData.idCodeType']}" allowEmpty="true">
+                                        <f:selectItems value="#{transactionTemplateBean.importInstitutionIdType}" var="option" itemLabel="#{option}" itemValue="#{option}"/>
+                                    </emir:inputSelect>     
+                                </p:panelGrid>                                
+                            </p:panel>
+                            <p:panel toggleable="true">
+                                <f:facet name="header">#{msgs['register.transactionForm.generalData.subsection.settlingInstitutionsData']}</f:facet>
+                                <p:panelGrid columns="2">
+                                    <ui:remove><!--Kod identyfikacyjny--></ui:remove>
+                                    <emir:inputText id="bankDataMemberIdInput" maxlength="50" rendered="#{not (transactionTemplateBean.formType == 'View')}"
+                                                     value="#{transactionTemplateBean.entity.bankData.memberId}" 
+                                                     label="#{msgs['register.transactionForm.generalData.memberId']}" 
+                                                     info="#{msgs['register.transactionForm.tabs.generalData']}->#{msgs['register.transactionForm.generalData.section.reportingInstitutionsData']}->#{msgs['register.transactionForm.generalData.subsection.settlingInstitutionsData']}->#{msgs['register.transactionForm.generalData.memberId']}" />
+
+                                    <ui:remove><!--Typ identyfikacyjny--></ui:remove>
+                                    <emir:inputSelect filter="true" id="bankDataMemberIdTypeInput" rendered="#{not (transactionTemplateBean.formType == 'View')}"
+                                                       value="#{transactionTemplateBean.entity.bankData.memberIdType}" 
+                                                       label="#{msgs['register.transactionForm.generalData.memberIdType']}" 
+                                                       info="#{msgs['register.transactionForm.tabs.generalData']}->#{msgs['register.transactionForm.generalData.section.reportingInstitutionsData']}->#{msgs['register.transactionForm.generalData.subsection.settlingInstitutionsData']}->#{msgs['register.transactionForm.generalData.memberIdType']}" allowEmpty="true">
+                                        <f:selectItems value="#{transactionTemplateBean.importInstitutionIdType}" var="option" itemLabel="#{option}" itemValue="#{option}"/>
+                                    </emir:inputSelect>  
+
+                                    <ui:remove><!--Identyfikator konta rozliczającego--></ui:remove>
+                                    <emir:inputText id="bankDataSettlingAccoutInput" rendered="#{not (transactionTemplateBean.formType == 'View')}"
+                                                     value="#{transactionTemplateBean.entity.bankData.settlingAccout}" 
+                                                     label="#{msgs['register.transactionForm.generalData.settlingAccout']}" 
+                                                     info="#{msgs['register.transactionForm.tabs.generalData']}->#{msgs['register.transactionForm.generalData.section.reportingInstitutionsData']}->#{msgs['register.transactionForm.generalData.subsection.settlingInstitutionsData']}->#{msgs['register.transactionForm.generalData.settlingAccout']}"  />
+                                </p:panelGrid>         
+                            </p:panel>
+                            <p:panel toggleable="true">
+                                <f:facet name="header">#{msgs['register.transactionForm.generalData.subsection.klientData']}</f:facet>
+                                <p:panelGrid columns="2">
+                                    <ui:remove><!--Kod identyfikacyjny--></ui:remove>
+                                    <emir:inputText id="bankDataBeneficiaryCodeInput" maxlength="50" 
+                                                     rendered="#{not (transactionTemplateBean.formType == 'View')}"
+                                                     value="#{transactionTemplateBean.entity.bankData.beneficiaryCode}" 
+                                                     label="#{msgs['register.transactionForm.generalData.beneficiaryCode']}" 
+                                                     info="#{msgs['register.transactionForm.tabs.generalData']}->#{msgs['register.transactionForm.generalData.section.reportingInstitutionsData']}->#{msgs['register.transactionForm.generalData.subsection.klientData']}->#{msgs['register.transactionForm.generalData.beneficiaryCode']}" />
+
+                                    <ui:remove><!--Typ identyfikacyjny--></ui:remove>
+                                    <emir:inputSelect filter="true" id="bankDataBeneficiaryCodeTypeInput"  allowEmpty="true"
+                                                       rendered="#{not (transactionTemplateBean.formType == 'View')}"
+                                                       value="#{transactionTemplateBean.entity.bankData.beneficiaryCodeType}" 
+                                                       label="#{msgs['register.transactionForm.generalData.beneficiaryCodeType']}" 
+                                                       info="#{msgs['register.transactionForm.tabs.generalData']}->#{msgs['register.transactionForm.generalData.section.reportingInstitutionsData']}->#{msgs['register.transactionForm.generalData.subsection.klientData']}->#{msgs['register.transactionForm.generalData.beneficiaryCodeType']}" >
+                                        <f:selectItems value="#{transactionTemplateBean.importInstitutionIdType}" var="option" itemLabel="#{option}" itemValue="#{option}"/>
+                                    </emir:inputSelect>  
+
+                                    <ui:remove><!--Charakter, w jakim zawarto transakcję--></ui:remove>
+                                    <emir:inputSelect filter="true" id="bankDataTransactionTypeInput"  allowEmpty="true"
+                                                       rendered="#{not (transactionTemplateBean.formType == 'View')}"
+                                                       value="#{transactionTemplateBean.entity.bankData.transactionType}" 
+                                                       label="#{msgs['register.transactionForm.generalData.transactionType']}" 
+                                                       info="#{msgs['register.transactionForm.tabs.generalData']}->#{msgs['register.transactionForm.generalData.section.reportingInstitutionsData']}->#{msgs['register.transactionForm.generalData.subsection.klientData']}->#{msgs['register.transactionForm.generalData.transactionType']}" >
+                                        <f:selectItems value="#{transactionTemplateBean.importTransactionType}" var="option" itemLabel="#{option}" itemValue="#{option}"/>
+                                    </emir:inputSelect> 
+
+                                    <ui:remove><!--Bezpośredni związek z działalnością gospodarczą--></ui:remove>
+                                    <emir:inputSelect filter="true" id="bankDataCommercialActityInput" rendered="#{not (transactionTemplateBean.formType == 'View')}"
+                                                       value="#{transactionTemplateBean.entity.bankData.commercialActity}" 
+                                                       label="#{msgs['register.transactionForm.generalData.commercialActity']}" 
+                                                       info="#{msgs['register.transactionForm.tabs.generalData']}->#{msgs['register.transactionForm.generalData.section.reportingInstitutionsData']}->#{msgs['register.transactionForm.generalData.subsection.klientData']}->#{msgs['register.transactionForm.generalData.commercialActity']}" allowEmpty="true">
+                                        <f:selectItems value="#{transactionTemplateBean.importCommercialActity}" var="option" itemLabel="#{option}" itemValue="#{option}"/>
+                                    </emir:inputSelect> 
+
+                                    <ui:remove><!--Próg związany z obowiązkiem rozliczania--></ui:remove>
+                                    <emir:inputSelect filter="true" id="bankDataSettlementThresholdInput" rendered="#{not (transactionTemplateBean.formType == 'View')}"
+                                                       value="#{transactionTemplateBean.entity.bankData.settlementThreshold}" 
+                                                       label="#{msgs['register.transactionForm.generalData.settlementThreshold']}" 
+                                                       info="#{msgs['register.transactionForm.tabs.generalData']}->#{msgs['register.transactionForm.generalData.section.reportingInstitutionsData']}->#{msgs['register.transactionForm.generalData.subsection.klientData']}->#{msgs['register.transactionForm.generalData.settlementThreshold']}" allowEmpty="true">
+                                        <f:selectItems value="#{transactionTemplateBean.importSettlementThreshold}" var="option" itemLabel="#{option}" itemValue="#{option}"/>
+                                    </emir:inputSelect> 
+
+                                    <ui:remove><!--Kod portfela zabezpieczeń--></ui:remove>
+                                    <emir:inputText id="bankDataCommWalletCodeInput" rendered="#{not (transactionTemplateBean.formType == 'View')}" maxlength="35"
+                                                     value="#{transactionTemplateBean.entity.bankData.commWalletCode}" 
+                                                     label="#{msgs['register.transactionForm.generalData.commWalletCode']}" 
+                                                     info="#{msgs['register.transactionForm.tabs.generalData']}->#{msgs['register.transactionForm.generalData.section.reportingInstitutionsData']}->#{msgs['register.transactionForm.generalData.subsection.klientData']}->#{msgs['register.transactionForm.generalData.commWalletCode']}"  />
+                                </p:panelGrid>
+                            </p:panel>
+                        </p:panel>
+                    </h:panelGroup>
+                    <h:panelGroup id="generalDataPg2">
+                        <p:panel toggleable="true">
+                            <f:facet name="header">#{msgs['register.transactionForm.generalData.section.klientData']}</f:facet>
+                            <p:panel toggleable="true">
+                                <f:facet name="header">#{msgs['register.transactionForm.generalData.subsection.brokerData']}</f:facet>
+                                <p:panelGrid columns="2">
+                                    <ui:remove><!--Kod identyfikacyjny--></ui:remove>
+                                    <emir:inputText id="clientDataIdCodeInput" maxlength="50" rendered="#{not (transactionTemplateBean.formType == 'View')}"
+                                                     value="#{transactionTemplateBean.entity.clientData.idCode}" 
+                                                     label="#{msgs['register.transactionForm.generalData.idCode']}" 
+                                                     info="#{msgs['register.transactionForm.tabs.generalData']}->#{msgs['register.transactionForm.generalData.section.klientData']}->#{msgs['register.transactionForm.generalData.subsection.brokerData']}->#{msgs['register.transactionForm.generalData.idCode']}" />
+
+                                    <ui:remove><!--Typ identyfikacyjny--></ui:remove>
+                                    <emir:inputSelect filter="true" id="clientDataIdCodeTypeInput" rendered="#{not (transactionTemplateBean.formType == 'View')}"
+                                                       value="#{transactionTemplateBean.entity.clientData.idCodeType}" 
+                                                       label="#{msgs['register.transactionForm.generalData.idCodeType']}" 
+                                                       info="#{msgs['register.transactionForm.tabs.generalData']}->#{msgs['register.transactionForm.generalData.section.klientData']}->#{msgs['register.transactionForm.generalData.subsection.brokerData']}->#{msgs['register.transactionForm.generalData.idCodeType']}" allowEmpty="true">
+                                        <f:selectItems value="#{transactionTemplateBean.importInstitutionIdType}" var="option" itemLabel="#{option}" itemValue="#{option}"/>
+                                    </emir:inputSelect>     
+                                </p:panelGrid>                                
+                            </p:panel>
+                            <p:panel toggleable="true">
+                                <f:facet name="header">#{msgs['register.transactionForm.generalData.subsection.settlingInstitutionsData']}</f:facet>
+                                <p:panelGrid columns="2">
+                                    <ui:remove><!--Kod identyfikacyjny--></ui:remove>
+                                    <emir:inputText id="clientDataMemberIdInput" maxlength="50" rendered="#{not (transactionTemplateBean.formType == 'View')}"
+                                                     value="#{transactionTemplateBean.entity.clientData.memberId}" 
+                                                     label="#{msgs['register.transactionForm.generalData.memberId']}" 
+                                                     info="#{msgs['register.transactionForm.tabs.generalData']}->#{msgs['register.transactionForm.generalData.section.klientData']}->#{msgs['register.transactionForm.generalData.subsection.settlingInstitutionsData']}->#{msgs['register.transactionForm.generalData.memberId']}" />
+
+                                    <ui:remove><!--Typ identyfikacyjny--></ui:remove>
+                                    <emir:inputSelect filter="true" id="clientDataMemberIdTypeInput" rendered="#{not (transactionTemplateBean.formType == 'View')}"
+                                                       value="#{transactionTemplateBean.entity.clientData.memberIdType}" 
+                                                       label="#{msgs['register.transactionForm.generalData.memberIdType']}" 
+                                                       info="#{msgs['register.transactionForm.tabs.generalData']}->#{msgs['register.transactionForm.generalData.section.klientData']}->#{msgs['register.transactionForm.generalData.subsection.settlingInstitutionsData']}->#{msgs['register.transactionForm.generalData.memberIdType']}" allowEmpty="true">
+                                        <f:selectItems value="#{transactionTemplateBean.importInstitutionIdType}" var="option" itemLabel="#{option}" itemValue="#{option}"/>
+                                    </emir:inputSelect>  
+
+                                    <ui:remove><!--Identyfikator konta rozliczającego--></ui:remove>
+                                    <emir:inputText id="clientDataSettlingAccoutInput" rendered="#{not (transactionTemplateBean.formType == 'View')}" 
+                                                     value="#{transactionTemplateBean.entity.clientData.settlingAccout}" 
+                                                     label="#{msgs['register.transactionForm.generalData.settlingAccout']}" 
+                                                     info="#{msgs['register.transactionForm.tabs.generalData']}->#{msgs['register.transactionForm.generalData.section.klientData']}->#{msgs['register.transactionForm.generalData.subsection.settlingInstitutionsData']}->#{msgs['register.transactionForm.generalData.settlingAccout']}"  />
+                                </p:panelGrid>         
+                            </p:panel>
+                            <p:panel toggleable="true">
+                                <f:facet name="header">#{msgs['register.transactionForm.generalData.subsection.klientData']}</f:facet>
+                                <p:panelGrid columns="2">
+                                    <ui:remove><!--Kod identyfikacyjny--></ui:remove>
+                                    <emir:inputText id="clientDataBeneficiaryCodeInput" maxlength="50" rendered="#{not (transactionTemplateBean.formType == 'View')}"
+                                                     value="#{transactionTemplateBean.entity.clientData.beneficiaryCode}" 
+                                                     label="#{msgs['register.transactionForm.generalData.beneficiaryCode']}" 
+                                                     info="#{msgs['register.transactionForm.tabs.generalData']}->#{msgs['register.transactionForm.generalData.section.klientData']}->#{msgs['register.transactionForm.generalData.subsection.klientData']}->#{msgs['register.transactionForm.generalData.beneficiaryCode']}" />
+
+                                    <ui:remove><!--Typ identyfikacyjny--></ui:remove>
+                                    <emir:inputSelect filter="true" id="clientDataBeneficiaryCodeTypeInput" rendered="#{not (transactionTemplateBean.formType == 'View')}"
+                                                       value="#{transactionTemplateBean.entity.clientData.beneficiaryCodeType}" 
+                                                       label="#{msgs['register.transactionForm.generalData.beneficiaryCodeType']}" 
+                                                       info="#{msgs['register.transactionForm.tabs.generalData']}->#{msgs['register.transactionForm.generalData.section.klientData']}->#{msgs['register.transactionForm.generalData.subsection.klientData']}->#{msgs['register.transactionForm.generalData.beneficiaryCodeType']}" allowEmpty="true">
+                                        <f:selectItems value="#{transactionTemplateBean.importInstitutionIdType}" var="option" itemLabel="#{option}" itemValue="#{option}"/>
+                                    </emir:inputSelect>  
+
+                                    <ui:remove><!--Charakter, w jakim zawarto transakcję--></ui:remove>
+                                    <emir:inputSelect filter="true" id="clientDataTransactionTypeInput" rendered="#{not (transactionTemplateBean.formType == 'View')}"
+                                                       value="#{transactionTemplateBean.entity.clientData.transactionType}" 
+                                                       label="#{msgs['register.transactionForm.generalData.transactionType']}" 
+                                                       info="#{msgs['register.transactionForm.tabs.generalData']}->#{msgs['register.transactionForm.generalData.section.klientData']}->#{msgs['register.transactionForm.generalData.subsection.klientData']}->#{msgs['register.transactionForm.generalData.transactionType']}" allowEmpty="true">
+                                        <f:selectItems value="#{transactionTemplateBean.importTransactionType}" var="option" itemLabel="#{option}" itemValue="#{option}"/>
+                                    </emir:inputSelect> 
+
+                                    <ui:remove><!--Bezpośredni związek z działalnością gospodarczą--></ui:remove>
+                                    <emir:inputSelect filter="true" id="clientDataCommercialActityInput" rendered="#{not (transactionTemplateBean.formType == 'View')}"
+                                                       value="#{transactionTemplateBean.entity.clientData.commercialActity}" 
+                                                       label="#{msgs['register.transactionForm.generalData.commercialActity']}" 
+                                                       info="#{msgs['register.transactionForm.tabs.generalData']}->#{msgs['register.transactionForm.generalData.section.klientData']}->#{msgs['register.transactionForm.generalData.subsection.klientData']}->#{msgs['register.transactionForm.generalData.commercialActity']}" allowEmpty="true">
+                                        <f:selectItems value="#{transactionTemplateBean.importCommercialActity}" var="option" itemLabel="#{option}" itemValue="#{option}"/>
+                                    </emir:inputSelect> 
+
+                                    <ui:remove><!--Próg związany z obowiązkiem rozliczania--></ui:remove>
+                                    <emir:inputSelect filter="true" id="clientDataSettlementThresholdInput" rendered="#{not (transactionTemplateBean.formType == 'View')}"
+                                                       value="#{transactionTemplateBean.entity.clientData.settlementThreshold}" 
+                                                       label="#{msgs['register.transactionForm.generalData.settlementThreshold']}" 
+                                                       info="#{msgs['register.transactionForm.tabs.generalData']}->#{msgs['register.transactionForm.generalData.section.klientData']}->#{msgs['register.transactionForm.generalData.subsection.klientData']}->#{msgs['register.transactionForm.generalData.settlementThreshold']}" allowEmpty="true">
+                                        <f:selectItems value="#{transactionTemplateBean.importSettlementThreshold}" var="option" itemLabel="#{option}" itemValue="#{option}"/>
+                                    </emir:inputSelect> 
+
+                                    <ui:remove><!--Kod portfela zabezpieczeń--></ui:remove>
+                                    <emir:inputText id="clientDataCommWalletCodeInput" rendered="#{not (transactionTemplateBean.formType == 'View')}" maxlength="35"
+                                                     value="#{transactionTemplateBean.entity.clientData.commWalletCode}" 
+                                                     label="#{msgs['register.transactionForm.generalData.commWalletCode']}" 
+                                                     info="#{msgs['register.transactionForm.tabs.generalData']}->#{msgs['register.transactionForm.generalData.section.klientData']}->#{msgs['register.transactionForm.generalData.subsection.klientData']}->#{msgs['register.transactionForm.generalData.commWalletCode']}"  />
+                                </p:panelGrid>
+                            </p:panel>
+                        </p:panel> 
+                    </h:panelGroup>
+                </p:tab>
+                <p:tab title="#{msgs['register.transactionForm.tabs.contractType']}" id="tContractType">
+                    <h:panelGroup id="contractTypePg1">
+                        <p:panel toggleable="true">
+                            <f:facet name="header">#{msgs['register.transactionForm.contractType.section.contractType']}</f:facet>
+                            <p:panelGrid columns="2">                            
+                                <ui:remove><!--Stosowana klasyfikacja--></ui:remove>
+                                <emir:inputSelect filter="true" id="contractTypeInput" allowEmpty="true" 
+                                                   rendered="#{not (transactionTemplateBean.formType == 'View')}" 
+                                                   value="#{transactionTemplateBean.entity.contractDetailedData.contractData.contractType}" 
+                                                   label="#{msgs['register.transactionForm.contractType.contractType']}" 
+                                                   info="#{msgs['register.transactionForm.tabs.contractType']}->#{msgs['register.transactionForm.contractType.section.contractType']}->#{msgs['register.transactionForm.contractType.contractType']}" >
+                                    <f:selectItems value="#{transactionTemplateBean.importContractType}" var="option" itemLabel="#{option}" itemValue="#{option}"/>
+                                </emir:inputSelect> 
+                                <ui:remove><!--Kod identyfikacyjny produktu nr 1--></ui:remove>
+                                <emir:inputText id="prod1CodeInput" maxlength="20" rendered="#{not (transactionTemplateBean.formType == 'View')}" 
+                                                 value="#{transactionTemplateBean.entity.contractDetailedData.contractData.prod1Code}" 
+                                                 label="#{msgs['register.transactionForm.contractType.prod1Code']}" 
+                                                 info="#{msgs['register.transactionForm.tabs.contractType']}->#{msgs['register.transactionForm.contractType.section.contractType']}->#{msgs['register.transactionForm.contractType.prod1Code']}" />
+
+                                <ui:remove><!--Kod identyfikacyjny produktu nr 2--></ui:remove>
+                                <emir:inputText id="prod2CodeInput" maxlength="20" rendered="#{not (transactionTemplateBean.formType == 'View')}"
+                                                 value="#{transactionTemplateBean.entity.contractDetailedData.contractData.prod2Code}" 
+                                                 label="#{msgs['register.transactionForm.contractType.prod2Code']}" 
+                                                 info="#{msgs['register.transactionForm.tabs.contractType']}->#{msgs['register.transactionForm.contractType.section.contractType']}->#{msgs['register.transactionForm.contractType.prod2Code']}" />
+
+                                <ui:remove><!--Instrument bazowy--></ui:remove>
+                                <emir:inputText id="underlyingIdInput" maxlength="20" rendered="#{not (transactionTemplateBean.formType == 'View')}" 
+                                                 value="#{transactionTemplateBean.entity.contractDetailedData.contractData.underlyingId}" 
+                                                 label="#{msgs['register.transactionForm.contractType.underlyingId']}" 
+                                                 info="#{msgs['register.transactionForm.tabs.contractType']}->#{msgs['register.transactionForm.contractType.section.contractType']}->#{msgs['register.transactionForm.contractType.underlyingId']}" />
+
+
+                                <ui:remove><!--Kod kraju emitenta instrumentu bazowego--></ui:remove>
+                                <emir:inputSelect filter="true" id="underlCountryCodeInput" rendered="#{not (transactionTemplateBean.formType == 'View')}"
+                                                   value="#{transactionTemplateBean.entity.contractDetailedData.underlCountryCode}" 
+                                                   label="#{msgs['register.transactionForm.contractType.underlCountryCode']}" 
+                                                   info="#{msgs['register.transactionForm.tabs.contractType']}->#{msgs['register.transactionForm.contractType.section.contractType']}->#{msgs['register.transactionForm.contractType.underlCountryCode']}" allowEmpty="true">
+                                    <f:selectItems value="#{transactionTemplateBean.importCountryCode}" var="option" itemLabel="#{option}" itemValue="#{option}"/>
+                                </emir:inputSelect> 
+
+                                <ui:remove><!--Waluta nominalna 1--></ui:remove>
+                                <emir:inputSelect filter="true" id="underlCurrency1CodeInput" rendered="#{not (transactionTemplateBean.formType == 'View')}"
+                                                   value="#{transactionTemplateBean.entity.contractDetailedData.underlCurrency1Code}" 
+                                                   label="#{msgs['register.transactionForm.contractType.underlCurrency1Code']}" 
+                                                   info="#{msgs['register.transactionForm.tabs.contractType']}->#{msgs['register.transactionForm.contractType.section.contractType']}->#{msgs['register.transactionForm.contractType.underlCurrency1Code']}" allowEmpty="true">
+                                    <f:selectItems value="#{transactionTemplateBean.importCurrencyCode}" var="option" itemLabel="#{option}" itemValue="#{option}"/>
+                                </emir:inputSelect> 
+
+                                <ui:remove><!--Waluta nominalna 2--></ui:remove>
+                                <emir:inputSelect filter="true" id="underlCurrency2CodeInput" rendered="#{not (transactionTemplateBean.formType == 'View')}"
+                                                   value="#{transactionTemplateBean.entity.contractDetailedData.underlCurrency2Code}" 
+                                                   label="#{msgs['register.transactionForm.contractType.underlCurrency2Code']}" 
+                                                   info="#{msgs['register.transactionForm.tabs.contractType']}->#{msgs['register.transactionForm.contractType.section.contractType']}->#{msgs['register.transactionForm.contractType.underlCurrency2Code']}" allowEmpty="true">
+                                    <f:selectItems value="#{transactionTemplateBean.importCurrencyCode}" var="option" itemLabel="#{option}" itemValue="#{option}"/>
+                                </emir:inputSelect> 
+
+                                <ui:remove><!--Waluta dostawy--></ui:remove>
+                                <emir:inputSelect filter="true" id="delivCurrencyCodeInput" rendered="#{not (transactionTemplateBean.formType == 'View')}"
+                                                   value="#{transactionTemplateBean.entity.contractDetailedData.delivCurrencyCode}" 
+                                                   label="#{msgs['register.transactionForm.contractType.delivCurrencyCode']}" 
+                                                   info="#{msgs['register.transactionForm.tabs.contractType']}->#{msgs['register.transactionForm.contractType.section.contractType']}->#{msgs['register.transactionForm.contractType.delivCurrencyCode']}" allowEmpty="true">
+                                    <f:selectItems value="#{transactionTemplateBean.importCurrencyCode}" var="option" itemLabel="#{option}" itemValue="#{option}"/>
+                                </emir:inputSelect> 
+                            </p:panelGrid>
+                        </p:panel>
+                        <p:panel toggleable="true">
+                            <f:facet name="header">#{msgs['register.transactionForm.contractType.section.detailsTransaction']}</f:facet>
+                            <p:panelGrid columns="2">
+                                <ui:remove><!--Miejsce realiazacji--></ui:remove>
+                                <emir:inputText id="realizationVenueInput" rendered="#{not (transactionTemplateBean.formType == 'View')}"
+                                                 maxlength="4" 
+                                                 value="#{transactionTemplateBean.entity.transactionDetails.realizationVenue}" 
+                                                 label="#{msgs['register.transactionForm.generalData.realizationVenue']}" 
+                                                 info="#{msgs['register.transactionForm.tabs.contractType']}->#{msgs['register.transactionForm.contractType.section.detailsTransaction']}->#{msgs['register.transactionForm.generalData.realizationVenue']}"  />
+
+                                <ui:remove><!--Kompresja--></ui:remove>
+                                <emir:inputSelect filter="true" id="compressionInput" rendered="#{not (transactionTemplateBean.formType == 'View')}"
+                                                   value="#{transactionTemplateBean.entity.transactionDetails.compression}" 
+                                                   label="#{msgs['register.transactionForm.generalData.compression']}" 
+                                                   info="#{msgs['register.transactionForm.tabs.contractType']}->#{msgs['register.transactionForm.contractType.section.detailsTransaction']}->#{msgs['register.transactionForm.generalData.compression']}" allowEmpty="true">
+                                    <f:selectItems value="#{transactionTemplateBean.importCompression}" var="option" itemLabel="#{option}" itemValue="#{option}"/>
+                                </emir:inputSelect> 
+
+                                <ui:remove><!--Cena--></ui:remove>
+                                <emir:inputText id="unitPriceInput" rendered="#{not (transactionTemplateBean.formType == 'View')}"
+                                                 value="#{transactionTemplateBean.entity.transactionDetails.unitPrice}" 
+                                                 label="#{msgs['register.transactionForm.generalData.unitPrice']}" 
+                                                 info="#{msgs['register.transactionForm.tabs.contractType']}->#{msgs['register.transactionForm.contractType.section.detailsTransaction']}->#{msgs['register.transactionForm.generalData.unitPrice']}"  >
+                                    <f:convertNumber maxFractionDigits="5" maxIntegerDigits="20"  />
+                                </emir:inputText>
+                                
+                                <emir:inputSelect filter="true" id="unitPriceCurrencyInput"
+                                                   value="#{transactionTemplateBean.entity.transactionDetails.unitPriceCurrency}" 
+                                                   label="#{msgs['register.transactionForm.generalData.unitPriceCurrency']}"     
+                                                   info="#{msgs['register.transactionForm.tabs.contractType']}->#{msgs['register.transactionForm.contractType.section.detailsTransaction']}->#{msgs['register.transactionForm.generalData.unitPriceCurrency']}" allowEmpty="true">
+                                    <f:selectItems value="#{transactionFormBean.importCurrencyCode}" var="option" itemLabel="#{option}" itemValue="#{option}"/>
+                                  
+                                </emir:inputSelect> 
+
+                                <ui:remove><!--Stawka procentowa--></ui:remove>
+                                <emir:inputText id="unitPriceRateInput" rendered="#{not (transactionTemplateBean.formType == 'View')}"
+                                                 value="#{transactionTemplateBean.entity.transactionDetails.unitPriceRate}" 
+                                                 label="#{msgs['register.transactionForm.generalData.unitPriceRate']}" 
+                                                 info="#{msgs['register.transactionForm.tabs.contractType']}->#{msgs['register.transactionForm.contractType.section.detailsTransaction']}->#{msgs['register.transactionForm.generalData.unitPriceRate']}"  >
+                                    <f:convertNumber maxFractionDigits="5" maxIntegerDigits="20"  />
+                                </emir:inputText>
+
+                                <ui:remove><!--Kwota nominalna--></ui:remove>
+                                <emir:inputText id="nominalAmountInput" rendered="#{not (transactionTemplateBean.formType == 'View')}"
+                                                 value="#{transactionTemplateBean.entity.transactionDetails.nominalAmount}" 
+                                                 label="#{msgs['register.transactionForm.generalData.nominalAmount']}" 
+                                                 info="#{msgs['register.transactionForm.tabs.contractType']}->#{msgs['register.transactionForm.contractType.section.detailsTransaction']}->#{msgs['register.transactionForm.generalData.nominalAmount']}"  >
+                                    <f:convertNumber maxFractionDigits="5" maxIntegerDigits="20"  />
+                                </emir:inputText>
+
+                                <ui:remove><!--Mnożnik ceny--></ui:remove>
+                                <emir:inputText id="priceMultiplierInput" rendered="#{not (transactionTemplateBean.formType == 'View')}" maxlength="10"
+                                                 value="#{transactionTemplateBean.entity.transactionDetails.priceMultiplier}" 
+                                                 label="#{msgs['register.transactionForm.generalData.priceMultiplier']}" 
+                                                 info="#{msgs['register.transactionForm.tabs.contractType']}->#{msgs['register.transactionForm.contractType.section.detailsTransaction']}->#{msgs['register.transactionForm.generalData.priceMultiplier']}"  >
+                                    <f:convertNumber maxFractionDigits="0" maxIntegerDigits="10"  />
+                                </emir:inputText>
+
+                                <ui:remove><!--Liczba kontraktów w zgłoszeniu--></ui:remove>
+                                <emir:inputText id="contractCountInput" rendered="#{not (transactionTemplateBean.formType == 'View')}" maxlength="1"
+                                                 value="#{transactionTemplateBean.entity.transactionDetails.contractCount}" 
+                                                 label="#{msgs['register.transactionForm.generalData.contractCount']}" 
+                                                 info="#{msgs['register.transactionForm.tabs.contractType']}->#{msgs['register.transactionForm.contractType.section.detailsTransaction']}->#{msgs['register.transactionForm.generalData.contractCount']}"  >
+                                    <f:convertNumber maxFractionDigits="0" maxIntegerDigits="1"  />
+                                </emir:inputText>
+
+                                <ui:remove><!--Płatność z góry--></ui:remove>
+                                <emir:inputText id="inAdvanceAmountInput" rendered="#{not (transactionTemplateBean.formType == 'View')}" maxlength="13"
+                                                 value="#{transactionTemplateBean.entity.transactionDetails.inAdvanceAmount}" 
+                                                 label="#{msgs['register.transactionForm.generalData.inAdvanceAmount']}" 
+                                                 info="#{msgs['register.transactionForm.tabs.contractType']}->#{msgs['register.transactionForm.contractType.section.detailsTransaction']}->#{msgs['register.transactionForm.generalData.inAdvanceAmount']}"  >
+                                    <f:convertNumber maxFractionDigits="2" maxIntegerDigits="10"  />
+                                </emir:inputText>
+
+                                <ui:remove><!--Typ dostawy--></ui:remove>
+                                <emir:inputSelect id="delivTypeInput" rendered="#{not (transactionTemplateBean.formType == 'View')}"
+                                                   value="#{transactionTemplateBean.entity.transactionDetails.delivType}" 
+                                                   label="#{msgs['register.transactionForm.generalData.delivType']}" 
+                                                   info="#{msgs['register.transactionForm.tabs.contractType']}->#{msgs['register.transactionForm.contractType.section.detailsTransaction']}->#{msgs['register.transactionForm.generalData.delivType']}" allowEmpty="true">
+                                    <f:selectItems value="#{transactionTemplateBean.importDeliverType}" var="option" itemLabel="#{option}" itemValue="#{option}"/>
+                                </emir:inputSelect> 
+
+                                <ui:remove><!--Data i czas realizacji transakcji--></ui:remove>
+                                <emir:inputDate id="executionDateInput" 
+                                                 pattern="yyyy-MM-dd hh:mm:ss"
+                                                 rendered="#{not (transactionTemplateBean.formType == 'View')}"
+                                                 value="#{transactionTemplateBean.entity.transactionDetails.executionDate}" 
+                                                 label="#{msgs['register.transactionForm.generalData.executionDate']}" mindate="#{msgs['commons.utilsClient.minimalData']}" 
+                                                 info="#{msgs['register.transactionForm.tabs.contractType']}->#{msgs['register.transactionForm.contractType.section.detailsTransaction']}->#{msgs['register.transactionForm.generalData.executionDate']}"/>
+
+                                <ui:remove><!--Data wejścia w życie obowiązków wynikających z kontraktu--></ui:remove>
+                                <emir:inputDate id="effectiveDateInput" rendered="#{not (transactionTemplateBean.formType == 'View')}"
+                                                 value="#{transactionTemplateBean.entity.transactionDetails.effectiveDate}" 
+                                                 label="#{msgs['register.transactionForm.generalData.effectiveDate']}" mindate="#{msgs['commons.utilsClient.minimalData']}" 
+                                                 info="#{msgs['register.transactionForm.tabs.contractType']}->#{msgs['register.transactionForm.contractType.section.detailsTransaction']}->#{msgs['register.transactionForm.generalData.effectiveDate']}"/>
+
+                                <ui:remove><!--Termin zapadalności--></ui:remove>
+                                <emir:inputDate id="maturityDateInput" rendered="#{not (transactionTemplateBean.formType == 'View')}"
+                                                 value="#{transactionTemplateBean.entity.transactionDetails.maturityDate}" 
+                                                 label="#{msgs['register.transactionForm.generalData.maturityDate']}" mindate="#{msgs['commons.utilsClient.minimalData']}" 
+                                                 info="#{msgs['register.transactionForm.tabs.contractType']}->#{msgs['register.transactionForm.contractType.section.detailsTransaction']}->#{msgs['register.transactionForm.generalData.maturityDate']}"/>
+
+                                <ui:remove><!--Data rozwiązania zgłaszanego kontraktu--></ui:remove>
+                                <emir:inputDate id="terminationDateInput" rendered="#{not (transactionTemplateBean.formType == 'View')}"
+                                                 value="#{transactionTemplateBean.entity.transactionDetails.terminationDate}" 
+                                                 label="#{msgs['register.transactionForm.generalData.terminationDate']}" mindate="#{msgs['commons.utilsClient.minimalData']}" 
+                                                 info="#{msgs['register.transactionForm.tabs.contractType']}->#{msgs['register.transactionForm.contractType.section.detailsTransaction']}->#{msgs['register.transactionForm.generalData.terminationDate']}"/>
+
+                                <ui:remove><!--Data rozrachunku instrumentu bazowego--></ui:remove>
+                                <emir:inputDate id="settlementDateInput" rendered="#{not (transactionTemplateBean.formType == 'View')}"
+                                                 value="#{transactionTemplateBean.entity.transactionDetails.settlementDate}" 
+                                                 label="#{msgs['register.transactionForm.generalData.settlementDate']}" mindate="#{msgs['commons.utilsClient.minimalData']}" 
+                                                 info="#{msgs['register.transactionForm.tabs.contractType']}->#{msgs['register.transactionForm.contractType.section.detailsTransaction']}->#{msgs['register.transactionForm.generalData.settlementDate']}"/>
+
+                                <ui:remove><!--Rodzaj umowy ramowej--></ui:remove>
+                                <emir:inputText id="frameworkAggrTypeInput" rendered="#{not (transactionTemplateBean.formType == 'View')}" maxlength="50"
+                                                 value="#{transactionTemplateBean.entity.transactionDetails.frameworkAggrType}" 
+                                                 label="#{msgs['register.transactionForm.generalData.frameworkAggrType']}" 
+                                                 info="#{msgs['register.transactionForm.tabs.contractType']}->#{msgs['register.transactionForm.contractType.section.detailsTransaction']}->#{msgs['register.transactionForm.generalData.frameworkAggrType']}"  />
+
+                                <ui:remove><!--Wersja umowy ramowej--></ui:remove>
+                                <emir:inputText id="frameworkAggrVerInput" rendered="#{not (transactionTemplateBean.formType == 'View')}" maxlength="4"
+                                                 value="#{transactionTemplateBean.entity.transactionDetails.frameworkAggrVer}" 
+                                                 label="#{msgs['register.transactionForm.generalData.frameworkAggrVer']}" 
+                                                 info="#{msgs['register.transactionForm.tabs.contractType']}->#{msgs['register.transactionForm.contractType.section.detailsTransaction']}->#{msgs['register.transactionForm.generalData.frameworkAggrVer']}"  >
+                                    <f:convertNumber maxFractionDigits="0" maxIntegerDigits="4"  />
+                                </emir:inputText>
+                            </p:panelGrid> 
+                        </p:panel>
+                        <p:panel toggleable="true">
+                            <f:facet name="header">#{msgs['register.transactionForm.contractType.section.limitationsRiskReporting']}</f:facet>
+                            <p:panelGrid columns="2">
+                                <ui:remove><!--Znacznik czasu potwierdzenia--></ui:remove>
+                                <emir:inputDate id="confirmationDateInput" 
+                                                 pattern="yyyy-MM-dd hh:mm:ss"
+                                                 rendered="#{not (transactionTemplateBean.formType == 'View')}"
+                                                 mindate="#{msgs['commons.utilsClient.minimalData']}"
+                                                 value="#{transactionTemplateBean.entity.riskReduce.confirmationDate}" 
+                                                 label="#{msgs['register.transactionForm.generalData.confirmationDate']}"  
+                                                 info="#{msgs['register.transactionForm.tabs.contractType']}->#{msgs['register.transactionForm.contractType.section.limitationsRiskReporting']}->#{msgs['register.transactionForm.generalData.confirmationDate']}"/>
+
+                                <ui:remove><!--Sposób dokonania potwierdzenia--></ui:remove>
+                                <emir:inputSelect id="confirmationTypeInput" rendered="#{not (transactionTemplateBean.formType == 'View')}"
+                                                   value="#{transactionTemplateBean.entity.riskReduce.confirmationType}" 
+                                                   label="#{msgs['register.transactionForm.generalData.confirmationType']}" 
+                                                   info="#{msgs['register.transactionForm.tabs.contractType']}->#{msgs['register.transactionForm.contractType.section.limitationsRiskReporting']}->#{msgs['register.transactionForm.generalData.confirmationType']}" allowEmpty="true">
+                                    <f:selectItems value="#{transactionTemplateBean.importConfirmationType}" var="option" itemLabel="#{option}" itemValue="#{option}"/>
+                                </emir:inputSelect> 
+                            </p:panelGrid>
+                        </p:panel>
+                        <p:panel toggleable="true">
+                            <f:facet name="header">#{msgs['register.transactionForm.contractType.section.settlement']}</f:facet>
+                            <p:panelGrid columns="2">
+                                <ui:remove><!--Obowiązek rozliczenia--></ui:remove>
+                                <emir:inputSelect id="settlementObligInput" rendered="#{not (transactionTemplateBean.formType == 'View')}"
+                                                   allowEmpty="true" 
+                                                   value="#{transactionTemplateBean.entity.transactionClearing.clearingOblig}" 
+                                                   label="#{msgs['register.transactionForm.generalData.clearingOblig']}" 
+                                                   info="#{msgs['register.transactionForm.tabs.contractType']}->#{msgs['register.transactionForm.contractType.section.settlement']}->#{msgs['register.transactionForm.generalData.clearingOblig']}" >
+                                    <f:selectItems value="#{transactionTemplateBean.importClearingOblig}" var="option" itemLabel="#{option}" itemValue="#{option}"/>
+                                </emir:inputSelect> 
+
+                                <ui:remove><!--Rozliczono--></ui:remove>
+                                <emir:inputSelect id="settledInput" rendered="#{not (transactionTemplateBean.formType == 'View')}" allowEmpty="true"
+                                                   value="#{transactionTemplateBean.entity.transactionClearing.cleared}" 
+                                                   label="#{msgs['register.transactionForm.generalData.cleared']}" 
+                                                   info="#{msgs['register.transactionForm.tabs.contractType']}->#{msgs['register.transactionForm.contractType.section.settlement']}->#{msgs['register.transactionForm.generalData.cleared']}" >
+                                    <f:selectItems value="#{transactionTemplateBean.importCleared}" var="option" itemLabel="#{option}" itemValue="#{option}"/>
+                                </emir:inputSelect> 
+
+                                <ui:remove><!--Znacznik czasu rozlicznia--></ui:remove>
+                                <emir:inputDate id="settlementSettlementDateInput" rendered="#{not (transactionTemplateBean.formType == 'View')}"
+                                                 value="#{transactionTemplateBean.entity.transactionClearing.clearingDate}" 
+                                                 label="#{msgs['register.transactionForm.generalData.clearingDate']}" mindate="#{msgs['commons.utilsClient.minimalData']}" 
+                                                 info="#{msgs['register.transactionForm.tabs.contractType']}->#{msgs['register.transactionForm.contractType.section.settlement']}->#{msgs['register.transactionForm.generalData.clearingDate']}"/>
+
+                                <ui:remove><!--CCP--></ui:remove>
+                                <emir:inputText id="ccpCodeInput" rendered="#{not (transactionTemplateBean.formType == 'View')}"
+                                                 value="#{transactionTemplateBean.entity.transactionClearing.ccpCode}" 
+                                                 label="#{msgs['register.transactionForm.generalData.ccpCode']}" 
+                                                 info="#{msgs['register.transactionForm.tabs.contractType']}->#{msgs['register.transactionForm.contractType.section.settlement']}->#{msgs['register.transactionForm.generalData.ccpCode']}"/>
+
+                                <ui:remove><!--Transakcja wewnątrzgrupowa--></ui:remove>
+                                <emir:inputSelect id="intergropuTransInput" rendered="#{not (transactionTemplateBean.formType == 'View')}" allowEmpty="true"
+                                                   value="#{transactionTemplateBean.entity.transactionClearing.intergropuTrans}" 
+                                                   label="#{msgs['register.transactionForm.generalData.intergropuTrans']}" 
+                                                   info="#{msgs['register.transactionForm.tabs.contractType']}->#{msgs['register.transactionForm.contractType.section.settlement']}->#{msgs['register.transactionForm.generalData.intergropuTrans']}" >
+                                    <f:selectItems value="#{transactionTemplateBean.importIntergropuTrans}" var="option" itemLabel="#{option}" itemValue="#{option}"/>
+                                </emir:inputSelect> 
+                            </p:panelGrid>
+                        </p:panel>
+                    </h:panelGroup>
+                </p:tab>
+                <p:tab title="#{msgs['register.transactionForm.tabs.derivatives']}" id="tDerivatives">
+                    <h:panelGroup id="derivativesPg1">
+                        <p:panel toggleable="true">
+                            <f:facet name="header">#{msgs['register.transactionForm.derivatives.section.transactionInterestRates']}</f:facet>
+                            <p:panelGrid columns="2">
+                                <ui:remove><!--Stała stopa procentowa - "Noga 1"--></ui:remove>
+                                <emir:inputText id="fixedRateLeg1Input" rendered="#{not (transactionTemplateBean.formType == 'View')}"
+                                                 value="#{transactionTemplateBean.entity.percentageRateData.fixedRateLeg1}" 
+                                                 label="#{msgs['register.transactionForm.derivatives.fixedRateLeg1']}" 
+                                                 info="#{msgs['register.transactionForm.tabs.derivatives']}->#{msgs['register.transactionForm.derivatives.section.transactionInterestRates']}->#{msgs['register.transactionForm.derivatives.fixedRateLeg1']}"  >
+                                    <f:convertNumber maxFractionDigits="5" maxIntegerDigits="20"  />
+                                </emir:inputText>
+
+                                <ui:remove><!--Stała stopa procentowa - "Noga 2"--></ui:remove>
+                                <emir:inputText id="fixedRateLeg2Input" rendered="#{not (transactionTemplateBean.formType == 'View')}"
+                                                 value="#{transactionTemplateBean.entity.percentageRateData.fixedRateLeg2}" 
+                                                 label="#{msgs['register.transactionForm.derivatives.fixedRateLeg2']}" 
+                                                 info="#{msgs['register.transactionForm.tabs.derivatives']}->#{msgs['register.transactionForm.derivatives.section.transactionInterestRates']}->#{msgs['register.transactionForm.derivatives.fixedRateLeg2']}"  >
+                                    <f:convertNumber maxFractionDigits="5" maxIntegerDigits="20"  />
+                                </emir:inputText>
+
+                                <ui:remove><!--Długość okresu stosowania stałej stopy procentowej--></ui:remove>
+                                <emir:inputText id="fixedRateDayCountInput" rendered="#{not (transactionTemplateBean.formType == 'View')}" maxlength="10"
+                                                 value="#{transactionTemplateBean.entity.percentageRateData.fixedRateDayCount}" 
+                                                 label="#{msgs['register.transactionForm.derivatives.fixedRateDayCount']}" 
+                                                 info="#{msgs['register.transactionForm.tabs.derivatives']}->#{msgs['register.transactionForm.derivatives.section.transactionInterestRates']}->#{msgs['register.transactionForm.derivatives.fixedRateDayCount']}"  />
+
+                                <ui:remove><!--Częstotliwość płatności - noga o stałym oprocentowaniu--></ui:remove>
+                                <emir:inputText id="fixedPaymentFreqInput" rendered="#{not (transactionTemplateBean.formType == 'View')}" maxlength="10"
+                                                 value="#{transactionTemplateBean.entity.percentageRateData.fixedPaymentFreq}" 
+                                                 label="#{msgs['register.transactionForm.derivatives.fixedPaymentFreq']}" 
+                                                 info="#{msgs['register.transactionForm.tabs.derivatives']}->#{msgs['register.transactionForm.derivatives.section.transactionInterestRates']}->#{msgs['register.transactionForm.derivatives.fixedPaymentFreq']}"  />
+
+                                <ui:remove><!--Częstotliwość płatności - noga o zmiennym oprocentowaniu--></ui:remove>
+                                <emir:inputText id="floatPaymentFreqInput" rendered="#{not (transactionTemplateBean.formType == 'View')}" maxlength="10"
+                                                 value="#{transactionTemplateBean.entity.percentageRateData.floatPaymentFreq}" 
+                                                 label="#{msgs['register.transactionForm.derivatives.floatPaymentFreq']}" 
+                                                 info="#{msgs['register.transactionForm.tabs.derivatives']}->#{msgs['register.transactionForm.derivatives.section.transactionInterestRates']}->#{msgs['register.transactionForm.derivatives.floatPaymentFreq']}"  />
+
+                                <ui:remove><!--Częstotliwość płatności na nowo zmiennej stopy procentowej--></ui:remove>
+                                <emir:inputText id="newPaymentFreqInput" rendered="#{not (transactionTemplateBean.formType == 'View')}" maxlength="10"
+                                                 value="#{transactionTemplateBean.entity.percentageRateData.newPaymentFreq}" 
+                                                 label="#{msgs['register.transactionForm.derivatives.newPaymentFreq']}" 
+                                                 info="#{msgs['register.transactionForm.tabs.derivatives']}->#{msgs['register.transactionForm.derivatives.section.transactionInterestRates']}->#{msgs['register.transactionForm.derivatives.newPaymentFreq']}"  />
+
+                                <ui:remove><!--Zmienna stopa procentowa części ("noga") 1--></ui:remove>
+                                <emir:inputText id="floatRateLeg1Input" rendered="#{not (transactionTemplateBean.formType == 'View')}" maxlength="20"
+                                                 value="#{transactionTemplateBean.entity.percentageRateData.floatRateLeg1}" 
+                                                 label="#{msgs['register.transactionForm.derivatives.floatRateLeg1']}" 
+                                                 info="#{msgs['register.transactionForm.tabs.derivatives']}->#{msgs['register.transactionForm.derivatives.section.transactionInterestRates']}->#{msgs['register.transactionForm.derivatives.floatRateLeg1']}"  />
+
+                                <ui:remove><!--Zmienna stopa procentowa części ("noga") 2--></ui:remove>
+                                <emir:inputText id="floatRateLeg2Input" rendered="#{not (transactionTemplateBean.formType == 'View')}" maxlength="20"
+                                                 value="#{transactionTemplateBean.entity.percentageRateData.floatRateLeg2}" 
+                                                 label="#{msgs['register.transactionForm.derivatives.floatRateLeg2']}" 
+                                                 info="#{msgs['register.transactionForm.tabs.derivatives']}->#{msgs['register.transactionForm.derivatives.section.transactionInterestRates']}->#{msgs['register.transactionForm.derivatives.floatRateLeg2']}"  />
+                            </p:panelGrid>
+                        </p:panel>
+                        <p:panel toggleable="true">
+                            <f:facet name="header">#{msgs['register.transactionForm.derivatives.section.transactionCurrency']}</f:facet>
+                            <p:panelGrid columns="2">                            
+                                <ui:remove><!--Inna waluta transakcji--></ui:remove>
+                                <emir:inputSelect id="currencyTradeCodeInput" rendered="#{not (transactionTemplateBean.formType == 'View')}"
+                                                   value="#{transactionTemplateBean.entity.currencyTradeData.currencyTradeCode}" 
+                                                   label="#{msgs['register.transactionForm.derivatives.currencyTradeCode']}" 
+                                                   info="#{msgs['register.transactionForm.tabs.derivatives']}->#{msgs['register.transactionForm.derivatives.section.transactionCurrency']}->#{msgs['register.transactionForm.derivatives.currencyTradeCode']}" allowEmpty="true">
+                                    <f:selectItems value="#{transactionTemplateBean.importCurrencyCode}" var="option" itemLabel="#{option}" itemValue="#{option}"/>
+                                </emir:inputSelect> 
+
+                                <ui:remove><!--Kurs walutowy 1--></ui:remove>
+                                <emir:inputText id="currTradeExchRateInput" rendered="#{not (transactionTemplateBean.formType == 'View')}"
+                                                 value="#{transactionTemplateBean.entity.currencyTradeData.currTradeExchRate}" 
+                                                 label="#{msgs['register.transactionForm.derivatives.currTradeExchRate']}" 
+                                                 info="#{msgs['register.transactionForm.tabs.derivatives']}->#{msgs['register.transactionForm.derivatives.section.transactionCurrency']}->#{msgs['register.transactionForm.derivatives.currTradeExchRate']}"  >
+                                    <f:convertNumber maxFractionDigits="3" maxIntegerDigits="10"  />
+                                </emir:inputText>
+
+                                <ui:remove><!--Terminowy kurs walutowy--></ui:remove>
+                                <emir:inputText id="currTradeFrwdRateInput" rendered="#{not (transactionTemplateBean.formType == 'View')}"
+                                                 value="#{transactionTemplateBean.entity.currencyTradeData.currTradeFrwdRate}" 
+                                                 label="#{msgs['register.transactionForm.derivatives.currTradeFrwdRate']}" 
+                                                 info="#{msgs['register.transactionForm.tabs.derivatives']}->#{msgs['register.transactionForm.derivatives.section.transactionCurrency']}->#{msgs['register.transactionForm.derivatives.currTradeFrwdRate']}"  >
+                                    <f:convertNumber maxFractionDigits="3" maxIntegerDigits="10"  />
+                                </emir:inputText>
+
+                                <ui:remove><!--Podstawa kursu walutowego--></ui:remove>
+                                <emir:inputText id="currTradeBasisInput" rendered="#{not (transactionTemplateBean.formType == 'View')}" maxlength="10" 
+                                                 value="#{transactionTemplateBean.entity.currencyTradeData.currTradeBasis}" 
+                                                 label="#{msgs['register.transactionForm.derivatives.currTradeBasis']}" 
+                                                 info="#{msgs['register.transactionForm.tabs.derivatives']}->#{msgs['register.transactionForm.derivatives.section.transactionCurrency']}->#{msgs['register.transactionForm.derivatives.currTradeBasis']}" />
+                            </p:panelGrid>
+                        </p:panel>
+                        <p:panel toggleable="true">
+                            <f:facet name="header">#{msgs['register.transactionForm.derivatives.section.transactionCommodity']}</f:facet>
+                            <p:panelGrid columns="2">                            
+                                <ui:remove><!--Towarowy instrument bazowy--></ui:remove>
+                                <emir:inputSelect id="commUnderlTypeInput" allowEmpty="true"
+                                                   rendered="#{not (transactionTemplateBean.formType == 'View')}"
+                                                   value="#{transactionTemplateBean.entity.commodityTradeData.commUnderlType}" 
+                                                   label="#{msgs['register.transactionForm.derivatives.commUnderlType']}" 
+                                                   info="#{msgs['register.transactionForm.tabs.derivatives']}->#{msgs['register.transactionForm.derivatives.section.transactionCurrency']}->#{msgs['register.transactionForm.derivatives.commUnderlType']}" >
+                                    <f:selectItems value="#{transactionTemplateBean.importCommUnderlType}" var="option" itemLabel="#{option}" itemValue="#{option}"/>
+                                </emir:inputSelect> 
+
+                                <ui:remove><!--Szczegółowe informacje dotyczące towaru--></ui:remove>
+                                <emir:inputSelect id="commUnderlDtlsInput" allowEmpty="true"
+                                                   rendered="#{not (transactionTemplateBean.formType == 'View')}"
+                                                   value="#{transactionTemplateBean.entity.commodityTradeData.commUnderlDtls}" 
+                                                   label="#{msgs['register.transactionForm.derivatives.commUnderlDtls']}"  
+                                                   info="#{msgs['register.transactionForm.tabs.derivatives']}->#{msgs['register.transactionForm.derivatives.section.transactionCurrency']}->#{msgs['register.transactionForm.derivatives.commUnderlDtls']}" >
+                                    <f:selectItems value="#{transactionTemplateBean.importCommUnderlDtls}" var="option" itemLabel="#{option}" itemValue="#{option}"/>
+                                </emir:inputSelect> 
+
+                                <ui:remove><!--Miejsce lub strefa dostawy--></ui:remove>
+                                <emir:inputText id="commVenueInput" rendered="#{not (transactionTemplateBean.formType == 'View')}"
+                                                 value="#{transactionTemplateBean.entity.commodityTradeData.commVenue}" 
+                                                 label="#{msgs['register.transactionForm.derivatives.commVenue']}" 
+                                                 info="#{msgs['register.transactionForm.tabs.derivatives']}->#{msgs['register.transactionForm.derivatives.section.transactionCurrency']}->#{msgs['register.transactionForm.derivatives.commVenue']}" 
+                                                 maxlength="16" />
+
+                                <ui:remove><!--Punkt połączenia międzysystemowego--></ui:remove>
+                                <emir:inputText id="commInterconnInput" rendered="#{not (transactionTemplateBean.formType == 'View')}"
+                                                 value="#{transactionTemplateBean.entity.commodityTradeData.commInterconn}" 
+                                                 label="#{msgs['register.transactionForm.derivatives.commInterconn']}" 
+                                                 info="#{msgs['register.transactionForm.tabs.derivatives']}->#{msgs['register.transactionForm.derivatives.section.transactionCurrency']}->#{msgs['register.transactionForm.derivatives.commInterconn']}" 
+                                                 maxlength="50" />
+
+                                <ui:remove><!--Rodzaj obciążenia --></ui:remove>
+                                <emir:inputSelect id="commLoadTypeInput" allowEmpty="true"
+                                                   rendered="#{not (transactionTemplateBean.formType == 'View')}"
+                                                   value="#{transactionTemplateBean.entity.commodityTradeData.commLoadType}" 
+                                                   label="#{msgs['register.transactionForm.derivatives.commLoadType']}"  
+                                                   info="#{msgs['register.transactionForm.tabs.derivatives']}->#{msgs['register.transactionForm.derivatives.section.transactionCurrency']}->#{msgs['register.transactionForm.derivatives.commLoadType']}" >
+                                    <f:selectItems value="#{transactionTemplateBean.importCommLoadType}" var="option" itemLabel="#{option}" itemValue="#{option}"/>
+                                </emir:inputSelect>
+
+                                <ui:remove><!--Data i godzina rozpoczęcia dostawy--></ui:remove>
+                                <emir:inputDate id="commDelivStartFromInput" 
+                                                 rendered="#{not (transactionTemplateBean.formType == 'View')}"
+                                                 pattern="yyyy-MM-dd hh:mm:ss"
+                                                 value="#{transactionTemplateBean.entity.commodityTradeData.commDelivStartFrom}" 
+                                                 label="#{msgs['register.transactionForm.derivatives.commDelivStartFrom']}" mindate="#{msgs['commons.utilsClient.minimalData']}" 
+                                                 info="#{msgs['register.transactionForm.tabs.derivatives']}->#{msgs['register.transactionForm.derivatives.section.transactionCurrency']}->#{msgs['register.transactionForm.derivatives.commDelivStartFrom']}"/>
+
+                                <ui:remove><!--Data i godzina zakończenia dostawy--></ui:remove>
+                                <emir:inputDate id="commDelivEndFromInput" rendered="#{not (transactionTemplateBean.formType == 'View')}"
+                                                 value="#{transactionTemplateBean.entity.commodityTradeData.commDelivEndFrom}" 
+                                                 pattern="yyyy-MM-dd hh:mm:ss"
+                                                 label="#{msgs['register.transactionForm.derivatives.commDelivEndFrom']}" mindate="#{msgs['commons.utilsClient.minimalData']}" 
+                                                 info="#{msgs['register.transactionForm.tabs.derivatives']}->#{msgs['register.transactionForm.derivatives.section.transactionCurrency']}->#{msgs['register.transactionForm.derivatives.commDelivEndFrom']}"/>
+
+                                <ui:remove><!--Zakontraktowana ilość przypadająca na okres dostawy--></ui:remove>
+                                <emir:inputText id="commContractCountInput" rendered="#{not (transactionTemplateBean.formType == 'View')}"
+                                                 value="#{transactionTemplateBean.entity.commodityTradeData.commContractCount}" 
+                                                 label="#{msgs['register.transactionForm.derivatives.commContractCount']}" 
+                                                 info="#{msgs['register.transactionForm.tabs.derivatives']}->#{msgs['register.transactionForm.derivatives.section.transactionCurrency']}->#{msgs['register.transactionForm.derivatives.commContractCount']}"
+                                                 maxlength="50" />
+
+                                <ui:remove><!--Ilość jednostek--></ui:remove>
+                                <emir:inputText id="commRateCountInput" rendered="#{not (transactionTemplateBean.formType == 'View')}"
+                                                 value="#{transactionTemplateBean.entity.commodityTradeData.commRateCount}" 
+                                                 label="#{msgs['register.transactionForm.derivatives.commRateCount']}" 
+                                                 info="#{msgs['register.transactionForm.tabs.derivatives']}->#{msgs['register.transactionForm.derivatives.section.transactionCurrency']}->#{msgs['register.transactionForm.derivatives.commRateCount']}"  >
+                                    <f:convertNumber maxFractionDigits="2" maxIntegerDigits="10"  />
+                                </emir:inputText>
+
+                                <ui:remove><!--Cena za ilość w okresie dostawy--></ui:remove>
+                                <emir:inputText id="commRataCountInput" rendered="#{not (transactionTemplateBean.formType == 'View')}"
+                                                 value="#{transactionTemplateBean.entity.commodityTradeData.commRataCount}" 
+                                                 label="#{msgs['register.transactionForm.derivatives.commRataCount']}" 
+                                                 info="#{msgs['register.transactionForm.tabs.derivatives']}->#{msgs['register.transactionForm.derivatives.section.transactionCurrency']}->#{msgs['register.transactionForm.derivatives.commRataCount']}" >
+                                    <f:convertNumber maxFractionDigits="2" maxIntegerDigits="10"  />
+                                </emir:inputText>
+                            </p:panelGrid>
+                        </p:panel>
+                        <p:panel toggleable="true">
+                            <f:facet name="header">#{msgs['register.transactionForm.derivatives.section.Options']}</f:facet>
+                            <p:panelGrid columns="2">
+
+                                <ui:remove><!--Rodzaj opcji--></ui:remove>
+                                <emir:inputSelect id="optionTypeInput" rendered="#{not (transactionTemplateBean.formType == 'View')}"
+                                                   value="#{transactionTemplateBean.entity.transactionDetails.optionType}" 
+                                                   label="#{msgs['register.transactionForm.derivatives.optionType']}" 
+                                                   info="#{msgs['register.transactionForm.tabs.derivatives']}->#{msgs['register.transactionForm.derivatives.section.Options']}->#{msgs['register.transactionForm.derivatives.optionType']}" allowEmpty="true">
+                                    <f:selectItems value="#{transactionTemplateBean.importOptionType}" var="option" itemLabel="#{option}" itemValue="#{option}"/>
+                                </emir:inputSelect> 
+
+                                <ui:remove><!--Rodzaj opcji (sposób wykonania)--></ui:remove>
+                                <emir:inputSelect id="optionExecStyleInput" rendered="#{not (transactionTemplateBean.formType == 'View')}"
+                                                   value="#{transactionTemplateBean.entity.transactionDetails.optionExecStyle}" 
+                                                   label="#{msgs['register.transactionForm.derivatives.optionExecStyle']}" 
+                                                   info="#{msgs['register.transactionForm.tabs.derivatives']}->#{msgs['register.transactionForm.derivatives.section.Options']}->#{msgs['register.transactionForm.derivatives.optionExecStyle']}" allowEmpty="true">
+                                    <f:selectItems value="#{transactionTemplateBean.importOptionExecStyle}" var="option" itemLabel="#{option}" itemValue="#{option}"/>
+                                </emir:inputSelect> 
+
+                                <ui:remove><!--Cena wykonania--></ui:remove>
+                                <emir:inputText id="optionExecPriceInput" rendered="#{not (transactionTemplateBean.formType == 'View')}"
+                                                 value="#{transactionTemplateBean.entity.transactionDetails.optionExecPrice}" 
+                                                 label="#{msgs['register.transactionForm.derivatives.optionExecPrice']}" 
+                                                 info="#{msgs['register.transactionForm.tabs.derivatives']}->#{msgs['register.transactionForm.derivatives.section.Options']}->#{msgs['register.transactionForm.derivatives.optionExecPrice']}" >
+                                    <f:convertNumber maxFractionDigits="2" maxIntegerDigits="10"  />
+                                </emir:inputText>
+                            </p:panelGrid>
+                        </p:panel>
+                    </h:panelGroup>
+                </p:tab>
+            </p:tabView>            
+            <p:confirmDialog id="confirmDialog" widgetVar="confirmDialog" message="#{msgs['admin.template.saved']}" header="#{msgs['button.save']}">
+                <div class="ui-messages-error-EMIR">
+                    <p:messages autoUpdate="true" showSummary="false" showDetail="true" severity="info"/>
+                </div>
+                <p:messages autoUpdate="true" showSummary="false" showDetail="true" severity="warn"/>
+                <p:commandButton value="#{msgs['button.close']}" oncomplete="PF('confirmDialog').hide();" action="#{transactionTemplateBean.getAction()}" />  
+            </p:confirmDialog>
+        </h:form>
+    </ui:define>
+</ui:composition>

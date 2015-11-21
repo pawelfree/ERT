@@ -1,0 +1,29 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:composite="http://java.sun.com/jsf/composite">
+
+    <composite:interface>
+        <composite:attribute name="dialogId" type="java.lang.String" required="true" />
+    </composite:interface>
+
+    <composite:implementation>
+        <p:dialog id="#{cc.attrs.dialogId}" header="#{msgs['application.about.tilte']}"
+                  widgetVar="#{cc.attrs.dialogId}" modal="true" closable="true"
+                  resizable="false" width="330">
+            <p:panel style="border: none">
+                <h:outputText value="#{applicationBean.getManifestKeyValue('Implementation-Title')}" style="font-family: Segoe UI Semibold; font-size: 14pt;" />
+                <p:separator />
+                <h:outputLabel value="#{msgs['application.about.version']}: "/>
+                <h:outputText value="#{applicationBean.getManifestKeyValue('Implementation-Version')} (#{applicationBean.getManifestKeyValue('Build-Time')})" />
+                <br/>
+                <h:outputText value="#{applicationBean.getManifestKeyValue('Implementation-Vendor')}"/>
+                <br/>
+                <br/>
+            </p:panel>
+            <p:commandButton value="#{msgs['button.close']}"  onclick="#{cc.attrs.dialogId}.hide();" immediate="true"/>
+        </p:dialog>
+    </composite:implementation>
+
+</ui:composition>

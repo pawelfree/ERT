@@ -1,0 +1,84 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:c="http://java.sun.com/jsp/jstl/core"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://java.sun.com/jsf/core">
+
+    <ui:remove>
+        <!--Pole do wprowadzania dat-->
+
+        <!--domyślnie: | wymagane: tak-->
+        id: String
+        <!--domyślnie: false | wymagane: nie-->
+        rendered: Boolean
+        <!--domyślnie: false | wymagane: nie-->
+        disabled: Boolean
+        <!--domyślnie: | wymagane: tak | wartość komponentu-->
+        value: Object
+        <!--domyślnie: | wymagane: tak | etykieta komponentu-->
+        label: String
+        <!--domyślnie: false| wymagane: nie | czy wartość jest wymagana-->
+        required: String
+        <!--domyślnie: yyyy-MM-dd | wymagane: nie-->
+        pattern: String
+        <!--domyślnie: data dzisiejsza | wymagane: nie-->
+        mindate: Date
+        <!--domyślnie: data dzisiejsza plus 200 lat | wymagane: nie-->
+        maxdate: Date
+        <!--domyślnie: | wymagane: nie | opis wyświetlany po najechaniu na pole -->
+        info: String
+    </ui:remove>
+
+    <c:if test="#{empty rendered}">
+        <ui:param name="rendered" value="#{true}" />
+    </c:if>
+    <c:if test="#{empty required}">
+        <ui:param name="required" value="#{false}" />
+    </c:if>
+    <c:if test="#{empty disabled}">
+        <ui:param name="disabled" value="#{false}" />
+    </c:if>
+    <c:if test="#{empty pattern}">
+        <ui:param name="pattern" value="#{applicationBean.dateFormat}" />
+    </c:if>
+    <c:if test="#{empty mindate}">
+        <ui:param name="mindate" value="#{applicationBean.today}" />
+    </c:if>
+    <c:if test="#{empty maxdate}">
+        <ui:param name="maxdate" value="#{applicationBean.futureDate}" />
+    </c:if>
+    <c:if test="#{empty readonlyInput}">
+        <ui:param name="readonlyInput" value="#{false}" />
+    </c:if>
+
+    <h:outputLabel value="#{label}" rendered="#{rendered}"/>
+
+
+    <p:panelGrid id="#{id}" columns="4" rendered="#{rendered}" styleClass="gridWithoutBorder">
+        <h:outputText value="*" styleClass="#{'requiredInput'}" rendered="#{required}" />
+        <h:outputText rendered="#{not required}" />
+
+        <p:calendar id="#{id}_inputDate"
+                    value="#{value}"
+                    showOn="button"
+                    required="false"
+                    disabled="#{disabled}"
+                    label="#{label}"
+                    mindate="#{mindate}"
+                    maxdate="#{maxdate}"
+                    pattern="#{pattern}"
+                    readonlyInput="#{readonlyInput}"
+                    locale="pl"
+                    title="#{info}">            
+            <ui:insert />
+            <c:if test="#{required eq true}">
+                <f:validator validatorId="pl.pd.emir.clientutils.validators.RequierWarningDateValidator"/> 
+            </c:if>
+        </p:calendar>
+
+        <p:message for="#{id}_inputDate" showSummary="true" showDetail="false" display="text" />
+    </p:panelGrid>
+</ui:composition>

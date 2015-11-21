@@ -1,0 +1,33 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core">
+
+    <h:form>
+        <p:menubar>
+            <p:submenu label="#{msgs['menu.actions']}" rendered="true">
+                <p:menuitem value="#{msgs['menu.actions.loading']}" action="importPanel" styleClass="nowrap" rendered="true"/>
+                <p:menuitem value="#{msgs['menu.actions.kdpw.sending']}" action="#{kdpwTransRegisterListBean.init()}" styleClass="nowrap" rendered="true"/>
+            </p:submenu>
+            <p:submenu label="#{msgs['menu.register']}" rendered="true" >
+                <p:menuitem value="#{msgs['menu.register.transactions']}" action="#{transactionListBean.init()}" styleClass="nowrap" rendered="true"/>
+                <p:menuitem value="#{msgs['menu.register.loading']}" action="#{importListBean.init()}" styleClass="nowrap" rendered="true"/>
+                <p:menuitem value="#{msgs['menu.register.files']}" action="#{kdpwListBean.init()}" styleClass="nowrap" rendered="true"/>
+                <p:menuitem value="#{msgs['menu.register.contractors']}" action="#{clientListBean.init()}" styleClass="nowrap" rendered="true"/>
+            </p:submenu>
+            <p:submenu label="#{msgs['menu.administration']}" rendered="true">
+                <p:menuitem value="#{msgs['menu.administration.events']}" action="#{eventLogListBean.init()}" styleClass="nowrap" rendered="true"/>
+                <p:menuitem value="#{msgs['menu.administration.template']}" action="#{transactionTemplateBean.getAction()}" styleClass="nowrap" rendered="true"/>
+                <p:menuitem value="#{msgs['menu.administration.institution']}" action="#{bankBean.getAction()}" styleClass="nowrap" rendered="true"/>
+                <p:menuitem value="#{msgs['menu.administration.users']}" action="#{userListBean.init()}" styleClass="nowrap" rendered="true"/>
+            </p:submenu>
+            <f:facet name="options">
+                <h:outputLabel value="#{msgs['application.loggeduser']} : #{loginBean.getLoginUser()}" style="padding-right: 5px;" />
+                <p:commandButton value="Wyloguj" rendered="true" action="#{loginBean.logout}" styleClass="link" />
+            </f:facet>
+            <p:menuitem value="" styleClass="nowrap icon-info" onclick="PF('aboutDialog').show();"/>
+        </p:menubar>
+    </h:form>
+
+</html>
