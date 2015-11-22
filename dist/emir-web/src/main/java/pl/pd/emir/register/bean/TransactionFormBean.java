@@ -82,8 +82,8 @@ public class TransactionFormBean extends AbstractFormBean<Transaction> {
 
     private static final long serialVersionUID = 1L;
 
-    private ConfirmedStatus confirmedStatus;
-
+    //TODO remove
+    //private ConfirmedStatus confirmedStatus;
     protected String infoWindow;
 
     private boolean requiredValuaProtectInputs = true;
@@ -255,23 +255,10 @@ public class TransactionFormBean extends AbstractFormBean<Transaction> {
     }
 
     public String saveStep2() {
-        //Obejscie problemu ConfirmedStatus dla valuation
-        if (valuation) {
-            confirmedStatus = getEntity().getConfirmed();
-        }
-        saveStep2pre();
         setEntity(transactionManager.save(getEntity(), mutation, valuation));
         valuation = false;
         mutation = false;
         return "transactionList";
-    }
-
-    public void saveStep2pre() {
-        if (ConfirmedStatus.EMPTY.equals(confirmedStatus)) {
-            getEntity().setConfirmed(null);
-        } else {
-            getEntity().setConfirmed(confirmedStatus);
-        }
     }
 
     protected boolean checkExistsClient(String originalId) {
@@ -472,23 +459,14 @@ public class TransactionFormBean extends AbstractFormBean<Transaction> {
     }
 
     public String getConfirmedStatus() {
-        if (entity.getConfirmed() == null) {
-            return ConfirmedStatus.EMPTY.name();
-        } else if (entity.getConfirmed().equals(ConfirmedStatus.CONFIRMED)) {
+        if (entity.getConfirmed().equals(ConfirmedStatus.CONFIRMED)) {
             return ConfirmedStatus.CONFIRMED.name();
         } else if (entity.getConfirmed().equals(ConfirmedStatus.UNCONFIRMED)) {
             return ConfirmedStatus.UNCONFIRMED.name();
         }
-        return ConfirmedStatus.EMPTY.name();
+        return null;
     }
-
-    public void setConfirmedStatus(String status) {
-        if (status == null) {
-            this.confirmedStatus = null;
-        }
-        this.confirmedStatus = ConfirmedStatus.valueOf(status);
-    }
-
+    
     public String getInfoWindow() {
         return infoWindow;
     }

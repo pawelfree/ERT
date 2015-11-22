@@ -94,8 +94,7 @@ public class TransactionTemplateBean implements Serializable {
     }
 
     public String getConfirmedStatus() {
-        ConfirmedStatus result = entity.getConfirmed() == null ? ConfirmedStatus.EMPTY : entity.getConfirmed();
-        return result.name();
+        return (entity.getConfirmed() == null ? null : entity.getConfirmed().name());
     }
 
     public void setConfirmedStatus(String status) {

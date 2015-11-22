@@ -37,20 +37,15 @@ public class TransactionFormBTMBean extends TransactionFormBean {
             fillContractorBeneficiary();
         }
     }
-
-    //TODO to many confirmation related functions!!!
     
     public void confirmationChanged() {
         if (Objects.isNull(entity.getRiskReduce().getConfirmationType())) {
-            setConfirmedStatus("EMPTY");
             entity.setConfirmed(null);
             entity.getRiskReduce().setConfirmationDate(null);
         } else if (entity.getRiskReduce().getConfirmationType().compareTo(ConfirmationType.N) == 0) {
-            setConfirmedStatus("UNCONFIRMED");
             entity.setConfirmed(ConfirmedStatus.UNCONFIRMED);
             entity.getRiskReduce().setConfirmationDate(null);
         } else {
-            setConfirmedStatus("CONFIRMED");
             entity.setConfirmed(ConfirmedStatus.CONFIRMED);
         }
     }
