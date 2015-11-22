@@ -17,7 +17,6 @@ import pl.pd.emir.embeddable.TransactionDetails;
 import pl.pd.emir.entity.Client;
 import pl.pd.emir.entity.ImportFailLog;
 import pl.pd.emir.entity.Transaction;
-import pl.pd.emir.entity.administration.TransactionTemplate;
 import pl.pd.emir.enums.CurrencyCode;
 import pl.pd.emir.enums.DataType;
 import pl.pd.emir.enums.OriginalStatus;
@@ -52,13 +51,7 @@ public class TransactionCsvParser extends BaseCsvParser<Transaction> {
 
     protected transient CurrencyCode unitPriceCurrencyField42;
 
-    protected transient TransactionTemplate transactionTemplate;
-
     public TransactionCsvParser() {
-    }
-
-    public TransactionCsvParser(TransactionTemplate transactionTemplate) {
-        this.transactionTemplate = transactionTemplate;
     }
 
     /**
@@ -69,10 +62,6 @@ public class TransactionCsvParser extends BaseCsvParser<Transaction> {
     public Transaction parseAndValidateRow(ImportResult importResult, String... data) {
 
         Transaction transaction = null;
-
-        if (transactionTemplate == null) {
-            transactionTemplate = new TransactionTemplate(false);
-        }
 
         //walidacja pod kontem błędów
         if (validateErrors(importResult, data)) {
@@ -93,20 +82,6 @@ public class TransactionCsvParser extends BaseCsvParser<Transaction> {
             PercentageRateData r12 = null;
             CurrencyTradeData r13 = null; //transakcje walut.
             CommodityTradeData r14 = null;
-            if (transactionTemplate != null) {
-                r3 = transactionTemplate.getOriginalStatus(); //STATUS_TR
-                r4 = transactionTemplate.getOriginalClientId(); //ID_KLIENTA
-                r5 = transactionTemplate.getConfirmed().name(); //POTWIERDZONA //TODO: Dla Mitsubishi powinno być wymagane
-                r6 = transactionTemplate.getBankData(); //kontrahent: dane banku
-                r7 = transactionTemplate.getClientData(); //kontrahent: dane klienta
-                r8 = transactionTemplate.getContractDetailedData(); //kontrakt 4.2
-                r9 = transactionTemplate.getTransactionDetails();
-                r10 = transactionTemplate.getRiskReduce(); //ryzyko 4.4
-                r11 = transactionTemplate.getTransactionClearing(); //rozliczanie 4.5
-                r12 = transactionTemplate.getPercentageRateData();
-                r13 = transactionTemplate.getCurrencyTradeData(); //transakcje walut.
-                r14 = transactionTemplate.getCommodityTradeData();
-            }
 
             //walidacja pod kontem ostrzeżeń
             String f1 = ImportValidationUtils.validateStringField(data[0], null, 50, "ID_TR", true, "1", importResult); //ID_TR
@@ -202,47 +177,6 @@ public class TransactionCsvParser extends BaseCsvParser<Transaction> {
         Date r60 = null;
         Date r80 = null;
         Date r81 = null;
-
-        if (transactionTemplate != null) {
-            r4 = transactionTemplate.getTransactionParty();
-            if (transactionTemplate.getTransactionDetails() != null) {
-                r41 = transactionTemplate.getTransactionDetails().getUnitPrice(); //transactionDetails
-                r42 = transactionTemplate.getTransactionDetails().getUnitPriceCurrency(); //transactionDetails
-                r43 = transactionTemplate.getTransactionDetails().getUnitPriceRate(); //transactionDetails
-                r44 = transactionTemplate.getTransactionDetails().getNominalAmount(); //transactionDetails
-                r45 = transactionTemplate.getTransactionDetails().getPriceMultiplier(); //transactionDetails
-                r46 = transactionTemplate.getTransactionDetails().getContractCount(); //transactionDetails
-                r47 = transactionTemplate.getTransactionDetails().getInAdvanceAmount(); //transactionDetails
-                r55 = transactionTemplate.getTransactionDetails().getFrameworkAggrVer(); //transactionDetails
-                r87 = transactionTemplate.getTransactionDetails().getOptionExecPrice(); //transactionDetails
-
-                r49 = transactionTemplate.getTransactionDetails().getExecutionDate(); //transactionDetails
-                r50 = transactionTemplate.getTransactionDetails().getEffectiveDate(); //transactionDetails
-                r51 = transactionTemplate.getTransactionDetails().getMaturityDate(); //transactionDetails
-                r52 = transactionTemplate.getTransactionDetails().getTerminationDate(); //transactionDetails
-                r53 = transactionTemplate.getTransactionDetails().getSettlementDate(); //transactionDetails
-            }
-            if (transactionTemplate.getPercentageRateData() != null) {
-                r63 = transactionTemplate.getPercentageRateData().getFixedRateLeg1(); //PercentageRateData
-                r64 = transactionTemplate.getPercentageRateData().getFixedRateLeg2(); //PercentageRateData
-            }
-            if (transactionTemplate.getCurrencyTradeData() != null) {
-                r72 = transactionTemplate.getCurrencyTradeData().getCurrTradeExchRate(); //CurrencyTradeData
-                r73 = transactionTemplate.getCurrencyTradeData().getCurrTradeFrwdRate(); //CurrencyTradeData
-            }
-            if (transactionTemplate.getCommodityTradeData() != null) {
-                r83 = transactionTemplate.getCommodityTradeData().getCommRateCount(); //CommodityTradeData
-                r84 = transactionTemplate.getCommodityTradeData().getCommRataCount(); //CommodityTradeData
-                r80 = transactionTemplate.getCommodityTradeData().getCommDelivStartFrom(); //CommodityTradeData
-                r81 = transactionTemplate.getCommodityTradeData().getCommDelivEndFrom(); //CommodityTradeData
-            }
-            if (transactionTemplate.getRiskReduce() != null) {
-                r56 = transactionTemplate.getRiskReduce().getConfirmationDate(); //RiskReduce
-            }
-            if (transactionTemplate.getTransactionClearing() != null) {
-                r60 = transactionTemplate.getTransactionClearing().getClearingDate(); //TransactionClearing
-            }
-        }
 
         //kontrola wartosci numerycznych
         transactionPartyField4 = ImportValidationUtils.validateEnumField(TransactionParty.class, r4, data[4], "STRONA_TR", true, "5", importResult);

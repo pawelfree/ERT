@@ -14,7 +14,6 @@ import pl.pd.emir.embeddable.TransactionClearing;
 import pl.pd.emir.embeddable.TransactionDetails;
 import pl.pd.emir.entity.Client;
 import pl.pd.emir.entity.Transaction;
-import pl.pd.emir.entity.administration.TransactionTemplate;
 import pl.pd.emir.enums.DataType;
 import pl.pd.emir.enums.OriginalStatus;
 import pl.pd.emir.enums.ProcessingStatus;
@@ -29,8 +28,7 @@ public class TransactionCsvParserTmb extends TransactionCsvParser {
     private static final Logger LOG = Logger.getLogger(TransactionCsvParserTmb.class.getName());
     private final transient ClientManager clientMng;
 
-    public TransactionCsvParserTmb(TransactionTemplate transactionTemplate, ClientManager clientMng) {
-        super.transactionTemplate = transactionTemplate;
+    public TransactionCsvParserTmb(ClientManager clientMng) {
         this.clientMng = clientMng;
     }
 
@@ -38,10 +36,6 @@ public class TransactionCsvParserTmb extends TransactionCsvParser {
     public Transaction parseAndValidateRow(ImportResult importResult, String... data) {
 
         Transaction transaction = null;
-
-        if (transactionTemplate == null) {
-            transactionTemplate = new TransactionTemplate(false);
-        }
 
         //walidacja pod kontem błędów
         if (validateErrors(importResult, data)) {
@@ -62,20 +56,6 @@ public class TransactionCsvParserTmb extends TransactionCsvParser {
             PercentageRateData r12 = null;
             CurrencyTradeData r13 = null; //transakcje walut.
             CommodityTradeData r14 = null;
-            if (transactionTemplate != null) {
-                r3 = transactionTemplate.getOriginalStatus(); //STATUS_TR
-                r4 = transactionTemplate.getOriginalClientId(); //ID_KLIENTA
-                r5 = transactionTemplate.getConfirmed().name(); //POTWIERDZONA //TODO: Dla Mitsubishi powinno być wymagane
-                r6 = transactionTemplate.getBankData(); //kontrahent: dane banku
-                r7 = transactionTemplate.getClientData(); //kontrahent: dane klienta
-                r8 = transactionTemplate.getContractDetailedData(); //kontrakt 4.2
-                r9 = transactionTemplate.getTransactionDetails();
-                r10 = transactionTemplate.getRiskReduce(); //ryzyko 4.4
-                r11 = transactionTemplate.getTransactionClearing(); //rozliczanie 4.5
-                r12 = transactionTemplate.getPercentageRateData();
-                r13 = transactionTemplate.getCurrencyTradeData(); //transakcje walut.
-                r14 = transactionTemplate.getCommodityTradeData();
-            }
 
             //walidacja pod kontem ostrzeżeń
             String f1 = ImportValidationUtils.validateStringField(data[0], null, 50, "ID_TR", true, "1", importResult); //ID_TR

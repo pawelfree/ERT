@@ -3,13 +3,11 @@ package pl.pd.emir.parsers;
 import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.Date;
-import java.util.Objects;
 import pl.pd.emir.commons.DateUtils;
 import pl.pd.emir.commons.StringUtil;
 import pl.pd.emir.embeddable.ValuationData;
 import pl.pd.emir.entity.ImportFailLog;
 import pl.pd.emir.entity.Valuation;
-import pl.pd.emir.entity.administration.TransactionTemplate;
 import pl.pd.emir.enums.CurrencyCode;
 import pl.pd.emir.enums.ValuationType;
 import pl.pd.emir.imports.ImportFaillogUtils;
@@ -24,15 +22,13 @@ public class ValuationParser extends BaseCsvParser<Valuation> {
     private transient Date transactionDate, valuationDate;
     private transient CurrencyCode currencyCode;
     private transient ValuationType valuationType;
-    private transient TransactionTemplate transactionTemplate;
     private transient BigDecimal r1 = null;
     private transient BigDecimal r2 = null;
     private transient Date r3 = null;
     private transient ValuationType r4 = null;
     private transient CurrencyCode r5 = null;
 
-    public ValuationParser(TransactionTemplate transactionTemplate) {
-        this.transactionTemplate = transactionTemplate;
+    public ValuationParser() {
     }
 
     /**
@@ -43,17 +39,6 @@ public class ValuationParser extends BaseCsvParser<Valuation> {
     public Valuation parseAndValidateRow(ImportResult importResult, String... data) {
 
         Valuation valuation = null;
-
-        if (transactionTemplate == null) {
-            transactionTemplate = new TransactionTemplate(false);
-        }
-        if (Objects.nonNull(transactionTemplate)) {
-            r1 = transactionTemplate.getAmount();
-            r2 = transactionTemplate.getClientAmount();
-            r3 = transactionTemplate.getValuationDate();
-            r4 = transactionTemplate.getValuationType();
-            r5 = transactionTemplate.getCurrencyCode();
-        }
 
         //walidacja pod kątem błędów
         if (validateErrors(importResult, data)) {

@@ -54,14 +54,6 @@
                                              or (not transactionFormBean.addingValuationPossible)
                                              or (not transactionFormBean.addingValuationCheckDate)}"                                 
                                  />
-                <p:commandButton immediate="true"
-                                 value="#{msgs['button.defaultValue']}"
-                                 actionListener="#{transactionFormBean.setDefaultValue()}"
-                                 action="#{transactionFormBean.getAction()}"
-                                 ajax="true"
-                                 update="form1"
-                                 rendered="#{transactionFormBean.formType == 'New' or transactionFormBean.formType == 'Edit' and not transactionFormBean.valuation}" />
-
             </p:panelGrid>
             <p:tabView id="tv" widgetVar="tv" cache="false">
                 <p:tab title="#{msgs['register.transactionForm.tabs.transactionBaseData']}">

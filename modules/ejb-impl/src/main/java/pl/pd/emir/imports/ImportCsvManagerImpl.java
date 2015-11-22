@@ -1,7 +1,5 @@
 package pl.pd.emir.imports;
 
-import pl.pd.emir.imports.ImportOverview;
-import pl.pd.emir.imports.ImportCsvManager;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -23,7 +21,6 @@ import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
 import pl.pd.emir.admin.ImportLogManager;
 import pl.pd.emir.admin.ParameterManager;
-import pl.pd.emir.admin.TransactionTemplateManager;
 import pl.pd.emir.admin.UserManager;
 import pl.pd.emir.commons.DateUtils;
 import pl.pd.emir.entity.ImportFailLog;
@@ -72,9 +69,6 @@ public class ImportCsvManagerImpl implements ImportCsvManager {
     private ClientManager clientManager;
 
     @EJB
-    private TransactionTemplateManager transactionTemplateManager;
-
-    @EJB
     TransactionManager transactionManager;
 
     protected Map<ImportScope, IImportProcessor> processors = new EnumMap<>(ImportScope.class);
@@ -99,9 +93,9 @@ public class ImportCsvManagerImpl implements ImportCsvManager {
     protected void initParsers() {
         parsers.put(ImportScope.BANK_E, new BankCsvParser());
         parsers.put(ImportScope.CLIENT_E, new ClientCsvParser());
-        parsers.put(ImportScope.TRANSACTION_E, new TransactionCsvParserTmb(transactionTemplateManager.getById(1L), clientManager));
-        parsers.put(ImportScope.PROTECTION_E, new ProtectionParser(transactionTemplateManager.getById(1L)));
-        parsers.put(ImportScope.VALUATION_E, new ValuationParser(transactionTemplateManager.getById(1L)));
+        parsers.put(ImportScope.TRANSACTION_E, new TransactionCsvParserTmb(clientManager));
+        parsers.put(ImportScope.PROTECTION_E, new ProtectionParser());
+        parsers.put(ImportScope.VALUATION_E, new ValuationParser());
     }
 
     @Override

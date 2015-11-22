@@ -12,7 +12,6 @@ import javax.faces.context.FacesContext;
 import javax.faces.model.SelectItem;
 import pl.pd.emir.admin.BankManager;
 import pl.pd.emir.admin.ParameterManager;
-import pl.pd.emir.admin.TransactionTemplateManager;
 import pl.pd.emir.bean.BeanHelper;
 import pl.pd.emir.commons.DateUtils;
 import pl.pd.emir.commons.StringUtil;
@@ -58,9 +57,6 @@ import org.primefaces.context.RequestContext;
 public class TransactionFormBean extends AbstractFormBean<Transaction> {
 
     protected static final Logger LOG = Logger.getLogger(TransactionFormBean.class.getName());
-
-    @EJB
-    private transient TransactionTemplateManager transactionTemplateManager;
 
     @EJB
     private transient ClientManager clientManager;
@@ -410,10 +406,6 @@ public class TransactionFormBean extends AbstractFormBean<Transaction> {
 
     }
 
-    public void setDefaultValue() {
-        setEntity(transactionTemplateManager.refillWithoutOverwriting(getEntity()));
-    }
-
     protected boolean isExistsDuplicate() {
         RequestContext context = RequestContext.getCurrentInstance();
         if (StringUtil.isNotEmpty(getEntity().getOriginalId())) {
@@ -459,9 +451,9 @@ public class TransactionFormBean extends AbstractFormBean<Transaction> {
     }
 
     public String getConfirmedStatus() {
-        if (entity.getConfirmed().equals(ConfirmedStatus.CONFIRMED)) {
+        if (ConfirmedStatus.CONFIRMED.equals(entity.getConfirmed())) {
             return ConfirmedStatus.CONFIRMED.name();
-        } else if (entity.getConfirmed().equals(ConfirmedStatus.UNCONFIRMED)) {
+        } else if (ConfirmedStatus.UNCONFIRMED.equals(entity.getConfirmed())) {
             return ConfirmedStatus.UNCONFIRMED.name();
         }
         return null;

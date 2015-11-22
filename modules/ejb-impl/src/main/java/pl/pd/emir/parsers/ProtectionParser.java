@@ -3,12 +3,10 @@ package pl.pd.emir.parsers;
 import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.Date;
-import java.util.Objects;
 import pl.pd.emir.commons.DateUtils;
 import pl.pd.emir.commons.StringUtil;
 import pl.pd.emir.entity.ImportFailLog;
 import pl.pd.emir.entity.Protection;
-import pl.pd.emir.entity.administration.TransactionTemplate;
 import pl.pd.emir.enums.CurrencyCode;
 import pl.pd.emir.enums.DoProtection;
 import pl.pd.emir.enums.YesNo;
@@ -21,12 +19,10 @@ public class ProtectionParser extends BaseCsvParser<Protection> {
     private static final int COLUMN_COUNT = 8;
     private transient BigDecimal protectionAmount, protectionClientAmount;
     private transient Date transactionDate;
-    private transient TransactionTemplate transactionTemplate;
     private BigDecimal r1 = null;
     private BigDecimal r2 = null;
 
-    public ProtectionParser(TransactionTemplate transactionTemplate) {
-        this.transactionTemplate = transactionTemplate;
+    public ProtectionParser() {
     }
 
     @Override
@@ -34,22 +30,10 @@ public class ProtectionParser extends BaseCsvParser<Protection> {
 
         Protection protection = null;
 
-        if (transactionTemplate == null) {
-            transactionTemplate = new TransactionTemplate(false);
-        }
         CurrencyCode r3 = null;
         DoProtection r4 = null;
         String r5 = null;
         YesNo r6 = null;
-
-        if (Objects.nonNull(transactionTemplate) && Objects.nonNull(transactionTemplate.getProtection())) {
-            r1 = transactionTemplate.getProtection().getAmount();
-            r2 = transactionTemplate.getProtection().getClientAmount();
-            r3 = transactionTemplate.getProtection().getCurrencyCode();
-            r4 = transactionTemplate.getProtection().getIsProtection();
-            r5 = transactionTemplate.getProtection().getWalletId();
-            r6 = transactionTemplate.getProtection().getWalletProtection();
-        }
 
         //walidacja pod kontem błędów
         if (validateErrors(importResult, data)) {
