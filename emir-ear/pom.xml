@@ -51,13 +51,9 @@
 
         <!-- UTILS -->
         <dependency>
-            <groupId>pl.pd.emir.commons</groupId>
+            <groupId>pl.pd.emir</groupId>
             <artifactId>utils</artifactId>
             <type>jar</type>
-        </dependency>
-        <dependency>
-            <groupId>pl.pd.emir.commons</groupId>
-            <artifactId>print-utils</artifactId>
         </dependency>
             
         <!-- ENTITY -->

@@ -127,7 +127,6 @@
     </build>
     <modules>
         <module>modules</module>
-        <module>commons</module>
         <module>emir-web</module>
         <module>emir-ear</module>
     </modules>
@@ -237,14 +236,8 @@
                 <type>jar</type>
             </dependency>
             <dependency>
-                <groupId>pl.pd.emir.commons</groupId>
+                <groupId>pl.pd.emir</groupId>
                 <artifactId>utils</artifactId>
-                <version>${project.version}</version>
-                <type>jar</type>
-            </dependency>
-            <dependency>
-                <groupId>pl.pd.emir.commons</groupId>
-                <artifactId>print-utils</artifactId>
                 <version>${project.version}</version>
                 <type>jar</type>
             </dependency>

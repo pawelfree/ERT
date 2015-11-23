@@ -24,10 +24,6 @@ public class BusinessValidationUtils extends BaseValidationUtils {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(BusinessValidationUtils.class);
 
-    private static final String CLIENT = "CLIENT";
-
-    private static final String BANK = "BANK";
-
     // ==================== BANK ====================
     public static void validateBankCountry(Bank bank, List<ImportFailLog> warnings, String recordId) {
         validateBankCountry(bank, warnings, recordId, "COUNTRY");

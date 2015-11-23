@@ -18,5 +18,6 @@
         <module>webresources</module>
         <module>ejb-impl</module>
         <module>ejb-api</module>
+        <module>utils</module>
     </modules>
 </project>

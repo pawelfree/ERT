@@ -1,6 +1,5 @@
 package pl.pd.emir.entity.utils;
 
-import pl.pd.emir.entity.utils.ReflectionValidationUtils;
 import javax.persistence.Embedded;
 import org.junit.Test;
 import static org.junit.Assert.*;

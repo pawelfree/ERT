@@ -75,7 +75,7 @@
             <scope>provided</scope>
         </dependency>
         <dependency>
-            <groupId>pl.pd.emir.commons</groupId>
+            <groupId>pl.pd.emir</groupId>
             <artifactId>utils</artifactId>
             <scope>provided</scope>
             <exclusions>
@@ -83,13 +83,6 @@
                     <groupId>org.slf4j</groupId>
                     <artifactId>slf4j-log4j12</artifactId>
                 </exclusion>
-            </exclusions>
-        </dependency>
-        <dependency>
-            <groupId>pl.pd.emir.commons</groupId>
-            <artifactId>print-utils</artifactId>
-            <scope>provided</scope>
-            <exclusions>
                 <exclusion>
                     <artifactId>jasperreports</artifactId>
                     <groupId>net.sf.jasperreports</groupId>
