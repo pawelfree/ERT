@@ -19,7 +19,6 @@ import pl.pd.emir.auth.IIDMConfig;
 import pl.pd.emir.auth.ILdapHelper;
 import pl.pd.emir.bean.BeanHelper;
 import pl.pd.emir.client.utils.ValidatorHelper;
-import pl.pd.emir.commons.EventLogManager;
 import pl.pd.emir.entity.administration.Group;
 import pl.pd.emir.entity.administration.User;
 import pl.pd.emir.enums.EventType;
@@ -27,6 +26,7 @@ import pl.pd.emir.enums.FormType;
 import pl.pd.emir.resources.EventLogBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import pl.pd.emir.admin.EventLogManager;
 
 @SessionScoped
 @ManagedBean(name = "userFormBean")

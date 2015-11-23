@@ -26,7 +26,7 @@ public abstract class ImportProcessor {
     public ImportProcessor() {
         try {
             InitialContext ic = new InitialContext();
-            bankManager = (BankManager) ic.lookup("java:global/emir/ejb-impl-1.0-SNAPSHOT/BankManagerImpl");
+            bankManager = (BankManager) ic.lookup("java:global/emir/ejb-impl-1.0-SNAPSHOT/BankManager");
 
         } catch (NamingException ex) {
             LOGGER.error("Managers can't be found", ex);

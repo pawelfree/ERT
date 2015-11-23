@@ -1,10 +1,7 @@
 package pl.pd.emir.admin;
 
-import pl.pd.emir.admin.UserManager;
-import pl.pd.emir.admin.IExtendedLoggerFacade;
 import javax.annotation.Resource;
 import javax.ejb.EJB;
-import javax.ejb.Local;
 import javax.ejb.SessionContext;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
@@ -13,28 +10,25 @@ import javax.persistence.NoResultException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import pl.pd.emir.commons.AbstractManagerTemplate;
-import pl.pd.emir.commons.EventLogManager;
 import pl.pd.emir.entity.administration.ChangeLog;
 import pl.pd.emir.entity.administration.EventLog;
 import pl.pd.emir.enums.EventType;
 
 @Stateless
-@Local(EventLogManager.class)
-public class EventLogManagerImpl extends AbstractManagerTemplate<EventLog> implements EventLogManager {
+public class EventLogManager extends AbstractManagerTemplate<EventLog> {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(EventLogManagerImpl.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(EventLogManager.class);
     @EJB
     private UserManager userManager;
     @EJB
-    private IExtendedLoggerFacade extendedLogger;
+    private ExtendedLoggerFacade extendedLogger;
     @Resource
     protected SessionContext context;
 
-    public EventLogManagerImpl() {
+    public EventLogManager() {
         super(EventLog.class);
     }
 
-    @Override
     @TransactionAttribute(TransactionAttributeType.REQUIRED)
     public void addEventTransactional(EventType eventType, Long referenceId, String eventDetails) {
         LOGGER.debug(String.format("Transactional event: %s", eventType.name()));
@@ -42,8 +36,7 @@ public class EventLogManagerImpl extends AbstractManagerTemplate<EventLog> imple
         entityManager.persist(eventLog);
         logToExternalSystem(eventLog);
     }
-
-    @Override
+    
     @TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
     public void addEventNonTransactional(EventType eventType, Long referenceId, String eventDetails) {
         LOGGER.debug(String.format("Nontransactional event: %s", eventType.name()));
@@ -52,7 +45,6 @@ public class EventLogManagerImpl extends AbstractManagerTemplate<EventLog> imple
         logToExternalSystem(eventLog);
     }
 
-    @Override
     @TransactionAttribute(TransactionAttributeType.REQUIRED)
     public void addEventTransactional(EventType eventType, Long referenceId, String eventDetails, ChangeLog changeLog) {
         LOGGER.debug(String.format("Transactional event: %s", eventType.name()));
@@ -61,7 +53,6 @@ public class EventLogManagerImpl extends AbstractManagerTemplate<EventLog> imple
         logToExternalSystem(eventLog);
     }
 
-    @Override
     @TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
     public void addEventNonTransactional(EventType eventType, Long referenceId, String eventDetails, ChangeLog changeLog) {
         LOGGER.debug(String.format("Nontransactional event: %s", eventType.name()));
@@ -73,7 +64,6 @@ public class EventLogManagerImpl extends AbstractManagerTemplate<EventLog> imple
     /**
      * {@inheritDoc }
      */
-    @Override
     public EventLog getNewesttByEventType(final Long entityId, final EventType eventType) {
         EventLog result = null;
         try {

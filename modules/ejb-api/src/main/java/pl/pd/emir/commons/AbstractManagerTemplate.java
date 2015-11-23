@@ -17,8 +17,6 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Path;
 import javax.persistence.criteria.Predicate;
-import pl.pd.emir.commons.NumberUtils;
-import pl.pd.emir.commons.NumberUtils;
 import pl.pd.emir.commons.interfaces.Identifiable;
 import pl.pd.emir.dao.criteria.AbstractSearchCriteria;
 import pl.pd.emir.dao.criteria.PagedList;

@@ -14,7 +14,7 @@ public class XmlBankChangeWriterImplTest {
     @Test
     public void testGetCtrPtyAddressAndSector_empty_bank() throws Exception {
         Bank bank = new Bank();
-        XmlBankChangeWriterImpl instance = new XmlBankChangeWriterImpl();
+        XmlBankChangeWriter instance = new XmlBankChangeWriter();
         CounterpartyAddressAndSectorDetails result = instance.getCtrPtyAddressAndSector(bank);
         assertNotNull(result);
     }
@@ -23,7 +23,7 @@ public class XmlBankChangeWriterImplTest {
     public void testGetCtrPtyAddressAndSector_country_code() throws Exception {
         Bank bank = new Bank();
         bank.setCountryCode(CountryCode.PL);
-        XmlBankChangeWriterImpl instance = new XmlBankChangeWriterImpl();
+        XmlBankChangeWriter instance = new XmlBankChangeWriter();
         CounterpartyAddressAndSectorDetails result = instance.getCtrPtyAddressAndSector(bank);
         assertNotNull(result);
     }
@@ -32,7 +32,7 @@ public class XmlBankChangeWriterImplTest {
     public void testGetCtrPtyAddressAndSector_xml_name() throws Exception {
         Bank bank = new Bank();
         bank.setXmlBankName("name");
-        XmlBankChangeWriterImpl instance = new XmlBankChangeWriterImpl();
+        XmlBankChangeWriter instance = new XmlBankChangeWriter();
         CounterpartyAddressAndSectorDetails result = instance.getCtrPtyAddressAndSector(bank);
         assertNotNull(result);
     }
@@ -41,7 +41,7 @@ public class XmlBankChangeWriterImplTest {
     public void testGetCtrPtyAddressAndSector_domicile() throws Exception {
         Bank bank = new Bank();
         bank.setInstitution(new Institution());
-        XmlBankChangeWriterImpl instance = new XmlBankChangeWriterImpl();
+        XmlBankChangeWriter instance = new XmlBankChangeWriter();
 
         bank.getInstitution().setInstitutionAddr(new InstitutionAddress("85-133", null, null, null, null, null));
         CounterpartyAddressAndSectorDetails result = instance.getCtrPtyAddressAndSector(bank);
@@ -79,7 +79,7 @@ public class XmlBankChangeWriterImplTest {
     public void testGetCtrPtyAddressAndSector_contrPartyIndustry() throws Exception {
         Bank bank = new Bank();
         bank.setContrPartyIndustry("ind");
-        XmlBankChangeWriterImpl instance = new XmlBankChangeWriterImpl();
+        XmlBankChangeWriter instance = new XmlBankChangeWriter();
         CounterpartyAddressAndSectorDetails result = instance.getCtrPtyAddressAndSector(bank);
         assertNotNull(result);
         assertEquals("ind", result.getCorpSctr());

@@ -1,13 +1,11 @@
 package pl.pd.emir.kdpw.xml.parser;
 
 import java.util.Date;
-import javax.ejb.Local;
 import javax.ejb.Stateless;
 import pl.pd.emir.commons.Constants;
 import pl.pd.emir.kdpw.xml.builder.XmlBuilder;
 import pl.pd.emir.kdpw.xml.builder.XmlParseException;
 import pl.pd.emir.kdpw.xml.builder.XmlUtils;
-import pl.pd.emir.modules.kdpw.adapter.api.RepositoryMessageReader;
 import pl.pd.emir.modules.kdpw.adapter.model.RepositoryResponse;
 import pl.pd.emir.modules.kdpw.adapter.model.ResponseItem;
 import pl.pd.emir.modules.kdpw.adapter.model.TransactionLink;
@@ -16,10 +14,8 @@ import kdpw.xsd.IKDPWDocument;
 import kdpw.xsd.trar_sts_001.DateAndDateTimeChoice;
 
 @Stateless
-@Local(RepositoryMessageReader.class)
-public class XmlReader implements RepositoryMessageReader {
+public class XmlReader {
 
-    @Override
     public RepositoryResponse read(final String message) {
 
         RepositoryResponse result = null;

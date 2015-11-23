@@ -2,12 +2,10 @@ package pl.pd.emir.kdpw.service;
 
 import java.util.Objects;
 import javax.ejb.EJB;
-import javax.ejb.Local;
 import javax.ejb.Stateless;
 import pl.pd.emir.admin.MultiNumberGenerator;
 import pl.pd.emir.admin.UserManager;
 import pl.pd.emir.commons.CollectionsUtils;
-import pl.pd.emir.commons.EventLogManager;
 import pl.pd.emir.entity.Bank;
 import pl.pd.emir.entity.administration.EventLog;
 import pl.pd.emir.entity.kdpw.KdpwMsgItem;
@@ -15,7 +13,6 @@ import pl.pd.emir.entity.kdpw.MessageLog;
 import pl.pd.emir.entity.kdpw.MessageStatus;
 import pl.pd.emir.entity.kdpw.MessageType;
 import pl.pd.emir.enums.EventType;
-import pl.pd.emir.kdpw.api.BankModificationManager;
 import pl.pd.emir.kdpw.api.MessageLogManager;
 import pl.pd.emir.kdpw.api.exception.KdpwServiceException;
 import pl.pd.emir.kdpw.service.interfaces.KdpwMsgItemManager;
@@ -25,12 +22,12 @@ import pl.pd.emir.kdpw.xml.parser.XmlBankChangeWriter;
 import pl.pd.emir.modules.kdpw.adapter.model.BankWriterResult;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import pl.pd.emir.admin.EventLogManager;
 
 @Stateless
-@Local(BankModificationManager.class)
-public class BankModificationManagerImpl implements BankModificationManager {
+public class BankModificationManager  {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(BankModificationManagerImpl.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(BankModificationManager.class);
 
     @EJB
     protected transient MessageLogManager logManager;
@@ -54,7 +51,6 @@ public class BankModificationManagerImpl implements BankModificationManager {
         return bankChangeWriter;
     }
 
-    @Override
     public boolean generateMessage(final Bank bank) {
         try {
             return saveMessageLog(getWriter().write(bank));
@@ -64,7 +60,7 @@ public class BankModificationManagerImpl implements BankModificationManager {
         }
     }
 
-    protected final boolean saveMessageLog(final BankWriterResult writerResult) {
+    protected boolean saveMessageLog(final BankWriterResult writerResult) {
         final MessageLog msgLog = MessageLog.Builder.getOutput(KdpwUtils.getMsgLogNumber(numberGenerator),
                 MessageType.BANK,
                 userManager.getCurrentUserLogin(),
@@ -85,7 +81,6 @@ public class BankModificationManagerImpl implements BankModificationManager {
         return result;
     }
 
-    @Override
     public boolean bankModificationPossible() {
         final EventLog event = eventLogManager.getNewesttByEventType(null, EventType.BANK_MODIFICATION);
         final MessageLog msgLog = logManager.findNewestByMsgType(MessageType.BANK);

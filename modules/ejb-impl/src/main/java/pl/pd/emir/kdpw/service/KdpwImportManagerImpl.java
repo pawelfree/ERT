@@ -10,12 +10,10 @@ import javax.ejb.Local;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
-import pl.pd.emir.admin.BankManager;
 import pl.pd.emir.admin.UserManager;
 import pl.pd.emir.commons.CollectionsUtils;
 import pl.pd.emir.commons.Constants;
 import pl.pd.emir.commons.StringUtil;
-import pl.pd.emir.commons.EventLogManager;
 import pl.pd.emir.entity.Bank;
 import pl.pd.emir.entity.Transaction;
 import pl.pd.emir.entity.kdpw.FileStatus;
@@ -31,13 +29,15 @@ import pl.pd.emir.kdpw.api.MessageLogManager;
 import pl.pd.emir.kdpw.api.to.ImportResult;
 import pl.pd.emir.kdpw.service.interfaces.KdpwMsgItemManager;
 import pl.pd.emir.kdpw.service.utils.KdpwUtils;
-import pl.pd.emir.modules.kdpw.adapter.api.RepositoryMessageReader;
 import pl.pd.emir.modules.kdpw.adapter.model.RepositoryResponse;
 import pl.pd.emir.modules.kdpw.adapter.model.ResponseItem;
 import pl.pd.emir.modules.kdpw.adapter.model.TransactionResponse;
 import pl.pd.emir.register.TransactionManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import pl.pd.emir.admin.BankManager;
+import pl.pd.emir.admin.EventLogManager;
+import pl.pd.emir.kdpw.xml.parser.XmlReader;
 
 @Stateless
 @Local(KdpwImportManager.class)
@@ -67,9 +67,9 @@ public class KdpwImportManagerImpl implements KdpwImportManager {
     private transient MessageLogManager messageLogManager;
 
     @EJB
-    private transient RepositoryMessageReader messageReader;
+    private transient XmlReader messageReader;
 
-    protected RepositoryMessageReader getMessageReader() {
+    protected XmlReader getMessageReader() {
         return messageReader;
     }
 

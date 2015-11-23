@@ -23,11 +23,11 @@ import pl.pd.emir.enums.BankStatus;
 import pl.pd.emir.enums.ContrPartyIndustry;
 import pl.pd.emir.enums.CountryCode;
 import pl.pd.emir.enums.InstitutionIdType;
-import pl.pd.emir.kdpw.api.BankModificationManager;
 import pl.pd.emir.resources.MultipleFilesResourceBundle;
 import org.primefaces.context.RequestContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import pl.pd.emir.kdpw.service.BankModificationManager;
 
 @ViewScoped
 @ManagedBean(name = "bankBean")

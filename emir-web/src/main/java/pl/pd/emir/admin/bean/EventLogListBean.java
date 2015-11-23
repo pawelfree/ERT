@@ -10,7 +10,6 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import pl.pd.emir.admin.BankManager;
 import pl.pd.emir.commons.DateUtils;
-import pl.pd.emir.commons.EventLogManager;
 import pl.pd.emir.entity.Client;
 import pl.pd.emir.entity.Transaction;
 import pl.pd.emir.entity.administration.EventLog;
@@ -24,6 +23,7 @@ import pl.pd.emir.reports.model.ParametersWrapper;
 import pl.pd.emir.reports.model.ReportData;
 import pl.pd.emir.resources.MultipleFilesResourceBundle;
 import org.primefaces.model.SortOrder;
+import pl.pd.emir.admin.EventLogManager;
 
 @ManagedBean(name = "eventLogListBean")
 @SessionScoped

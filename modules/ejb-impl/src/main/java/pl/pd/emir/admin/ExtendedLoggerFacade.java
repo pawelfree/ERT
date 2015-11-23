@@ -1,11 +1,8 @@
 package pl.pd.emir.admin;
 
-import pl.pd.emir.admin.IExtendedLogger;
-import pl.pd.emir.admin.IExtendedLoggerFacade;
 import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.PostConstruct;
-import javax.ejb.Local;
 import javax.ejb.Stateless;
 import javax.naming.InitialContext;
 import javax.naming.NameClassPair;
@@ -16,8 +13,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 @Stateless
-@Local(IExtendedLoggerFacade.class)
-public class ExtendedLoggerFacade implements IExtendedLoggerFacade {
+//TODO zbedny
+public class ExtendedLoggerFacade {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ExtendedLoggerFacade.class);
     public static final String BASE_JNDI_LOGGER_PATH = "ejblocal:ejb/logger";
@@ -33,9 +30,7 @@ public class ExtendedLoggerFacade implements IExtendedLoggerFacade {
             if (loggerTree != null) {
                 while (loggerTree.hasMore()) {
                     NameClassPair next = loggerTree.next();
-                    LOGGER.info("------ znaleziony " + next.getClassName() + " " + next.getName());
                     IExtendedLogger logger = (IExtendedLogger) ctx.lookup("ejblocal:ejb/logger/" + next.getName());
-                    LOGGER.info("-- wyszukany w ctx --- " + logger);
                     extendedLoggers.add(logger);
                 }
             }
@@ -44,8 +39,7 @@ public class ExtendedLoggerFacade implements IExtendedLoggerFacade {
                     + "prawdopodobnie brak dodatkowych implementacji");
         }
     }
-
-    @Override
+    
     public void addEvent(EventLog event) {
         if (extendedLoggers != null) {
             extendedLoggers.stream().forEach((logger) -> {

@@ -1,11 +1,9 @@
 package pl.pd.emir.admin;
 
-import pl.pd.emir.admin.BankManager;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import javax.ejb.EJB;
-import javax.ejb.Local;
 import javax.ejb.Stateless;
 import javax.persistence.NoResultException;
 import javax.persistence.NonUniqueResultException;
@@ -13,7 +11,6 @@ import javax.persistence.Query;
 import pl.pd.emir.commons.DateUtils;
 import pl.pd.emir.commons.StringUtil;
 import pl.pd.emir.commons.AbstractManagerTemplate;
-import pl.pd.emir.commons.EventLogManager;
 import pl.pd.emir.entity.Bank;
 import pl.pd.emir.entity.administration.ChangeLog;
 import pl.pd.emir.enums.EventType;
@@ -21,19 +18,17 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 @Stateless
-@Local(BankManager.class)
-public class BankManagerImpl extends AbstractManagerTemplate<Bank> implements BankManager {
+public class BankManager extends AbstractManagerTemplate<Bank> {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(BankManagerImpl.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(BankManager.class);
 
     @EJB
     private EventLogManager eventLogFacade;
 
-    public BankManagerImpl() {
+    public BankManager() {
         super(Bank.class);
     }
 
-    @Override
     public Bank getActive() {
         Bank result = null;
         Query query = entityManager.createNamedQuery("Bank.getActive");
@@ -45,7 +40,6 @@ public class BankManagerImpl extends AbstractManagerTemplate<Bank> implements Ba
         return result;
     }
 
-    @Override
     public Bank edit(Bank bank) {
         //pobranie aktualnie obowiązującej instytucji
         Bank activeBank = getActive();
@@ -73,7 +67,6 @@ public class BankManagerImpl extends AbstractManagerTemplate<Bank> implements Ba
         return getActive();
     }
 
-    @Override
     public Bank getFirst() {
         Bank result = null;
         Query query = entityManager.createNamedQuery("Bank.getAll");
@@ -86,7 +79,6 @@ public class BankManagerImpl extends AbstractManagerTemplate<Bank> implements Ba
         return result;
     }
 
-    @Override
     public Date getValuationReportingDate() {
         Bank bank = getActive();
         if (bank != null) {
@@ -108,7 +100,6 @@ public class BankManagerImpl extends AbstractManagerTemplate<Bank> implements Ba
         }
     }
 
-    @Override
     public List<Bank> saveBankList(List<Bank> bankList) {
         LOGGER.debug("saveBankList...listSize = {} ", bankList.size());
         List<Bank> listBank = new ArrayList<>();
@@ -134,7 +125,6 @@ public class BankManagerImpl extends AbstractManagerTemplate<Bank> implements Ba
      * @param activeDate - sprawdzana data aktywności
      * @return
      */
-    @Override
     public Bank getHistoryActiveBankByDate(Date activeDate) {
         Query query = entityManager.createNamedQuery("Bank.getHistryBankByDate").setParameter("activeDate", DateUtils.getDayEnd(activeDate));
         Bank bank = null;

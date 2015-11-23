@@ -1,7 +1,7 @@
 package pl.pd.emir.commons;
 
 import javax.ejb.EJB;
-import pl.pd.emir.commons.DateUtils;
+import pl.pd.emir.admin.EventLogManager;
 import pl.pd.emir.commons.interfaces.Logable;
 import pl.pd.emir.entity.Transaction;
 import pl.pd.emir.enums.EventType;

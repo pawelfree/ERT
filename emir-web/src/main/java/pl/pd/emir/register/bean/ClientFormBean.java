@@ -9,7 +9,6 @@ import javax.faces.bean.SessionScoped;
 import javax.faces.model.SelectItem;
 import pl.pd.emir.bean.BeanHelper;
 import pl.pd.emir.commons.StringUtil;
-import pl.pd.emir.commons.EventLogManager;
 import pl.pd.emir.embeddable.BusinessEntity;
 import pl.pd.emir.embeddable.Institution;
 import pl.pd.emir.embeddable.InstitutionAddress;
@@ -25,6 +24,7 @@ import pl.pd.emir.register.ClientManager;
 import pl.pd.emir.register.TransactionManager;
 import pl.pd.emir.resources.EventLogBuilder;
 import org.primefaces.context.RequestContext;
+import pl.pd.emir.admin.EventLogManager;
 
 @ManagedBean(name = "clientFormBean")
 @SessionScoped

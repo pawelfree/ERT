@@ -1,8 +1,8 @@
 package pl.pd.emir.admin.bean;
 
 import javax.ejb.EJB;
+import pl.pd.emir.admin.EventLogManager;
 import pl.pd.emir.bean.AbstractListBean;
-import pl.pd.emir.commons.EventLogManager;
 import pl.pd.emir.criteria.EventLogSC;
 import pl.pd.emir.entity.administration.EventLog;
 import pl.pd.emir.enums.EventLogType;

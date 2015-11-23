@@ -1,6 +1,5 @@
 package pl.pd.emir.kdpw.xml.parser;
 
-import pl.pd.emir.kdpw.xml.parser.XmlWriterImpl;
 import pl.pd.emir.embeddable.BusinessEntity;
 import pl.pd.emir.embeddable.Institution;
 import pl.pd.emir.embeddable.InstitutionData;

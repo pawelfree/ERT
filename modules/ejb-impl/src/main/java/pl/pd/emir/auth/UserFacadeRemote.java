@@ -1,8 +1,5 @@
 package pl.pd.emir.auth;
 
-import pl.pd.emir.auth.IIDMConfig;
-import pl.pd.emir.auth.IConnector;
-import pl.pd.emir.auth.IUserFacadeRemote;
 import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.security.PermitAll;

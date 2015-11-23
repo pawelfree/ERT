@@ -5,19 +5,18 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import javax.ejb.EJB;
-import javax.ejb.Local;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.persistence.NoResultException;
 import javax.persistence.Query;
 import pl.pd.emir.commons.AbstractManagerTemplate;
-import pl.pd.emir.commons.EventLogManager;
 import pl.pd.emir.embeddable.Institution;
 import pl.pd.emir.entity.Client;
 import pl.pd.emir.entity.ImportLog;
 import pl.pd.emir.entity.administration.ChangeLog;
 import pl.pd.emir.enums.EventType;
 import org.slf4j.Logger;
+import pl.pd.emir.admin.EventLogManager;
 
 @Stateless
 public class ClientManager extends AbstractManagerTemplate<Client>  {

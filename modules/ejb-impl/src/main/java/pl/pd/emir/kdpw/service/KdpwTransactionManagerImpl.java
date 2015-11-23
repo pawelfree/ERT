@@ -19,7 +19,6 @@ import pl.pd.emir.admin.ParameterManager;
 import pl.pd.emir.admin.UserManager;
 import pl.pd.emir.commons.CollectionsUtils;
 import pl.pd.emir.commons.DateUtils;
-import pl.pd.emir.commons.EventLogManager;
 import pl.pd.emir.criteria.TransactionToKdpwSC;
 import pl.pd.emir.dao.utils.FilterSortTO;
 import pl.pd.emir.entity.Bank;
@@ -65,6 +64,7 @@ import pl.pd.emir.register.TransactionManager;
 import pl.pd.emir.register.TransactionToCancelManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import pl.pd.emir.admin.EventLogManager;
 
 @Stateless
 @Local(KdpwTransactionManager.class)

@@ -47,7 +47,7 @@ public abstract class XmlWriterImpl {
      * @param bank
      * @return
      */
-    protected final String getInstPrimaryId(final Bank bank) {
+    protected String getInstPrimaryId(final Bank bank) {
         final StringBuilder result = new StringBuilder();
         if (null != bank.getCountryCode()) {
             result.append(bank.getCountryCode().name());
@@ -65,7 +65,7 @@ public abstract class XmlWriterImpl {
      * @param client
      * @return
      */
-    protected final String getBankPmryId(final Client client) {
+    protected String getBankPmryId(final Client client) {
         final StringBuilder result = new StringBuilder();
         if (allNotEmpty(client.getCountryCode())) {
             result.append(client.getCountryCode().name());
@@ -82,24 +82,13 @@ public abstract class XmlWriterImpl {
      * @param bank
      * @return
      */
-    protected final String getInstSecondaryId(final Bank bank) {
+    protected String getInstSecondaryId(final Bank bank) {
         final StringBuilder result = new StringBuilder();
         if (allNotEmpty(bank.getCountryCode())) {
             result.append(bank.getCountryCode().name());
         }
         if (null != bank.getBusinessEntity() && allNotEmpty(bank.getBusinessEntity().getSubjectRegon())) {
             result.append(bank.getBusinessEntity().getSubjectRegon());
-        }
-        return nullOnEmpty(result);
-    }
-
-    protected final String getBankScndId(final Client client) {
-        final StringBuilder result = new StringBuilder();
-        if (allNotEmpty(client.getCountryCode())) {
-            result.append(client.getCountryCode().name());
-        }
-        if (null != client.getBusinessEntity() && allNotEmpty(client.getBusinessEntity().getSubjectRegon())) {
-            result.append(client.getBusinessEntity().getSubjectRegon());
         }
         return nullOnEmpty(result);
     }
@@ -142,7 +131,7 @@ public abstract class XmlWriterImpl {
      * N M E C Z V O
      * M M M M M M M
      */
-    protected final String getSndrMsgRef() {
+    protected String getSndrMsgRef() {
         final Date date = new Date();
         final Long newNumber = numberGenerator.getNewNumber(date, MultiGeneratorKey.KDPW_MSG_NUMBER);
         return String.format("%s%s", DateUtils.formatDate(date, "yyMMdd"), newNumber);
@@ -175,7 +164,7 @@ public abstract class XmlWriterImpl {
         return StringUtil.isEmpty(result) ? null : result;
     }
 
-    protected final Date getEligDate(final String dateAsString) {
+    protected Date getEligDate(final String dateAsString) {
         Date result = null;
         try {
             result = DateUtils.getDateFromString(dateAsString, Constants.ISO_DATE);
