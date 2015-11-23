@@ -490,7 +490,6 @@ public class Transaction extends Extract implements Logable<Long>, Selectable<Lo
 
     public Transaction fullClone() {
         Transaction tmp = new Transaction();
-        //pola proste
         tmp.dataType = this.dataType;
         tmp.processingStatus = this.processingStatus;
         tmp.validationStatus = this.validationStatus;

@@ -8,7 +8,6 @@ import java.util.Objects;
 import java.util.Properties;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
-import javax.inject.Inject;
 import javax.persistence.NoResultException;
 import javax.persistence.NonUniqueResultException;
 import javax.persistence.Query;
@@ -33,12 +32,14 @@ import pl.pd.emir.enums.DataType;
 import pl.pd.emir.enums.EventType;
 import pl.pd.emir.enums.ProcessingStatus;
 import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 @Stateless
 public class TransactionManager extends AbstractManagerTemplateControlDate<Transaction> {
 
-    @Inject
-    Logger LOGGER;
+    //TODO repair
+    //@Inject
+    private transient Logger LOGGER = LoggerFactory.getLogger(TransactionManager.class);
 
     private static final String PROPERTY_FILE = "history-details.properties";
 

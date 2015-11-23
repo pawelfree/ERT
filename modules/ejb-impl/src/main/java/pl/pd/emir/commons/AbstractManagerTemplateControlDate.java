@@ -1,6 +1,5 @@
 package pl.pd.emir.commons;
 
-import pl.pd.emir.commons.AbstractLogManagerTemplate;
 import pl.pd.emir.commons.interfaces.Logable;
 import pl.pd.emir.dao.utils.DaoUtil;
 import pl.pd.emir.manager.GenericManagerControlDate;

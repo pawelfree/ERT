@@ -6,7 +6,6 @@ import java.util.HashMap;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
-import javax.inject.Inject;
 import javax.persistence.NoResultException;
 import javax.persistence.Query;
 import pl.pd.emir.commons.AbstractManagerTemplate;
@@ -16,13 +15,15 @@ import pl.pd.emir.entity.ImportLog;
 import pl.pd.emir.entity.administration.ChangeLog;
 import pl.pd.emir.enums.EventType;
 import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import pl.pd.emir.admin.EventLogManager;
 
 @Stateless
 public class ClientManager extends AbstractManagerTemplate<Client>  {
 
-    @Inject
-    private transient Logger log;
+    //TODO repair
+    //@Inject
+    private transient Logger log  = LoggerFactory.getLogger(ClientManager.class);
 
     @EJB
     protected transient EventLogManager eventLogManager;

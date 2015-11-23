@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.ejb.EJB;
@@ -78,8 +79,6 @@ public class TransactionFormBean extends AbstractFormBean<Transaction> {
 
     private static final long serialVersionUID = 1L;
 
-    //TODO remove
-    //private ConfirmedStatus confirmedStatus;
     protected String infoWindow;
 
     private boolean requiredValuaProtectInputs = true;
@@ -223,6 +222,9 @@ public class TransactionFormBean extends AbstractFormBean<Transaction> {
                 if (!ProcessingStatus.NEW.equals(getEntity().getProcessingStatus()) && !valuation) {
                     getEntity().setProcessingStatus(ProcessingStatus.CORRECTED);
                 }
+            }
+            if (Objects.isNull(getEntity().getTransactionDetails().getPreviousSourceTransId())) {
+                getEntity().getTransactionDetails().setPreviousSourceTransId("");
             }
             //sprawdzenie czy transakcja jest ZAKOŃCZONA (data rozwiązania równa dacie transakcji)
             if (getEntity().getTransactionDetails().getTerminationDate() != null) {

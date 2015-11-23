@@ -615,7 +615,7 @@ public class KdpwTransactionManagerImpl implements KdpwTransactionManager {
                 || KdpwUtils.isNotEqual(oldTrans.getValuation(), newTrans.getValuation(), ValuationChange.class));
     }
 
-    protected final boolean isTransactionDetailsChange(final Transaction oldTrans, final Transaction transaction) {
+    protected final boolean isTransactionDetailsChange(final Transaction oldTrans, final Transaction transaction) {          
         return Objects.nonNull(oldTrans)
                 && (KdpwUtils.isNotEqual(oldTrans, transaction, BaseDataChange.class)
                 || KdpwUtils.isNotEqual(oldTrans, transaction, GeneralDetailsChange.class)
