@@ -1,6 +1,5 @@
 package pl.pd.emir.kdpw.xml.parser;
 
-import pl.pd.emir.kdpw.xml.parser.XmlTransactionWriterImpl;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.ArrayList;

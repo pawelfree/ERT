@@ -1,6 +1,5 @@
 package pl.pd.emir.auth;
 
-import pl.pd.emir.auth.IIDMConfig;
 import java.io.*;
 import java.text.MessageFormat;
 import javax.annotation.PostConstruct;

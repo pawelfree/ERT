@@ -1,6 +1,5 @@
 package pl.pd.emir.resources;
 
-import pl.pd.emir.resources.MultipleFilesResourceBundleControl;
 import java.util.Locale;
 import java.util.ResourceBundle;
 import org.junit.After;

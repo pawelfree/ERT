@@ -1,6 +1,5 @@
 package pl.pd.emir.resources;
 
-import pl.pd.emir.resources.MultipleFilesResourceBundle;
 import java.util.Enumeration;
 import java.util.Locale;
 import javax.faces.application.Application;

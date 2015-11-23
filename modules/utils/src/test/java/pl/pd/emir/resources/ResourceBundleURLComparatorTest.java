@@ -1,6 +1,5 @@
 package pl.pd.emir.resources;
 
-import pl.pd.emir.resources.ResourceBundleURLComparator;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.logging.Level;

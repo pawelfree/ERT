@@ -1,6 +1,5 @@
 package pl.pd.emir.bean;
 
-import pl.pd.emir.bean.ApplicationBean;
 import java.util.Date;
 import org.junit.Test;
 import static org.junit.Assert.*;

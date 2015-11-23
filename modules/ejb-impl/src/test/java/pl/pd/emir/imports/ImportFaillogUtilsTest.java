@@ -1,6 +1,5 @@
 package pl.pd.emir.imports;
 
-import pl.pd.emir.imports.ImportFaillogUtils;
 import static org.junit.Assert.assertEquals;
 import org.junit.Test;
 

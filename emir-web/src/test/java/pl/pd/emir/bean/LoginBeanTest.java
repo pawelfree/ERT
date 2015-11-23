@@ -1,6 +1,5 @@
 package pl.pd.emir.bean;
 
-import pl.pd.emir.bean.LoginBean;
 import static org.junit.Assert.assertEquals;
 import org.junit.Test;
 

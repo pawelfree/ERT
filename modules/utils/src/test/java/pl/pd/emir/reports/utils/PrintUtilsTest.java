@@ -4,7 +4,6 @@ package pl.pd.emir.reports.utils;
 import java.util.List;
 import java.util.Map;
 import pl.pd.emir.reports.model.TransactionCSVWrapper;
-import pl.pd.emir.reports.utils.PrintUtils;
 import org.junit.After;
 import org.junit.AfterClass;
 import static org.junit.Assert.assertTrue;

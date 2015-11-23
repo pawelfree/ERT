@@ -3,7 +3,6 @@ package pl.pd.emir.commons;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashSet;
-import pl.pd.emir.commons.StringUtil;
 import org.junit.AfterClass;
 import static org.junit.Assert.assertEquals;
 import org.junit.BeforeClass;

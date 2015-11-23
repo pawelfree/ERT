@@ -11,7 +11,6 @@ import java.util.List;
 import java.util.Map;
 import pl.pd.emir.reports.model.EventLogWrapper;
 import pl.pd.emir.reports.model.ReportData;
-import pl.pd.emir.reports.utils.JasperReportsUtils;
 import net.sf.jasperreports.engine.JRException;
 import org.junit.Assert;
 import org.junit.Test;

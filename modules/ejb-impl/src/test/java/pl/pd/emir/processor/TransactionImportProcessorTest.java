@@ -1,29 +1,5 @@
 package pl.pd.emir.processor;
 
-import java.io.BufferedReader;
-import java.io.FileInputStream;
-import java.io.InputStreamReader;
-import java.io.Reader;
-import java.util.Date;
-import pl.pd.emir.entity.Client;
-import pl.pd.emir.entity.ImportLog;
-import pl.pd.emir.enums.ImportScope;
-import pl.pd.emir.enums.ImportStatus;
-import pl.pd.emir.imports.ImportOverview;
-import pl.pd.emir.parsers.BaseCsvParser;
-import pl.pd.emir.parsers.TransactionCsvParserTmb;
-import pl.pd.emir.register.ClientManager;
-import pl.pd.emir.register.TransactionManager;
-import static org.junit.Assert.assertEquals;
-import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import static org.mockito.Matchers.any;
-import org.mockito.Mock;
-import org.mockito.Mockito;
-import org.mockito.runners.MockitoJUnitRunner;
-
 /**
  *
  * @author PawelDudek

@@ -1,6 +1,5 @@
 package pl.pd.emir.auth.ldap;
 
-import pl.pd.emir.auth.ldap.LdapErrorCodes;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;

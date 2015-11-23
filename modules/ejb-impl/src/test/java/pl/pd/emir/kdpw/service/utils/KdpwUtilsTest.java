@@ -1,6 +1,5 @@
 package pl.pd.emir.kdpw.service.utils;
 
-import pl.pd.emir.kdpw.service.utils.KdpwUtils;
 import java.util.ArrayList;
 import java.util.List;
 import pl.pd.emir.entity.kdpw.KdpwMsgItem;
