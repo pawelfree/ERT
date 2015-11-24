@@ -677,15 +677,26 @@
                                                 label="#{msgs['register.transactionForm.contractType.prod2Code']}"
                                                 info="#{msgs['register.transactionForm.tabs.contractType']}->#{msgs['register.transactionForm.contractType.section.contractType']}->#{msgs['register.transactionForm.contractType.prod2Code']}" />
 
+                                <ui:remove><!--Typ instrumentu bazowego--></ui:remove>
+                                <emir:labeledOutput id="underlyingTpOutput" value="#{transactionFormBean.entity.contractDetailedData.contractData.underlyingTp}" 
+                                                    label="#{msgs['register.transactionForm.contractType.underlyingTp']}" rendered="#{transactionFormBean.formType == 'View'}" />
+                                <emir:inputSelect filter="true" id="underlyingTpInput" 
+                                                  allowEmpty="true"
+                                                  rendered="#{not (transactionFormBean.formType == 'View')}"
+                                                  value="#{transactionFormBean.entity.contractDetailedData.contractData.underlyingTp}"
+                                                  label="#{msgs['register.transactionForm.contractType.underlyingTp']}"
+                                                  info="#{msgs['register.transactionForm.tabs.contractType']}->#{msgs['register.transactionForm.contractType.section.contractType']}->#{msgs['register.transactionForm.contractType.underlyingTp']}" >
+                                    <f:selectItems value="#{transactionFormBean.importUnderlyingType}" var="option" itemLabel="#{option}" itemValue="#{option}"/>
+                                </emir:inputSelect>
+                                
                                 <ui:remove><!--Instrument bazowy--></ui:remove>
                                 <emir:labeledOutput id="underlyingIdOutput" value="#{transactionFormBean.entity.contractDetailedData.contractData.underlyingId}" label="#{msgs['register.transactionForm.contractType.underlyingId']}" rendered="#{transactionFormBean.formType == 'View'}" />
-                                <emir:inputText  id="underlyingIdInput" rendered="#{not (transactionFormBean.formType == 'View')}" required="true"
+                                <emir:inputText  id="underlyingIdInput" rendered="#{not (transactionFormBean.formType == 'View')}"
                                                  value="#{transactionFormBean.entity.contractDetailedData.contractData.underlyingId}"
                                                  label="#{msgs['register.transactionForm.contractType.underlyingId']}"
                                                  info="#{msgs['register.transactionForm.tabs.contractType']}->#{msgs['register.transactionForm.contractType.section.contractType']}->#{msgs['register.transactionForm.contractType.underlyingId']}" >
 
                                 </emir:inputText>
-
 
                                 <ui:remove><!--Kod kraju emitenta instrumentu bazowego--></ui:remove>
                                 <emir:labeledOutput id="underlCountryCodeOutput" value="#{transactionFormBean.entity.contractDetailedData.underlCountryCode}" label="#{msgs['register.transactionForm.contractType.underlCountryCode']}" rendered="#{transactionFormBean.formType == 'View'}" />

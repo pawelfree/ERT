@@ -54,6 +54,7 @@ import pl.pd.emir.register.ProtectionManager;
 import pl.pd.emir.register.TransactionManager;
 import pl.pd.emir.register.ValuationManager;
 import org.primefaces.context.RequestContext;
+import pl.pd.emir.enums.UnderlyingType;
 
 public class TransactionFormBean extends AbstractFormBean<Transaction> {
 
@@ -491,6 +492,10 @@ public class TransactionFormBean extends AbstractFormBean<Transaction> {
 
     public List<SelectItem> getImportCountryCode() {
         return BeanHelper.fillSelectList(CountryCode.values());
+    }
+    
+    public List<SelectItem> getImportUnderlyingType() {
+        return BeanHelper.fillSelectList(UnderlyingType.values());
     }
 
     public List<SelectItem> getImportCurrencyCode() {
