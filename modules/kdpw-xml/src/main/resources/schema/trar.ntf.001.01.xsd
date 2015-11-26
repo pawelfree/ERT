@@ -209,7 +209,7 @@
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:element>
-			<xs:element name="Pric" type="Max10Dec2" minOccurs="0">
+			<xs:element name="Pric" type="Max10Dec2Signed" minOccurs="0">
 				<xs:annotation>
 					<xs:documentation>Cena za ilość w okresie dostawy </xs:documentation>
 					<xs:appinfo>
@@ -251,7 +251,7 @@
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:element>
-			<xs:element name="Undrlyg" type="UnderlyingDefinition">
+			<xs:element name="Undrlyg" type="UnderlyingDefinition" minOccurs="0">
 				<xs:annotation>
 					<xs:documentation>Instrument bazowy</xs:documentation>
 					<xs:appinfo>

@@ -153,7 +153,7 @@
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:element>
-			<xs:element name="CmmdtyDtls" type="Max2Text">
+			<xs:element name="CmmdtyDtls" type="Max2Text" minOccurs="0">
 				<xs:annotation>
 					<xs:documentation>Szczegółowe informacje dotyczące towaru</xs:documentation>
 					<xs:appinfo>
@@ -217,7 +217,7 @@
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:element>
-			<xs:element name="Pric" type="Max10Dec2OrDelete" minOccurs="0">
+			<xs:element name="Pric" type="Max10Dec2SignedOrDelete" minOccurs="0">
 				<xs:annotation>
 					<xs:documentation>Cena za ilość w okresie dostawy </xs:documentation>
 					<xs:appinfo>

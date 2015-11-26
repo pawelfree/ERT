@@ -741,7 +741,7 @@ public class XmlTransactionWriterImpl extends XmlWriterImpl implements Transacti
             result.setDlvryEndDtTm(getDateTimeChoiceOrDelete(data.getCommDelivEndFrom()));
             result.setCntrctCpcty(Objects.isNull(data.getCommContractCount()) ? null : new Max50TextOrDelete(data.getCommContractCount()));
             result.setQty(Objects.isNull(data.getCommRateCount()) ? null : new Max10Dec2OrDelete(data.getCommRateCount()));
-            result.setPric(Objects.isNull(data.getCommRataCount()) ? null : new Max10Dec2OrDelete(data.getCommRataCount()));
+            result.setPric(Objects.isNull(data.getCommRataCount()) ? null : new Max10Dec2SignedOrDelete(data.getCommRataCount()));
         }
         return new CommodityTradeValidator().nullOnEmpty(result);
     }
