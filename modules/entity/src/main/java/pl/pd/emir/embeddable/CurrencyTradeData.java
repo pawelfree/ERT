@@ -9,7 +9,7 @@ import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import pl.pd.emir.commons.StringUtil;
 import pl.pd.emir.entity.administration.ChangeLog;
-import pl.pd.emir.entity.annotations.DerivativesChange;
+import pl.pd.emir.entity.annotations.TransactionDataChange;
 import static pl.pd.emir.entity.utils.HistoryUtils.checkFieldsEquals;
 import pl.pd.emir.enums.CurrencyCode;
 import pl.pd.emir.resources.EventLogBuilder;
@@ -23,28 +23,28 @@ public class CurrencyTradeData implements Serializable {
      */
     @Column(name = "CURR_TRADE_CODE", length = 3)
     @Enumerated(EnumType.STRING)
-    @DerivativesChange
+    @TransactionDataChange
     private CurrencyCode currencyTradeCode;
     /*
      * FXTRAD_XCHGRATE1, Kurs walutowy 1 – ustalony umownie kurs walutowy
      *
      */
     @Column(name = "CURR_TRADE_EXCH_RATE", precision = 15, scale = 5)
-    @DerivativesChange
+    @TransactionDataChange
     private BigDecimal currTradeExchRate;
     /*
      * FXTRAD_FRWRDXCHGRATE, Terminowy kurs walutowy w dacie waluty
      *
      */
     @Column(name = "CURR_TRADE_FRWD_RATE", precision = 15, scale = 5)
-    @DerivativesChange
+    @TransactionDataChange
     private BigDecimal currTradeFrwdRate;
     /*
      * FXTRAD_XCHGRATEBSIS, Podstawa kursu walutowego - podstawa notowań dla kursu walutowego.
      *
      */
     @Column(name = "CURR_TRADE_BASIS", length = 10)
-    @DerivativesChange
+    @TransactionDataChange
     private String currTradeBasis;
 
     public CurrencyTradeData() {

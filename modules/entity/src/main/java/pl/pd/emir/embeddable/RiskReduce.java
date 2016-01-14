@@ -10,7 +10,7 @@ import javax.persistence.Enumerated;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import pl.pd.emir.entity.administration.ChangeLog;
-import pl.pd.emir.entity.annotations.ContractDataChange;
+import pl.pd.emir.entity.annotations.TransactionDataChange;
 import static pl.pd.emir.entity.utils.HistoryUtils.checkFieldsEquals;
 import pl.pd.emir.enums.ConfirmationType;
 import pl.pd.emir.resources.EventLogBuilder;
@@ -23,14 +23,14 @@ public class RiskReduce implements Serializable {
      */
     @Column(name = "CONFIRMATION_DATE")
     @Temporal(TemporalType.TIMESTAMP)
-    @ContractDataChange
+    @TransactionDataChange
     private Date confirmationDate;
     /*
      * RSKMTGTN_ CNFRMTNTP, Sposób dokonania potwierdzenia
      */
     @Column(name = "CONFIRMATION_TYPE", length = 3)
     @Enumerated(EnumType.STRING)
-    @ContractDataChange
+    @TransactionDataChange
     private ConfirmationType confirmationType;
 
     public RiskReduce() {

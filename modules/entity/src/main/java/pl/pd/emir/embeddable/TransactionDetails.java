@@ -13,9 +13,6 @@ import javax.persistence.TemporalType;
 import pl.pd.emir.commons.StringUtil;
 import pl.pd.emir.entity.Transaction;
 import pl.pd.emir.entity.administration.ChangeLog;
-import pl.pd.emir.entity.annotations.BaseDataChange;
-import pl.pd.emir.entity.annotations.ContractDataChange;
-import pl.pd.emir.entity.annotations.DerivativesChange;
 import pl.pd.emir.entity.annotations.ValidateCompleteness;
 import static pl.pd.emir.entity.utils.HistoryUtils.checkFieldsEquals;
 import pl.pd.emir.enums.Compression;
@@ -24,6 +21,7 @@ import pl.pd.emir.enums.DeliverType;
 import pl.pd.emir.enums.OptionExecStyle;
 import pl.pd.emir.enums.OptionType;
 import pl.pd.emir.resources.EventLogBuilder;
+import pl.pd.emir.entity.annotations.TransactionDataChange;
 
 @Embeddable
 public class TransactionDetails implements Serializable {
@@ -39,14 +37,14 @@ public class TransactionDetails implements Serializable {
      * PREV_TRADID_ID, Poprzedni kod identyfikacji transakcji [29]
      */
     @Column(name = "PREV_SOURCE_TRANS_ID", length = 52)
-    @BaseDataChange
+    @TransactionDataChange
     private String previousSourceTransId;
     /**
      * TRADID_TRADREFNB, Numer referencyjny transakcji – niepowtarzalny numer transakcji nadawany przez podmiot [30]
      * raporcontractCounttujący.
      */
     @Column(name = "SOURCE_TRANS_REF_NR", length = 40)
-    @BaseDataChange
+    @TransactionDataChange
     private String sourceTransRefNr;
     //Szczegoly transakcji 4.3
     /**
@@ -66,7 +64,7 @@ public class TransactionDetails implements Serializable {
      */
     @ValidateCompleteness(subjectClass = Transaction.class, orGroup = "transactionDetailsGroup")
     @Column(name = "UNIT_PRICE", precision = 25, scale = 5)
-    @ContractDataChange
+    @TransactionDataChange
     private BigDecimal unitPrice;
     /**
      * TRADADDTLINF_AMT_WAL, Waluta instrumentu pochodnego. [42]
@@ -74,45 +72,45 @@ public class TransactionDetails implements Serializable {
     @ValidateCompleteness(subjectClass = Transaction.class, orGroup = "transactionDetailsGroup")
     @Column(name = "UNIT_PRICE_CURRENCY", length = 3)
     @Enumerated(EnumType.STRING)
-    @ContractDataChange
+    @TransactionDataChange
     private CurrencyCode unitPriceCurrency;
     /*
      * TRADADDTLINF_PRCNTG, Stawka procentowa instrumentu pochodnego. [43]
      */
     @ValidateCompleteness(subjectClass = Transaction.class, orGroup = "transactionDetailsGroup")
     @Column(name = "UNIT_PERCENTAGE_RATE", precision = 25, scale = 7)
-    @ContractDataChange
+    @TransactionDataChange
     private BigDecimal unitPriceRate;
     /**
      * TRADADDTLINF_NMNLAMT, Kwota nominalna – pierwotna wartość kontraktu. [44]
      */
     @Column(name = "NOMINAL_AMOUNT", precision = 22, scale = 2)
-    @ContractDataChange
+    @TransactionDataChange
     private BigDecimal nominalAmount;
     /**
      * TRADADDTLINF_PRICMLTPLR, Mnożnik ceny. [45]
      */
     @Column(name = "PRICE_MULTIPLIER")
-    @ContractDataChange
+    @TransactionDataChange
     private Integer priceMultiplier;
     /**
      * TRADADDTLINF_QTY, Ilość. [46]
      */
     @Column(name = "CONCTRACT_COUNT")
-    @ContractDataChange
+    @TransactionDataChange
     private Integer contractCount;
     /**
      * TRADADDTLINF_UPPMT, Płatność z góry. [47]
      */
     @Column(name = "IN_ADVANCE_PAYMENT_AMOUNT", precision = 12, scale = 2)
-    @ContractDataChange
+    @TransactionDataChange
     private BigDecimal inAdvanceAmount;
     /**
      * TRADADDTLINF_DLVRYTP, Typ dostawy. [48]
      */
     @Column(name = "DELIV_TYPE", length = 3)
     @Enumerated(EnumType.STRING)
-    @ContractDataChange
+    @TransactionDataChange
     private DeliverType delivType;
     /**
      * TRADADDTLINF_EXECDTTM, Data i czas realizacji transakcji. [49]
@@ -125,7 +123,7 @@ public class TransactionDetails implements Serializable {
      */
     @Column(name = "EFFECTIVE_DATE")
     @Temporal(TemporalType.TIMESTAMP)
-    @ContractDataChange
+    @TransactionDataChange
     private Date effectiveDate;
     /**
      * TRADADDTLINF_MTRTYDT, Termin zapadalności. [51]
@@ -144,19 +142,19 @@ public class TransactionDetails implements Serializable {
      */
     @Column(name = "SETTLEMENT_DATE")
     @Temporal(TemporalType.TIMESTAMP)
-    @ContractDataChange
+    @TransactionDataChange
     private Date settlementDate;
     /**
      * TRADADDTLINF_MSTRAGRMNTTP, Rodzaj umowy ramowej. [54]
      */
     @Column(name = "FRAMEWORK_AGGR_TYPE", length = 50)
-    @ContractDataChange
+    @TransactionDataChange
     private String frameworkAggrType;
     /**
      * TRADADDTLINF_MSTRAGRMNTVRSN, Wersja umowy ramowej. [55]
      */
     @Column(name = "FRAMEWORK_AGGR_VER")
-    @ContractDataChange
+    @TransactionDataChange
     private Integer frameworkAggrVer;
     //Pozostale wlasciwosci (4.9)
     /**
@@ -165,7 +163,7 @@ public class TransactionDetails implements Serializable {
      */
     @Column(name = "OPTION_TYPE", length = 3)
     @Enumerated(EnumType.STRING)
-    @DerivativesChange
+    @TransactionDataChange
     private OptionType optionType;
     /**
      * OPTNTRAD_EXRCSTYLE, Rodzaj opcji (sposób wykonania). [86]
@@ -173,14 +171,14 @@ public class TransactionDetails implements Serializable {
      */
     @Column(name = "OPTION_EXEX_STYLE", length = 3)
     @Enumerated(EnumType.STRING)
-    @DerivativesChange
+    @TransactionDataChange
     private OptionExecStyle optionExecStyle;
     /**
      * OPTNTRAD_STRKPRIC, Cena wykonania (górny/dolny pułap). [87]
      *
      */
     @Column(name = "OPTION_EXEC_PRICE", precision = 12, scale = 2)
-    @DerivativesChange
+    @TransactionDataChange
     private BigDecimal optionExecPrice;
 
     public TransactionDetails() {

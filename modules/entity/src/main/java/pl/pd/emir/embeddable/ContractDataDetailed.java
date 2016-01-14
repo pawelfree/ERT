@@ -13,7 +13,7 @@ import org.eclipse.persistence.descriptors.ClassDescriptor;
 import org.eclipse.persistence.mappings.AggregateObjectMapping;
 import pl.pd.emir.entity.Transaction;
 import pl.pd.emir.entity.administration.ChangeLog;
-import pl.pd.emir.entity.annotations.ContractDataChange;
+import pl.pd.emir.entity.annotations.TransactionDataChange;
 import pl.pd.emir.entity.annotations.ValidateCompleteness;
 import static pl.pd.emir.entity.utils.HistoryUtils.checkFieldsEquals;
 import pl.pd.emir.enums.CountryCode;
@@ -32,7 +32,7 @@ public class ContractDataDetailed implements Serializable, DescriptorCustomizer 
      */
     @Column(name = "UNDERL_COUNTRY_CODE", length = 3)
     @Enumerated(EnumType.STRING)
-    @ContractDataChange
+    @TransactionDataChange
     private CountryCode underlCountryCode;
     /*
      * CNTRCTTP_NTNLCCY1, Waluta nominalna 1

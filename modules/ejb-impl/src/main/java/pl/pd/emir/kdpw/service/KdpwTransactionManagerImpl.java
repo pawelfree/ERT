@@ -28,10 +28,6 @@ import pl.pd.emir.entity.Transaction;
 import pl.pd.emir.entity.administration.EventLog;
 import pl.pd.emir.entity.administration.Parameter;
 import pl.pd.emir.entity.annotations.BankDataChange;
-import pl.pd.emir.entity.annotations.BaseDataChange;
-import pl.pd.emir.entity.annotations.ContractDataChange;
-import pl.pd.emir.entity.annotations.DerivativesChange;
-import pl.pd.emir.entity.annotations.GeneralDetailsChange;
 import pl.pd.emir.entity.annotations.ProtectionChange;
 import pl.pd.emir.entity.annotations.ValuationChange;
 import pl.pd.emir.entity.kdpw.KdpwMsgItem;
@@ -65,6 +61,7 @@ import pl.pd.emir.register.TransactionToCancelManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import pl.pd.emir.admin.EventLogManager;
+import pl.pd.emir.entity.annotations.TransactionDataChange;
 
 @Stateless
 @Local(KdpwTransactionManager.class)
@@ -617,10 +614,7 @@ public class KdpwTransactionManagerImpl implements KdpwTransactionManager {
 
     protected final boolean isTransactionDetailsChange(final Transaction oldTrans, final Transaction transaction) {          
         return Objects.nonNull(oldTrans)
-                && (KdpwUtils.isNotEqual(oldTrans, transaction, BaseDataChange.class)
-                || KdpwUtils.isNotEqual(oldTrans, transaction, GeneralDetailsChange.class)
-                || KdpwUtils.isNotEqual(oldTrans, transaction, ContractDataChange.class)
-                || KdpwUtils.isNotEqual(oldTrans, transaction, DerivativesChange.class)
+                && (KdpwUtils.isNotEqual(oldTrans, transaction, TransactionDataChange.class)
                 || isClientDataChange(oldTrans.getClientVersion(), transaction.getClient())
                 || isBankDataChange(oldTrans));
     }

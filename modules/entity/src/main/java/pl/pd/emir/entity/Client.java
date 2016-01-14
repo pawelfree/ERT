@@ -21,7 +21,6 @@ import pl.pd.emir.commons.interfaces.Validatable;
 import pl.pd.emir.embeddable.BusinessEntity;
 import pl.pd.emir.embeddable.Institution;
 import pl.pd.emir.entity.administration.ChangeLog;
-import pl.pd.emir.entity.annotations.BaseDataChange;
 import pl.pd.emir.entity.annotations.ValidateCompleteness;
 import static pl.pd.emir.entity.utils.HistoryUtils.checkFieldsEquals;
 import pl.pd.emir.enums.ContrPartyIndustry;
@@ -33,6 +32,7 @@ import org.eclipse.persistence.annotations.Customizer;
 import org.eclipse.persistence.config.DescriptorCustomizer;
 import org.eclipse.persistence.descriptors.ClassDescriptor;
 import org.eclipse.persistence.mappings.AggregateObjectMapping;
+import pl.pd.emir.entity.annotations.TransactionDataChange;
 
 /**
  * Pojedynczy rekord z ekstraktu CLIENT_E
@@ -59,7 +59,7 @@ public class Client extends Extract implements Selectable<Long>, DescriptorCusto
      * ID_KLIENTA, Unikalny identyfikator klienta (powiązanie z transakcją) z ekstraktu [0]
      */
     @Column(name = "ORIGINAL_ID", length = 100, unique = true)
-    @BaseDataChange
+    @TransactionDataChange
     private String originalId;
     /**
      * NAZWA_KLIENTA, Nazwa klienta przekazywana w komunikacie [1]

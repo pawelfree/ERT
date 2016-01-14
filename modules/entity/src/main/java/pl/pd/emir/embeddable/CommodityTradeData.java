@@ -12,7 +12,7 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import pl.pd.emir.commons.StringUtil;
 import pl.pd.emir.entity.administration.ChangeLog;
-import pl.pd.emir.entity.annotations.DerivativesChange;
+import pl.pd.emir.entity.annotations.TransactionDataChange;
 import static pl.pd.emir.entity.utils.HistoryUtils.checkFieldsEquals;
 import pl.pd.emir.enums.CommLoadType;
 import pl.pd.emir.enums.CommUnderlDtls;
@@ -28,7 +28,7 @@ public class CommodityTradeData implements Serializable {
      */
     @Column(name = "COMM_UNDERL_TYPE", length = 3)
     @Enumerated(EnumType.STRING)
-    @DerivativesChange
+    @TransactionDataChange
     private CommUnderlType commUnderlType;
     /*
      * CMMDTYTRAD_ CMMDTYDTLS, Szczegółowe informacje dotyczące towaru
@@ -36,21 +36,21 @@ public class CommodityTradeData implements Serializable {
      */
     @Column(name = "COMM_UNDERL_DTLS", length = 3)
     @Enumerated(EnumType.STRING)
-    @DerivativesChange
+    @TransactionDataChange
     private CommUnderlDtls commUnderlDtls;
     /*
      * CMMDTYTRAD_DLVRYPNT, Miejsce lub strefa dostawy
      *
      */
     @Column(name = "COMM_VENUE", length = 16)
-    @DerivativesChange
+    @TransactionDataChange
     private String commVenue;
     /*
      * CMMDTYTRAD_INTRCNNCTNPNT, Punkt połączenia międzysystemowego
      *
      */
     @Column(name = "COMM_INTRCONN", length = 50)
-    @DerivativesChange
+    @TransactionDataChange
     private String commInterconn;
     /*
      * CMMDTYTRAD_LDTP, Rodzaj obciążenia - określenie profilu dostawy produktu dla poszczególnych okresów dostawy w ciągu dnia.
@@ -58,7 +58,7 @@ public class CommodityTradeData implements Serializable {
      */
     @Column(name = "COMM_LOAD_TYPE", length = 3)
     @Enumerated(EnumType.STRING)
-    @DerivativesChange
+    @TransactionDataChange
     private CommLoadType commLoadType;
     /*
      * CMMDTYTRAD_DLVRYSTARTDTTM, Data i godzina rozpoczęcia dostawy
@@ -66,7 +66,7 @@ public class CommodityTradeData implements Serializable {
      */
     @Column(name = "COMM_DELIV_START_DATE")
     @Temporal(TemporalType.TIMESTAMP)
-    @DerivativesChange
+    @TransactionDataChange
     private Date commDelivStartFrom;
     /*
      * CMMDTYTRAD_DLVRYENDDTTM, Data i godzina zakończenia dostawy
@@ -74,28 +74,28 @@ public class CommodityTradeData implements Serializable {
      */
     @Column(name = "COMM_DELIV_END_DATE")
     @Temporal(TemporalType.TIMESTAMP)
-    @DerivativesChange
+    @TransactionDataChange
     private Date commDelivEndFrom;
     /*
      * CMMDTYTRAD_CNTRCTCPCTY, Zakontraktowana ilość przypadająca na okres dostawy
      *
      */
     @Column(name = "COMM_CONTRACT_COUNT", length = 50)
-    @DerivativesChange
+    @TransactionDataChange
     private String commContractCount;
     /*
      * CMMDTYTRAD_QTY, Ilość jednostek
      *
      */
     @Column(name = "COMM_RATE_COUNT", precision = 12, scale = 2)
-    @DerivativesChange
+    @TransactionDataChange
     private BigDecimal commRateCount;
     /*
      * CMMDTYTRAD_PRIC, Cena za ilość w okresie dostawy
      *
      */
     @Column(name = "COMM_RATE_PRICE", precision = 12, scale = 2)
-    @DerivativesChange
+    @TransactionDataChange
     private BigDecimal commRataCount;
 
     public CommodityTradeData() {

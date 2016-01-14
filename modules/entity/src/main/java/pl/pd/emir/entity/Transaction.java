@@ -44,7 +44,6 @@ import pl.pd.emir.embeddable.TransactionClearing;
 import pl.pd.emir.embeddable.TransactionDetails;
 import pl.pd.emir.embeddable.ValuationData;
 import pl.pd.emir.entity.administration.ChangeLog;
-import pl.pd.emir.entity.annotations.BaseDataChange;
 import pl.pd.emir.entity.annotations.ValidateCompleteness;
 import pl.pd.emir.entity.kdpw.KdpwMsgItem;
 import static pl.pd.emir.entity.utils.HistoryUtils.checkFieldsEquals;
@@ -61,6 +60,7 @@ import org.eclipse.persistence.annotations.Customizer;
 import org.eclipse.persistence.config.DescriptorCustomizer;
 import org.eclipse.persistence.descriptors.ClassDescriptor;
 import org.eclipse.persistence.mappings.AggregateObjectMapping;
+import pl.pd.emir.entity.annotations.TransactionDataChange;
 
 @Entity
 @Table(name = "CONTRACT")
@@ -264,7 +264,7 @@ public class Transaction extends Extract implements Logable<Long>, Selectable<Lo
      */
     @Column(name = "TRANSACTION_PARTY", length = 3)
     @Enumerated(EnumType.STRING)
-    @BaseDataChange
+    @TransactionDataChange
     private TransactionParty transactionParty;
 
     /**

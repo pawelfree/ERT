@@ -7,7 +7,7 @@ import javax.persistence.Column;
 import javax.persistence.Embeddable;
 import pl.pd.emir.commons.StringUtil;
 import pl.pd.emir.entity.administration.ChangeLog;
-import pl.pd.emir.entity.annotations.DerivativesChange;
+import pl.pd.emir.entity.annotations.TransactionDataChange;
 import static pl.pd.emir.entity.utils.HistoryUtils.checkFieldsEquals;
 import pl.pd.emir.resources.EventLogBuilder;
 
@@ -19,55 +19,55 @@ public class PercentageRateData implements Serializable {
      *
      */
     @Column(name = "FIXED_RATE_LEG1", precision = 25, scale = 5)
-    @DerivativesChange
+    @TransactionDataChange
     private BigDecimal fixedRateLeg1;
     /*
      * IRTRAD_FXDRATELG2, Stała stopa procentowa części („nogi”) 2
      */
     @Column(name = "FIXED_RATE_LEG2", precision = 25, scale = 5)
-    @DerivativesChange
+    @TransactionDataChange
     private BigDecimal fixedRateLeg2;
     /*
      * IRTRAD_ FXDRATEDAYCNT, Długość okresu stosowania stałej stopy procentowej
      *
      */
     @Column(name = "FIXED_RATE_DAY_COUNT ", length = 10)
-    @DerivativesChange
+    @TransactionDataChange
     private String fixedRateDayCount;
     /*
      * IRTRAD_FXDLGPMTFRQCY, Częstotliwość płatności – część („noga”) o stałym oprocentowaniu
      *
      */
     @Column(name = "FIXED_PAYMENT_FREQ", length = 10)
-    @DerivativesChange
+    @TransactionDataChange
     private String fixedPaymentFreq;
     /*
      * IRTRAD_FLTGLGPMTFRQCY, Częstotliwość płatności – część o zmiennym oprocentowaniu
      *
      */
     @Column(name = "FLOAT_PAYMENT_FREQ", length = 10)
-    @DerivativesChange
+    @TransactionDataChange
     private String floatPaymentFreq;
     /*
      * IRTRAD_ FLTGLGRSTFRQCY, Częstotliwość ustalania na nowo zmiennej stopy procentowej\
      *
      */
     @Column(name = "NEW_PAYMENT_FREQ", length = 10)
-    @DerivativesChange
+    @TransactionDataChange
     private String newPaymentFreq;
     /*
      * IRTRAD_FLTGRATELG1, Zmienna stopa procentowa części („nogi”) 1
      *
      */
     @Column(name = "FLOAT_RATE_LEG1", length = 20)
-    @DerivativesChange
+    @TransactionDataChange
     private String floatRateLeg1;
     /*
      * IRTRAD_FLTGRATELG2, Zmienna stopa procentowa części („nogi”) 2
      *
      */
     @Column(name = "FLOAT_RATE_LEG2", length = 20)
-    @DerivativesChange
+    @TransactionDataChange
     private String floatRateLeg2;
 
     public PercentageRateData() {

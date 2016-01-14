@@ -12,7 +12,7 @@ import javax.persistence.TemporalType;
 import pl.pd.emir.commons.StringUtil;
 import pl.pd.emir.entity.Transaction;
 import pl.pd.emir.entity.administration.ChangeLog;
-import pl.pd.emir.entity.annotations.ContractDataChange;
+import pl.pd.emir.entity.annotations.TransactionDataChange;
 import pl.pd.emir.entity.annotations.ValidateCompleteness;
 import static pl.pd.emir.entity.utils.HistoryUtils.checkFieldsEquals;
 import pl.pd.emir.enums.Cleared;
@@ -29,14 +29,14 @@ public class TransactionClearing implements Serializable {
     @ValidateCompleteness(subjectClass = Transaction.class)
     @Column(name = "CLEARING_OBLIGN", length = 3)
     @Enumerated(EnumType.STRING)
-    @ContractDataChange
+    @TransactionDataChange
     private ClearingOblig clearingOblig;
     /*
      * CLRGINF_CLRD, czy dokonano rozliczenia
      */
     @Column(name = "CLEARED", length = 3)
     @Enumerated(EnumType.STRING)
-    @ContractDataChange
+    @TransactionDataChange
     private Cleared cleared;
     /*
      * CLRGINF_CLRDTTM, znacznik czasu rozliczenia
@@ -44,20 +44,20 @@ public class TransactionClearing implements Serializable {
      */
     @Column(name = "CLEARING_DATE")
     @Temporal(TemporalType.TIMESTAMP)
-    @ContractDataChange
+    @TransactionDataChange
     private Date clearingDate;
     /*
      * CLRGINF_CCP, niepowtarzalny kod CCP, ktory dokonal rozliczenia
      */
     @Column(name = "CCP_CODE", length = 20)
-    @ContractDataChange
+    @TransactionDataChange
     private String ccpCode;
     /*
      * CLRGINF_INTRGRP, wskazanie czy kontrakt zawarto jako transakcje wewnatrzgrupowa
      */
     @Column(name = "INTERGROUP_TRANS", length = 3)
     @Enumerated(EnumType.STRING)
-    @ContractDataChange
+    @TransactionDataChange
     private IntergropuTrans intergropuTrans;
 
     public TransactionClearing() {
