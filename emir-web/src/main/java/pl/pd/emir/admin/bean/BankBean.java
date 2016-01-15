@@ -88,8 +88,7 @@ public class BankBean implements Serializable {
     }
 
     public String saveStep2(boolean forDate) {
-        LOGGER.info("Saving changes...");
-        modificationExisted(forDate);
+        modificationExistes(forDate);
         bank.setId(null);
         bank = bankManager.edit(bank);
         bank.setId(null);
@@ -97,7 +96,7 @@ public class BankBean implements Serializable {
         return getAction();
     }
 
-    private void modificationExisted(boolean forDate) {
+    private void modificationExistes(boolean forDate) {
         Bank bankTemp = Objects.isNull(bankManager.getActive()) ? null : bankManager.getActive();
         if (Objects.isNull(bankTemp)) {
             bank.setBankStatus(BankStatus.CORRECTED);
@@ -232,19 +231,5 @@ public class BankBean implements Serializable {
             this.bank.setCountryCode(null);
         }
     }
-
-    public boolean isBankInfoRequired() {
-        if (InstitutionIdType.LEIC.equals(bank.getInstitution().getInstitutionData().getInstitutionIdType())) {
-            boolean xmlName = StringUtil.isNotEmpty(bank.getXmlBankName());
-            boolean code = bank.getCountryCode() != null;
-            boolean city = bank.getInstitution() != null
-                    && bank.getInstitution().getInstitutionAddr() != null
-                    && StringUtil.isNotEmpty(bank.getInstitution().getInstitutionAddr().getCity());
-
-            return xmlName != code || xmlName != city || code != city;
-        } else {
-            return true;
-        }
-    }
-
+    
 }

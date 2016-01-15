@@ -58,15 +58,9 @@ public class Bank extends Extract implements Historable<Bank>, Logable<Long> {
     /*
      * NAZWA_BANKU, Nazwa banku/instytucji [1]
      */
+    @ValidateCompleteness(subjectClass = Bank.class)    
     @Column(name = "BANK_NAME", length = 100)
     private String bankName;
-
-    /*
-     * NAZWA_BANKU_KOMUNIKAT, Nazwa banku przekazywana w komunikacie [2]
-     */
-    @ValidateCompleteness(subjectClass = Bank.class)
-    @Column(name = "XML_BANK_NAME", length = 100, nullable = true)
-    private String xmlBankName;
 
     /*
      * SENDER_ID, Identyfikator banku / instytucji  dla raportowania transakcji do ESMA [3]
@@ -159,13 +153,12 @@ public class Bank extends Extract implements Historable<Bank>, Logable<Long> {
         super();
     }
 
-    public Bank(String bankNr, String bankName, String xmlBankName, String senderId, String senderIdKdpw,
+    public Bank(String bankNr, String bankName, String senderId, String senderIdKdpw,
             CountryCode country, BusinessEntity businessEntity, Institution institution, String contrPartyIndustry,
             String contrPartyType) {
         super();
         this.bankNr = bankNr;
         this.bankName = bankName;
-        this.xmlBankName = xmlBankName;
         this.senderId = senderId;
         this.senderIdKdpw = senderIdKdpw;
         this.countryCode = country;
@@ -258,14 +251,6 @@ public class Bank extends Extract implements Historable<Bank>, Logable<Long> {
         this.senderIdKdpw = senderIdKdpw;
     }
 
-    public String getXmlBankName() {
-        return xmlBankName;
-    }
-
-    public void setXmlBankName(String xmlBankName) {
-        this.xmlBankName = xmlBankName;
-    }
-
     @Override
     public String getExtractName() {
         return "BANK_E";
@@ -313,10 +298,6 @@ public class Bank extends Extract implements Historable<Bank>, Logable<Long> {
         }
         if (fieldsNotEquals(bankName, newBank.bankName)) {
             result.add(new ChangeLog(getChangeLogData(EventDetailsKey.BANK_NAME, bankName, newBank.bankName, newBank.changeComment)));
-        }
-        if (fieldsNotEquals(xmlBankName, newBank.xmlBankName)) {
-            result.add(new ChangeLog(getChangeLogData(EventDetailsKey.XML_BANK_NAME, xmlBankName,
-                    newBank.xmlBankName, newBank.changeComment)));
         }
         if (fieldsNotEquals(senderId, newBank.senderId)) {
             result.add(new ChangeLog(getChangeLogData(EventDetailsKey.SENDER_ID, senderId, newBank.senderId, newBank.changeComment)));

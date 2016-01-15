@@ -31,7 +31,7 @@ public class XmlBankChangeWriterImplTest {
     @Test
     public void testGetCtrPtyAddressAndSector_xml_name() throws Exception {
         Bank bank = new Bank();
-        bank.setXmlBankName("name");
+        bank.setBankName("name");
         XmlBankChangeWriter instance = new XmlBankChangeWriter();
         CounterpartyAddressAndSectorDetails result = instance.getCtrPtyAddressAndSector(bank);
         assertNotNull(result);

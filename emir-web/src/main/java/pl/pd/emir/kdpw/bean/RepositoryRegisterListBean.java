@@ -61,7 +61,6 @@ public class RepositoryRegisterListBean extends AbstractKdpwListBean<Transaction
         super.initDefaultCriteria();
         criteria.setSourceTransId(null);
         criteria.setDataToSend(Boolean.TRUE);
-        //określenie widoczności opcji związanych z backloadingiem
         backloadingOptionShown = isBackloadingEnabled();
     }
 

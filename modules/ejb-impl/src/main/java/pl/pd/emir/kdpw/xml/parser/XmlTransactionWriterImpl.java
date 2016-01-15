@@ -330,7 +330,7 @@ public class XmlTransactionWriterImpl extends XmlWriterImpl implements Transacti
 
     protected final CounterpartyAddressAndSectorDetails getCounterPtyAddressAndDetails(final Bank bank) {
         final CounterpartyAddressAndSectorDetails result = new CounterpartyAddressAndSectorDetails();
-        result.setNm((null == nullOnEmpty(bank.getXmlBankName()) ? null : new Max100TextOrDelete(nullOnEmpty(bank.getXmlBankName()))));
+        result.setNm((null == nullOnEmpty(bank.getBankName()) ? null : new Max100TextOrDelete(nullOnEmpty(bank.getBankName()))));
         result.setDmcl(getDomicile(bank.getCountryCode(), bank.getInstitution()));
         result.setCorpSctr((null == nullOnEmpty(bank.getContrPartyIndustry()) ? null : new Max1TextOrDelete(nullOnEmpty(bank.getContrPartyIndustry()))));
         return result;

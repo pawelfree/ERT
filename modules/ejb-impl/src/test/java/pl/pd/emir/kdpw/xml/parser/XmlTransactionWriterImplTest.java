@@ -2,22 +2,14 @@ package pl.pd.emir.kdpw.xml.parser;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
-import java.util.List;
 import pl.pd.emir.commons.Constants;
 import pl.pd.emir.commons.DateUtils;
 import pl.pd.emir.embeddable.BusinessEntity;
-import pl.pd.emir.embeddable.BusinessEntityData;
-import pl.pd.emir.embeddable.ContractData;
-import pl.pd.emir.embeddable.ContractDataDetailed;
 import pl.pd.emir.embeddable.Institution;
-import pl.pd.emir.embeddable.InstitutionAddress;
 import pl.pd.emir.embeddable.InstitutionData;
-import pl.pd.emir.embeddable.RiskReduce;
-import pl.pd.emir.embeddable.TransactionClearing;
 import pl.pd.emir.embeddable.TransactionDetails;
 import pl.pd.emir.embeddable.ValuationData;
 import pl.pd.emir.entity.Bank;
@@ -25,25 +17,14 @@ import pl.pd.emir.entity.Client;
 import pl.pd.emir.entity.Protection;
 import pl.pd.emir.entity.Transaction;
 import pl.pd.emir.entity.Valuation;
-import pl.pd.emir.enums.Cleared;
-import pl.pd.emir.enums.ClearingOblig;
-import pl.pd.emir.enums.CommercialActity;
-import pl.pd.emir.enums.Compression;
-import pl.pd.emir.enums.ConfirmationType;
-import pl.pd.emir.enums.ContractType;
 import pl.pd.emir.enums.CountryCode;
 import pl.pd.emir.enums.CurrencyCode;
-import pl.pd.emir.enums.DeliverType;
 import pl.pd.emir.enums.DoProtection;
 import pl.pd.emir.enums.InstitutionIdType;
-import pl.pd.emir.enums.IntergropuTrans;
-import pl.pd.emir.enums.SettlementThreshold;
 import pl.pd.emir.enums.TransactionMsgType;
 import pl.pd.emir.enums.TransactionParty;
-import pl.pd.emir.enums.TransactionType;
 import pl.pd.emir.enums.ValuationType;
 import pl.pd.emir.enums.YesNo;
-import pl.pd.emir.kdpw.api.TransactionToRepository;
 import pl.pd.emir.kdpw.xml.builder.XmlUtils;
 import kdpw.xsd.trar_ins_001.CollateralInformation;
 import kdpw.xsd.trar_ins_001.CounterpartyAddressAndSectorDetails;
@@ -60,13 +41,6 @@ public class XmlTransactionWriterImplTest {
 
     private static final Date DATE_01_10_2013 = DateUtils.createSpecifiedDate(2013, Calendar.OCTOBER, 1);
 
-    private static final Date DATE_02_10_2013 = DateUtils.createSpecifiedDate(2013, Calendar.OCTOBER, 2);
-
-    private static final Date DATE_11_10_2013 = DateUtils.createSpecifiedDate(2013, Calendar.OCTOBER, 11);
-
-    private static final Date DATE_05_11_2013 = DateUtils.createSpecifiedDate(2013, Calendar.NOVEMBER, 5);
-
-    private static final long MSG_NUMBER = 10000000001l;
 
     private final XmlTransactionWriterImpl instance = new XmlTransactionWriterImpl();
 
@@ -359,119 +333,7 @@ public class XmlTransactionWriterImplTest {
 
     }
 
-    private List<TransactionToRepository> getTransListTypeN() {
-        final List<TransactionToRepository> result = new ArrayList<>();
-
-        final Transaction transaction = new Transaction();
-
-        transaction.setTransactionDate(DATE_01_10_2013);
-        transaction.setTransactionParty(TransactionParty.B);
-
-        transaction.setClient(getClientN());
-
-        BusinessEntityData bankData = new BusinessEntityData();
-        bankData.setIdCode("transNIdCode");
-        bankData.setIdCodeType(InstitutionIdType.BICC);
-        bankData.setMemberId("transNMemberId");
-        bankData.setMemberIdType(InstitutionIdType.PLEI);
-        bankData.setSettlingAccout("transSellAccount");
-        bankData.setBeneficiaryCode("transBenefCode");
-        bankData.setBeneficiaryCodeType(InstitutionIdType.LEIC);
-        bankData.setTransactionType(TransactionType.A);
-        bankData.setCommercialActity(CommercialActity.Y);
-        bankData.setSettlementThreshold(SettlementThreshold.Y);
-        transaction.setBankData(bankData);
-
-        Valuation valuation = new Valuation();
-        ValuationData valuationData = new ValuationData(BigDecimal.TEN, CurrencyCode.GBP, DATE_01_10_2013, ValuationType.M, BigDecimal.ZERO);
-        valuation.setValuationData(valuationData);
-        transaction.setValuation(valuation);
-
-        Protection protection = new Protection(null, DATE_01_10_2013, DoProtection.U, YesNo.Y, "protWallId", BigDecimal.ONE, CurrencyCode.EUR, BigDecimal.ZERO);
-        transaction.setProtection(protection);
-
-        TransactionDetails transDetails = new TransactionDetails();
-        transDetails.setSourceTransId("transSourceID001");
-        transDetails.setSourceTransRefNr("transSourceREFERENCE");
-        transDetails.setRealizationVenue("aBcD");
-        transDetails.setCompression(Compression.N);
-        transDetails.setUnitPrice(new BigDecimal("123.50"));
-        transDetails.setUnitPriceCurrency(CurrencyCode.PLN);
-        transDetails.setUnitPriceRate(new BigDecimal("1000"));
-        transDetails.setNominalAmount(BigDecimal.ZERO);
-        transDetails.setPriceMultiplier(33);
-        transDetails.setContractCount(2);
-        transDetails.setInAdvanceAmount(BigDecimal.TEN);
-        transDetails.setDelivType(DeliverType.P);
-        transDetails.setExecutionDate(DATE_02_10_2013);
-        transDetails.setEffectiveDate(DateUtils.nextDay(DATE_02_10_2013));
-        transDetails.setMaturityDate(DATE_11_10_2013);
-        transDetails.setTerminationDate(DATE_11_10_2013);
-        transDetails.setSettlementDate(DateUtils.prevDay(DATE_11_10_2013));
-        transDetails.setFrameworkAggrType("agrrType");
-        transDetails.setFrameworkAggrVer(12);
-
-        transaction.setTransactionDetails(transDetails);
-
-        ContractDataDetailed contrDetData = new ContractDataDetailed();
-        contrDetData.setUnderlCountryCode(CountryCode.ES);
-        contrDetData.setUnderlCurrency1Code(CurrencyCode.ALL);
-        contrDetData.setUnderlCurrency2Code(CurrencyCode.AMD);
-        contrDetData.setDelivCurrencyCode(CurrencyCode.PEN);
-        ContractData contrData = new ContractData(ContractType.I, "code1", "code2", "3code3");
-        contrDetData.setContractData(contrData);
-        transaction.setContractDetailedData(contrDetData);
-
-        RiskReduce riskRecude = new RiskReduce(DATE_05_11_2013, ConfirmationType.E);
-        transaction.setRiskReduce(riskRecude);
-
-        TransactionClearing clearing = new TransactionClearing();
-        clearing.setClearingOblig(ClearingOblig.Y);
-        clearing.setCleared(Cleared.Y);
-        clearing.setClearingDate(DATE_02_10_2013);
-        clearing.setCcpCode("clearingCODE");
-        clearing.setIntergropuTrans(IntergropuTrans.Y);
-        transaction.setTransactionClearing(clearing);
-
-        result.add(new TransactionToRepository(transaction, TransactionMsgType.N));
-        return result;
-    }
-
     private static final String BANK_NIP = "7762659238";
-
-    private static final String BANK_REGON = "357095320";
-
-    private Bank getBank() {
-        final Bank result = new Bank();
-
-        result.setCountryCode(CountryCode.PL);
-
-        BusinessEntity businessEntity = new BusinessEntity(BANK_NIP, BANK_REGON);
-        result.setBusinessEntity(businessEntity);
-
-        Institution institution = new Institution();
-        InstitutionData institutionData = new InstitutionData("bankInstDataId", InstitutionIdType.OTHR);
-        institution.setInstitutionData(institutionData);
-        InstitutionAddress institutionAddress = new InstitutionAddress("85-133", "Bydgoszcz", "Piekna", "45", "9", "details");
-        institution.setInstitutionAddr(institutionAddress);
-        result.setInstitution(institution);
-
-        result.setXmlBankName("xmlBankName123");
-
-        result.setContrPartyIndustry("Q");
-        result.setContrPartyType("P");
-        result.setSenderIdKdpw("0001");
-
-        return result;
-    }
-
-    private String concat(Object... list) {
-        StringBuilder result = new StringBuilder();
-        for (Object object : list) {
-            result.append(object);
-        }
-        return result.toString();
-    }
 
     private static final String CLIENT_NIP = "5528271859";
 

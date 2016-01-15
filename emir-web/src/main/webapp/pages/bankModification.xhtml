@@ -75,17 +75,6 @@
                                          maxlength="8" 
                                          rendered="#{bankBean.editMode}" />
 
-                        <ui:remove><!--Nazwa w komunikacie (String xmlBankName)--></ui:remove>
-                        <emirui:labeledOutput id="xmlBankNameOutput" value="#{bankBean.bank.xmlBankName}" label="#{msgs['bankModification.xmlBankName']}" rendered="#{not bankBean.editMode}" />
-                        <emirui:inputText id="xmlBankNameInput" 
-                                         required="false"
-                                         value="#{bankBean.bank.xmlBankName}" 
-                                         label="#{msgs['bankModification.xmlBankName']}" 
-                                         info="#{msgs['bankModification.xmlBankName']}" 
-                                         rendered="#{bankBean.editMode}" >
-                        </emirui:inputText>
-
-
                         <ui:remove><!--Identyfikator ESMA (String senderId)--></ui:remove>
                         <emirui:labeledOutput id="senderIdOutput" value="#{bankBean.bank.senderId}" label="#{msgs['bankModification.senderId']}" rendered="#{not bankBean.editMode}" />
                         <emirui:inputText id="senderIdInput" 
@@ -119,7 +108,7 @@
                                          required="true" 
                                          rendered="#{bankBean.editMode}" />
                     </p:panelGrid>
-                    <p:panel header="#{msgs['register.sets.groupValuationForm.sectionId']}" toggleable="true" toggleSpeed="100">
+                    <p:panel header="#{msgs['bankModification.section.id']}" toggleable="true" toggleSpeed="100">
                         <p:panelGrid columns="2">
                             <ui:remove><!--Identyfikator (String institution.institutionData.institutionId)--></ui:remove>
                             <emirui:labeledOutput id="institutionIdOutput" 

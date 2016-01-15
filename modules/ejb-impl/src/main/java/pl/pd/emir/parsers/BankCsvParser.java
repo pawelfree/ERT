@@ -30,7 +30,8 @@ public class BankCsvParser extends BaseCsvParser<Bank> {
             //walidacja pod kontem ostrzeżeń
             String f1 = ImportValidationUtils.validateStringField(data[0], 8, "NR_BANKU", false, "1", importResult);
             String f2 = ImportValidationUtils.validateStringField(data[1], 100, "NAZWA_BANKU", false, "2", importResult);
-            String f3 = ImportValidationUtils.validateStringField(data[2], 100, "NAZWA_BANKU_KOMUNIKAT", true, "3", importResult);
+            //TODO PAWEL - F3 jest nieuzywane XML_BANK_NAME
+            //String f3 = ImportValidationUtils.validateStringField(data[2], 100, "NAZWA_BANKU_KOMUNIKAT", true, "3", importResult);
             String f4 = ImportValidationUtils.validateStringField(data[3], 4, "SENDER_ID", false, "4", importResult);
             String f5 = ImportValidationUtils.validateStringField(data[4], 4, "SENDER_ID_KDPW", true, "5", importResult);
             CountryCode f6 = ImportValidationUtils.validateEnumField(CountryCode.class, data[5], "COUNTRY", true, "6", importResult);
@@ -39,7 +40,7 @@ public class BankCsvParser extends BaseCsvParser<Bank> {
             String f9 = ImportValidationUtils.validateStringField(data[16], 1, "CORPSCTR", false, "17", importResult);
             String f10 = ImportValidationUtils.validateStringField(data[17], 1, "FINNONFIN_ID", true, "18", importResult);
 
-            bank = new Bank(f1, f2, f3, f4, f5, f6, f7, f8, f9, f10);
+            bank = new Bank(f1, f2, f4, f5, f6, f7, f8, f9, f10);
 
         }
 

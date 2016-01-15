@@ -111,7 +111,7 @@ public class XmlBankChangeWriter extends XmlWriterImpl {
         CounterpartyAddressAndSectorDetails result = new CounterpartyAddressAndSectorDetails();
 
         //3.1 Nazwa kontrahenta
-        result.setNm(nullOnEmpty(bank.getXmlBankName()));
+        result.setNm(nullOnEmpty(bank.getBankName()));
 
         //3.2 Siedziba kontrahenta
         result.setDmcl(getDomicile(bank));
