@@ -401,20 +401,20 @@
                                 <f:facet name="header">#{msgs['register.transactionForm.generalData.subsection.brokerData']}</f:facet>
                                 <p:panelGrid columns="2">
                                     <ui:remove><!--Kod identyfikacyjny--></ui:remove>
-                                    <emir:labeledOutput id="bankDataIdCodeOutput" value="#{transactionFormBean.entity.bankData.idCode}" label="#{msgs['register.transactionForm.generalData.idCode']}" rendered="#{transactionFormBean.formType == 'View'}" />
+                                    <emir:labeledOutput id="bankDataIdCodeOutput" value="#{transactionFormBean.entity.client2Data.idCode}" label="#{msgs['register.transactionForm.generalData.idCode']}" rendered="#{transactionFormBean.formType == 'View'}" />
                                     <emir:inputText id="bankDataIdCodeInput" maxlength="50" rendered="#{not (transactionFormBean.formType == 'View')}"
-                                                    value="#{transactionFormBean.entity.bankData.idCode}"
+                                                    value="#{transactionFormBean.entity.client2Data.idCode}"
                                                     label="#{msgs['register.transactionForm.generalData.idCode']}"
-                                                    required="#{transactionFormBean.entity.bankData.idCodeType ne null}"
+                                                    required="#{transactionFormBean.entity.client2Data.idCodeType ne null}"
                                                     info="#{msgs['register.transactionForm.tabs.generalData']}->#{msgs['register.transactionForm.generalData.section.reportingInstitutionsData']}->#{msgs['register.transactionForm.generalData.subsection.brokerData']}->#{msgs['register.transactionForm.generalData.idCode']}"
                                                     >
                                         <p:ajax event="change" update="bankDataIdCodeTypeInput"/>
                                     </emir:inputText>
 
                                     <ui:remove><!--Typ identyfikacyjny--></ui:remove>
-                                    <emir:labeledOutput id="bankDataIdCodeTypeOutput" value="#{transactionFormBean.entity.bankData.idCodeType}" label="#{msgs['register.transactionForm.generalData.idCodeType']}" rendered="#{transactionFormBean.formType == 'View'}" />
+                                    <emir:labeledOutput id="bankDataIdCodeTypeOutput" value="#{transactionFormBean.entity.client2Data.idCodeType}" label="#{msgs['register.transactionForm.generalData.idCodeType']}" rendered="#{transactionFormBean.formType == 'View'}" />
                                     <emir:inputSelect filter="true" id="bankDataIdCodeTypeInput" rendered="#{not (transactionFormBean.formType == 'View')}"
-                                                      value="#{transactionFormBean.entity.bankData.idCodeType}"
+                                                      value="#{transactionFormBean.entity.client2Data.idCodeType}"
                                                       label="#{msgs['register.transactionForm.generalData.idCodeType']}"
                                                       info="#{msgs['register.transactionForm.tabs.generalData']}->#{msgs['register.transactionForm.generalData.section.reportingInstitutionsData']}->#{msgs['register.transactionForm.generalData.subsection.brokerData']}->#{msgs['register.transactionForm.generalData.idCodeType']}" allowEmpty="true"
                                                       required="#{not empty param['form1:tv:bankDataIdCodeInput_inputText']}">
@@ -427,19 +427,19 @@
                                 <f:facet name="header">#{msgs['register.transactionForm.generalData.subsection.settlingInstitutionsData']}</f:facet>
                                 <p:panelGrid columns="2">
                                     <ui:remove><!--Kod identyfikacyjny--></ui:remove>
-                                    <emir:labeledOutput id="bankDataMemberIdOutput" value="#{transactionFormBean.entity.bankData.memberId}" label="#{msgs['register.transactionForm.generalData.memberId']}" rendered="#{transactionFormBean.formType == 'View'}" />
+                                    <emir:labeledOutput id="bankDataMemberIdOutput" value="#{transactionFormBean.entity.client2Data.memberId}" label="#{msgs['register.transactionForm.generalData.memberId']}" rendered="#{transactionFormBean.formType == 'View'}" />
                                     <emir:inputText id="bankDataMemberIdInput" maxlength="50" rendered="#{not (transactionFormBean.formType == 'View')}"
-                                                    value="#{transactionFormBean.entity.bankData.memberId}"
+                                                    value="#{transactionFormBean.entity.client2Data.memberId}"
                                                     label="#{msgs['register.transactionForm.generalData.memberId']}"
-                                                    required="#{transactionFormBean.entity.bankData.memberIdType ne null}"
+                                                    required="#{transactionFormBean.entity.client2Data.memberIdType ne null}"
                                                     info="#{msgs['register.transactionForm.tabs.generalData']}->#{msgs['register.transactionForm.generalData.section.reportingInstitutionsData']}->#{msgs['register.transactionForm.generalData.subsection.settlingInstitutionsData']}->#{msgs['register.transactionForm.generalData.memberId']}">
                                         <p:ajax event="change" update="bankDataMemberIdTypeInput"/>
                                     </emir:inputText>
 
                                     <ui:remove><!--Typ identyfikacyjny--></ui:remove>
-                                    <emir:labeledOutput id="bankDataMemberIdTypeOutput" value="#{transactionFormBean.entity.bankData.memberIdType}" label="#{msgs['register.transactionForm.generalData.idCodeType']}" rendered="#{transactionFormBean.formType == 'View'}" />
+                                    <emir:labeledOutput id="bankDataMemberIdTypeOutput" value="#{transactionFormBean.entity.client2Data.memberIdType}" label="#{msgs['register.transactionForm.generalData.idCodeType']}" rendered="#{transactionFormBean.formType == 'View'}" />
                                     <emir:inputSelect filter="true" id="bankDataMemberIdTypeInput" rendered="#{not (transactionFormBean.formType == 'View')}"
-                                                      value="#{transactionFormBean.entity.bankData.memberIdType}"
+                                                      value="#{transactionFormBean.entity.client2Data.memberIdType}"
                                                       label="#{msgs['register.transactionForm.generalData.memberIdType']}"
                                                       info="#{msgs['register.transactionForm.tabs.generalData']}->#{msgs['register.transactionForm.generalData.section.reportingInstitutionsData']}->#{msgs['register.transactionForm.generalData.subsection.settlingInstitutionsData']}->#{msgs['register.transactionForm.generalData.memberIdType']}" allowEmpty="true"
                                                       required="#{not empty param['form1:tv:bankDataMemberIdInput_inputText']}">
@@ -448,10 +448,10 @@
                                     </emir:inputSelect>
 
                                     <ui:remove><!--Identyfikator konta rozliczającego--></ui:remove>
-                                    <emir:labeledOutput id="bankDataSettlingAccoutOutput" value="#{transactionFormBean.entity.bankData.settlingAccout}" label="#{msgs['register.transactionForm.generalData.settlingAccout']}" rendered="#{transactionFormBean.formType == 'View'}" />
+                                    <emir:labeledOutput id="bankDataSettlingAccoutOutput" value="#{transactionFormBean.entity.client2Data.settlingAccout}" label="#{msgs['register.transactionForm.generalData.settlingAccout']}" rendered="#{transactionFormBean.formType == 'View'}" />
                                     <emir:inputText id="bankDataSettlingAccoutInput"
                                                     rendered="#{not (transactionFormBean.formType == 'View')}"
-                                                    value="#{transactionFormBean.entity.bankData.settlingAccout}"
+                                                    value="#{transactionFormBean.entity.client2Data.settlingAccout}"
                                                     label="#{msgs['register.transactionForm.generalData.settlingAccout']}"
                                                     info="#{msgs['register.transactionForm.tabs.generalData']}->#{msgs['register.transactionForm.generalData.section.reportingInstitutionsData']}->#{msgs['register.transactionForm.generalData.subsection.settlingInstitutionsData']}->#{msgs['register.transactionForm.generalData.settlingAccout']}"  />
                                 </p:panelGrid>
@@ -460,21 +460,21 @@
                                 <f:facet name="header">#{msgs['register.transactionForm.generalData.subsection.klientData']}</f:facet>
                                 <p:panelGrid columns="2">
                                     <ui:remove><!--Kod identyfikacyjny--></ui:remove>
-                                    <emir:labeledOutput id="bankDataBeneficiaryCodeOutput" value="#{transactionFormBean.entity.bankData.beneficiaryCode}" label="#{msgs['register.transactionForm.generalData.beneficiaryCode']}" rendered="#{transactionFormBean.formType == 'View'}" />
+                                    <emir:labeledOutput id="bankDataBeneficiaryCodeOutput" value="#{transactionFormBean.entity.client2Data.beneficiaryCode}" label="#{msgs['register.transactionForm.generalData.beneficiaryCode']}" rendered="#{transactionFormBean.formType == 'View'}" />
                                     <emir:inputText id="bankDataBeneficiaryCodeInput" maxlength="50"
                                                     rendered="#{not (transactionFormBean.formType == 'View')}"
-                                                    value="#{transactionFormBean.entity.bankData.beneficiaryCode}"
+                                                    value="#{transactionFormBean.entity.client2DatabeneficiaryCode}"
                                                     label="#{msgs['register.transactionForm.generalData.beneficiaryCode']}"
-                                                    required="#{(transactionFormBean.entity.bankData.beneficiaryCodeType ne null) or transactionFormBean.entity.originalStatus eq 'N'}"
+                                                    required="#{(transactionFormBean.entity.client2Data.beneficiaryCodeType ne null) or transactionFormBean.entity.originalStatus eq 'N'}"
                                                     info="#{msgs['register.transactionForm.tabs.generalData']}->#{msgs['register.transactionForm.generalData.section.reportingInstitutionsData']}->#{msgs['register.transactionForm.generalData.subsection.klientData']}->#{msgs['register.transactionForm.generalData.beneficiaryCode']}" >
                                         <p:ajax event="change" update="bankDataBeneficiaryCodeTypeInput"/>
                                     </emir:inputText>
 
                                     <ui:remove><!--Typ identyfikacyjny--></ui:remove>
-                                    <emir:labeledOutput id="bankDataBeneficiaryCodeTypeOutput" value="#{transactionFormBean.entity.bankData.beneficiaryCodeType}" label="#{msgs['register.transactionForm.generalData.beneficiaryCodeType']}" rendered="#{transactionFormBean.formType == 'View'}" />
+                                    <emir:labeledOutput id="bankDataBeneficiaryCodeTypeOutput" value="#{transactionFormBean.entity.client2Data.beneficiaryCodeType}" label="#{msgs['register.transactionForm.generalData.beneficiaryCodeType']}" rendered="#{transactionFormBean.formType == 'View'}" />
                                     <emir:inputSelect filter="true" id="bankDataBeneficiaryCodeTypeInput"  allowEmpty="true"
                                                       rendered="#{not (transactionFormBean.formType == 'View')}"
-                                                      value="#{transactionFormBean.entity.bankData.beneficiaryCodeType}"
+                                                      value="#{transactionFormBean.entity.client2Data.beneficiaryCodeType}"
                                                       label="#{msgs['register.transactionForm.generalData.beneficiaryCodeType']}"
                                                       info="#{msgs['register.transactionForm.tabs.generalData']}->#{msgs['register.transactionForm.generalData.section.reportingInstitutionsData']}->#{msgs['register.transactionForm.generalData.subsection.klientData']}->#{msgs['register.transactionForm.generalData.beneficiaryCodeType']}"
                                                       required="#{(not empty param['form1:tv:bankDataBeneficiaryCodeInput_inputText']) or transactionFormBean.entity.originalStatus eq 'N'}"
@@ -484,39 +484,39 @@
                                     </emir:inputSelect>
 
                                     <ui:remove><!--Charakter, w jakim zawarto transakcję--></ui:remove>
-                                    <emir:labeledOutput id="bankDataTransactionTypeOutput" value="#{transactionFormBean.entity.bankData.transactionType}" label="#{msgs['register.transactionForm.generalData.transactionType']}" rendered="#{transactionFormBean.formType == 'View'}" />
+                                    <emir:labeledOutput id="bankDataTransactionTypeOutput" value="#{transactionFormBean.entity.client2Data.transactionType}" label="#{msgs['register.transactionForm.generalData.transactionType']}" rendered="#{transactionFormBean.formType == 'View'}" />
                                     <emir:inputSelect filter="true" id="bankDataTransactionTypeInput"
                                                       required="#{transactionFormBean.entity.originalStatus eq 'N'}"
                                                       allowEmpty="true"
                                                       rendered="#{not (transactionFormBean.formType == 'View')}"
-                                                      value="#{transactionFormBean.entity.bankData.transactionType}"
+                                                      value="#{transactionFormBean.entity.client2Data.transactionType}"
                                                       label="#{msgs['register.transactionForm.generalData.transactionType']}"
                                                       info="#{msgs['register.transactionForm.tabs.generalData']}->#{msgs['register.transactionForm.generalData.section.reportingInstitutionsData']}->#{msgs['register.transactionForm.generalData.subsection.klientData']}->#{msgs['register.transactionForm.generalData.transactionType']}" >
                                         <f:selectItems value="#{transactionFormBean.importTransactionType}" var="option" itemLabel="#{option}" itemValue="#{option}"/>
                                     </emir:inputSelect>
 
                                     <ui:remove><!--Bezpośredni związek z działalnością gospodarczą--></ui:remove>
-                                    <emir:labeledOutput id="bankDataCommercialActityOutput" value="#{transactionFormBean.entity.bankData.commercialActity}" label="#{msgs['register.transactionForm.generalData.commercialActity']}" rendered="#{transactionFormBean.formType == 'View'}" />
+                                    <emir:labeledOutput id="bankDataCommercialActityOutput" value="#{transactionFormBean.entity.client2Data.commercialActity}" label="#{msgs['register.transactionForm.generalData.commercialActity']}" rendered="#{transactionFormBean.formType == 'View'}" />
                                     <emir:inputSelect filter="true" id="bankDataCommercialActityInput" rendered="#{not (transactionFormBean.formType == 'View')}"
-                                                      value="#{transactionFormBean.entity.bankData.commercialActity}"
+                                                      value="#{transactionFormBean.entity.client2Data.commercialActity}"
                                                       label="#{msgs['register.transactionForm.generalData.commercialActity']}"
                                                       info="#{msgs['register.transactionForm.tabs.generalData']}->#{msgs['register.transactionForm.generalData.section.reportingInstitutionsData']}->#{msgs['register.transactionForm.generalData.subsection.klientData']}->#{msgs['register.transactionForm.generalData.commercialActity']}" allowEmpty="true">
                                         <f:selectItems value="#{transactionFormBean.importCommercialActity}" var="option" itemLabel="#{option}" itemValue="#{option}"/>
                                     </emir:inputSelect>
 
                                     <ui:remove><!--Próg związany z obowiązkiem rozliczania--></ui:remove>
-                                    <emir:labeledOutput id="bankDataSettlementThresholdOutput" value="#{transactionFormBean.entity.bankData.settlementThreshold}" label="#{msgs['register.transactionForm.generalData.settlementThreshold']}" rendered="#{transactionFormBean.formType == 'View'}" />
+                                    <emir:labeledOutput id="bankDataSettlementThresholdOutput" value="#{transactionFormBean.entity.client2Data.settlementThreshold}" label="#{msgs['register.transactionForm.generalData.settlementThreshold']}" rendered="#{transactionFormBean.formType == 'View'}" />
                                     <emir:inputSelect filter="true" id="bankDataSettlementThresholdInput" rendered="#{not (transactionFormBean.formType == 'View')}"
-                                                      value="#{transactionFormBean.entity.bankData.settlementThreshold}"
+                                                      value="#{transactionFormBean.entity.client2Data.settlementThreshold}"
                                                       label="#{msgs['register.transactionForm.generalData.settlementThreshold']}"
                                                       info="#{msgs['register.transactionForm.tabs.generalData']}->#{msgs['register.transactionForm.generalData.section.reportingInstitutionsData']}->#{msgs['register.transactionForm.generalData.subsection.klientData']}->#{msgs['register.transactionForm.generalData.settlementThreshold']}" allowEmpty="true">
                                         <f:selectItems value="#{transactionFormBean.importSettlementThreshold}" var="option" itemLabel="#{option}" itemValue="#{option}"/>
                                     </emir:inputSelect>
 
                                     <ui:remove><!--Kod portfela zabezpieczeń--></ui:remove>
-                                    <emir:labeledOutput id="bankDataCommWalletCodeOutput" value="#{transactionFormBean.entity.bankData.commWalletCode}" label="#{msgs['register.transactionForm.generalData.commWalletCode']}" rendered="#{transactionFormBean.formType == 'View'}" />
+                                    <emir:labeledOutput id="bankDataCommWalletCodeOutput" value="#{transactionFormBean.entity.client2Data.commWalletCode}" label="#{msgs['register.transactionForm.generalData.commWalletCode']}" rendered="#{transactionFormBean.formType == 'View'}" />
                                     <emir:inputText id="bankDataCommWalletCodeInput" rendered="#{not (transactionFormBean.formType == 'View')}" maxlength="35"
-                                                    value="#{transactionFormBean.entity.bankData.commWalletCode}"
+                                                    value="#{transactionFormBean.entity.client2Data.commWalletCode}"
                                                     label="#{msgs['register.transactionForm.generalData.commWalletCode']}"
                                                     info="#{msgs['register.transactionForm.tabs.generalData']}->#{msgs['register.transactionForm.generalData.section.reportingInstitutionsData']}->#{msgs['register.transactionForm.generalData.subsection.klientData']}->#{msgs['register.transactionForm.generalData.commWalletCode']}"  />
                                 </p:panelGrid>

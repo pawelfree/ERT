@@ -10,11 +10,11 @@ import javax.ejb.Local;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
+import org.apache.poi.ss.formula.eval.NotImplementedException;
 import pl.pd.emir.admin.UserManager;
 import pl.pd.emir.commons.CollectionsUtils;
 import pl.pd.emir.commons.Constants;
 import pl.pd.emir.commons.StringUtil;
-import pl.pd.emir.entity.Bank;
 import pl.pd.emir.entity.Transaction;
 import pl.pd.emir.entity.kdpw.FileStatus;
 import pl.pd.emir.entity.kdpw.KdpwMsgItem;
@@ -35,7 +35,6 @@ import pl.pd.emir.modules.kdpw.adapter.model.TransactionResponse;
 import pl.pd.emir.register.TransactionManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import pl.pd.emir.admin.BankManager;
 import pl.pd.emir.admin.EventLogManager;
 import pl.pd.emir.kdpw.xml.parser.XmlReader;
 
@@ -50,9 +49,6 @@ public class KdpwImportManagerImpl implements KdpwImportManager {
 
     @EJB
     private transient KdpwMsgItemManager msgItemManager;
-
-    @EJB
-    private transient BankManager bankManager;
 
     @EJB
     private transient EventLogManager eventLogManager;
@@ -94,41 +90,11 @@ public class KdpwImportManagerImpl implements KdpwImportManager {
      *
      */
     protected final void processTransactions(final List<ResponseItem> list, final ImportResult result) {
-        final Bank bank = bankManager.getActive();
         LOGGER.info("Processing {} transactions", list.size());
         for (ResponseItem responseItem : list) {
             LOGGER.info("Processing msg with msgId = {}", responseItem.getSndrMsgRef());
             if (responseItem.getSndrMsgRef().startsWith(Constants.TR_C)) {
-                LOGGER.info("Processing TR_C");
-                TransactionResponse transResponse = (TransactionResponse) responseItem;
-                transResponse.getLinks().stream().forEach((transactionLink) -> {
-                    if (bank.getInstitution().getInstitutionData().getInstitutionId().equals(transactionLink.getCtrPtyTRId())) {
-                        List<Transaction> processedByKDPW = transManager.findProcessedByKDPW(transactionLink.getTradeIdId(), transactionLink.getEligDate());
-                        LOGGER.info("processedByKDPW.size = {}", processedByKDPW.size());
-                        processedByKDPW.stream()
-                                .forEach(transaction -> {
-                                    transaction.confirm();
-                                    transaction.setDataType(DataType.COMPLETED);
-                                    transaction.getTransactionDetails().setTerminationDate(transResponse.getTerminationDate());
-                                    transManager.update(transaction);
-                                });
-                    } else {
-                        LOGGER.error("Invalid bank institution id = {}", transactionLink.getCtrPtyTRId());
-                    }
-                });
-                final KdpwMsgItem response = KdpwMsgItem.getResponse(responseItem.getSndrMsgRef(),
-                        null,
-                        responseItem.getStatusCode(),
-                        responseItem.getReasonCode(),
-                        responseItem.getReasonText(),
-                        responseItem.getPrvsSndrMsgRef(),
-                        null,
-                        null,
-                        null);
-                response.addProcessingTime(new Date());
-                // 1 - zapis odpowiedzi
-                result.addItem(msgItemManager.save(response));
-
+                throw new NotImplementedException("TR_C not implemented");
             } else {
                 KdpwMsgItem requestItem = null;
                 if (StringUtil.isNotEmpty(responseItem.getPrvsSndrMsgRef())) {
@@ -146,6 +112,7 @@ public class KdpwImportManagerImpl implements KdpwImportManager {
                             responseItem.getPrvsSndrMsgRef(),
                             null,
                             null,
+                            null,
                             null);
                     // 1 - zapis odpowiedzi
                     result.addItem(msgItemManager.save(response));
@@ -159,7 +126,8 @@ public class KdpwImportManagerImpl implements KdpwImportManager {
                             responseItem.getPrvsSndrMsgRef(),
                             requestItem.getMessageLog().getId(),
                             requestItem.getTransactionId(),
-                            requestItem.getClientId());
+                            requestItem.getClientId(),
+                            requestItem.getClientId2());
 
                     requestItem.getMessageLog().responseFounded();
                     messageLogManager.save(requestItem.getMessageLog());
@@ -174,24 +142,8 @@ public class KdpwImportManagerImpl implements KdpwImportManager {
         saveMessageLog(result, MessageType.TRANSACTION_RESPONSE);
     }
 
-    protected final void processReconciliation(final List<ResponseItem> list, final ImportResult result) {
-        list.stream()
-                .map((responseItem) -> KdpwMsgItem.getResponse(responseItem.getSndrMsgRef(),
-                        null,
-                        responseItem.getStatusCode(),
-                        responseItem.getReasonCode(),
-                        responseItem.getReasonText(),
-                        null,
-                        null,
-                        null,
-                        null))
-                .forEach(response -> result.addItem(response));
-        saveMessageLog(result, MessageType.RECONCILIATION);
-    }
-
     private void processTransaction(final KdpwMsgItem requestItem, final KdpwMsgItem responseItem) {
         Transaction transaction = transManager.getById(requestItem.getExtractId());
-        //final Transaction transaction = getEntityManager().find(Transaction.class, requestItem.getExtractId());
         if (TransactionMsgType.E.equals(requestItem.getRequestDetails().getTransMsgType())) {
             // Komunikat  dotyczy ANULOWANIA
             processKdpwCancel(transaction, requestItem, responseItem);
@@ -427,9 +379,6 @@ public class KdpwImportManagerImpl implements KdpwImportManager {
         if (response.isTransaction()) {
             LOGGER.info("Processing transactions from file : " + fileName);
             processTransactions(response.getList(), result);
-        } else if (response.isReconciliation()) {
-            LOGGER.info("Processing reconciliation from file : " + fileName);
-            processReconciliation(response.getList(), result);
         } else {
             throw new IllegalArgumentException("Invalid message document type ! (maybe dataset)");
         }

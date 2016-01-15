@@ -6,10 +6,8 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.Objects;
-import javax.ejb.EJB;
 import javax.ejb.Local;
 import javax.ejb.Stateless;
-import pl.pd.emir.admin.BankManager;
 import pl.pd.emir.commons.Constants;
 import pl.pd.emir.commons.DateUtils;
 import pl.pd.emir.commons.NumberUtils;
@@ -27,7 +25,6 @@ import pl.pd.emir.embeddable.RiskReduce;
 import pl.pd.emir.embeddable.TransactionClearing;
 import pl.pd.emir.embeddable.TransactionDetails;
 import pl.pd.emir.embeddable.ValuationData;
-import pl.pd.emir.entity.Bank;
 import pl.pd.emir.entity.Client;
 import pl.pd.emir.entity.Protection;
 import pl.pd.emir.entity.Transaction;
@@ -114,7 +111,7 @@ import kdpw.xsd.trar_ins_001.validators.TradeAdditionalInformationValidator;
 public class XmlTransactionWriterImpl extends XmlWriterImpl implements TransactionWriter<TransactionToRepository> {
 
     @Override
-    public TransactionWriterResult write(List<TransactionToRepository> list, Bank bank) {
+    public TransactionWriterResult write(List<TransactionToRepository> list, String institutionId, String InstitutionIdType) {
 
         LOGGER.info("Write xml for transactions: {}", list.size());
         final KDPWDocument document = new KDPWDocument();
@@ -135,14 +132,15 @@ public class XmlTransactionWriterImpl extends XmlWriterImpl implements Transacti
 
                 final TrarIns00102 trar = new TrarIns00102();
 
-                trar.setGnlInf(getGeneralInfo(transToRepo, bank));
+                trar.setGnlInf(getGeneralInfo(transToRepo, institutionId, InstitutionIdType));
 
                 final Client client = transToRepo.getRegistable().getClient();
+                final Client client2 = transToRepo.getRegistable().getClient2();
                 final TransactionMsgType msgType = transToRepo.getMsgType();
 
                 if (msgType.isNew() || msgType.isModification()) {
                     trar.getCtrPtyInf().add(getBankCounterPtyInfo(transToRepo.getRegistable().getTransaction(),
-                            bank,
+                            client2,
                             client,
                             transToRepo.getMsgType()));
                 }
@@ -155,7 +153,7 @@ public class XmlTransactionWriterImpl extends XmlWriterImpl implements Transacti
                 if (client.getReported() && (msgType.isModification() || msgType.isNew())) {
                     trar.getCtrPtyInf().add(getClientCounterPtyInfo(transToRepo.getRegistable().getTransaction(),
                             client,
-                            bank,
+                            client2,
                             transToRepo.getMsgType()));
                 }
 
@@ -194,10 +192,10 @@ public class XmlTransactionWriterImpl extends XmlWriterImpl implements Transacti
         return String.format("%s%s", DateUtils.formatDate(date, "yyMMdd"), newNumber);
     }
 
-    protected final GeneralInformation getGeneralInfo(final TransactionToRepository item, final Bank bank) {
+    protected final GeneralInformation getGeneralInfo(final TransactionToRepository item, final String institutionId, final String institutionIdType) {
         final GeneralInformation result = new GeneralInformation();
 
-        result.setTRRprtId(getTrInstitutionCode(bank));
+        result.setTRRprtId(getTrInstitutionCode(institutionId, institutionIdType));
         result.setSndrMsgRef(item.getSndrMsgRef());
         result.setFuncOfMsg(FunctionOfMessage.NEWM);
         result.setActnTp(item.getMsgType().getValue());
@@ -210,35 +208,16 @@ public class XmlTransactionWriterImpl extends XmlWriterImpl implements Transacti
         }
         result.setCreDtTm(getCreDtTm());
         result.setEligDt(XmlUtils.formatDate(item.getRegistable().getTransaction().getTransactionDate(), Constants.ISO_DATE));
-        result.setLnk(getLnk(item, bank));
+        result.setLnk(getLnk(item));
 
         return result;
     }
 
-    protected final TRInstitutionCode getTrInstitutionCode(final Bank bank) {
+    protected final TRInstitutionCode getTrInstitutionCode(final String institutionId, final String institutionIdType) {
         final TRInstitutionCode result = new TRInstitutionCode();
-        if (null == bank.getInstitution() || null == bank.getInstitution().getInstitutionData()) {
-            logMappingError("Bank.insitution | Bank.institution.institution.data");
-        } else {
-            if (StringUtil.isEmpty(bank.getInstitution().getInstitutionData().getInstitutionId())) {
-                logMappingError("Bank.institution.institution.data.institutionId");
-            } else {
-                result.setId(bank.getInstitution().getInstitutionData().getInstitutionId());
-            }
-            if (StringUtil.isEmpty(bank.getInstitution().getInstitutionData().getInstitutionId())) {
-                logMappingError("Bank.institution.institutionData.institutionIdType");
-            } else {
-                result.setTp(XmlUtils.enumName(bank.getInstitution().getInstitutionData().getInstitutionIdType()));
-            }
-        }
+        result.setId(institutionId);
+        result.setTp(institutionIdType);
         return result;
-    }
-
-    protected final InstitutionCode getRprtId(final Bank bank) {
-        final InstitutionCode institutionCode = new InstitutionCode();
-        institutionCode.setId(getBankOrClientRprtId(bank.getInstitution()));
-        institutionCode.setTp(getBankOrClientRprtIdType(bank.getInstitution()));
-        return institutionCode;
     }
 
     protected final DateAndDateTimeChoice getCreDtTm() {
@@ -247,7 +226,7 @@ public class XmlTransactionWriterImpl extends XmlWriterImpl implements Transacti
         return result;
     }
 
-    protected final Linkages getLnk(TransactionToRepository kdpwItem, Bank bank) {
+    protected final Linkages getLnk(TransactionToRepository kdpwItem) {
         Linkages result = null;
         final TransactionMsgType msgType = kdpwItem.getMsgType();
 
@@ -259,7 +238,7 @@ public class XmlTransactionWriterImpl extends XmlWriterImpl implements Transacti
                     || (msgType.isCancelation() && !kdpwItem.isCancelMutation()) || msgType.isCompleted()) {
 
                 result.getTradRefId().add(getTradeRefId(kdpwItem,
-                        bank.getInstitution(),
+                        kdpwItem.getRegistable().getClient2().getInstitution(),
                         kdpwItem.getRegistable().getClient().getInstitution(),
                         kdpwItem.getRegistable().getTransaction().getTransactionParty()));
 
@@ -267,7 +246,7 @@ public class XmlTransactionWriterImpl extends XmlWriterImpl implements Transacti
                     // raportowanie w imieniu klienta
                     result.getTradRefId().add(getTradeRefId(kdpwItem,
                             kdpwItem.getRegistable().getClient().getInstitution(),
-                            bank.getInstitution(),
+                            kdpwItem.getRegistable().getClient2().getInstitution(),
                             kdpwItem.getRegistable().getTransaction().getTransactionParty().opposite()));
                 }
             }
@@ -275,13 +254,15 @@ public class XmlTransactionWriterImpl extends XmlWriterImpl implements Transacti
         return result;
     }
 
-    protected final CounterpartyInformation getBankCounterPtyInfo(final Transaction transaction, final Bank bank,
+    
+    //TODO PAWEL dwie ponizsze powinny byc jedną metodą i przerobione na dowolne party
+    protected final CounterpartyInformation getBankCounterPtyInfo(final Transaction transaction, final Client client2,
             final Client client, final TransactionMsgType msgType) {
         final CounterpartyInformation result = new CounterpartyInformation();
-        result.setCtrPtyTRId(getTrInstCode(bank.getInstitution()));
+        result.setCtrPtyTRId(getTrInstCode(client2.getInstitution()));
         result.setCtrPtySd(XmlUtils.enumName(getTransactionParty(transaction.getTransactionParty(), Boolean.FALSE)));
-        result.setCtrPtyAdrAndSctr(getCounterPtyAddressAndDetails(bank));
-        result.setCtrPtyDtls(getCounterPtyDetails(transaction.getBankData(), bank.getContrPartyType(), msgType));
+        result.setCtrPtyAdrAndSctr(getCounterPtyAddressAndDetails(client2));
+        result.setCtrPtyDtls(getCounterPtyDetails(transaction.getClient2Data(), client2.getContrPartyType(), msgType));
         result.setOthrCtrPtyTRId(getOthrCtrPtyTrId(client.getInstitution()));
         result.setOthrCtrPtyInd(XmlUtils.booleanAsYorN(client.getNaturalPerson()));
         result.setNonEEACtrPty(nullOnEmpty(client.getEog()));
@@ -290,13 +271,13 @@ public class XmlTransactionWriterImpl extends XmlWriterImpl implements Transacti
     }
 
     protected CounterpartyInformation getClientCounterPtyInfo(final Transaction transaction, final Client client,
-            final Bank bank, TransactionMsgType msgType) {
+            final Client client2, TransactionMsgType msgType) {
         final CounterpartyInformation result = new CounterpartyInformation();
         result.setCtrPtyTRId(getTrInstCode(client.getInstitution()));
         result.setCtrPtySd(XmlUtils.enumName(getTransactionParty(transaction.getTransactionParty(), Boolean.TRUE)));
         result.setCtrPtyAdrAndSctr(getCounterPtyAddressAndDetails(client));
         result.setCtrPtyDtls(getCounterPtyDetails(transaction.getClientData(), client.getContrPartyType(), msgType));
-        result.setOthrCtrPtyTRId(getOthrCtrPtyTrId(bank.getInstitution()));
+        result.setOthrCtrPtyTRId(getOthrCtrPtyTrId(client2.getInstitution()));
         result.setOthrCtrPtyInd(XmlUtils.booleanAsYorN(Boolean.FALSE));
         result.setNonEEACtrPty("N");
 
@@ -319,14 +300,6 @@ public class XmlTransactionWriterImpl extends XmlWriterImpl implements Transacti
                 result.setTp(XmlUtils.enumName(institution.getInstitutionData().getInstitutionIdType()));
             }
         }
-        return result;
-    }
-
-    protected final CounterpartyAddressAndSectorDetails getCounterPtyAddressAndDetails(final Bank bank) {
-        final CounterpartyAddressAndSectorDetails result = new CounterpartyAddressAndSectorDetails();
-        result.setNm((null == nullOnEmpty(bank.getBankName()) ? null : new Max100TextOrDelete(nullOnEmpty(bank.getBankName()))));
-        result.setDmcl(getDomicile(bank.getCountryCode(), bank.getInstitution()));
-        result.setCorpSctr((null == nullOnEmpty(bank.getContrPartyIndustry()) ? null : new Max1TextOrDelete(nullOnEmpty(bank.getContrPartyIndustry()))));
         return result;
     }
 

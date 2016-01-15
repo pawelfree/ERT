@@ -44,7 +44,8 @@ public class TransactionCsvParserTmb extends TransactionCsvParser {
             //Wczytanie wartości z szablonu transakcji
             OriginalStatus r3 = null; //STATUS_TR
             String r4 = null; //ID_KLIENTA
-            String r5 = null; //POTWIERDZONA //TODO: Dla Mitsubishi powinno być wymagane
+            String r41 = null; //ID_KLIENTA2
+            String r5 = null; //POTWIERDZONA dla BTMU powinno być wymagane
             BusinessEntityData r6 = null; //kontrahent: dane banku
             BusinessEntityData r7 = null; //kontrahent: dane klienta
             ContractDataDetailed r8 = null; //kontrakt 4.2
@@ -58,13 +59,12 @@ public class TransactionCsvParserTmb extends TransactionCsvParser {
             //walidacja pod kontem ostrzeżeń
             String f1 = ImportValidationUtils.validateStringField(data[0], null, 50, "ID_TR", true, "1", importResult); //ID_TR
             OriginalStatus f3 = ImportValidationUtils.validateEnumField(OriginalStatus.class, r3, data[2], "STATUS_TR", true, "3", importResult); //STATUS_TR
-            String f4 = ImportValidationUtils.validateStringField(data[3], r4, 100, "ID_KLIENTA", true, "4", importResult); //ID_KLIENTA
-            String f5 = ImportValidationUtils.validateStringBooleanField(data[5], "1", "0", r5, false, "POTWIERDZONA", "6", importResult); //POTWIERDZONA //TODO: Dla Mitsubishi powinno być wymagane
-
-            BusinessEntityData f6 = ImportValidationUtils.validateBusinessEntityData(getBfnIdTpFromClient(Arrays.copyOfRange(data, 6, 17)), true, r6, importResult); //kontrahent: dane banku
-
+            //TODO to jest zbedne bo jest w jednym z nastepnych pol
+            String f4  = ImportValidationUtils.validateStringField(data[3],  r4, 100, "ID_KLIENTA", true, "4", importResult); //ID_KLIENTA
+            String f41 = ImportValidationUtils.validateStringField(data[11], r41, 100, "ID_KLIENTA2",true, "12", importResult);             
+            String f5 = ImportValidationUtils.validateStringBooleanField(data[5], "1", "0", r5, false, "POTWIERDZONA", "6", importResult); //POTWIERDZONA dla BTMU powinno być wymagane
+            BusinessEntityData f6 = ImportValidationUtils.validateBusinessEntityData(getBfnIdTpFromClient(Arrays.copyOfRange(data, 6, 17)), true, r6, importResult); //kontrahent: dane klient2 np. banku
             BusinessEntityData f7 = ImportValidationUtils.validateBusinessEntityData(getBfnIdTpFromClient(Arrays.copyOfRange(data, 17, 28)), false, r7, importResult); //kontrahent: dane klienta
-
             ContractDataDetailed f8 = ImportValidationUtils.validateContractDetailed(Arrays.copyOfRange(data, 31, 39), r8, importResult); //kontrakt 4.2
             TransactionDetails f9 = ImportValidationUtils.validateTransactionDtls(transactionDtls, r9, importResult,
                     unitPriceField41, unitPriceCurrencyField42, unitPriceRateField43,
@@ -93,8 +93,9 @@ public class TransactionCsvParserTmb extends TransactionCsvParser {
                 dataType = DataType.COMPLETED;
             }
 
-            transaction = new Transaction(f1, transactionDateField1, f3, f4, transactionPartyField4, f5, f6, f7, f8, f9,
-                    f10, f11, f12, f13, f14, dataType, ProcessingStatus.NEW, ValidationStatus.VALID, new Client());
+            //TODO PAWEL transaction party field nie jest nigdzie ustawiany?? !!
+            transaction = new Transaction(f1, transactionDateField1, f3, f4, transactionPartyField4, f41, f5, f6, f7, f8, f9,
+                    f10, f11, f12, f13, f14, dataType, ProcessingStatus.NEW, ValidationStatus.VALID, new Client(), new Client());
 
             transaction.setValidationStatus(importResult.getValidationStatus());
 

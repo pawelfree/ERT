@@ -89,11 +89,6 @@
             <redirect/>
         </navigation-case>
         <navigation-case>
-            <from-outcome>bankModification</from-outcome>
-            <to-view-id>/pages/bankModification.xhtml</to-view-id>
-            <redirect/>
-        </navigation-case>
-        <navigation-case>
             <from-outcome>eventLogList</from-outcome>
             <to-view-id>/pages/eventLogList.xhtml</to-view-id>
             <redirect/>
@@ -106,11 +101,6 @@
         <navigation-case>
             <from-outcome>clientHistory</from-outcome>
             <to-view-id>/pages/clientHistory.xhtml</to-view-id>
-            <redirect/>
-        </navigation-case>
-        <navigation-case>
-            <from-outcome>bankHistory</from-outcome>
-            <to-view-id>/pages/bankHistory.xhtml</to-view-id>
             <redirect/>
         </navigation-case>
         <navigation-case>

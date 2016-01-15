@@ -11,7 +11,6 @@ import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.faces.model.SelectItem;
-import pl.pd.emir.admin.BankManager;
 import pl.pd.emir.admin.ParameterManager;
 import pl.pd.emir.bean.BeanHelper;
 import pl.pd.emir.commons.DateUtils;
@@ -73,16 +72,11 @@ public class TransactionFormBean extends AbstractFormBean<Transaction> {
     private transient ValuationManager valuationManager;
 
     @EJB
-    private transient BankManager bankManager;
-
-    @EJB
     private ParameterManager parameterManager;
 
     private static final long serialVersionUID = 1L;
 
     protected String infoWindow;
-
-    private boolean requiredValuaProtectInputs = true;
 
     protected transient boolean mutation;
 
@@ -434,18 +428,13 @@ public class TransactionFormBean extends AbstractFormBean<Transaction> {
         return date;
     }
 
+    //TODO PAWEL dwie metody do unifikacji
     public boolean getRequiredValuaProtectInputs() {
-        Date reportingDate = bankManager.getValuationReportingDate();
-        if (reportingDate == null || getEntity().getTransactionDate() == null) {
-            requiredValuaProtectInputs = true;
-        } else {
-            requiredValuaProtectInputs = !getEntity().getTransactionDate().before(reportingDate);
-        }
-        return requiredValuaProtectInputs;
+        return true;
     }
 
     public boolean checkRequiredValuaProtectInputs() {
-        return requiredValuaProtectInputs;
+        return true;
     }
 
     protected boolean idNotUniquenessTransaction() {

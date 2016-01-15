@@ -9,7 +9,6 @@ import org.eclipse.persistence.config.DescriptorCustomizer;
 import org.eclipse.persistence.descriptors.ClassDescriptor;
 import org.eclipse.persistence.mappings.AggregateObjectMapping;
 import pl.pd.emir.commons.interfaces.Initializable;
-import pl.pd.emir.entity.Bank;
 import pl.pd.emir.entity.Client;
 import pl.pd.emir.entity.administration.ChangeLog;
 import pl.pd.emir.entity.annotations.ValidateCompleteness;
@@ -25,7 +24,6 @@ public class Institution implements Serializable, Initializable, DescriptorCusto
      * RPRTID_TP,  Typ użytego identyfikatora instytucji
      */
     @Validators({
-        @ValidateCompleteness(subjectClass = Bank.class, entry = true),
         @ValidateCompleteness(subjectClass = Client.class)
     })
     @Embedded
@@ -35,7 +33,6 @@ public class Institution implements Serializable, Initializable, DescriptorCusto
      */
 
     @Validators({
-        @ValidateCompleteness(subjectClass = Bank.class, entry = true),
         @ValidateCompleteness(subjectClass = Client.class)
     })
     @Embedded

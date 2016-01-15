@@ -28,13 +28,11 @@ import pl.pd.emir.enums.ImportScope;
 import pl.pd.emir.enums.ImportStatus;
 import pl.pd.emir.enums.ParameterKey;
 import pl.pd.emir.exceptions.FileUtilsException;
-import pl.pd.emir.parsers.BankCsvParser;
 import pl.pd.emir.parsers.BaseCsvParser;
 import pl.pd.emir.parsers.ClientCsvParser;
 import pl.pd.emir.parsers.ProtectionParser;
 import pl.pd.emir.parsers.TransactionCsvParserTmb;
 import pl.pd.emir.parsers.ValuationParser;
-import pl.pd.emir.processor.BankImportProcessor;
 import pl.pd.emir.processor.ClientImportProcessor;
 import pl.pd.emir.processor.IImportProcessor;
 import pl.pd.emir.processor.ProcessingWarnings;
@@ -81,7 +79,6 @@ public class ImportCsvManager {
     private ImportOverview overview;
 
     public ImportCsvManager() {
-        processors.put(ImportScope.BANK_E, new BankImportProcessor());
         processors.put(ImportScope.CLIENT_E, new ClientImportProcessor());
         processors.put(ImportScope.TRANSACTION_E, new TransactionImportProcessor());
         processors.put(ImportScope.PROTECTION_E, new ProtectionImportProcessor());
@@ -89,7 +86,6 @@ public class ImportCsvManager {
     }
 
     protected void initParsers() {
-        parsers.put(ImportScope.BANK_E, new BankCsvParser());
         parsers.put(ImportScope.CLIENT_E, new ClientCsvParser());
         parsers.put(ImportScope.TRANSACTION_E, new TransactionCsvParserTmb(clientManager));
         parsers.put(ImportScope.PROTECTION_E, new ProtectionParser());
@@ -111,9 +107,6 @@ public class ImportCsvManager {
         overview = new ImportOverview();
 
         //kolejność musi zostać
-        if (importScope.contains(ImportScope.BANK_E)) {
-            importFiles(ImportScope.BANK_E, new ResourceMask(parameterManager.getValue(ParameterKey.IMPORT_INPUT_MASK_BANK)));
-        }
         if (importScope.contains(ImportScope.CLIENT_E)) {
             importFiles(ImportScope.CLIENT_E, new ResourceMask(parameterManager.getValue(ParameterKey.IMPORT_INPUT_MASK_CLIENT)));
         }

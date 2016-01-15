@@ -261,6 +261,10 @@ public class EventLogBuilder {
          */
         ORIGINAL_CLIENT_ID,
         /**
+         * Identyfikator 2 klienta np. banku
+         */
+        ORIGINAL_CLIENT_ID2,        
+        /**
          * Strona transakcji
          */
         TRANSACTION_PARTY,
@@ -679,19 +683,6 @@ public class EventLogBuilder {
          * NATURAL_PERSON
          */
         NATURAL_PERSON,
-        // ==================== Instytucje ====================
-        /**
-         * Nr rozliczeniowy.
-         */
-        BANK_NR,
-        /**
-         * Nazwa.
-         */
-        BANK_NAME,
-        /**
-         * Nazwa w komunikacie.
-         */
-        XML_BANK_NAME,
         /**
          * Identyfikator ESMA.
          */
@@ -756,10 +747,6 @@ public class EventLogBuilder {
          * Inne.
          */
         DETAILS,
-        /**
-         * Status zmian danych instytucji
-         */
-        BANK_STATUS,
         // ==================== Raporty ====================
         /**
          * Nazwa ogólna raportu

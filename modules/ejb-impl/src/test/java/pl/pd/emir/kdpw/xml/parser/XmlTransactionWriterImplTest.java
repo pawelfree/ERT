@@ -12,7 +12,6 @@ import pl.pd.emir.embeddable.Institution;
 import pl.pd.emir.embeddable.InstitutionData;
 import pl.pd.emir.embeddable.TransactionDetails;
 import pl.pd.emir.embeddable.ValuationData;
-import pl.pd.emir.entity.Bank;
 import pl.pd.emir.entity.Client;
 import pl.pd.emir.entity.Protection;
 import pl.pd.emir.entity.Transaction;
@@ -53,30 +52,9 @@ public class XmlTransactionWriterImplTest {
     }
 
     @Test
-    public void testGetCounterPtyAddressAndDetails_bank_empty() {
-        Bank bank = new Bank();
-        CounterpartyAddressAndSectorDetails result = instance.getCounterPtyAddressAndDetails(bank);
-
-        assertNotNull(result);
-    }
-
-    @Test
-    public void testGetCounterPtyAddressAndDetails_bank_countryCode() {
-        Bank bank = new Bank();
-        bank.setCountryCode(CountryCode.PL);
-        CounterpartyAddressAndSectorDetails result = instance.getCounterPtyAddressAndDetails(bank);
-
-        assertEquals("PL", result.getDmcl().getCtry().getValue());
-        assertNull(result.getCorpSctr());
-        assertNull(result.getNm());
-        assertNull(result.getDmcl().getTwnNm());
-    }
-
-    @Test
     public void testGetCounterPtyAddressAndDetails_client_empty() {
         Client client = new Client();
         CounterpartyAddressAndSectorDetails result = instance.getCounterPtyAddressAndDetails(client);
-
         assertNotNull(result);
     }
 

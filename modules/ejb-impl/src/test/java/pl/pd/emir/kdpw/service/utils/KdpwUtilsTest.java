@@ -23,16 +23,16 @@ public class KdpwUtilsTest {
     @Test
     public void testAllWithResponseAllWithoutResponse() {
         List<KdpwMsgItem> items = new ArrayList<>();
-        items.add(KdpwMsgItem.getResponse(null, Long.MAX_VALUE, null, null, null, null, Long.MAX_VALUE, null, null));
+        items.add(KdpwMsgItem.getResponse(null, Long.MAX_VALUE, null, null, null, null, Long.MAX_VALUE, null, null,null));
         Assert.assertFalse("Wszystkie bez odpowiedzi - jednoelementowa lista", KdpwUtils.allWithResponse(items));
     }
 
     @Test
     public void testAllWithResponseAllWithoutResponse2() {
         List<KdpwMsgItem> items = new ArrayList<>();
-        items.add(KdpwMsgItem.getResponse(null, Long.MAX_VALUE, null, null, null, null, Long.MAX_VALUE, null, null));
-        items.add(KdpwMsgItem.getResponse(null, Long.MAX_VALUE, null, null, null, null, Long.MAX_VALUE, null, null));
-        items.add(KdpwMsgItem.getResponse(null, Long.MAX_VALUE, null, null, null, null, Long.MAX_VALUE, null, null));
+        items.add(KdpwMsgItem.getResponse(null, Long.MAX_VALUE, null, null, null, null, Long.MAX_VALUE, null, null, null));
+        items.add(KdpwMsgItem.getResponse(null, Long.MAX_VALUE, null, null, null, null, Long.MAX_VALUE, null, null, null));
+        items.add(KdpwMsgItem.getResponse(null, Long.MAX_VALUE, null, null, null, null, Long.MAX_VALUE, null, null, null));
         Assert.assertFalse("Wszystkie bez odpowiedzi - trzyelementowa lista", KdpwUtils.allWithResponse(items));
     }
 

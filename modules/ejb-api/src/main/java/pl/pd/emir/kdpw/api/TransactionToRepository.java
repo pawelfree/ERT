@@ -1,6 +1,5 @@
 package pl.pd.emir.kdpw.api;
 
-import pl.pd.emir.entity.Bank;
 import pl.pd.emir.entity.Sendable;
 import pl.pd.emir.enums.TransactionMsgType;
 import pl.pd.emir.kdpw.api.enums.ItemType;
@@ -28,8 +27,6 @@ public class TransactionToRepository extends ResultItem {
     private boolean cancelMutation;
 
     private String sndrMsgRef;
-
-    private transient Bank bank;
 
     public TransactionToRepository(final Sendable transaction, final boolean cancelMutation, final String relatedMsgId) {
         super(transaction.getOriginalId());
@@ -77,14 +74,6 @@ public class TransactionToRepository extends ResultItem {
     @Override
     public ItemType getType() {
         return ItemType.TO_SEND;
-    }
-
-    public Bank getBank() {
-        return bank;
-    }
-
-    public void setBank(Bank bank) {
-        this.bank = bank;
     }
 
 }

@@ -5,10 +5,7 @@ import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
 import pl.pd.emir.commons.interfaces.Initializable;
-import pl.pd.emir.entity.Bank;
 import pl.pd.emir.entity.administration.ChangeLog;
-import pl.pd.emir.entity.annotations.ValidateCompleteness;
-import pl.pd.emir.entity.annotations.Validators;
 import static pl.pd.emir.entity.utils.HistoryUtils.checkFieldsEquals;
 import pl.pd.emir.resources.EventLogBuilder;
 
@@ -18,16 +15,13 @@ public class BusinessEntity implements Serializable, Initializable {
     /*
      * TRRPRTID_PMRYID, Wewnętrzny identyfikator podmiotu raportującego: NIP
      */
-    @Validators({
-        @ValidateCompleteness(subjectClass = Bank.class, orGroup = "businessEntityGroup"),})
+
     @Column(name = "SUBJECT_NIP", length = 18)
     private String subjectNip;
 
     /*
      * TRRPRTID_SCNDRYID, Wewnętrzny identyfikator podmiotu raportującego: REGON
      */
-    @Validators({
-        @ValidateCompleteness(subjectClass = Bank.class, orGroup = "businessEntityGroup"),})
     @Column(name = "SUBJECT_REGON", length = 18)
     private String subjectRegon;
 

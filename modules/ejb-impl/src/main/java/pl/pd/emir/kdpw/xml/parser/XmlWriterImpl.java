@@ -8,7 +8,6 @@ import pl.pd.emir.admin.ParameterManager;
 import pl.pd.emir.commons.Constants;
 import pl.pd.emir.commons.DateUtils;
 import pl.pd.emir.commons.StringUtil;
-import pl.pd.emir.embeddable.Institution;
 import pl.pd.emir.enums.MultiGeneratorKey;
 import pl.pd.emir.enums.ParameterKey;
 import pl.pd.emir.kdpw.xml.builder.XmlUtils;
@@ -31,36 +30,6 @@ public abstract class XmlWriterImpl {
     protected String getReceiverParameter() {
         // pobierana z PARAMETRY_E.RECEIVER_ID
         return parameterManager.getValue(ParameterKey.KDPW_RECEIVER);
-    }
-
-    /**
-     *
-     * @param institution
-     * @return
-     */
-    protected String getBankOrClientRprtId(final Institution institution) {
-        final StringBuilder result = new StringBuilder();
-        if (null != institution && null != institution.getInstitutionData()
-                && allNotEmpty(institution.getInstitutionData().getInstitutionId())) {
-            result.append(institution.getInstitutionData().getInstitutionId());
-        }
-        return nullOnEmpty(result);
-    }
-
-    /**
-     * BANK_E.RPRTID_TP
-     *
-     * @param institution
-     * @return
-     */
-    protected String getBankOrClientRprtIdType(final Institution institution) {
-        final StringBuilder result = new StringBuilder();
-        if (null != institution
-                && null != institution.getInstitutionData()
-                && null != institution.getInstitutionData().getInstitutionIdType()) {
-            result.append(XmlUtils.enumName(institution.getInstitutionData().getInstitutionIdType()));
-        }
-        return nullOnEmpty(result);
     }
 
     /**

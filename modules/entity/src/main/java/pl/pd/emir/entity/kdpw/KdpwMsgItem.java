@@ -23,7 +23,6 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import pl.pd.emir.commons.Constants;
 import pl.pd.emir.commons.interfaces.Identifiable;
-import pl.pd.emir.entity.Bank;
 import pl.pd.emir.enums.TransactionMsgType;
 
 @Entity
@@ -104,9 +103,8 @@ public class KdpwMsgItem implements Identifiable<Long> {
     @Column(name = "CLIENT_IDEN")
     private String clientId;
 
-    @ManyToOne
-    @JoinColumn(name = "BANK_ID", nullable = true)
-    private Bank bank;
+    @Column(name = "CLIENT_IDEN_2")
+    private String clientId2;
 
     protected KdpwMsgItem() {
         super();
@@ -165,7 +163,9 @@ public class KdpwMsgItem implements Identifiable<Long> {
             final String statusCode, final String stausDesc,
             final String rltdRef,
             final Long relatedMsgLogId,
-            final String transactionId, final String clientId) {
+            final String transactionId, 
+            final String clientId,
+            final String clientId2) {
         final KdpwMsgItem result = new KdpwMsgItem();
         result.responseDetails = new ResponseDetails(status, statusCode, stausDesc, rltdRef, relatedMsgLogId);
         result.sndrMsgRef = msgId;
@@ -177,6 +177,7 @@ public class KdpwMsgItem implements Identifiable<Long> {
         }
         result.transactionId = transactionId;
         result.clientId = clientId;
+        result.clientId2 = clientId2;
         return result;
     }
 
@@ -192,7 +193,9 @@ public class KdpwMsgItem implements Identifiable<Long> {
     public static KdpwMsgItem getRequest(final Long extractId, final String msgId,
             final TransactionMsgType msgType,
             final Boolean cancelMutation,
-            final String transactionId, final String clientId) {
+            final String transactionId, 
+            final String clientId,
+            final String clientId2) {
         final KdpwMsgItem result = new KdpwMsgItem();
         result.requestDetails = new RequestDetails(msgType, cancelMutation);
         result.sndrMsgRef = msgId;
@@ -200,6 +203,7 @@ public class KdpwMsgItem implements Identifiable<Long> {
         result.status = MessageStatus.GENERATED;
         result.transactionId = transactionId;
         result.clientId = clientId;
+        result.clientId2 = clientId2;
         return result;
     }
 
@@ -242,14 +246,10 @@ public class KdpwMsgItem implements Identifiable<Long> {
         return transactionId;
     }
 
-    public Bank getBank() {
-        return bank;
+    public String getClientId2() {
+        return clientId2;
     }
-
-    public void setBank(Bank bank) {
-        this.bank = bank;
-    }
-
+    
     public void setStatus(MessageStatus status) {
         this.status = status;
     }

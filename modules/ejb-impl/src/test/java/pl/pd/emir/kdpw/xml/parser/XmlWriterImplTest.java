@@ -2,7 +2,6 @@ package pl.pd.emir.kdpw.xml.parser;
 
 import pl.pd.emir.embeddable.Institution;
 import pl.pd.emir.embeddable.InstitutionData;
-import pl.pd.emir.entity.Bank;
 import pl.pd.emir.enums.InstitutionIdType;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -15,44 +14,6 @@ public class XmlWriterImplTest {
 
     public XmlWriterImplTest() {
         super();
-    }
-
-    @Test
-    public void testGetBankRprtId_emptyData() {
-        Bank bank = new Bank();
-        XmlWriterImpl instance = new XmlWriterImplImpl();
-        String result = instance.getBankOrClientRprtId(bank.getInstitution());
-        assertNull(result);
-    }
-
-    @Test
-    public void testGetBankRprtId_success() {
-        Bank bank = new Bank();
-        InstitutionData instData = new InstitutionData("insID", InstitutionIdType.LEIC);
-        Institution institution = new Institution(instData, null);
-        bank.setInstitution(institution);
-        XmlWriterImpl instance = new XmlWriterImplImpl();
-        String result = instance.getBankOrClientRprtId(bank.getInstitution());
-        assertEquals("insID", result);
-    }
-
-    @Test
-    public void testGetBankRprtIdType_emptyData() {
-        Bank bank = new Bank();
-        XmlWriterImpl instance = new XmlWriterImplImpl();
-        String result = instance.getBankOrClientRprtIdType(bank.getInstitution());
-        assertNull(result);
-    }
-
-    @Test
-    public void testGetBankRprtIdType_success() {
-        Bank bank = new Bank();
-        InstitutionData instData = new InstitutionData("insID", InstitutionIdType.LEIC);
-        Institution institution = new Institution(instData, null);
-        bank.setInstitution(institution);
-        XmlWriterImpl instance = new XmlWriterImplImpl();
-        String result = instance.getBankOrClientRprtIdType(bank.getInstitution());
-        assertEquals("LEIC", result);
     }
 
     @Test

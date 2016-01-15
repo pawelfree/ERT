@@ -67,6 +67,7 @@ public class TransactionManager extends AbstractManagerTemplateControlDate<Trans
 
     public Transaction update(Transaction transaction) {
         setClientVersion(transaction);
+        setClient2Version(transaction);
         processEmptyObjects(transaction);
         return super.save(transaction);
     }
@@ -89,6 +90,7 @@ public class TransactionManager extends AbstractManagerTemplateControlDate<Trans
 
     public final Transaction save(final Transaction transaction, final boolean isMutation, final boolean isValuation) {
         setClientVersion(transaction);
+        setClient2Version(transaction);
         LOGGER.debug("Saving transaction. mutation - " + isMutation + ", valuation - " + isValuation
                 + ". Transaction date - " + transaction.getTransactionDate() + ", id - " + transaction.getOriginalId());
 
@@ -145,6 +147,12 @@ public class TransactionManager extends AbstractManagerTemplateControlDate<Trans
             final Client dbClient = clientService.getClientByOrginalId(entity.getClient().getOriginalId());
             entity.setClient(dbClient);
             setClientVersion(entity);
+        }
+        
+        if (entity.getClient2() != null && entity.getClient2().getOriginalId() != null) {
+            final Client dbClient = clientService.getClientByOrginalId(entity.getClient2().getOriginalId());
+            entity.setClient2(dbClient);
+            setClient2Version(entity);
         }
 
         if (entity.getProtection() != null) {
@@ -486,9 +494,16 @@ public class TransactionManager extends AbstractManagerTemplateControlDate<Trans
         }
     }
 
+    //TODO PAWEL polaczyc obie metody w jedna
     private void setClientVersion(Transaction transaction) {
         if (transaction.getClient() != null) {
             transaction.setClientVersion(transaction.getClient().getClientVersion());
+        }
+    }
+    
+    private void setClient2Version(Transaction transaction) {
+        if (transaction.getClient2() != null) {
+            transaction.setClient2Version(transaction.getClient2().getClientVersion());
         }
     }
 

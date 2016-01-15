@@ -4,7 +4,6 @@ import java.util.List;
 import java.util.Objects;
 import pl.pd.emir.commons.DateUtils;
 import pl.pd.emir.commons.StringUtil;
-import pl.pd.emir.entity.Bank;
 import pl.pd.emir.entity.Client;
 import pl.pd.emir.entity.ImportFailLog;
 import pl.pd.emir.entity.Transaction;
@@ -23,19 +22,6 @@ import org.slf4j.LoggerFactory;
 public class BusinessValidationUtils extends BaseValidationUtils {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(BusinessValidationUtils.class);
-
-    // ==================== BANK ====================
-    public static void validateBankCountry(Bank bank, List<ImportFailLog> warnings, String recordId) {
-        validateBankCountry(bank, warnings, recordId, "COUNTRY");
-    }
-
-    public static void validateBankCountry(Bank bank, List<ImportFailLog> warnings, String recordId, String fieldName) {
-        if (bank.getCountryCode() == null
-                || CountryCode.ERR.equals(bank.getCountryCode())) {
-            ImportFailLog log = new ImportFailLog(String.format("Brak obowiązkowej wartości pola %s dla rekordu %s", fieldName, recordId));
-            addWarningToWarningList(log, warnings);
-        }
-    }
 
     // ==================== CLIENT ====================
     public static void validateClientCountry(Client client, List<ImportFailLog> warnings, String recordId) {
@@ -57,8 +43,8 @@ public class BusinessValidationUtils extends BaseValidationUtils {
 
     public static void validateBankBeneficiaryCode(Transaction transaction, List<ImportFailLog> warnings, String fieldName, String recordId) {
         if (OriginalStatus.N.equals(transaction.getOriginalStatus())
-                && (transaction.getBankData() == null
-                || StringUtil.isEmpty(transaction.getBankData().getBeneficiaryCode()))) {
+                && (transaction.getClient2Data() == null
+                || StringUtil.isEmpty(transaction.getClient2Data().getBeneficiaryCode()))) {
             ImportFailLog log = new ImportFailLog(String.format("Brak obowiązkowej wartości pola %s dla rekordu %s", fieldName, recordId));
             addWarningToWarningList(log, warnings);
         }
@@ -70,9 +56,9 @@ public class BusinessValidationUtils extends BaseValidationUtils {
 
     public static void validateBankTransactionType(Transaction transaction, List<ImportFailLog> warnings, String fieldName, String recordId) {
         if (OriginalStatus.N.equals(transaction.getOriginalStatus())
-                && (transaction.getBankData() == null
-                || transaction.getBankData().getTransactionType() == null
-                || TransactionType.ERR.equals(transaction.getBankData().getTransactionType()))) {
+                && (transaction.getClient2Data() == null
+                || transaction.getClient2Data().getTransactionType() == null
+                || TransactionType.ERR.equals(transaction.getClient2Data().getTransactionType()))) {
             ImportFailLog log = new ImportFailLog(String.format("Brak obowiązkowej wartości pola %s dla rekordu %s", fieldName, recordId));
             addWarningToWarningList(log, warnings);
         }
@@ -153,51 +139,28 @@ public class BusinessValidationUtils extends BaseValidationUtils {
         return ret;
     }
 
-    public static boolean isProtectionComplete(Object extract, boolean valuationReporting) {
-        LOGGER.debug("isProtectionComplete " + valuationReporting);
+    public static boolean isProtectionComplete(Object extract) {
         if (extract instanceof Transaction) {
             Transaction transTem = (Transaction) extract;
-            if (valuationReporting == true) {//jest wymagana
-                if (Objects.nonNull(transTem.getProtection())
-                        && (Objects.nonNull(transTem.getProtection().getProtection()) && !transTem.getProtection().getProtection().equals(DoProtection.ERR))) {
-                    LOGGER.debug("Protection is complete,valuationReporting true ");
-                    return true;
-                }
-            } else if (Objects.isNull(transTem.getProtection())
-                    || (Objects.nonNull(transTem.getProtection().getProtection()) && !transTem.getProtection().getProtection().equals(DoProtection.ERR))) {
-                LOGGER.debug("Protection is complete, valuationReporting false");
+            if (Objects.nonNull(transTem.getProtection())
+                    && (Objects.nonNull(transTem.getProtection().getProtection()) && !transTem.getProtection().getProtection().equals(DoProtection.ERR))) {
                 return true;
             }
         }
-        LOGGER.debug("Protection isn't complete");
         return false;
     }
 
-    public static boolean isValuationComplete(Object extract, boolean valuationReporting) {
+    public static boolean isValuationComplete(Object extract) {
         if (extract instanceof Transaction) {
-            LOGGER.debug("ValuationReporting true" + valuationReporting);
             Transaction transTem = (Transaction) extract;
-            if (valuationReporting == true) {//jest wymagana
-                if (Objects.nonNull(transTem.getValuation())
-                        && (Objects.nonNull(transTem.getValuation().getValuationData().getValuationType()) && !transTem.getValuation().getValuationData().getValuationType().equals(ValuationType.ERR))
-                        && Objects.nonNull(transTem.getValuation().getValuationData().getValuationDate())
-                        && (Objects.nonNull(transTem.getValuation().getValuationData().getCurrencyCode()) && !transTem.getValuation().getValuationData().getCurrencyCode().equals(CurrencyCode.ERR))
-                        && Objects.nonNull(transTem.getValuation().getValuationData().getAmount())) {
-                    LOGGER.debug("Valuation is complete, valuationReporting true");
-                    return true;
-                }
-            } else if (Objects.isNull(transTem.getValuation())
-                    || (Objects.nonNull(transTem.getValuation().getValuationData())
+            if (Objects.nonNull(transTem.getValuation())
                     && (Objects.nonNull(transTem.getValuation().getValuationData().getValuationType()) && !transTem.getValuation().getValuationData().getValuationType().equals(ValuationType.ERR))
                     && Objects.nonNull(transTem.getValuation().getValuationData().getValuationDate())
                     && (Objects.nonNull(transTem.getValuation().getValuationData().getCurrencyCode()) && !transTem.getValuation().getValuationData().getCurrencyCode().equals(CurrencyCode.ERR))
-                    && Objects.nonNull(transTem.getValuation().getValuationData().getAmount()))) {
-                LOGGER.debug("Valuation is complete, , valuationReporting false");
-
+                    && Objects.nonNull(transTem.getValuation().getValuationData().getAmount())) {
                 return true;
             }
         }
-        LOGGER.debug("Valuation isn't complete");
         return false;
     }
 }

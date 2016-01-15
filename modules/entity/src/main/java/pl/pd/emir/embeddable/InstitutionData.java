@@ -7,7 +7,6 @@ import javax.persistence.Embeddable;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import pl.pd.emir.commons.interfaces.Initializable;
-import pl.pd.emir.entity.Bank;
 import pl.pd.emir.entity.Client;
 import pl.pd.emir.entity.administration.ChangeLog;
 import pl.pd.emir.entity.annotations.BankDataChange;
@@ -24,7 +23,6 @@ public class InstitutionData implements Serializable, Initializable {
      * RPRTID_ID, Identyfikator wystawcy komunikatu(id instytucji)
      */
     @Validators({
-        @ValidateCompleteness(subjectClass = Bank.class),
         @ValidateCompleteness(subjectClass = Client.class),})
     @Column(name = "INSTITUTION_ID", length = 50)
     @BankDataChange
@@ -34,7 +32,6 @@ public class InstitutionData implements Serializable, Initializable {
      * RPRTID_TP, Typ użytego identyfikatora instytucji
      */
     @Validators({
-        @ValidateCompleteness(subjectClass = Bank.class),
         @ValidateCompleteness(subjectClass = Client.class),})
     @Column(name = "INSTITUTION_ID_TYPE", length = 4)
     @Enumerated(EnumType.STRING)

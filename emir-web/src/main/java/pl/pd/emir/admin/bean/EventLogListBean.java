@@ -8,7 +8,6 @@ import java.util.List;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
-import pl.pd.emir.admin.BankManager;
 import pl.pd.emir.commons.DateUtils;
 import pl.pd.emir.entity.Client;
 import pl.pd.emir.entity.Transaction;
@@ -31,10 +30,10 @@ public class EventLogListBean extends AbstractEventLogBean implements Serializab
 
     @EJB
     private transient EventLogManager eventLogManager;
-    @EJB
-    private transient BankManager bankManager;
+
     @EJB
     private transient ClientManager clientManager;
+    
     @EJB
     private transient TransactionManager transactionManager;
 
@@ -106,7 +105,6 @@ public class EventLogListBean extends AbstractEventLogBean implements Serializab
         }
         switch (logType) {
             case INSTITUTION:
-                return bankManager.getFirst().getBankName();
             case CONTRACTOR:
                 Client client = clientManager.getById(refId);
                 if (client != null) {

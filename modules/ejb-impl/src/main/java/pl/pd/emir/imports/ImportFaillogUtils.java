@@ -101,7 +101,12 @@ public class ImportFaillogUtils {
         /**
          * Klient o id %s dla transakcji %s nie widnieje w bazie danych.
          */
-        CLIENT_DOES_NOT_EXIST,;
+        CLIENT_DOES_NOT_EXIST,
+                /**
+         * Klient 2 o id %s dla transakcji %s nie widnieje w bazie danych.
+         */
+        CLIENT2_DOES_NOT_EXIST;
+
 
         public String getMsgKey() {
             return String.format("%s.%s", this.getClass().getSimpleName(), this.name());

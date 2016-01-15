@@ -23,7 +23,11 @@ public enum ParameterKey implements MsgEnum {
     /**
      * Ręczna edycja kodu beneficjenta w sekcji kontrachenta podczas ręcznego tworzenia transakcji
      */
-    DISABLE_MANUAL_TRANSACTION_BENEFICIARY_CODE_EDITING;
+    DISABLE_MANUAL_TRANSACTION_BENEFICIARY_CODE_EDITING,
+    
+    INSTITUTION_ID,
+    
+    INSTITUTION_ID_TYPE;
 
     @Override
     public String getMsgKey() {

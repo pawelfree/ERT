@@ -13,5 +13,7 @@ public interface Sendable {
     DataType getDataType();
 
     Client getClient();
+    
+    Client getClient2();
 
 }

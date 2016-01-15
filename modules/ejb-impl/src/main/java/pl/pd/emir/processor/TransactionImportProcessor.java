@@ -86,13 +86,26 @@ public class TransactionImportProcessor extends ImportProcessor implements IImpo
                         ImportFaillogUtils.ImportFaillogKey.CLIENT_DOES_NOT_EXIST, transaction.getOriginalClientId(),
                         transactionRow.getRecordId())));
                 transaction.setValidationStatus(ValidationStatus.INCOMPLETE);
-
             } else {
                 if (client.getIntraGroupTransactions()) {
                     transaction.getTransactionClearing().setIntergropuTrans(IntergropuTrans.Y);
                 }
             }
             transaction.setClient(client);
+
+            //TODO PAWEL to chyba powinno byc full clone
+            Client client2 = clientManager.getClientByOrginalId(transaction.getOriginalClientId2());       
+            if (client2 == null) {
+                LOGGER.warn(String.format("Can't find client2 with id %s. Transaction incomplete.", transaction.getOriginalClientId2()));
+                transactionRow.addWarning(new ImportFailLog(ImportFaillogUtils.getString(
+                        ImportFaillogUtils.ImportFaillogKey.CLIENT2_DOES_NOT_EXIST, transaction.getOriginalClientId(),
+                        transactionRow.getRecordId())));
+                transaction.setValidationStatus(ValidationStatus.INCOMPLETE);
+            } 
+
+            //TODO PAWEL jak zrobic intragroup transactions w przypadku GUR???
+            transaction.setClient2(client2);
+            
             BusinessValidationUtils.validateBankBeneficiaryCode(transaction, transactionRow.getImportWarnings(), transactionRow.getRecordId());
             BusinessValidationUtils.validateBankTransactionType(transaction, transactionRow.getImportWarnings(), transactionRow.getRecordId());
             BusinessValidationUtils.validateClientBeneficiaryCode(transaction, transactionRow.getImportWarnings(), transactionRow.getRecordId());
@@ -137,7 +150,7 @@ public class TransactionImportProcessor extends ImportProcessor implements IImpo
 
     protected ValidationStatus validateTransactionCompletness(Transaction transaction) {
         if (ValidationStatus.VALID.equals(transaction.getValidationStatus())) {
-            boolean isComplete = ReflectionValidationUtils.isComplete(transaction, getValuationReporting(transaction.getTransactionDate()));
+            boolean isComplete = ReflectionValidationUtils.isComplete(transaction);
             if (isComplete) {
                 return ValidationStatus.VALID;
             } else {

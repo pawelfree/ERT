@@ -13,7 +13,6 @@ import javax.ejb.Local;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
-import pl.pd.emir.admin.BankManager;
 import pl.pd.emir.admin.MultiNumberGenerator;
 import pl.pd.emir.admin.ParameterManager;
 import pl.pd.emir.admin.UserManager;
@@ -21,13 +20,11 @@ import pl.pd.emir.commons.CollectionsUtils;
 import pl.pd.emir.commons.DateUtils;
 import pl.pd.emir.criteria.TransactionToKdpwSC;
 import pl.pd.emir.dao.utils.FilterSortTO;
-import pl.pd.emir.entity.Bank;
 import pl.pd.emir.entity.Client;
 import pl.pd.emir.entity.Sendable;
 import pl.pd.emir.entity.Transaction;
 import pl.pd.emir.entity.administration.EventLog;
 import pl.pd.emir.entity.administration.Parameter;
-import pl.pd.emir.entity.annotations.BankDataChange;
 import pl.pd.emir.entity.annotations.ProtectionChange;
 import pl.pd.emir.entity.annotations.ValuationChange;
 import pl.pd.emir.entity.kdpw.KdpwMsgItem;
@@ -74,9 +71,6 @@ public class KdpwTransactionManagerImpl implements KdpwTransactionManager {
 
     @EJB
     private transient MessageLogManager logManager;
-
-    @EJB
-    private transient BankManager bankManager;
 
     @EJB
     private transient MultiNumberGenerator numberGenerator;
@@ -153,7 +147,7 @@ public class KdpwTransactionManagerImpl implements KdpwTransactionManager {
                 LOGGER.info("NEW MAX id = " + maxId);
             }
             LOGGER.debug("||| Define msg type |||");
-            List<ResultItem> resultItems = getResultItems(list, msgType, criteria.isBackloading(), mutation);
+            List<ResultItem> resultItems = getResultItems(list, msgType);
             try {
                 SendingResult tmpResult = thisManager.generateMsg(resultItems, batchNumber, userLogin);
                 batchNumber = tmpResult.getBatchNumber();
@@ -234,7 +228,7 @@ public class KdpwTransactionManagerImpl implements KdpwTransactionManager {
 
         logCurrentTime(String.format("START generate file for %s messages.", messages.size()));
 
-        TransactionWriterResult result = transactionWriter.write(messages, getCurrentBank());
+        TransactionWriterResult result = transactionWriter.write(messages, getReportingInstitutionId(), getReportingInstitutionIdType());
         logCurrentTime("End of writing file");
         String message = result.getMessage();
         final MessageLog messageLog = logManager.save(MessageLog.Builder.getOutput(KdpwUtils.getMsgLogNumber(numberGenerator),
@@ -247,7 +241,6 @@ public class KdpwTransactionManagerImpl implements KdpwTransactionManager {
         logEvent(messageLog, getEventType(transactions), transactions.size(), MessageType.TRANSACTION);
         final Map<Long, ArrayList<TransactionToRepository>> transactionMap = getTransactionMap(transactions);
 
-        Bank active = bankManager.getActive();
         transactionMap.keySet().stream().map((key) -> {
             final Sendable registable = transactionMap.get(key).get(0).getRegistable();
             final Transaction transaction = registable.getTransaction();
@@ -257,10 +250,10 @@ public class KdpwTransactionManagerImpl implements KdpwTransactionManager {
                         item.getMsgType(),
                         item.isCancelMutation(),
                         item.getRegistable().getOriginalId(),
-                        item.getRegistable().getClient().getOriginalId());
+                        item.getRegistable().getClient().getOriginalId(),
+                        item.getRegistable().getClient2().getOriginalId());
                 LOGGER.debug("KDPW request: transId: " + request.getExtractId() + ", msgId: " + request.getSndrMsgRef());
 
-                request.setBank(active);
                 request.assignToLog(messageLog); // powiazanie ITEM'u z logiem
                 final KdpwMsgItem itemSaved = kdpwItemManager.save(request);
 
@@ -290,63 +283,32 @@ public class KdpwTransactionManagerImpl implements KdpwTransactionManager {
         logCurrentTime("End of generating file");
     }
 
-    private List<ResultItem> getResultItems(List<Sendable> list, MsgType msgType,
-            boolean backloading, boolean mutation) {
-
-        final Date valReportDate = bankManager.getValuationReportingDate();
+    private List<ResultItem> getResultItems(List<Sendable> list, MsgType msgType) {
 
         switch (msgType) {
             case REGISTRATION:
-                return getRegistrationList(list, backloading, valReportDate);
+                return getRegistrationListByType(list);
             default:
                 throw new IllegalStateException("Błąd generowania!");
         }
-
-    }
-
-    /**
-     * Z backloading'iem.
-     *
-     * @param transactions
-     * @param backloading
-     * @param valReportDate
-     * @return
-     */
-    protected final List<ResultItem> getRegistrationList(final List<Sendable> transactions, boolean backloading, Date valReportDate) {
-        final List<ResultItem> result = new ArrayList<>();
-        if (backloading) {
-            for (Sendable transaction : transactions) {
-                if (!checkClientCompleteness(transaction, result)) {
-                    continue;
-                }
-                result.add(new TransactionToRepository(transaction, TransactionMsgType.NNV));
-                if (DataType.COMPLETED.equals(transaction.getDataType())) {
-                    result.add(new TransactionToRepository(transaction, TransactionMsgType.C));
-                }
-            }
-        } else {
-            result.addAll(getRegistrationType(transactions, valReportDate));
-        }
-        return result;
     }
 
     /**
      * Definiuje możliwość i ew. typ komunikatu transakcji do wysyłki.
      *
      * @param list
-     * @param valReportDate
      * @return
      */
-    protected final List<ResultItem> getRegistrationType(final List<Sendable> list, Date valReportDate) {
+    protected final List<ResultItem> getRegistrationListByType(final List<Sendable> list) {
         final List<ResultItem> result = new ArrayList<>();
         LOGGER.info("START | getRegistrationType (" + list.size() + ") on: " + DateUtils.formatDate(new Date(), DateUtils.DATE_TIME_FORMAT));
         list.stream().filter((sendable) -> !(!checkClientCompleteness(sendable, result))).forEach((sendable) -> {
             if (KdpwUtils.isNew(sendable)) { // NOWA
-                result.add(getTypeForNew(sendable, valuationRequired(valReportDate, sendable.getTransaction().getTransactionDate())));
+                result.add(getTypeForNew(sendable));
             } else if (KdpwUtils.isCompleted(sendable)) { // ZAKONCZONA
                 result.add(getTypeForCompleted(sendable));
             } else if (KdpwUtils.isOngoing(sendable)) { // TRWAJACA
-                result.addAll(getTypeForOngoing(sendable, valuationRequired(valReportDate, sendable.getTransaction().getTransactionDate())));
+                result.addAll(getTypeForOngoing(sendable));
             } else if (KdpwUtils.isCancelled(sendable)) {
                 result.add(getTypeForCancelled(sendable));
             } else {
@@ -357,7 +319,7 @@ public class KdpwTransactionManagerImpl implements KdpwTransactionManager {
         return result;
     }
 
-    protected final ResultItem getTypeForNew(final Sendable registable, boolean valuationRequred) {
+    protected final ResultItem getTypeForNew(final Sendable registable) {
         // sprawdza, że nie ma żadnej innej wersji tej transakcji dla której Typ danych = NOWA
         // i status przetworzenia jest WYSŁANA lub PRZYJĘTA
         Transaction transaction = registable.getTransaction();
@@ -370,17 +332,15 @@ public class KdpwTransactionManagerImpl implements KdpwTransactionManager {
             return new ErrorItem(transaction.getOriginalId(),
                     SendingError.EXISTS_DATA_NEW_SENT_OR_CONFIRMED,
                     KdpwUtils.getVersionMsg(oldTrans));
-        } else if (valuationRequred) {
+        } else {
             if (hasValuationAndProtection(transaction)) {
                 return new TransactionToRepository(registable, TransactionMsgType.N);
             } else {
-                // tus przetworzenia bieżącej transakcji pozostaje bez zmian
+                // status przetworzenia bieżącej transakcji pozostaje bez zmian
                 return new ErrorItem(transaction.getOriginalId(),
                         SendingError.EMPTY_VALUATION_OR_PROTECTION_INFO,
                         "");
             }
-        } else {
-            return new TransactionToRepository(registable, TransactionMsgType.NNV);
         }
     }
 
@@ -407,7 +367,7 @@ public class KdpwTransactionManagerImpl implements KdpwTransactionManager {
         return new TransactionToRepository(registable, TransactionMsgType.C);
     }
 
-    private List<ResultItem> getTypeForOngoing(final Sendable registable, boolean valuationRequred) {
+    private List<ResultItem> getTypeForOngoing(final Sendable registable) {
         final List<ResultItem> result = new ArrayList<>();
         // sprawdza, że nie ma transakcji o tym samym ID (pole TRADID_ID),
         // o dacie nie późniejszej niż data przetwarzanej transakcji ze statusem przetwarzania NOWA
@@ -427,22 +387,20 @@ public class KdpwTransactionManagerImpl implements KdpwTransactionManager {
             if (Objects.nonNull(kdpwTrans)) {
                 LOGGER.debug("Newest transaction in KDPW: {}", printTransaction(kdpwTrans));
                 boolean anyChanges = false;
-                if (valuationRequred) {
-                    if (hasValuationAndProtection(transaction)) {
-                        if (isValuationOrProtectionChange(kdpwTrans, transaction)) {
-                            if (KdpwUtils.isReported(transaction.getClient())) {
-                                result.add(new TransactionToRepository(registable, TransactionMsgType.VR));
-                            } else {
-                                result.add(new TransactionToRepository(registable, TransactionMsgType.V));
-                            }
-                            LOGGER.debug("Valuation or protection change.");
-                            anyChanges = true;
+                if (hasValuationAndProtection(transaction)) {
+                    if (isValuationOrProtectionChange(kdpwTrans, transaction)) {
+                        if (KdpwUtils.isReported(transaction.getClient())) {
+                            result.add(new TransactionToRepository(registable, TransactionMsgType.VR));
+                        } else {
+                            result.add(new TransactionToRepository(registable, TransactionMsgType.V));
                         }
-                    } else {
-                        result.add(new ErrorItem(transaction.getOriginalId(),
-                                SendingError.EMPTY_VALUATION_OR_PROTECTION_INFO,
-                                ""));
+                        LOGGER.debug("Valuation or protection change.");
+                        anyChanges = true;
                     }
+                } else {
+                    result.add(new ErrorItem(transaction.getOriginalId(),
+                            SendingError.EMPTY_VALUATION_OR_PROTECTION_INFO,
+                            ""));
                 }
 
                 if (isTransactionDetailsChange(kdpwTrans, transaction)) {
@@ -491,11 +449,6 @@ public class KdpwTransactionManagerImpl implements KdpwTransactionManager {
             return Integer.valueOf(batchParameter.getValue());
         }
         throw new IllegalStateException("Cannot find parameter: KDPW_BATCH_SIZE");
-    }
-
-    private boolean valuationRequired(final Date valReportDate, final Date transactionDate) {
-        return valReportDate != null
-                && DateUtils.getDayBegin(transactionDate).compareTo(DateUtils.getDayBegin(valReportDate)) >= 0;
     }
 
     private boolean hasValuationAndProtection(final Transaction transaction) {
@@ -586,10 +539,6 @@ public class KdpwTransactionManagerImpl implements KdpwTransactionManager {
         LOGGER.info(String.format("%s | %s", header, getCurrentTime()));
     }
 
-    protected final Bank getCurrentBank() {
-        return bankManager.getActive();
-    }
-
     /**
      * Sprawdzenie kompletności danych klienta.
      *
@@ -612,11 +561,11 @@ public class KdpwTransactionManagerImpl implements KdpwTransactionManager {
                 || KdpwUtils.isNotEqual(oldTrans.getValuation(), newTrans.getValuation(), ValuationChange.class));
     }
 
-    protected final boolean isTransactionDetailsChange(final Transaction oldTrans, final Transaction transaction) {          
+    protected final boolean isTransactionDetailsChange(final Transaction oldTrans, final Transaction transaction) {
         return Objects.nonNull(oldTrans)
                 && (KdpwUtils.isNotEqual(oldTrans, transaction, TransactionDataChange.class)
                 || isClientDataChange(oldTrans.getClientVersion(), transaction.getClient())
-                || isBankDataChange(oldTrans));
+                || isClientDataChange(oldTrans.getClient2Version(), transaction.getClient2()));
     }
 
     protected final boolean isClientMofifyReported(final Client client, final Date transactionDate) {
@@ -629,15 +578,6 @@ public class KdpwTransactionManagerImpl implements KdpwTransactionManager {
         return Objects.nonNull(newClientVersion) && !java.util.Objects.equals(newClientVersion.getClientVersion(), oldClientVersion);
     }
 
-    protected boolean isBankDataChange(Transaction oldTrans) {
-        boolean result = false;
-        if (Objects.nonNull(oldTrans)) {
-            Bank oldBank = KdpwUtils.findLastSendKdpwItem(oldTrans).getBank();
-            result = Objects.nonNull(oldBank) && KdpwUtils.isNotEqual(oldBank, getCurrentBank(), BankDataChange.class);
-        }
-        return result;
-    }
-
     protected final Date getLastModifyDate(final Long clientId) {
         final EventLog eventLog = eventLogManager.getNewesttByEventType(clientId, EventType.CLIENT_MODIFICATION);
         if (Objects.isNull(eventLog)) {
@@ -645,4 +585,13 @@ public class KdpwTransactionManagerImpl implements KdpwTransactionManager {
         }
         return eventLog.getDate();
     }
+    
+    private String getReportingInstitutionId() {
+        return parameterManager.getValue(ParameterKey.INSTITUTION_ID);
+    }
+    
+    private String getReportingInstitutionIdType() {
+        return parameterManager.getValue(ParameterKey.INSTITUTION_ID_TYPE);
+    }
+    
 }

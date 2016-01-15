@@ -119,19 +119,12 @@ public class ProtectionImportProcessor extends ImportProcessor implements IImpor
     }
 
     private ValidationStatus validateProtectionCompletness(Transaction transaction, ProcessingWarnings warnings) {
-        boolean isComplete;
-        if (getValuationReporting(transaction.getTransactionDate())) {
-            isComplete = BusinessValidationUtils.isProtectionComplete(transaction, getValuationReporting(transaction.getTransactionDate()))
-                    && BusinessValidationUtils.isValuationComplete(transaction, getValuationReporting(transaction.getTransactionDate()))
-                    && !warnings.isFlagWarningPro();
-            warnings.setFlagWarningPro(false);
-        } else {
-            if (ValidationStatus.VALID.equals(transaction.getValidationStatus())) {
-                isComplete = BusinessValidationUtils.isProtectionComplete(transaction, getValuationReporting(transaction.getTransactionDate()));
-            } else {
-                return transaction.getValidationStatus();
-            }
-        }
+        boolean isComplete = BusinessValidationUtils.isProtectionComplete(transaction)
+                && BusinessValidationUtils.isValuationComplete(transaction)
+                && !warnings.isFlagWarningPro();
+        
+        warnings.setFlagWarningPro(false);
+        
         if (isComplete) {
             return ValidationStatus.VALID;
         } else {

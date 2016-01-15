@@ -250,6 +250,9 @@ public class Transaction extends Extract implements Logable<Long>, Selectable<Lo
     @Transient
     private String originalClientId;
 
+    @Transient
+    private String originalClientId2;
+
     /**
      * Klient, którego dotyczy transakcja Pole moze byc puste. Zaleznosc ustalana na podstawie pola CLIENT_ID z
      * ekstrakty TRANSAKCJE_E.
@@ -260,7 +263,17 @@ public class Transaction extends Extract implements Logable<Long>, Selectable<Lo
     private Client client;
 
     /**
-     * STRONA_TR, Strona, po której znajduje się kontrahent: z punktu widzenia banku [4]
+     * Klient (drugi), którego dotyczy transakcja Pole moze byc puste. Zaleznosc ustalana na podstawie pola CLIENT2_ID z
+     * ekstrakty TRANSAKCJE_E.
+     */
+    @ValidateCompleteness(subjectClass = Transaction.class)
+    @ManyToOne
+    @JoinColumn(name = "CLIENT2_ID")
+    private Client client2;
+
+    /**
+     * STRONA_TR, Strona, po której znajduje się kontrahent (client) z punktu widzenia 2 kontrahenta (client2) np. banku
+     * Druga strona jest odwrotnościa tej
      */
     @Column(name = "TRANSACTION_PARTY", length = 3)
     @Enumerated(EnumType.STRING)
@@ -268,40 +281,40 @@ public class Transaction extends Extract implements Logable<Long>, Selectable<Lo
     private TransactionParty transactionParty;
 
     /**
-     * POTWIERDZONA, Transakcja potwierdzona lub niepotwierdzona przez klienta [5]
+     * POTWIERDZONA, Transakcja potwierdzona lub niepotwierdzona ?? przez klienta
      */
     @Column(name = "CONFIRMED")
     @Enumerated(EnumType.STRING)
     private ConfirmedStatus confirmed;
 
     /**
-     * Dane kontrahenta(banku) [6-16]
+     * Dane drugiego kontrahenta (np. banku)
      */
     @Embedded
     @AttributeOverrides({
         @AttributeOverride(name = "idCode", column
-                = @Column(name = "BANK_ID_CODE")),
+                = @Column(name = "CLIENT2_ID_CODE")),
         @AttributeOverride(name = "idCodeType", column
-                = @Column(name = "BANK_ID_CODE_TYPE")),
+                = @Column(name = "CLIENT2_ID_CODE_TYPE")),
         @AttributeOverride(name = "memberId", column
-                = @Column(name = "BANK_MEMBER_ID")),
+                = @Column(name = "CLIENT2_MEMBER_ID")),
         @AttributeOverride(name = "memberIdType", column
-                = @Column(name = "BANK_MEMBER_ID_TYPE")),
+                = @Column(name = "CLIENT2_MEMBER_ID_TYPE")),
         @AttributeOverride(name = "settlingAccout", column
-                = @Column(name = "BANK_SETTLING_ACCOUNT")),
+                = @Column(name = "CLIENT2_SETTLING_ACCOUNT")),
         @AttributeOverride(name = "beneficiaryCode", column
-                = @Column(name = "BANK_BENEFICIARY_CODE")),
+                = @Column(name = "CLIENT2_BENEFICIARY_CODE")),
         @AttributeOverride(name = "beneficiaryCodeType", column
-                = @Column(name = "BANK_BENEFICIARY_CODE_TYPE")),
+                = @Column(name = "CLIENT2_BENEFICIARY_CODE_TYPE")),
         @AttributeOverride(name = "transactionType", column
-                = @Column(name = "BANK_TRANSACTION_TYPE")),
+                = @Column(name = "CLIENT2_TRANSACTION_TYPE")),
         @AttributeOverride(name = "commercialActity", column
-                = @Column(name = "BANK_COMMERCIAL_ACTIVITI")),
+                = @Column(name = "CLIENT2_COMMERCIAL_ACTIVITI")),
         @AttributeOverride(name = "settlementThreshold", column
-                = @Column(name = "BANK_SETTLEMENT_THRESHOLD")),
+                = @Column(name = "CLIENT2_SETTLEMENT_THRESHOLD")),
         @AttributeOverride(name = "commWalletCode", column
-                = @Column(name = "BANK_COMM_WALLET_CODE"))})
-    private BusinessEntityData bankData;
+                = @Column(name = "CLIENT2_COMM_WALLET_CODE"))})
+    private BusinessEntityData client2Data;
 
     /**
      * Dane kontrahenta(klienta) [17-27]
@@ -444,6 +457,9 @@ public class Transaction extends Extract implements Logable<Long>, Selectable<Lo
 
     @Column(name = "CLIENT_VERSION")
     private Integer clientVersion;
+    
+    @Column(name = "CLIENT2_VERSION")
+    private Integer client2Version;
 
     /**
      * Flaga określająca czy transakcja pochodzi z backloadingu.
@@ -460,32 +476,22 @@ public class Transaction extends Extract implements Logable<Long>, Selectable<Lo
         setDataToSend();
     }
 
-    public Transaction(String originalId, Date transactionDate, OriginalStatus originalStatus, String originalClientId, TransactionParty transactionParty,
-            String confirmed, BusinessEntityData bankData, BusinessEntityData clientData,
+    //TODO PAWEL ustawianie clienta na koncu jest bez sensu skoro mamy jego id
+    public Transaction(String originalId, Date transactionDate, OriginalStatus originalStatus,
+            String originalClientId, TransactionParty clientTransactionParty, String originalClientId2,
+            String confirmed, BusinessEntityData client2Data, BusinessEntityData clientData,
             ContractDataDetailed contractDetailedData, TransactionDetails transactionDetails,
             RiskReduce riskReduce, TransactionClearing transactionClearing, PercentageRateData percentageRateData, CurrencyTradeData currencyTradeData,
-            CommodityTradeData commodityTradeData, DataType dataType, ProcessingStatus processingStatus, ValidationStatus validationStatus, Client client) {
+            CommodityTradeData commodityTradeData, DataType dataType, ProcessingStatus processingStatus, ValidationStatus validationStatus, 
+            Client client, Client client2) {
         super();
-        setFields(originalId, transactionDate, originalStatus, originalClientId, transactionParty,
+        setFields(originalId, transactionDate, originalStatus,
+                originalClientId, clientTransactionParty, originalClientId2,
                 StringUtil.isEmpty(confirmed) || confirmed.equals("0") ? ConfirmedStatus.UNCONFIRMED : ConfirmedStatus.CONFIRMED,
-                bankData, clientData, contractDetailedData, transactionDetails,
+                client2Data, clientData, contractDetailedData, transactionDetails,
                 riskReduce, transactionClearing, percentageRateData, currencyTradeData,
-                commodityTradeData, dataType, processingStatus, validationStatus, client);
+                commodityTradeData, dataType, processingStatus, validationStatus, client, client2);
         setDataToSend();
-    }
-
-    public Transaction(String originalId, Date transactionDate, OriginalStatus originalStatus, String originalClientId, TransactionParty transactionParty,
-            ConfirmedStatus confirmed, BusinessEntityData bankData, BusinessEntityData clientData,
-            ContractDataDetailed contractDetailedData, TransactionDetails transactionDetails,
-            RiskReduce riskReduce, TransactionClearing transactionClearing, PercentageRateData percentageRateData, CurrencyTradeData currencyTradeData,
-            CommodityTradeData commodityTradeData, DataType dataType, ProcessingStatus processingStatus, ValidationStatus validationStatus, Client client) {
-        super();
-        setFields(originalId, transactionDate, originalStatus, originalClientId, transactionParty,
-                confirmed, bankData, clientData, contractDetailedData, transactionDetails,
-                riskReduce, transactionClearing, percentageRateData, currencyTradeData,
-                commodityTradeData, dataType, processingStatus, validationStatus, client);
-        setDataToSend();
-
     }
 
     public Transaction fullClone() {
@@ -496,18 +502,25 @@ public class Transaction extends Extract implements Logable<Long>, Selectable<Lo
         tmp.confirmed = this.confirmed;
         tmp.dateSupply = this.dateSupply;
         tmp.originalClientId = this.originalClientId;
+        tmp.originalClientId2 = this.originalClientId2;
         tmp.originalId = this.originalId;
         tmp.originalStatus = this.originalStatus;
         tmp.processingStatus = this.processingStatus;
         tmp.transactionDate = this.transactionDate;
         tmp.transactionParty = this.transactionParty;
-        //złożone - należy nie przypoisaywać referencji dla osobnych encji.
+        //złożone - należy nie przypisaywać referencji dla osobnych encji.
         //relacje
         try {
             tmp.client = this.client.fullClone();
         } catch (NullPointerException e) {
             Client newClient = new Client();
             tmp.client = newClient.fullClone();
+        }
+        try {
+            tmp.client2 = this.client2.fullClone();
+        } catch (NullPointerException e) {
+            Client newClient = new Client();
+            tmp.client2 = newClient.fullClone();
         }
         try {
             tmp.valuation = this.valuation.fullClone();
@@ -525,7 +538,7 @@ public class Transaction extends Extract implements Logable<Long>, Selectable<Lo
         }
         //Embedded
         tmp.commodityTradeData = this.commodityTradeData == null ? new CommodityTradeData() : this.commodityTradeData.fullClone();
-        tmp.bankData = this.bankData == null ? new BusinessEntityData() : this.bankData.fullClone();
+        tmp.client2Data = this.client2Data == null ? new BusinessEntityData() : this.client2Data.fullClone();
         tmp.clientData = this.clientData == null ? new BusinessEntityData() : this.clientData.fullClone();
         tmp.contractDetailedData = this.contractDetailedData == null ? new ContractDataDetailed() : this.contractDetailedData.fullClone();
         tmp.currencyTradeData = this.currencyTradeData == null ? new CurrencyTradeData() : this.currencyTradeData.fullClone();
@@ -541,7 +554,7 @@ public class Transaction extends Extract implements Logable<Long>, Selectable<Lo
     @Override
     public void customize(ClassDescriptor descriptor) {
         ((AggregateObjectMapping) descriptor.getMappingForAttributeName("commodityTradeData")).setIsNullAllowed(false);
-        ((AggregateObjectMapping) descriptor.getMappingForAttributeName("bankData")).setIsNullAllowed(false);
+        ((AggregateObjectMapping) descriptor.getMappingForAttributeName("client2Data")).setIsNullAllowed(false);
         ((AggregateObjectMapping) descriptor.getMappingForAttributeName("clientData")).setIsNullAllowed(false);
         ((AggregateObjectMapping) descriptor.getMappingForAttributeName("contractDetailedData")).setIsNullAllowed(false);
         ((AggregateObjectMapping) descriptor.getMappingForAttributeName("currencyTradeData")).setIsNullAllowed(false);
@@ -551,18 +564,22 @@ public class Transaction extends Extract implements Logable<Long>, Selectable<Lo
         ((AggregateObjectMapping) descriptor.getMappingForAttributeName("transactionDetails")).setIsNullAllowed(false);
     }
 
-    private void setFields(String originalId, Date transactionDate, OriginalStatus originalStatus, String originalClientId, TransactionParty transactionParty,
-            ConfirmedStatus confirmed, BusinessEntityData bankData, BusinessEntityData clientData,
+    private void setFields(String originalId, Date transactionDate, OriginalStatus originalStatus,
+            String originalClientId, TransactionParty clientTransactionParty, String originalClientId2,
+            ConfirmedStatus confirmed, BusinessEntityData client2Data, BusinessEntityData clientData,
             ContractDataDetailed contractDetailedData, TransactionDetails transactionDetails,
             RiskReduce riskReduce, TransactionClearing transactionClearing, PercentageRateData percentageRateData, CurrencyTradeData currencyTradeData,
-            CommodityTradeData commodityTradeData, DataType dataType, ProcessingStatus processingStatus, ValidationStatus validationStatus, Client client) {
+            CommodityTradeData commodityTradeData, DataType dataType, ProcessingStatus processingStatus, ValidationStatus validationStatus, 
+            //TODO PAWEL to jest raczej zbedne
+            Client client, Client client2) {
         this.originalId = originalId;
         this.transactionDate = transactionDate;
         this.originalStatus = originalStatus;
         this.originalClientId = originalClientId;
-        this.transactionParty = transactionParty;
+        this.transactionParty = clientTransactionParty;
+        this.originalClientId2 = originalClientId2;
         this.confirmed = confirmed;
-        this.bankData = bankData;
+        this.client2Data = client2Data;
         this.clientData = clientData;
         this.transactionDetails = transactionDetails;
         this.riskReduce = riskReduce;
@@ -574,6 +591,7 @@ public class Transaction extends Extract implements Logable<Long>, Selectable<Lo
         this.processingStatus = processingStatus;
         this.validationStatus = validationStatus;
         this.client = client;
+        this.client2 = client2;
         this.contractDetailedData = contractDetailedData;
         if (this.dateSupply == null) {
             this.dateSupply = new Date();
@@ -585,8 +603,11 @@ public class Transaction extends Extract implements Logable<Long>, Selectable<Lo
         if (this.client == null) {
             this.client = new Client();
         }
-        if (this.bankData == null) {
-            this.bankData = new BusinessEntityData();
+        if (this.client2 == null) {
+            this.client2 = new Client();
+        }
+        if (this.client2Data == null) {
+            this.client2Data = new BusinessEntityData();
         }
         if (this.clientData == null) {
             this.clientData = new BusinessEntityData();
@@ -629,9 +650,13 @@ public class Transaction extends Extract implements Logable<Long>, Selectable<Lo
         if (newEntity.client != null) {
             newEntity.getClient().setChangeComment(newEntity.getChangeComment());
         }
+        if (newEntity.client2 != null) {
+            newEntity.getClient2().setChangeComment(newEntity.getChangeComment());
+        }
         //złożone pola
         Client.checkEntity(result, client, newEntity.client);
-        BusinessEntityData.checkEntity(result, bankData, newEntity.bankData, newEntity.getChangeComment(), true);
+        Client.checkEntity(result, client2, newEntity.client2);
+        BusinessEntityData.checkEntity(result, client2Data, newEntity.client2Data, newEntity.getChangeComment(), true);
         BusinessEntityData.checkEntity(result, clientData, newEntity.clientData, newEntity.getChangeComment(), false);
         ContractDataDetailed.checkEntity(result, contractDetailedData, newEntity.contractDetailedData, newEntity.getChangeComment());
         TransactionDetails.checkEntity(result, transactionDetails, newEntity.transactionDetails, newEntity.getChangeComment());
@@ -645,6 +670,7 @@ public class Transaction extends Extract implements Logable<Long>, Selectable<Lo
         //pols proste
         checkFieldsEquals(result, originalId, newEntity.originalId, EventLogBuilder.EventDetailsKey.ORIGINAL_ID, newEntity.getChangeComment());
         checkFieldsEquals(result, originalClientId, newEntity.originalClientId, EventLogBuilder.EventDetailsKey.ORIGINAL_CLIENT_ID, newEntity.getChangeComment());
+        checkFieldsEquals(result, originalClientId2, newEntity.originalClientId2, EventLogBuilder.EventDetailsKey.ORIGINAL_CLIENT_ID2, newEntity.getChangeComment());        
         checkFieldsEquals(result, transactionParty, newEntity.transactionParty, EventLogBuilder.EventDetailsKey.TRANSACTION_PARTY, newEntity.getChangeComment());
         if (Objects.nonNull(confirmed) && Objects.nonNull(newEntity.confirmed)) {
             checkFieldsEqualsMsg(result, confirmed.getMsgKey(), newEntity.confirmed.getMsgKey(), EventLogBuilder.EventDetailsKey.CONFIRMED, newEntity.getChangeComment());
@@ -868,6 +894,11 @@ public class Transaction extends Extract implements Logable<Long>, Selectable<Lo
         return client;
     }
 
+    @Override
+    public Client getClient2() {
+        return client2;
+    }
+
     public ContractDataDetailed getContractDetailedData() {
         return contractDetailedData;
     }
@@ -893,8 +924,8 @@ public class Transaction extends Extract implements Logable<Long>, Selectable<Lo
         return confirmed;
     }
 
-    public BusinessEntityData getBankData() {
-        return bankData;
+    public BusinessEntityData getClient2Data() {
+        return client2Data;
     }
 
     public BusinessEntityData getClientData() {
@@ -903,6 +934,10 @@ public class Transaction extends Extract implements Logable<Long>, Selectable<Lo
 
     public String getOriginalClientId() {
         return originalClientId;
+    }
+
+    public String getOriginalClientId2() {
+        return originalClientId2;
     }
 
     public CommodityTradeData getCommodityTradeData() {
@@ -1012,20 +1047,20 @@ public class Transaction extends Extract implements Logable<Long>, Selectable<Lo
         this.client = value;
     }
 
+    public void setClient2(final Client value) {
+        this.client2 = value;
+    }
+
     public void setConfirmed(final ConfirmedStatus value) {
         this.confirmed = value;
     }
 
-    public void setBankData(final BusinessEntityData value) {
-        this.bankData = value;
+    public void setClient2Data(final BusinessEntityData value) {
+        this.client2Data = value;
     }
 
     public void setClientData(final BusinessEntityData value) {
         this.clientData = value;
-    }
-
-    public void setOriginalClientId(final String value) {
-        this.originalClientId = value;
     }
 
     public void setCommodityTradeData(final CommodityTradeData value) {
@@ -1060,6 +1095,14 @@ public class Transaction extends Extract implements Logable<Long>, Selectable<Lo
         return clientVersion;
     }
 
+    public Integer getClient2Version() {
+        return client2Version;
+    }
+
+    public void setClient2Version(Integer client2Version) {
+        this.client2Version = client2Version;
+    }
+    
     public void setClientVersion(Integer clientVersion) {
         this.clientVersion = clientVersion;
     }

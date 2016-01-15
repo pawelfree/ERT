@@ -18,7 +18,6 @@
             </p:submenu>
             <p:submenu label="#{msgs['menu.administration']}" rendered="true">
                 <p:menuitem value="#{msgs['menu.administration.events']}" action="#{eventLogListBean.init()}" styleClass="nowrap" rendered="true"/>
-                <p:menuitem value="#{msgs['menu.administration.institution']}" action="#{bankBean.getAction()}" styleClass="nowrap" rendered="true"/>
                 <p:menuitem value="#{msgs['menu.administration.users']}" action="#{userListBean.init()}" styleClass="nowrap" rendered="true"/>
             </p:submenu>
             <f:facet name="options">
