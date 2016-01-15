@@ -8,10 +8,7 @@ import pl.pd.emir.admin.ParameterManager;
 import pl.pd.emir.commons.Constants;
 import pl.pd.emir.commons.DateUtils;
 import pl.pd.emir.commons.StringUtil;
-import pl.pd.emir.embeddable.BusinessEntity;
 import pl.pd.emir.embeddable.Institution;
-import pl.pd.emir.entity.Bank;
-import pl.pd.emir.entity.Client;
 import pl.pd.emir.enums.MultiGeneratorKey;
 import pl.pd.emir.enums.ParameterKey;
 import pl.pd.emir.kdpw.xml.builder.XmlUtils;
@@ -27,70 +24,13 @@ public abstract class XmlWriterImpl {
     @EJB
     protected MultiNumberGenerator numberGenerator;
 
-    protected String getSenderParameter(final Bank bank) {
-        // pobierana z BANK_E.SENDER_ID_KDPW
-        final StringBuilder result = new StringBuilder();
-        if (null != bank && allNotEmpty(bank.getSenderIdKdpw())) {
-            result.append(bank.getSenderIdKdpw());
-        }
-        return nullOnEmpty(result);
+    protected String getSenderParameter() {
+        return parameterManager.getValue(ParameterKey.KDPW_SENDER);
     }
 
     protected String getReceiverParameter() {
         // pobierana z PARAMETRY_E.RECEIVER_ID
         return parameterManager.getValue(ParameterKey.KDPW_RECEIVER);
-    }
-
-    /**
-     * BANK_E.COUNTRY + BANK_E.TRRPRTID_PMRYID.
-     *
-     * @param bank
-     * @return
-     */
-    protected String getInstPrimaryId(final Bank bank) {
-        final StringBuilder result = new StringBuilder();
-        if (null != bank.getCountryCode()) {
-            result.append(bank.getCountryCode().name());
-        }
-        final BusinessEntity businessEntity = bank.getBusinessEntity();
-        if (null != businessEntity && allNotEmpty(businessEntity.getSubjectNip())) {
-            result.append(bank.getBusinessEntity().getSubjectNip());
-        }
-        return nullOnEmpty(result);
-    }
-
-    /**
-     * KLIENT_E.COUNTRY + KLIENT_E.TRRPRTID_PMRYID.
-     *
-     * @param client
-     * @return
-     */
-    protected String getBankPmryId(final Client client) {
-        final StringBuilder result = new StringBuilder();
-        if (allNotEmpty(client.getCountryCode())) {
-            result.append(client.getCountryCode().name());
-        }
-        if (null != client.getBusinessEntity() && allNotEmpty(client.getBusinessEntity().getSubjectNip())) {
-            result.append(client.getBusinessEntity().getSubjectNip());
-        }
-        return nullOnEmpty(result);
-    }
-
-    /**
-     * BANK_E.COUNTRY + BANK_E.TRRPRTID_SCNDRYID.
-     *
-     * @param bank
-     * @return
-     */
-    protected String getInstSecondaryId(final Bank bank) {
-        final StringBuilder result = new StringBuilder();
-        if (allNotEmpty(bank.getCountryCode())) {
-            result.append(bank.getCountryCode().name());
-        }
-        if (null != bank.getBusinessEntity() && allNotEmpty(bank.getBusinessEntity().getSubjectRegon())) {
-            result.append(bank.getBusinessEntity().getSubjectRegon());
-        }
-        return nullOnEmpty(result);
     }
 
     /**

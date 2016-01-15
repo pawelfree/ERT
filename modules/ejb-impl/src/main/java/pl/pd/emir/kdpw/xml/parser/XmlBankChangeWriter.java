@@ -29,7 +29,7 @@ public class XmlBankChangeWriter extends XmlWriterImpl {
         LOGGER.info("Starting generate trar.ins.005.01 message");
         final KDPWDocument document = new KDPWDocument();
 
-        document.setSndr(getSenderParameter(bank));
+        document.setSndr(getSenderParameter());
         document.setRcvr(getReceiverParameter());
 
         final TrarIns00502 trar = new TrarIns00502();

@@ -113,15 +113,12 @@ import kdpw.xsd.trar_ins_001.validators.TradeAdditionalInformationValidator;
 @Local(TransactionWriter.class)
 public class XmlTransactionWriterImpl extends XmlWriterImpl implements TransactionWriter<TransactionToRepository> {
 
-    @EJB
-    protected transient BankManager bankManager;
-
     @Override
     public TransactionWriterResult write(List<TransactionToRepository> list, Bank bank) {
 
         LOGGER.info("Write xml for transactions: {}", list.size());
         final KDPWDocument document = new KDPWDocument();
-        document.setSndr(getSenderParameter(bank));
+        document.setSndr(getSenderParameter());
         document.setRcvr(getReceiverParameter());
 
         final Date date = new Date();
@@ -136,7 +133,6 @@ public class XmlTransactionWriterImpl extends XmlWriterImpl implements Transacti
             if (transToRepo.getMsgType() != null) {
                 LOGGER.debug("Generate item for type: {}", transToRepo.getMsgType());
 
-                final Date valReportDate = bankManager.getValuationReportingDate();
                 final TrarIns00102 trar = new TrarIns00102();
 
                 trar.setGnlInf(getGeneralInfo(transToRepo, bank));
@@ -150,12 +146,10 @@ public class XmlTransactionWriterImpl extends XmlWriterImpl implements Transacti
                             client,
                             transToRepo.getMsgType()));
                 }
-                if (valuationRequired(transToRepo.getRegistable().getTransaction(), valReportDate)) {
-                    final ValuationAndCollateralInformation valAndCollInfo = getValtnAndCollInf(transToRepo.getRegistable().getTransaction(),
-                            transToRepo.getMsgType(), false);
-                    if (Objects.nonNull(valAndCollInfo)) {
-                        trar.addValtnAndCollInfo(valAndCollInfo);
-                    }
+                final ValuationAndCollateralInformation valAndCollInfo = getValtnAndCollInf(transToRepo.getRegistable().getTransaction(),
+                        transToRepo.getMsgType(), false);
+                if (Objects.nonNull(valAndCollInfo)) {
+                    trar.addValtnAndCollInfo(valAndCollInfo);
                 }
 
                 if (client.getReported() && (msgType.isModification() || msgType.isNew())) {
@@ -164,18 +158,18 @@ public class XmlTransactionWriterImpl extends XmlWriterImpl implements Transacti
                             bank,
                             transToRepo.getMsgType()));
                 }
-                if (valuationRequired(transToRepo.getRegistable().getTransaction(), valReportDate)) {
-                    if (isValuationClientInfoRequired(transToRepo.getMsgType())
-                            || (transToRepo.getMsgType().isNew() && client.getReported())) {
-                        final ValuationAndCollateralInformation valAndCollInfo1 = getValtnAndCollInf(
-                                transToRepo.getRegistable().getTransaction(),
-                                transToRepo.getMsgType(),
-                                true);
-                        if (Objects.nonNull(valAndCollInfo1)) {
-                            trar.addValtnAndCollInfo(valAndCollInfo1);
-                        }
+
+                if (isValuationClientInfoRequired(transToRepo.getMsgType())
+                        || (transToRepo.getMsgType().isNew() && client.getReported())) {
+                    final ValuationAndCollateralInformation valAndCollInfo1 = getValtnAndCollInf(
+                            transToRepo.getRegistable().getTransaction(),
+                            transToRepo.getMsgType(),
+                            true);
+                    if (Objects.nonNull(valAndCollInfo1)) {
+                        trar.addValtnAndCollInfo(valAndCollInfo1);
                     }
                 }
+
                 if (msgType.isNew() || msgType.isModification() || msgType.equals(TransactionMsgType.C) || msgType.equals(TransactionMsgType.Z)) {
                     trar.setTradDtls(getTransactionDetails(transToRepo.getRegistable().getTransaction(), transToRepo.getMsgType()));
                 }
@@ -581,7 +575,7 @@ public class XmlTransactionWriterImpl extends XmlWriterImpl implements Transacti
             String product1Code = contractData.getProd1Code();
             result.setPrdctId1(nullOnEmpty(product1Code));
             result.setPrdctId2(nullOnEmpty(contractData.getProd2Code()));
-            
+
             //TODO refactor condition and line length
             if (!"CO".equalsIgnoreCase(product1Code) && !"CU".equalsIgnoreCase(product1Code) && !"IR".equalsIgnoreCase(product1Code)) {
                 throw new UnsupportedOperationException("Underlying. Ten przypadek nie jest obslugiwany. Product1Code = " + product1Code);
@@ -823,8 +817,4 @@ public class XmlTransactionWriterImpl extends XmlWriterImpl implements Transacti
         return msg;
     }
 
-    private boolean valuationRequired(final Transaction transaction, Date valReportDate) {
-        return valReportDate != null
-                && DateUtils.getDayBegin(transaction.getTransactionDate()).compareTo(DateUtils.getDayBegin(valReportDate)) >= 0;
-    }
 }

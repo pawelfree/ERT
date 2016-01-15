@@ -1,10 +1,8 @@
 package pl.pd.emir.kdpw.xml.parser;
 
-import pl.pd.emir.embeddable.BusinessEntity;
 import pl.pd.emir.embeddable.Institution;
 import pl.pd.emir.embeddable.InstitutionData;
 import pl.pd.emir.entity.Bank;
-import pl.pd.emir.enums.CountryCode;
 import pl.pd.emir.enums.InstitutionIdType;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -17,99 +15,6 @@ public class XmlWriterImplTest {
 
     public XmlWriterImplTest() {
         super();
-    }
-
-    @Test
-    public void testGetSenderParameter_null_parameter() {
-        Bank bank = null;
-        XmlWriterImpl instance = new XmlWriterImplImpl();
-        String result = instance.getSenderParameter(bank);
-        assertNull(result);
-    }
-
-    @Test
-    public void testgetSenderParameter_empty() {
-        Bank bank = new Bank();
-        bank.setSenderIdKdpw("");
-        XmlWriterImpl instance = new XmlWriterImplImpl();
-        String result = instance.getSenderParameter(bank);
-        assertNull(result);
-    }
-
-    @Test
-    public void testGetSenderParameternot_empty() {
-        Bank bank = new Bank();
-        bank.setSenderIdKdpw("1234");
-        XmlWriterImpl instance = new XmlWriterImplImpl();
-        String result = instance.getSenderParameter(bank);
-        assertEquals("1234", result);
-    }
-
-    @Test
-    public void testGetBankPmryId_all_empty() {
-        Bank bank = new Bank();
-        XmlWriterImpl instance = new XmlWriterImplImpl();
-        String result = instance.getInstPrimaryId(bank);
-        assertNull(result);
-    }
-
-    @Test
-    public void testGetBankPmryId_with_countryCode() {
-        Bank bank = new Bank();
-        bank.setCountryCode(CountryCode.GE);
-        XmlWriterImpl instance = new XmlWriterImplImpl();
-        String result = instance.getInstPrimaryId(bank);
-        assertEquals("GE", result);
-    }
-
-    @Test
-    public void testGetBankPmryId_with_nip() {
-        Bank bank = new Bank();
-        bank.setCountryCode(CountryCode.GE);
-        BusinessEntity bEntity = new BusinessEntity("nipNumber", "regonNumber");
-        bank.setBusinessEntity(bEntity);
-        XmlWriterImpl instance = new XmlWriterImplImpl();
-        String result = instance.getInstPrimaryId(bank);
-        assertEquals("GEnipNumber", result);
-    }
-
-    @Test
-    public void testGetBankScndId_all_empty() {
-        Bank bank = new Bank();
-        XmlWriterImpl instance = new XmlWriterImplImpl();
-        String result = instance.getInstSecondaryId(bank);
-        assertNull(result);
-    }
-
-    @Test
-    public void testGetBankScndId_withCountryCode() {
-        Bank bank = new Bank();
-        bank.setCountryCode(CountryCode.ES);
-        XmlWriterImpl instance = new XmlWriterImplImpl();
-        String result = instance.getInstSecondaryId(bank);
-        assertEquals("ES", result);
-    }
-
-    @Test
-    public void testGetBankScndId_withNip() {
-        Bank bank = new Bank();
-        bank.setCountryCode(CountryCode.ES);
-        BusinessEntity bEntity = new BusinessEntity("nipNumber", null);
-        bank.setBusinessEntity(bEntity);
-        XmlWriterImpl instance = new XmlWriterImplImpl();
-        String result = instance.getInstSecondaryId(bank);
-        assertEquals("ES", result);
-    }
-
-    @Test
-    public void testGetBankScndId_withRegon() {
-        Bank bank = new Bank();
-        bank.setCountryCode(CountryCode.ES);
-        BusinessEntity bEntity = new BusinessEntity("nipNumber", "regonNUMBER");
-        bank.setBusinessEntity(bEntity);
-        XmlWriterImpl instance = new XmlWriterImplImpl();
-        String result = instance.getInstSecondaryId(bank);
-        assertEquals("ESregonNUMBER", result);
     }
 
     @Test
