@@ -9,7 +9,6 @@ import javax.persistence.Enumerated;
 import pl.pd.emir.commons.interfaces.Initializable;
 import pl.pd.emir.entity.Client;
 import pl.pd.emir.entity.administration.ChangeLog;
-import pl.pd.emir.entity.annotations.BankDataChange;
 import pl.pd.emir.entity.annotations.ValidateCompleteness;
 import pl.pd.emir.entity.annotations.Validators;
 import static pl.pd.emir.entity.utils.HistoryUtils.checkFieldsEquals;
@@ -25,7 +24,6 @@ public class InstitutionData implements Serializable, Initializable {
     @Validators({
         @ValidateCompleteness(subjectClass = Client.class),})
     @Column(name = "INSTITUTION_ID", length = 50)
-    @BankDataChange
     private String institutionId;
 
     /*
@@ -35,7 +33,6 @@ public class InstitutionData implements Serializable, Initializable {
         @ValidateCompleteness(subjectClass = Client.class),})
     @Column(name = "INSTITUTION_ID_TYPE", length = 4)
     @Enumerated(EnumType.STRING)
-    @BankDataChange
     private InstitutionIdType institutionIdType;
 
     public String getInstitutionId() {

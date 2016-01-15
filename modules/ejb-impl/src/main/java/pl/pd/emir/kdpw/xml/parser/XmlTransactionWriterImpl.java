@@ -396,15 +396,15 @@ public class XmlTransactionWriterImpl extends XmlWriterImpl implements Transacti
     protected final TRInstitutionCode2 getOthrCtrPtyTrId(Institution institution) {
         final TRInstitutionCode2 result = new TRInstitutionCode2();
         if (null == institution || null == institution.getInstitutionData()) {
-            logMappingError("(KLIENT_E.RPRTID_ID & KLIENT_E.RPRTID_TP) | (BANK_E.RPRTID_ID & BANK_E.RPRTID_TP)");
+            logMappingError("KLIENT_E.RPRTID_ID & KLIENT_E.RPRTID_TP");
         } else {
             if (StringUtil.isEmpty(institution.getInstitutionData().getInstitutionId())) {
-                logMappingError("KLIENT_E.RPRTID_ID | BANK_E.RPRTID_ID");
+                logMappingError("KLIENT_E.RPRTID_ID");
             } else {
                 result.setId(institution.getInstitutionData().getInstitutionId());
             }
             if (null == institution.getInstitutionData().getInstitutionIdType()) {
-                logMappingError("KLIENT_E.RPRTID_TP | BANK_E.RPRTID_TP");
+                logMappingError("KLIENT_E.RPRTID_TP");
             } else {
                 result.setTp(institution.getInstitutionData().getInstitutionIdType().name());
             }
@@ -460,7 +460,7 @@ public class XmlTransactionWriterImpl extends XmlWriterImpl implements Transacti
                     valuationData.getValuationDate(), valuationData.getValuationType())) {
                 result = new ValuationInformation();
             } else {
-                LOGGER.debug("Bank data getValtnInf - not all empty");
+                LOGGER.debug("ERROR data getValtnInf - not all empty");
             }
 
             if (null != result) {

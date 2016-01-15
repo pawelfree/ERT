@@ -603,7 +603,7 @@ public class TransactionManager extends AbstractManagerTemplateControlDate<Trans
     public Long getKdpwReportsCountForADay(Date transactionDate) {
         Long count = (Long) entityManager.createNamedQuery("Transaction.countKdpwClientReports")
                 .setParameter("transactionDate", transactionDate).getSingleResult();
-        count += (Long) entityManager.createNamedQuery("Transaction.countKdpwBankReports")
+        count += (Long) entityManager.createNamedQuery("Transaction.countToKdpwReports")
                 .setParameter("transactionDate", transactionDate).getSingleResult();
         return count;
     }

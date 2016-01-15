@@ -212,11 +212,11 @@ public class EventLogBuilder {
          */
         SOURCE_TRANS_REF_NR,
         /**
-         * Identyfikator klienta
+         * Identyfikator kontrahenta
          */
         ORIGINAL_CLIENT_ID,
         /**
-         * Identyfikator 2 klienta np. banku
+         * Identyfikator 2 kontrahenta np. BTMU
          */
         ORIGINAL_CLIENT_ID2,        
         /**
@@ -256,11 +256,11 @@ public class EventLogBuilder {
          PROTECTION_CURRENCYCODE,*/
         // ====================== Transakcje: Dane ogólne ====================
         /**
-         * Bank - Dane brokera - Kod identyfikacyjny
+         * Kontrahent 2 - Dane brokera - Kod identyfikacyjny
          */
         B_ID_CODE,
         /**
-         * Bank - Dane brokera - Typ identyfikacyjny
+         * Kontrahent 2 - Dane brokera - Typ identyfikacyjny
          */
         B_ID_CODE_TYPE,
         /**
@@ -272,11 +272,11 @@ public class EventLogBuilder {
          */
         C_ID_CODE_TYPE,
         /**
-         * Bank - Dane instytucji raportującej - Kod identyfikacyjny
+         * Kontrahent 2 - Dane instytucji raportującej - Kod identyfikacyjny
          */
         B_BENEFICIARY_CODE,
         /**
-         * Bank - Dane instytucji raportującej - Typ identyfikacyjny
+         * Kontrahent 2 - Dane instytucji raportującej - Typ identyfikacyjny
          */
         B_BENEFICIARY_CODE_TYPE,
         /**
@@ -550,11 +550,11 @@ public class EventLogBuilder {
          */
         MEMBER_ID_TYPE,
         /**
-         * Bank - Dane instytucji rozliczającej - Kod identyfikacyjny
+         * Kontrahent 2 - Dane instytucji rozliczającej - Kod identyfikacyjny
          */
         B_MEMBER_ID,
         /**
-         * Bank - Dane instytucji rozliczającej - Typ identyfikacyjny
+         * Kontrahent 2 - Dane instytucji rozliczającej - Typ identyfikacyjny
          */
         B_MEMBER_ID_TYPE,
         /**
@@ -627,7 +627,7 @@ public class EventLogBuilder {
          */
         CLIENT_NAME,
         /**
-         * Raportowany - czy bank przekazuje informacje w imieniu kontrahenta
+         * Raportowany - czy kontrahent 2 (BTMU) przekazuje informacje w imieniu kontrahenta
          */
         REPORTED,
         /**

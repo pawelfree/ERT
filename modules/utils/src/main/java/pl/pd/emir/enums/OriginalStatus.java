@@ -5,7 +5,6 @@ public enum OriginalStatus {
     N, //rejestracja transakcji
     C, //rozwiazanie kontraktu
     M, //transakcja trwajaca
-    E, //transakcja anulowana - TYLKO w banku i
     ERR;
 
     public static OriginalStatus fromString(String value) {

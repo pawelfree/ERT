@@ -183,7 +183,7 @@ import pl.pd.emir.entity.annotations.TransactionDataChange;
             query = "SELECT count(t.id) FROM Transaction t WHERE t.transactionDate = :transactionDate AND CAST(t.transactionDetails.maturityDate AS date) = :transactionDate"),
     @NamedQuery(name = "Transaction.countKdpwClientReports",
             query = "select count(t.id)*2 from Transaction t where t.alreadySent = TRUE and t.transactionDate = :transactionDate and t.clientData.commercialActity = pl.pd.emir.enums.CommercialActity.Y"),
-    @NamedQuery(name = "Transaction.countKdpwBankReports",
+    @NamedQuery(name = "Transaction.countToKdpwReports",
             query = "select count(t.id) from Transaction t where t.alreadySent = TRUE and t.transactionDate = :transactionDate and t.clientData.commercialActity IS NULL")
 })
 @Customizer(Transaction.class)
@@ -272,7 +272,7 @@ public class Transaction extends Extract implements Logable<Long>, Selectable<Lo
     private Client client2;
 
     /**
-     * STRONA_TR, Strona, po której znajduje się kontrahent (client) z punktu widzenia 2 kontrahenta (client2) np. banku
+     * STRONA_TR, Strona, po której znajduje się kontrahent (client) z punktu widzenia 2 kontrahenta (client2) np. BTMU
      * Druga strona jest odwrotnościa tej
      */
     @Column(name = "TRANSACTION_PARTY", length = 3)
@@ -288,7 +288,7 @@ public class Transaction extends Extract implements Logable<Long>, Selectable<Lo
     private ConfirmedStatus confirmed;
 
     /**
-     * Dane drugiego kontrahenta (np. banku)
+     * Dane drugiego kontrahenta (np. BTMU)
      */
     @Embedded
     @AttributeOverrides({

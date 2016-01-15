@@ -190,7 +190,7 @@ public class KdpwUtils {
             if (tempDate == null || (tempDate.before(item.getMessageLog().getMessageTime())
                     && item.getMessageLog().getDirection().equals(MessageDirection.OUTPUT))) {
                 tempDate = item.getMessageLog().getMessageTime();
-                if (item.getRequestDetails().getTransMsgType().hasBankData()) {
+                if (item.getRequestDetails().getTransMsgType().hasData()) {
                     result = item;
                 }
             }

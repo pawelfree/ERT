@@ -81,7 +81,7 @@ public enum TransactionMsgType {
         return Z.equals(this);
     }
 
-    public boolean hasBankData() {
+    public boolean hasData() {
         return isNew() || isModification() || isValuation() || O.equals(this);
     }
 }

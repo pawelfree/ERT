@@ -82,7 +82,7 @@ public class XmlTransactionWriterImplTest {
     }
 
     @Test
-    public void testGetValtnInf_bankSide() {
+    public void testGetValtnInf_client2Side() {
         Valuation valuation = new Valuation();
         ValuationData valuationData = new ValuationData();
         valuation.setValuationData(valuationData);
@@ -158,7 +158,7 @@ public class XmlTransactionWriterImplTest {
     }
 
     @Test
-    public void testGetCollateralInfo_collVal_bank() {
+    public void testGetCollateralInfo_collVal_client2() {
         Protection protection = new Protection();
         protection.setProtection(DoProtection.U);
         protection.setAmount(BigDecimal.ZERO);
@@ -169,7 +169,7 @@ public class XmlTransactionWriterImplTest {
     }
 
     @Test
-    public void testGetCollateralInfo_collVal_bankData_clientSide() {
+    public void testGetCollateralInfo_collVal_client2Data_clientSide() {
         Protection protection = new Protection();
         protection.setAmount(BigDecimal.ZERO);
         CollateralInformation result = instance.getCollateralInfo(protection, true);
@@ -177,7 +177,7 @@ public class XmlTransactionWriterImplTest {
     }
 
     @Test
-    public void testGetCollateralInfo_collVal_clientData_bankSide() {
+    public void testGetCollateralInfo_collVal_clientData_client2Side() {
         Protection protection = new Protection();
         protection.setClientAmount(BigDecimal.ONE);
         CollateralInformation result = instance.getCollateralInfo(protection, false);
@@ -262,7 +262,7 @@ public class XmlTransactionWriterImplTest {
     @Test
     public void testGetValtnAndCollInf_any_protection() {
         Transaction transaction = new Transaction();
-        transaction.setProtection(new Protection(BANK_NIP, DATE_01_10_2013, DoProtection.U, YesNo.Y, BANK_NIP, BigDecimal.ZERO, CurrencyCode.CAD, BigDecimal.ZERO));
+        transaction.setProtection(new Protection(CLIENT2_NIP, DATE_01_10_2013, DoProtection.U, YesNo.Y, CLIENT2_NIP, BigDecimal.ZERO, CurrencyCode.CAD, BigDecimal.ZERO));
         ValuationAndCollateralInformation result = instance.getValtnAndCollInf(transaction, TransactionMsgType.N, true);
         assertNotNull(result);
 
@@ -311,7 +311,7 @@ public class XmlTransactionWriterImplTest {
 
     }
 
-    private static final String BANK_NIP = "7762659238";
+    private static final String CLIENT2_NIP = "7762659238";
 
     private static final String CLIENT_NIP = "5528271859";
 

@@ -75,7 +75,7 @@ public class Client extends Extract implements Selectable<Long>, DescriptorCusto
     @Column(name = "COUNTRY_CODE", length = 3)
     private CountryCode countryCode;
     /*
-     * bank raportuje informacje w imieniu kontrahenta
+     * client2 np BTMU raportuje informacje w imieniu kontrahenta
      */
     @Column(name = "REPORTED")
     private Boolean reported;

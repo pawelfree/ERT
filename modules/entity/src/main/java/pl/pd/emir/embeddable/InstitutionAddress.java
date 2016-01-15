@@ -7,7 +7,6 @@ import javax.persistence.Embeddable;
 import pl.pd.emir.commons.interfaces.Initializable;
 import pl.pd.emir.entity.Client;
 import pl.pd.emir.entity.administration.ChangeLog;
-import pl.pd.emir.entity.annotations.BankDataChange;
 import pl.pd.emir.entity.annotations.ValidateCompleteness;
 import pl.pd.emir.entity.annotations.Validators;
 import static pl.pd.emir.entity.utils.HistoryUtils.checkFieldsEquals;
@@ -20,41 +19,34 @@ public class InstitutionAddress implements Serializable, Initializable {
      * DMCL_PSTCD, kod pocztowy
      */
     @Column(name = "INSTITUTION_POSTAL_CODE", length = 40)
-    @BankDataChange
     private String postalCode;
     /*
      * DMCL_TWNNM, miasto
      */
     @Validators({
-        //        @ValidateCompleteness(subjectClass = Bank.class), //tylko dla klienta z RPRTID_TP != LEIC
         @ValidateCompleteness(subjectClass = Client.class)
     })
     @Column(name = "INSTITUTION_CITY", length = 60)
-    @BankDataChange
     private String city;
     /*
      * DMCL_STRTNM, ulica
      */
     @Column(name = "INSTITUTION_STREET_NAME", length = 150)
-    @BankDataChange
     private String streetName;
     /*
      * DMCL_BLDGID, nr budynku
      */
     @Column(name = "INSTITUTION_BUILDING_ID", length = 20)
-    @BankDataChange
     private String buildingId;
     /*
      * DMCL_PRMSID, nr lokalu
      */
     @Column(name = "INSTITUTION_PREMISES_ID", length = 20)
-    @BankDataChange
     private String premisesId;
     /*
      * DMCL_DTLS, inne informacje
      */
     @Column(name = "INSTITUTION_ADDRESS_DETAILS", length = 208)
-    @BankDataChange
     private String details;
 
     public InstitutionAddress() {

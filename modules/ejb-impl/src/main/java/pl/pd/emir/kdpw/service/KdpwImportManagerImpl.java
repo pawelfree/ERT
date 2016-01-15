@@ -160,8 +160,8 @@ public class KdpwImportManagerImpl implements KdpwImportManager {
             LOGGER.info("Original transaction : " + transaction.getOriginalId() + ", transaction id : " + transaction.getId());
             //TODO
             /**
-             * czy na pewno zostawiać pusty czas może to dotyczyć np komunikatu wyceny za bank i za klienta przychodzący
-             * komunikat za bank zmienił status oryginalnego komunikatu/trnasakcji a przychodzący komunikat za klienta
+             * czy na pewno zostawiać pusty czas może to dotyczyć np komunikatu wyceny za BTMU i za klienta przychodzący
+             * komunikat za BTMU zmienił status oryginalnego komunikatu/trnasakcji a przychodzący komunikat za klienta
              * nie może już zmienić statusu tej transakcji bo nie jest ona w statusie SENT
              *
              */
