@@ -152,23 +152,23 @@ public class Valuation extends Extract implements Historable<Valuation>, Logable
         }
     }
 
-    public static void checkEntity(List<ChangeLog> result, Valuation oldEntity, Valuation newEntity, String changeComment) {
+    public static void checkEntity(List<ChangeLog> result, Valuation oldEntity, Valuation newEntity) {
         if (oldEntity == null && newEntity == null) {
             return;
         }
 
         if (oldEntity == null) {
-            ValuationData.checkEntity(result, null, newEntity.getValuationData(), changeComment);
-            checkFieldsEquals(result, null, newEntity.getOriginalId(), EventLogBuilder.EventDetailsKey.ORIGINAL_ID, changeComment);
-            checkFieldsEquals(result, null, newEntity.getTransactionDate(), EventLogBuilder.EventDetailsKey.TRANSACTION_DATE, changeComment);
+            ValuationData.checkEntity(result, null, newEntity.getValuationData());
+            checkFieldsEquals(result, null, newEntity.getOriginalId(), EventLogBuilder.EventDetailsKey.ORIGINAL_ID);
+            checkFieldsEquals(result, null, newEntity.getTransactionDate(), EventLogBuilder.EventDetailsKey.TRANSACTION_DATE);
         } else if (newEntity == null) {
-            ValuationData.checkEntity(result, oldEntity.getValuationData(), null, changeComment);
-            checkFieldsEquals(result, oldEntity.getOriginalId(), null, EventLogBuilder.EventDetailsKey.ORIGINAL_ID, changeComment);
-            checkFieldsEquals(result, oldEntity.getTransactionDate(), null, EventLogBuilder.EventDetailsKey.TRANSACTION_DATE, changeComment);
+            ValuationData.checkEntity(result, oldEntity.getValuationData(), null);
+            checkFieldsEquals(result, oldEntity.getOriginalId(), null, EventLogBuilder.EventDetailsKey.ORIGINAL_ID);
+            checkFieldsEquals(result, oldEntity.getTransactionDate(), null, EventLogBuilder.EventDetailsKey.TRANSACTION_DATE);
         } else {
-            ValuationData.checkEntity(result, oldEntity.getValuationData(), newEntity.getValuationData(), changeComment);
-            checkFieldsEquals(result, oldEntity.getOriginalId(), newEntity.getOriginalId(), EventLogBuilder.EventDetailsKey.ORIGINAL_ID, changeComment);
-            checkFieldsEquals(result, oldEntity.getTransactionDate(), newEntity.getTransactionDate(), EventLogBuilder.EventDetailsKey.TRANSACTION_DATE, changeComment);
+            ValuationData.checkEntity(result, oldEntity.getValuationData(), newEntity.getValuationData());
+            checkFieldsEquals(result, oldEntity.getOriginalId(), newEntity.getOriginalId(), EventLogBuilder.EventDetailsKey.ORIGINAL_ID);
+            checkFieldsEquals(result, oldEntity.getTransactionDate(), newEntity.getTransactionDate(), EventLogBuilder.EventDetailsKey.TRANSACTION_DATE);
         }
     }
 

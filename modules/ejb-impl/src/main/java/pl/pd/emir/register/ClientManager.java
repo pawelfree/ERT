@@ -75,7 +75,6 @@ public class ClientManager extends AbstractManagerTemplate<Client>  {
             List<ChangeLog> changeLogs = oldEntity.getChangeLogs(entity);
             mergedEntity = super.save(entity);
             logModificationEvents(changeLogs, entity.getId());
-            mergedEntity.setChangeComment("");
         } else {
             entity.setClientVersion(1);
             mergedEntity = super.save(entity);

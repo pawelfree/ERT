@@ -114,29 +114,29 @@ public class ContractDataDetailed implements Serializable, DescriptorCustomizer 
         }
     }
 
-    public static void checkEntity(List<ChangeLog> result, ContractDataDetailed oldEntity, ContractDataDetailed newEntity, String changeComment) {
+    public static void checkEntity(List<ChangeLog> result, ContractDataDetailed oldEntity, ContractDataDetailed newEntity) {
         if (oldEntity == null && newEntity == null) {
             return;
         }
 
         if (oldEntity == null && newEntity != null) {
-            ContractData.checkEntity(result, null, newEntity.getContractData(), changeComment);
-            checkFieldsEquals(result, null, newEntity.getUnderlCountryCode(), EventLogBuilder.EventDetailsKey.UNDERL_COUNTRY_CODE, changeComment);
-            checkFieldsEquals(result, null, newEntity.getUnderlCurrency1Code(), EventLogBuilder.EventDetailsKey.UNDERL_CURRENCY1_CODE, changeComment);
-            checkFieldsEquals(result, null, newEntity.getUnderlCurrency2Code(), EventLogBuilder.EventDetailsKey.UNDERL_CURRENCY2_CODE, changeComment);
-            checkFieldsEquals(result, null, newEntity.getDelivCurrencyCode(), EventLogBuilder.EventDetailsKey.DELIV_CURRENCY_CODE, changeComment);
+            ContractData.checkEntity(result, null, newEntity.getContractData());
+            checkFieldsEquals(result, null, newEntity.getUnderlCountryCode(), EventLogBuilder.EventDetailsKey.UNDERL_COUNTRY_CODE);
+            checkFieldsEquals(result, null, newEntity.getUnderlCurrency1Code(), EventLogBuilder.EventDetailsKey.UNDERL_CURRENCY1_CODE);
+            checkFieldsEquals(result, null, newEntity.getUnderlCurrency2Code(), EventLogBuilder.EventDetailsKey.UNDERL_CURRENCY2_CODE);
+            checkFieldsEquals(result, null, newEntity.getDelivCurrencyCode(), EventLogBuilder.EventDetailsKey.DELIV_CURRENCY_CODE);
         } else if (oldEntity != null && newEntity == null) {
-            ContractData.checkEntity(result, oldEntity.getContractData(), null, changeComment);
-            checkFieldsEquals(result, oldEntity.getUnderlCountryCode(), null, EventLogBuilder.EventDetailsKey.UNDERL_COUNTRY_CODE, changeComment);
-            checkFieldsEquals(result, oldEntity.getUnderlCurrency1Code(), null, EventLogBuilder.EventDetailsKey.UNDERL_CURRENCY1_CODE, changeComment);
-            checkFieldsEquals(result, oldEntity.getUnderlCurrency2Code(), null, EventLogBuilder.EventDetailsKey.UNDERL_CURRENCY2_CODE, changeComment);
-            checkFieldsEquals(result, oldEntity.getDelivCurrencyCode(), null, EventLogBuilder.EventDetailsKey.DELIV_CURRENCY_CODE, changeComment);
+            ContractData.checkEntity(result, oldEntity.getContractData(), null);
+            checkFieldsEquals(result, oldEntity.getUnderlCountryCode(), null, EventLogBuilder.EventDetailsKey.UNDERL_COUNTRY_CODE);
+            checkFieldsEquals(result, oldEntity.getUnderlCurrency1Code(), null, EventLogBuilder.EventDetailsKey.UNDERL_CURRENCY1_CODE);
+            checkFieldsEquals(result, oldEntity.getUnderlCurrency2Code(), null, EventLogBuilder.EventDetailsKey.UNDERL_CURRENCY2_CODE);
+            checkFieldsEquals(result, oldEntity.getDelivCurrencyCode(), null, EventLogBuilder.EventDetailsKey.DELIV_CURRENCY_CODE);
         } else if (oldEntity != null && newEntity != null) {
-            ContractData.checkEntity(result, oldEntity.getContractData(), newEntity.getContractData(), changeComment);
-            checkFieldsEquals(result, oldEntity.getUnderlCountryCode(), newEntity.getUnderlCountryCode(), EventLogBuilder.EventDetailsKey.UNDERL_COUNTRY_CODE, changeComment);
-            checkFieldsEquals(result, oldEntity.getUnderlCurrency1Code(), newEntity.getUnderlCurrency1Code(), EventLogBuilder.EventDetailsKey.UNDERL_CURRENCY1_CODE, changeComment);
-            checkFieldsEquals(result, oldEntity.getUnderlCurrency2Code(), newEntity.getUnderlCurrency2Code(), EventLogBuilder.EventDetailsKey.UNDERL_CURRENCY2_CODE, changeComment);
-            checkFieldsEquals(result, oldEntity.getDelivCurrencyCode(), newEntity.getDelivCurrencyCode(), EventLogBuilder.EventDetailsKey.DELIV_CURRENCY_CODE, changeComment);
+            ContractData.checkEntity(result, oldEntity.getContractData(), newEntity.getContractData());
+            checkFieldsEquals(result, oldEntity.getUnderlCountryCode(), newEntity.getUnderlCountryCode(), EventLogBuilder.EventDetailsKey.UNDERL_COUNTRY_CODE);
+            checkFieldsEquals(result, oldEntity.getUnderlCurrency1Code(), newEntity.getUnderlCurrency1Code(), EventLogBuilder.EventDetailsKey.UNDERL_CURRENCY1_CODE);
+            checkFieldsEquals(result, oldEntity.getUnderlCurrency2Code(), newEntity.getUnderlCurrency2Code(), EventLogBuilder.EventDetailsKey.UNDERL_CURRENCY2_CODE);
+            checkFieldsEquals(result, oldEntity.getDelivCurrencyCode(), newEntity.getDelivCurrencyCode(), EventLogBuilder.EventDetailsKey.DELIV_CURRENCY_CODE);
         }
     }
 

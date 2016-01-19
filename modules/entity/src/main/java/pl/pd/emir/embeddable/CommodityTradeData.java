@@ -200,43 +200,43 @@ public class CommodityTradeData implements Serializable {
         //EMPTY
     }
 
-    public static void checkEntity(List<ChangeLog> result, CommodityTradeData oldEntity, CommodityTradeData newEntity, String changeComment) {
+    public static void checkEntity(List<ChangeLog> result, CommodityTradeData oldEntity, CommodityTradeData newEntity) {
         if (oldEntity == null && newEntity == null) {
             return;
         }
         if (oldEntity == null) {
-            checkFieldsEquals(result, null, newEntity.getCommUnderlType(), EventLogBuilder.EventDetailsKey.COMM_UNDERL_TYPE, changeComment);
-            checkFieldsEquals(result, null, newEntity.getCommUnderlDtls(), EventLogBuilder.EventDetailsKey.COMM_UNDERL_DTLS, changeComment);
-            checkFieldsEquals(result, null, newEntity.getCommVenue(), EventLogBuilder.EventDetailsKey.COMM_VENUE, changeComment);
-            checkFieldsEquals(result, null, newEntity.getCommInterconn(), EventLogBuilder.EventDetailsKey.COMM_INTERCONN, changeComment);
-            checkFieldsEquals(result, null, newEntity.getCommLoadType(), EventLogBuilder.EventDetailsKey.COMM_LOAD_TYPE, changeComment);
-            checkFieldsEquals(result, null, newEntity.getCommDelivStartFrom(), EventLogBuilder.EventDetailsKey.COMM_DELIV_START_FROM, changeComment);
-            checkFieldsEquals(result, null, newEntity.getCommDelivEndFrom(), EventLogBuilder.EventDetailsKey.COMM_DELIV_END_FROM, changeComment);
-            checkFieldsEquals(result, null, newEntity.getCommContractCount(), EventLogBuilder.EventDetailsKey.COMM_CONTRACT_COUNT, changeComment);
-            checkFieldsEquals(result, null, newEntity.getCommRateCount(), EventLogBuilder.EventDetailsKey.COMM_RATE_COUNT, changeComment);
-            checkFieldsEquals(result, null, newEntity.getCommRataCount(), EventLogBuilder.EventDetailsKey.COMM_RATA_COUNT, changeComment);
+            checkFieldsEquals(result, null, newEntity.getCommUnderlType(), EventLogBuilder.EventDetailsKey.COMM_UNDERL_TYPE);
+            checkFieldsEquals(result, null, newEntity.getCommUnderlDtls(), EventLogBuilder.EventDetailsKey.COMM_UNDERL_DTLS);
+            checkFieldsEquals(result, null, newEntity.getCommVenue(), EventLogBuilder.EventDetailsKey.COMM_VENUE);
+            checkFieldsEquals(result, null, newEntity.getCommInterconn(), EventLogBuilder.EventDetailsKey.COMM_INTERCONN);
+            checkFieldsEquals(result, null, newEntity.getCommLoadType(), EventLogBuilder.EventDetailsKey.COMM_LOAD_TYPE);
+            checkFieldsEquals(result, null, newEntity.getCommDelivStartFrom(), EventLogBuilder.EventDetailsKey.COMM_DELIV_START_FROM);
+            checkFieldsEquals(result, null, newEntity.getCommDelivEndFrom(), EventLogBuilder.EventDetailsKey.COMM_DELIV_END_FROM);
+            checkFieldsEquals(result, null, newEntity.getCommContractCount(), EventLogBuilder.EventDetailsKey.COMM_CONTRACT_COUNT);
+            checkFieldsEquals(result, null, newEntity.getCommRateCount(), EventLogBuilder.EventDetailsKey.COMM_RATE_COUNT);
+            checkFieldsEquals(result, null, newEntity.getCommRataCount(), EventLogBuilder.EventDetailsKey.COMM_RATA_COUNT);
         } else if (newEntity == null) {
-            checkFieldsEquals(result, oldEntity.getCommUnderlType(), null, EventLogBuilder.EventDetailsKey.COMM_UNDERL_TYPE, changeComment);
-            checkFieldsEquals(result, oldEntity.getCommUnderlDtls(), null, EventLogBuilder.EventDetailsKey.COMM_UNDERL_DTLS, changeComment);
-            checkFieldsEquals(result, oldEntity.getCommVenue(), null, EventLogBuilder.EventDetailsKey.COMM_VENUE, changeComment);
-            checkFieldsEquals(result, oldEntity.getCommInterconn(), null, EventLogBuilder.EventDetailsKey.COMM_INTERCONN, changeComment);
-            checkFieldsEquals(result, oldEntity.getCommLoadType(), null, EventLogBuilder.EventDetailsKey.COMM_LOAD_TYPE, changeComment);
-            checkFieldsEquals(result, oldEntity.getCommDelivStartFrom(), null, EventLogBuilder.EventDetailsKey.COMM_DELIV_START_FROM, changeComment);
-            checkFieldsEquals(result, oldEntity.getCommDelivEndFrom(), null, EventLogBuilder.EventDetailsKey.COMM_DELIV_END_FROM, changeComment);
-            checkFieldsEquals(result, oldEntity.getCommContractCount(), null, EventLogBuilder.EventDetailsKey.COMM_CONTRACT_COUNT, changeComment);
-            checkFieldsEquals(result, oldEntity.getCommRateCount(), null, EventLogBuilder.EventDetailsKey.COMM_RATE_COUNT, changeComment);
-            checkFieldsEquals(result, oldEntity.getCommRataCount(), null, EventLogBuilder.EventDetailsKey.COMM_RATA_COUNT, changeComment);
+            checkFieldsEquals(result, oldEntity.getCommUnderlType(), null, EventLogBuilder.EventDetailsKey.COMM_UNDERL_TYPE);
+            checkFieldsEquals(result, oldEntity.getCommUnderlDtls(), null, EventLogBuilder.EventDetailsKey.COMM_UNDERL_DTLS);
+            checkFieldsEquals(result, oldEntity.getCommVenue(), null, EventLogBuilder.EventDetailsKey.COMM_VENUE);
+            checkFieldsEquals(result, oldEntity.getCommInterconn(), null, EventLogBuilder.EventDetailsKey.COMM_INTERCONN);
+            checkFieldsEquals(result, oldEntity.getCommLoadType(), null, EventLogBuilder.EventDetailsKey.COMM_LOAD_TYPE);
+            checkFieldsEquals(result, oldEntity.getCommDelivStartFrom(), null, EventLogBuilder.EventDetailsKey.COMM_DELIV_START_FROM);
+            checkFieldsEquals(result, oldEntity.getCommDelivEndFrom(), null, EventLogBuilder.EventDetailsKey.COMM_DELIV_END_FROM);
+            checkFieldsEquals(result, oldEntity.getCommContractCount(), null, EventLogBuilder.EventDetailsKey.COMM_CONTRACT_COUNT);
+            checkFieldsEquals(result, oldEntity.getCommRateCount(), null, EventLogBuilder.EventDetailsKey.COMM_RATE_COUNT);
+            checkFieldsEquals(result, oldEntity.getCommRataCount(), null, EventLogBuilder.EventDetailsKey.COMM_RATA_COUNT);
         } else {
-            checkFieldsEquals(result, oldEntity.getCommUnderlType(), newEntity.getCommUnderlType(), EventLogBuilder.EventDetailsKey.COMM_UNDERL_TYPE, changeComment);
-            checkFieldsEquals(result, oldEntity.getCommUnderlDtls(), newEntity.getCommUnderlDtls(), EventLogBuilder.EventDetailsKey.COMM_UNDERL_DTLS, changeComment);
-            checkFieldsEquals(result, oldEntity.getCommVenue(), newEntity.getCommVenue(), EventLogBuilder.EventDetailsKey.COMM_VENUE, changeComment);
-            checkFieldsEquals(result, oldEntity.getCommInterconn(), newEntity.getCommInterconn(), EventLogBuilder.EventDetailsKey.COMM_INTERCONN, changeComment);
-            checkFieldsEquals(result, oldEntity.getCommLoadType(), newEntity.getCommLoadType(), EventLogBuilder.EventDetailsKey.COMM_LOAD_TYPE, changeComment);
-            checkFieldsEquals(result, oldEntity.getCommDelivStartFrom(), newEntity.getCommDelivStartFrom(), EventLogBuilder.EventDetailsKey.COMM_DELIV_START_FROM, changeComment);
-            checkFieldsEquals(result, oldEntity.getCommDelivEndFrom(), newEntity.getCommDelivEndFrom(), EventLogBuilder.EventDetailsKey.COMM_DELIV_END_FROM, changeComment);
-            checkFieldsEquals(result, oldEntity.getCommContractCount(), newEntity.getCommContractCount(), EventLogBuilder.EventDetailsKey.COMM_CONTRACT_COUNT, changeComment);
-            checkFieldsEquals(result, oldEntity.getCommRateCount(), newEntity.getCommRateCount(), EventLogBuilder.EventDetailsKey.COMM_RATE_COUNT, changeComment);
-            checkFieldsEquals(result, oldEntity.getCommRataCount(), newEntity.getCommRataCount(), EventLogBuilder.EventDetailsKey.COMM_RATA_COUNT, changeComment);
+            checkFieldsEquals(result, oldEntity.getCommUnderlType(), newEntity.getCommUnderlType(), EventLogBuilder.EventDetailsKey.COMM_UNDERL_TYPE);
+            checkFieldsEquals(result, oldEntity.getCommUnderlDtls(), newEntity.getCommUnderlDtls(), EventLogBuilder.EventDetailsKey.COMM_UNDERL_DTLS);
+            checkFieldsEquals(result, oldEntity.getCommVenue(), newEntity.getCommVenue(), EventLogBuilder.EventDetailsKey.COMM_VENUE);
+            checkFieldsEquals(result, oldEntity.getCommInterconn(), newEntity.getCommInterconn(), EventLogBuilder.EventDetailsKey.COMM_INTERCONN);
+            checkFieldsEquals(result, oldEntity.getCommLoadType(), newEntity.getCommLoadType(), EventLogBuilder.EventDetailsKey.COMM_LOAD_TYPE);
+            checkFieldsEquals(result, oldEntity.getCommDelivStartFrom(), newEntity.getCommDelivStartFrom(), EventLogBuilder.EventDetailsKey.COMM_DELIV_START_FROM);
+            checkFieldsEquals(result, oldEntity.getCommDelivEndFrom(), newEntity.getCommDelivEndFrom(), EventLogBuilder.EventDetailsKey.COMM_DELIV_END_FROM);
+            checkFieldsEquals(result, oldEntity.getCommContractCount(), newEntity.getCommContractCount(), EventLogBuilder.EventDetailsKey.COMM_CONTRACT_COUNT);
+            checkFieldsEquals(result, oldEntity.getCommRateCount(), newEntity.getCommRateCount(), EventLogBuilder.EventDetailsKey.COMM_RATE_COUNT);
+            checkFieldsEquals(result, oldEntity.getCommRataCount(), newEntity.getCommRataCount(), EventLogBuilder.EventDetailsKey.COMM_RATA_COUNT);
         }
     }
 

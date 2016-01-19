@@ -139,9 +139,6 @@ public class Client extends Extract implements Selectable<Long>, DescriptorCusto
     @Column(name = "CLIENT_VERSION")
     private Integer clientVersion;
 
-    @Transient
-    private transient static String changeComment;
-
     /**
      * default Constructor
      */
@@ -303,43 +300,43 @@ public class Client extends Extract implements Selectable<Long>, DescriptorCusto
             return;
         }
         if (oldEntity != null && newEntity != null) {
-            BusinessEntity.checkEntity(result, oldEntity.getBusinessEntity(), newEntity.getBusinessEntity(), newEntity.getChangeComment());
-            Institution.checkEntity(result, oldEntity.getInstitution(), newEntity.getInstitution(), newEntity.getChangeComment());
-            checkFieldsEquals(result, oldEntity.getOriginalId(), newEntity.getOriginalId(), EventLogBuilder.EventDetailsKey.CLIENT_ID, newEntity.getChangeComment());
-            checkFieldsEquals(result, oldEntity.getClientName(), newEntity.getClientName(), EventLogBuilder.EventDetailsKey.CLIENT_NAME, newEntity.getChangeComment());
-            checkFieldsEquals(result, oldEntity.getCountryCode(), newEntity.getCountryCode(), EventLogBuilder.EventDetailsKey.COUNTRY_CODE, newEntity.getChangeComment());
-            checkFieldsEquals(result, oldEntity.getEog(), newEntity.getEog(), EventLogBuilder.EventDetailsKey.EOG, newEntity.getChangeComment());
-            checkFieldsEquals(result, oldEntity.getNaturalPerson(), newEntity.getNaturalPerson(), EventLogBuilder.EventDetailsKey.NATURAL_PERSON, newEntity.getChangeComment());
-            checkFieldsEquals(result, oldEntity.getReported(), newEntity.getReported(), EventLogBuilder.EventDetailsKey.REPORTED, newEntity.getChangeComment());
-            checkFieldsEquals(result, oldEntity.getContrPartyType(), newEntity.getContrPartyType(), EventLogBuilder.EventDetailsKey.CONTR_PARTY_TYPE, newEntity.getChangeComment());
-            checkFieldsEquals(result, oldEntity.getContrPartyIndustry(), newEntity.getContrPartyIndustry(), EventLogBuilder.EventDetailsKey.CONTR_PARTY_INDUSTRY, newEntity.getChangeComment());
-            checkFieldsEquals(result, oldEntity.getValidationStatus(), newEntity.getValidationStatus(), EventLogBuilder.EventDetailsKey.VALIDATION_STATUS, newEntity.getChangeComment());
+            BusinessEntity.checkEntity(result, oldEntity.getBusinessEntity(), newEntity.getBusinessEntity());
+            Institution.checkEntity(result, oldEntity.getInstitution(), newEntity.getInstitution());
+            checkFieldsEquals(result, oldEntity.getOriginalId(), newEntity.getOriginalId(), EventLogBuilder.EventDetailsKey.CLIENT_ID);
+            checkFieldsEquals(result, oldEntity.getClientName(), newEntity.getClientName(), EventLogBuilder.EventDetailsKey.CLIENT_NAME);
+            checkFieldsEquals(result, oldEntity.getCountryCode(), newEntity.getCountryCode(), EventLogBuilder.EventDetailsKey.COUNTRY_CODE);
+            checkFieldsEquals(result, oldEntity.getEog(), newEntity.getEog(), EventLogBuilder.EventDetailsKey.EOG);
+            checkFieldsEquals(result, oldEntity.getNaturalPerson(), newEntity.getNaturalPerson(), EventLogBuilder.EventDetailsKey.NATURAL_PERSON);
+            checkFieldsEquals(result, oldEntity.getReported(), newEntity.getReported(), EventLogBuilder.EventDetailsKey.REPORTED);
+            checkFieldsEquals(result, oldEntity.getContrPartyType(), newEntity.getContrPartyType(), EventLogBuilder.EventDetailsKey.CONTR_PARTY_TYPE);
+            checkFieldsEquals(result, oldEntity.getContrPartyIndustry(), newEntity.getContrPartyIndustry(), EventLogBuilder.EventDetailsKey.CONTR_PARTY_INDUSTRY);
+            checkFieldsEquals(result, oldEntity.getValidationStatus(), newEntity.getValidationStatus(), EventLogBuilder.EventDetailsKey.VALIDATION_STATUS);
         } else {
             if (oldEntity == null) {
-                BusinessEntity.checkEntity(result, null, newEntity.getBusinessEntity(), newEntity.getChangeComment());
-                Institution.checkEntity(result, null, newEntity.getInstitution(), newEntity.getChangeComment());
-                checkFieldsEquals(result, null, newEntity.getOriginalId(), EventLogBuilder.EventDetailsKey.CLIENT_ID, newEntity.getChangeComment());
-                checkFieldsEquals(result, null, newEntity.getClientName(), EventLogBuilder.EventDetailsKey.CLIENT_NAME, newEntity.getChangeComment());
-                checkFieldsEquals(result, null, newEntity.getCountryCode(), EventLogBuilder.EventDetailsKey.COUNTRY_CODE, newEntity.getChangeComment());
-                checkFieldsEquals(result, null, newEntity.getEog(), EventLogBuilder.EventDetailsKey.EOG, newEntity.getChangeComment());
-                checkFieldsEquals(result, null, newEntity.getNaturalPerson(), EventLogBuilder.EventDetailsKey.NATURAL_PERSON, newEntity.getChangeComment());
-                checkFieldsEquals(result, null, newEntity.getReported(), EventLogBuilder.EventDetailsKey.REPORTED, newEntity.getChangeComment());
-                checkFieldsEquals(result, null, newEntity.getContrPartyType(), EventLogBuilder.EventDetailsKey.CONTR_PARTY_TYPE, newEntity.getChangeComment());
-                checkFieldsEquals(result, null, newEntity.getContrPartyIndustry(), EventLogBuilder.EventDetailsKey.CONTR_PARTY_INDUSTRY, newEntity.getChangeComment());
-                checkFieldsEquals(result, null, newEntity.getValidationStatus(), EventLogBuilder.EventDetailsKey.VALIDATION_STATUS, newEntity.getChangeComment());
+                BusinessEntity.checkEntity(result, null, newEntity.getBusinessEntity());
+                Institution.checkEntity(result, null, newEntity.getInstitution());
+                checkFieldsEquals(result, null, newEntity.getOriginalId(), EventLogBuilder.EventDetailsKey.CLIENT_ID);
+                checkFieldsEquals(result, null, newEntity.getClientName(), EventLogBuilder.EventDetailsKey.CLIENT_NAME);
+                checkFieldsEquals(result, null, newEntity.getCountryCode(), EventLogBuilder.EventDetailsKey.COUNTRY_CODE);
+                checkFieldsEquals(result, null, newEntity.getEog(), EventLogBuilder.EventDetailsKey.EOG);
+                checkFieldsEquals(result, null, newEntity.getNaturalPerson(), EventLogBuilder.EventDetailsKey.NATURAL_PERSON);
+                checkFieldsEquals(result, null, newEntity.getReported(), EventLogBuilder.EventDetailsKey.REPORTED);
+                checkFieldsEquals(result, null, newEntity.getContrPartyType(), EventLogBuilder.EventDetailsKey.CONTR_PARTY_TYPE);
+                checkFieldsEquals(result, null, newEntity.getContrPartyIndustry(), EventLogBuilder.EventDetailsKey.CONTR_PARTY_INDUSTRY);
+                checkFieldsEquals(result, null, newEntity.getValidationStatus(), EventLogBuilder.EventDetailsKey.VALIDATION_STATUS);
             } else {
                 //TODO do poprawy ....
-                BusinessEntity.checkEntity(result, oldEntity.getBusinessEntity(), null, oldEntity.getChangeComment());
-                Institution.checkEntity(result, oldEntity.getInstitution(), null, oldEntity.getChangeComment());
-                checkFieldsEquals(result, oldEntity.getOriginalId(), null, EventLogBuilder.EventDetailsKey.CLIENT_ID, oldEntity.getChangeComment());
-                checkFieldsEquals(result, oldEntity.getClientName(), null, EventLogBuilder.EventDetailsKey.CLIENT_NAME, oldEntity.getChangeComment());
-                checkFieldsEquals(result, oldEntity.getCountryCode(), null, EventLogBuilder.EventDetailsKey.COUNTRY_CODE, oldEntity.getChangeComment());
-                checkFieldsEquals(result, oldEntity.getEog(), null, EventLogBuilder.EventDetailsKey.EOG, oldEntity.getChangeComment());
-                checkFieldsEquals(result, oldEntity.getNaturalPerson(), null, EventLogBuilder.EventDetailsKey.NATURAL_PERSON, oldEntity.getChangeComment());
-                checkFieldsEquals(result, oldEntity.getReported(), null, EventLogBuilder.EventDetailsKey.REPORTED, oldEntity.getChangeComment());
-                checkFieldsEquals(result, oldEntity.getContrPartyType(), null, EventLogBuilder.EventDetailsKey.CONTR_PARTY_TYPE, oldEntity.getChangeComment());
-                checkFieldsEquals(result, oldEntity.getContrPartyIndustry(), null, EventLogBuilder.EventDetailsKey.CONTR_PARTY_INDUSTRY, oldEntity.getChangeComment());
-                checkFieldsEquals(result, oldEntity.getValidationStatus(), null, EventLogBuilder.EventDetailsKey.VALIDATION_STATUS, oldEntity.getChangeComment());
+                BusinessEntity.checkEntity(result, oldEntity.getBusinessEntity(), null);
+                Institution.checkEntity(result, oldEntity.getInstitution(), null);
+                checkFieldsEquals(result, oldEntity.getOriginalId(), null, EventLogBuilder.EventDetailsKey.CLIENT_ID);
+                checkFieldsEquals(result, oldEntity.getClientName(), null, EventLogBuilder.EventDetailsKey.CLIENT_NAME);
+                checkFieldsEquals(result, oldEntity.getCountryCode(), null, EventLogBuilder.EventDetailsKey.COUNTRY_CODE);
+                checkFieldsEquals(result, oldEntity.getEog(), null, EventLogBuilder.EventDetailsKey.EOG);
+                checkFieldsEquals(result, oldEntity.getNaturalPerson(), null, EventLogBuilder.EventDetailsKey.NATURAL_PERSON);
+                checkFieldsEquals(result, oldEntity.getReported(), null, EventLogBuilder.EventDetailsKey.REPORTED);
+                checkFieldsEquals(result, oldEntity.getContrPartyType(), null, EventLogBuilder.EventDetailsKey.CONTR_PARTY_TYPE);
+                checkFieldsEquals(result, oldEntity.getContrPartyIndustry(), null, EventLogBuilder.EventDetailsKey.CONTR_PARTY_INDUSTRY);
+                checkFieldsEquals(result, oldEntity.getValidationStatus(), null, EventLogBuilder.EventDetailsKey.VALIDATION_STATUS);
             }
         }
     }
@@ -402,14 +399,6 @@ public class Client extends Extract implements Selectable<Long>, DescriptorCusto
 
     public void setClientVersion(Integer clientVersion) {
         this.clientVersion = clientVersion;
-    }
-
-    public String getChangeComment() {
-        return changeComment;
-    }
-
-    public void setChangeComment(String changeComment) {
-        this.changeComment = changeComment;
     }
 
     public Boolean getIntraGroupTransactions() {

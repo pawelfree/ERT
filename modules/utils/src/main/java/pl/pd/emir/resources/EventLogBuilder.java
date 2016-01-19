@@ -118,51 +118,6 @@ public class EventLogBuilder {
     }
 
     /**
-     * Pobranie informacji o modyfikacji pola przechowującego datę.
-     *
-     * @param fieldNameKey klucz do nazwy pola
-     * @param oldValue poprzdnia wartość
-     * @param newValue aktualna wartość
-     * @param changeComment komentarz dotyczący edycji danych (tylko dla banku i)
-     * @return informacje o modyfikacji pola
-     */
-    public static String[] getChangeLogData(EventDetailsKey fieldNameKey, boolean oldValue, boolean newValue, String changeComment) {
-        String[] changeLogDataArray = Arrays.copyOf(getChangeLogData(fieldNameKey, oldValue, newValue), 4);
-        changeLogDataArray[3] = changeComment;
-        return changeLogDataArray;
-    }
-
-    /**
-     * Pobranie informacji o modyfikacji pola przechowującego datę.
-     *
-     * @param fieldNameKey klucz do nazwy pola
-     * @param oldValue poprzdnia wartość
-     * @param newValue aktualna wartość
-     * @param changeComment komentarz dotyczący edycji danych (tylko dla banku i)
-     * @return informacje o modyfikacji pola
-     */
-    public static String[] getChangeLogData(EventDetailsKey fieldNameKey, Date oldValue, Date newValue, String changeComment) {
-        String[] changeLogDataArray = Arrays.copyOf(getChangeLogData(fieldNameKey, oldValue, newValue), 4);
-        changeLogDataArray[3] = changeComment;
-        return changeLogDataArray;
-    }
-
-    /**
-     * Pobranie informacji o modyfikacji pola.
-     *
-     * @param fieldNameKey klucz do nazwy pola
-     * @param oldValue poprzednia wartość
-     * @param newValue aktualna wartość
-     * @param changeComment komentarz dotyczący edycji danych (tylko dla banku i)
-     * @return informacje o modyfikacji pola
-     */
-    public static String[] getChangeLogData(EventDetailsKey fieldNameKey, Object oldValue, Object newValue, String changeComment) {
-        String[] changeLogDataArray = Arrays.copyOf(getChangeLogData(fieldNameKey, oldValue, newValue), 4);
-        changeLogDataArray[3] = changeComment;
-        return changeLogDataArray;
-    }
-
-    /**
      * Pobranie ciągu tekstowego na podstawie klucza i sformatownie go z użyciem podanych wartości.
      *
      * @param key klucz do ciągu tekstowego

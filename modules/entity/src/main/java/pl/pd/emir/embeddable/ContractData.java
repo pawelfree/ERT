@@ -110,26 +110,26 @@ public class ContractData implements Serializable {
         //EMPTY
     }
 
-    public static void checkEntity(List<ChangeLog> result, ContractData oldEntity, ContractData newEntity, String changeComment) {
+    public static void checkEntity(List<ChangeLog> result, ContractData oldEntity, ContractData newEntity) {
         
         if (oldEntity == null && newEntity == null) {
             return;
         }
         if (oldEntity == null) {
-            checkFieldsEquals(result, null, newEntity.getContractType(), EventLogBuilder.EventDetailsKey.CONTRACT_TYPE, changeComment);
-            checkFieldsEquals(result, null, newEntity.getProd1Code(), EventLogBuilder.EventDetailsKey.PROD1_CODE, changeComment);
-            checkFieldsEquals(result, null, newEntity.getProd2Code(), EventLogBuilder.EventDetailsKey.PROD2_CODE, changeComment);
-            checkFieldsEquals(result, null, newEntity.getUnderlyingId(), EventLogBuilder.EventDetailsKey.UNDERLYING_ID, changeComment);
+            checkFieldsEquals(result, null, newEntity.getContractType(), EventLogBuilder.EventDetailsKey.CONTRACT_TYPE);
+            checkFieldsEquals(result, null, newEntity.getProd1Code(), EventLogBuilder.EventDetailsKey.PROD1_CODE);
+            checkFieldsEquals(result, null, newEntity.getProd2Code(), EventLogBuilder.EventDetailsKey.PROD2_CODE);
+            checkFieldsEquals(result, null, newEntity.getUnderlyingId(), EventLogBuilder.EventDetailsKey.UNDERLYING_ID);
         } else if (newEntity == null) {
-            checkFieldsEquals(result, oldEntity.getContractType(), null, EventLogBuilder.EventDetailsKey.CONTRACT_TYPE, changeComment);
-            checkFieldsEquals(result, oldEntity.getProd1Code(), null, EventLogBuilder.EventDetailsKey.PROD1_CODE, changeComment);
-            checkFieldsEquals(result, oldEntity.getProd2Code(), null, EventLogBuilder.EventDetailsKey.PROD2_CODE, changeComment);
-            checkFieldsEquals(result, oldEntity.getUnderlyingId(), null, EventLogBuilder.EventDetailsKey.UNDERLYING_ID, changeComment);
+            checkFieldsEquals(result, oldEntity.getContractType(), null, EventLogBuilder.EventDetailsKey.CONTRACT_TYPE);
+            checkFieldsEquals(result, oldEntity.getProd1Code(), null, EventLogBuilder.EventDetailsKey.PROD1_CODE);
+            checkFieldsEquals(result, oldEntity.getProd2Code(), null, EventLogBuilder.EventDetailsKey.PROD2_CODE);
+            checkFieldsEquals(result, oldEntity.getUnderlyingId(), null, EventLogBuilder.EventDetailsKey.UNDERLYING_ID);
         } else {
-            checkFieldsEquals(result, oldEntity.getContractType(), newEntity.getContractType(), EventLogBuilder.EventDetailsKey.CONTRACT_TYPE, changeComment);
-            checkFieldsEquals(result, oldEntity.getProd1Code(), newEntity.getProd1Code(), EventLogBuilder.EventDetailsKey.PROD1_CODE, changeComment);
-            checkFieldsEquals(result, oldEntity.getProd2Code(), newEntity.getProd2Code(), EventLogBuilder.EventDetailsKey.PROD2_CODE, changeComment);
-            checkFieldsEquals(result, oldEntity.getUnderlyingId(), newEntity.getUnderlyingId(), EventLogBuilder.EventDetailsKey.UNDERLYING_ID, changeComment);
+            checkFieldsEquals(result, oldEntity.getContractType(), newEntity.getContractType(), EventLogBuilder.EventDetailsKey.CONTRACT_TYPE);
+            checkFieldsEquals(result, oldEntity.getProd1Code(), newEntity.getProd1Code(), EventLogBuilder.EventDetailsKey.PROD1_CODE);
+            checkFieldsEquals(result, oldEntity.getProd2Code(), newEntity.getProd2Code(), EventLogBuilder.EventDetailsKey.PROD2_CODE);
+            checkFieldsEquals(result, oldEntity.getUnderlyingId(), newEntity.getUnderlyingId(), EventLogBuilder.EventDetailsKey.UNDERLYING_ID);
         }
     }
 

@@ -3,7 +3,6 @@ package pl.pd.emir.enums;
 public enum ParameterKey implements MsgEnum {
 
     IMPORT_INPUT_URI,
-    IMPORT_INPUT_MASK_BANK,
     IMPORT_INPUT_MASK_CLIENT,
     IMPORT_INPUT_MASK_VALUATION,
     IMPORT_INPUT_MASK_PROTECTION,
@@ -15,11 +14,6 @@ public enum ParameterKey implements MsgEnum {
     ENABLE_BACKLOADING,
     SHOW_EXTRACT_VERSION,
     KDPW_SENDER,
-
-    /**
-     * Wielkość paczki transakcji wczytywanych podczas importu dla banku i.
-     */
-    IMPORT_TRANSACTION_BATCH_SIZE,
     /**
      * Ręczna edycja kodu beneficjenta w sekcji kontrachenta podczas ręcznego tworzenia transakcji
      */

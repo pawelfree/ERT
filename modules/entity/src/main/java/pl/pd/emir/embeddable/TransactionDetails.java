@@ -405,80 +405,80 @@ public class TransactionDetails implements Serializable {
         //EMPTY
     }
 
-    public static void checkEntity(List<ChangeLog> result, TransactionDetails oldEntity, TransactionDetails newEntity, String changeComment) {
+    public static void checkEntity(List<ChangeLog> result, TransactionDetails oldEntity, TransactionDetails newEntity) {
         if (oldEntity == null && newEntity == null) {
             return;
         }
 
         if (oldEntity == null) {
-            checkFieldsEquals(result, null, newEntity.getSourceTransId(), EventLogBuilder.EventDetailsKey.SOURCE_TRANS_ID, changeComment);
-            checkFieldsEquals(result, null, newEntity.getPreviousSourceTransId(), EventLogBuilder.EventDetailsKey.PREVIOUS_SOURCE_TRANS_ID, changeComment);
-            checkFieldsEquals(result, null, newEntity.getSourceTransRefNr(), EventLogBuilder.EventDetailsKey.SOURCE_TRANS_REF_NR, changeComment);
-            checkFieldsEquals(result, null, newEntity.getRealizationVenue(), EventLogBuilder.EventDetailsKey.REALIZATION_VENUE, changeComment);
-            checkFieldsEquals(result, null, newEntity.getCompression(), EventLogBuilder.EventDetailsKey.COMPRESSION, changeComment);
-            checkFieldsEquals(result, null, newEntity.getUnitPrice(), EventLogBuilder.EventDetailsKey.UNIT_PRICE, changeComment);
-            checkFieldsEquals(result, null, newEntity.getUnitPriceRate(), EventLogBuilder.EventDetailsKey.UNIT_PRICE_RATE, changeComment);
-            checkFieldsEquals(result, null, newEntity.getNominalAmount(), EventLogBuilder.EventDetailsKey.NOMINAL_AMOUNT, changeComment);
-            checkFieldsEquals(result, null, newEntity.getPriceMultiplier(), EventLogBuilder.EventDetailsKey.PRICE_MULTIPLIER, changeComment);
-            checkFieldsEquals(result, null, newEntity.getContractCount(), EventLogBuilder.EventDetailsKey.CONTRACT_COUNT, changeComment);
-            checkFieldsEquals(result, null, newEntity.getInAdvanceAmount(), EventLogBuilder.EventDetailsKey.IN_ADVANCE_AMOUNT, changeComment);
-            checkFieldsEquals(result, null, newEntity.getDelivType(), EventLogBuilder.EventDetailsKey.DELIV_TYPE, changeComment);
-            checkFieldsEquals(result, null, newEntity.getExecutionDate(), EventLogBuilder.EventDetailsKey.EXECUTION_DATE, changeComment);
-            checkFieldsEquals(result, null, newEntity.getEffectiveDate(), EventLogBuilder.EventDetailsKey.EFFECTIVE_DATE, changeComment);
-            checkFieldsEquals(result, null, newEntity.getMaturityDate(), EventLogBuilder.EventDetailsKey.MATURITY_DATE, changeComment);
-            checkFieldsEquals(result, null, newEntity.getTerminationDate(), EventLogBuilder.EventDetailsKey.TERMINATION_DATE, changeComment);
-            checkFieldsEquals(result, null, newEntity.getSettlementDate(), EventLogBuilder.EventDetailsKey.SETTLEMENT_DATE, changeComment);
-            checkFieldsEquals(result, null, newEntity.getFrameworkAggrType(), EventLogBuilder.EventDetailsKey.FRAMEWORK_AGGR_TYPE, changeComment);
-            checkFieldsEquals(result, null, newEntity.getFrameworkAggrVer(), EventLogBuilder.EventDetailsKey.FRAMEWORK_AGGR_VER, changeComment);
-            checkFieldsEquals(result, null, newEntity.getOptionType(), EventLogBuilder.EventDetailsKey.OPTION_TYPE, changeComment);
-            checkFieldsEquals(result, null, newEntity.getOptionExecStyle(), EventLogBuilder.EventDetailsKey.OPTION_EXEC_STYLE, changeComment);
-            checkFieldsEquals(result, null, newEntity.getOptionExecPrice(), EventLogBuilder.EventDetailsKey.OPTION_EXEC_PRICE, changeComment);
+            checkFieldsEquals(result, null, newEntity.getSourceTransId(), EventLogBuilder.EventDetailsKey.SOURCE_TRANS_ID);
+            checkFieldsEquals(result, null, newEntity.getPreviousSourceTransId(), EventLogBuilder.EventDetailsKey.PREVIOUS_SOURCE_TRANS_ID);
+            checkFieldsEquals(result, null, newEntity.getSourceTransRefNr(), EventLogBuilder.EventDetailsKey.SOURCE_TRANS_REF_NR);
+            checkFieldsEquals(result, null, newEntity.getRealizationVenue(), EventLogBuilder.EventDetailsKey.REALIZATION_VENUE);
+            checkFieldsEquals(result, null, newEntity.getCompression(), EventLogBuilder.EventDetailsKey.COMPRESSION);
+            checkFieldsEquals(result, null, newEntity.getUnitPrice(), EventLogBuilder.EventDetailsKey.UNIT_PRICE);
+            checkFieldsEquals(result, null, newEntity.getUnitPriceRate(), EventLogBuilder.EventDetailsKey.UNIT_PRICE_RATE);
+            checkFieldsEquals(result, null, newEntity.getNominalAmount(), EventLogBuilder.EventDetailsKey.NOMINAL_AMOUNT);
+            checkFieldsEquals(result, null, newEntity.getPriceMultiplier(), EventLogBuilder.EventDetailsKey.PRICE_MULTIPLIER);
+            checkFieldsEquals(result, null, newEntity.getContractCount(), EventLogBuilder.EventDetailsKey.CONTRACT_COUNT);
+            checkFieldsEquals(result, null, newEntity.getInAdvanceAmount(), EventLogBuilder.EventDetailsKey.IN_ADVANCE_AMOUNT);
+            checkFieldsEquals(result, null, newEntity.getDelivType(), EventLogBuilder.EventDetailsKey.DELIV_TYPE);
+            checkFieldsEquals(result, null, newEntity.getExecutionDate(), EventLogBuilder.EventDetailsKey.EXECUTION_DATE);
+            checkFieldsEquals(result, null, newEntity.getEffectiveDate(), EventLogBuilder.EventDetailsKey.EFFECTIVE_DATE);
+            checkFieldsEquals(result, null, newEntity.getMaturityDate(), EventLogBuilder.EventDetailsKey.MATURITY_DATE);
+            checkFieldsEquals(result, null, newEntity.getTerminationDate(), EventLogBuilder.EventDetailsKey.TERMINATION_DATE);
+            checkFieldsEquals(result, null, newEntity.getSettlementDate(), EventLogBuilder.EventDetailsKey.SETTLEMENT_DATE);
+            checkFieldsEquals(result, null, newEntity.getFrameworkAggrType(), EventLogBuilder.EventDetailsKey.FRAMEWORK_AGGR_TYPE);
+            checkFieldsEquals(result, null, newEntity.getFrameworkAggrVer(), EventLogBuilder.EventDetailsKey.FRAMEWORK_AGGR_VER);
+            checkFieldsEquals(result, null, newEntity.getOptionType(), EventLogBuilder.EventDetailsKey.OPTION_TYPE);
+            checkFieldsEquals(result, null, newEntity.getOptionExecStyle(), EventLogBuilder.EventDetailsKey.OPTION_EXEC_STYLE);
+            checkFieldsEquals(result, null, newEntity.getOptionExecPrice(), EventLogBuilder.EventDetailsKey.OPTION_EXEC_PRICE);
         } else if (newEntity == null) {
-            checkFieldsEquals(result, oldEntity.getSourceTransId(), null, EventLogBuilder.EventDetailsKey.SOURCE_TRANS_ID, changeComment);
-            checkFieldsEquals(result, oldEntity.getPreviousSourceTransId(), null, EventLogBuilder.EventDetailsKey.PREVIOUS_SOURCE_TRANS_ID, changeComment);
-            checkFieldsEquals(result, oldEntity.getSourceTransRefNr(), null, EventLogBuilder.EventDetailsKey.SOURCE_TRANS_REF_NR, changeComment);
-            checkFieldsEquals(result, oldEntity.getRealizationVenue(), null, EventLogBuilder.EventDetailsKey.REALIZATION_VENUE, changeComment);
-            checkFieldsEquals(result, oldEntity.getCompression(), null, EventLogBuilder.EventDetailsKey.COMPRESSION, changeComment);
-            checkFieldsEquals(result, oldEntity.getUnitPrice(), null, EventLogBuilder.EventDetailsKey.UNIT_PRICE, changeComment);
-            checkFieldsEquals(result, oldEntity.getUnitPriceRate(), null, EventLogBuilder.EventDetailsKey.UNIT_PRICE_RATE, changeComment);
-            checkFieldsEquals(result, oldEntity.getNominalAmount(), null, EventLogBuilder.EventDetailsKey.NOMINAL_AMOUNT, changeComment);
-            checkFieldsEquals(result, oldEntity.getPriceMultiplier(), null, EventLogBuilder.EventDetailsKey.PRICE_MULTIPLIER, changeComment);
-            checkFieldsEquals(result, oldEntity.getContractCount(), null, EventLogBuilder.EventDetailsKey.CONTRACT_COUNT, changeComment);
-            checkFieldsEquals(result, oldEntity.getInAdvanceAmount(), null, EventLogBuilder.EventDetailsKey.IN_ADVANCE_AMOUNT, changeComment);
-            checkFieldsEquals(result, oldEntity.getDelivType(), null, EventLogBuilder.EventDetailsKey.DELIV_TYPE, changeComment);
-            checkFieldsEquals(result, oldEntity.getExecutionDate(), null, EventLogBuilder.EventDetailsKey.EXECUTION_DATE, changeComment);
-            checkFieldsEquals(result, oldEntity.getEffectiveDate(), null, EventLogBuilder.EventDetailsKey.EFFECTIVE_DATE, changeComment);
-            checkFieldsEquals(result, oldEntity.getMaturityDate(), null, EventLogBuilder.EventDetailsKey.MATURITY_DATE, changeComment);
-            checkFieldsEquals(result, oldEntity.getTerminationDate(), null, EventLogBuilder.EventDetailsKey.TERMINATION_DATE, changeComment);
-            checkFieldsEquals(result, oldEntity.getSettlementDate(), null, EventLogBuilder.EventDetailsKey.SETTLEMENT_DATE, changeComment);
-            checkFieldsEquals(result, oldEntity.getFrameworkAggrType(), null, EventLogBuilder.EventDetailsKey.FRAMEWORK_AGGR_TYPE, changeComment);
-            checkFieldsEquals(result, oldEntity.getFrameworkAggrVer(), null, EventLogBuilder.EventDetailsKey.FRAMEWORK_AGGR_VER, changeComment);
-            checkFieldsEquals(result, oldEntity.getOptionType(), null, EventLogBuilder.EventDetailsKey.OPTION_TYPE, changeComment);
-            checkFieldsEquals(result, oldEntity.getOptionExecStyle(), null, EventLogBuilder.EventDetailsKey.OPTION_EXEC_STYLE, changeComment);
-            checkFieldsEquals(result, oldEntity.getOptionExecPrice(), null, EventLogBuilder.EventDetailsKey.OPTION_EXEC_PRICE, changeComment);
+            checkFieldsEquals(result, oldEntity.getSourceTransId(), null, EventLogBuilder.EventDetailsKey.SOURCE_TRANS_ID);
+            checkFieldsEquals(result, oldEntity.getPreviousSourceTransId(), null, EventLogBuilder.EventDetailsKey.PREVIOUS_SOURCE_TRANS_ID);
+            checkFieldsEquals(result, oldEntity.getSourceTransRefNr(), null, EventLogBuilder.EventDetailsKey.SOURCE_TRANS_REF_NR);
+            checkFieldsEquals(result, oldEntity.getRealizationVenue(), null, EventLogBuilder.EventDetailsKey.REALIZATION_VENUE);
+            checkFieldsEquals(result, oldEntity.getCompression(), null, EventLogBuilder.EventDetailsKey.COMPRESSION);
+            checkFieldsEquals(result, oldEntity.getUnitPrice(), null, EventLogBuilder.EventDetailsKey.UNIT_PRICE);
+            checkFieldsEquals(result, oldEntity.getUnitPriceRate(), null, EventLogBuilder.EventDetailsKey.UNIT_PRICE_RATE);
+            checkFieldsEquals(result, oldEntity.getNominalAmount(), null, EventLogBuilder.EventDetailsKey.NOMINAL_AMOUNT);
+            checkFieldsEquals(result, oldEntity.getPriceMultiplier(), null, EventLogBuilder.EventDetailsKey.PRICE_MULTIPLIER);
+            checkFieldsEquals(result, oldEntity.getContractCount(), null, EventLogBuilder.EventDetailsKey.CONTRACT_COUNT);
+            checkFieldsEquals(result, oldEntity.getInAdvanceAmount(), null, EventLogBuilder.EventDetailsKey.IN_ADVANCE_AMOUNT);
+            checkFieldsEquals(result, oldEntity.getDelivType(), null, EventLogBuilder.EventDetailsKey.DELIV_TYPE);
+            checkFieldsEquals(result, oldEntity.getExecutionDate(), null, EventLogBuilder.EventDetailsKey.EXECUTION_DATE);
+            checkFieldsEquals(result, oldEntity.getEffectiveDate(), null, EventLogBuilder.EventDetailsKey.EFFECTIVE_DATE);
+            checkFieldsEquals(result, oldEntity.getMaturityDate(), null, EventLogBuilder.EventDetailsKey.MATURITY_DATE);
+            checkFieldsEquals(result, oldEntity.getTerminationDate(), null, EventLogBuilder.EventDetailsKey.TERMINATION_DATE);
+            checkFieldsEquals(result, oldEntity.getSettlementDate(), null, EventLogBuilder.EventDetailsKey.SETTLEMENT_DATE);
+            checkFieldsEquals(result, oldEntity.getFrameworkAggrType(), null, EventLogBuilder.EventDetailsKey.FRAMEWORK_AGGR_TYPE);
+            checkFieldsEquals(result, oldEntity.getFrameworkAggrVer(), null, EventLogBuilder.EventDetailsKey.FRAMEWORK_AGGR_VER);
+            checkFieldsEquals(result, oldEntity.getOptionType(), null, EventLogBuilder.EventDetailsKey.OPTION_TYPE);
+            checkFieldsEquals(result, oldEntity.getOptionExecStyle(), null, EventLogBuilder.EventDetailsKey.OPTION_EXEC_STYLE);
+            checkFieldsEquals(result, oldEntity.getOptionExecPrice(), null, EventLogBuilder.EventDetailsKey.OPTION_EXEC_PRICE);
         } else {
-            checkFieldsEquals(result, oldEntity.getSourceTransId(), newEntity.getSourceTransId(), EventLogBuilder.EventDetailsKey.SOURCE_TRANS_ID, changeComment);
-            checkFieldsEquals(result, oldEntity.getPreviousSourceTransId(), newEntity.getPreviousSourceTransId(), EventLogBuilder.EventDetailsKey.PREVIOUS_SOURCE_TRANS_ID, changeComment);
-            checkFieldsEquals(result, oldEntity.getSourceTransRefNr(), newEntity.getSourceTransRefNr(), EventLogBuilder.EventDetailsKey.SOURCE_TRANS_REF_NR, changeComment);
-            checkFieldsEquals(result, oldEntity.getRealizationVenue(), newEntity.getRealizationVenue(), EventLogBuilder.EventDetailsKey.REALIZATION_VENUE, changeComment);
-            checkFieldsEquals(result, oldEntity.getCompression(), newEntity.getCompression(), EventLogBuilder.EventDetailsKey.COMPRESSION, changeComment);
-            checkFieldsEquals(result, oldEntity.getUnitPrice(), newEntity.getUnitPrice(), EventLogBuilder.EventDetailsKey.UNIT_PRICE, changeComment);
-            checkFieldsEquals(result, oldEntity.getUnitPriceRate(), newEntity.getUnitPriceRate(), EventLogBuilder.EventDetailsKey.UNIT_PRICE_RATE, changeComment);
-            checkFieldsEquals(result, oldEntity.getNominalAmount(), newEntity.getNominalAmount(), EventLogBuilder.EventDetailsKey.NOMINAL_AMOUNT, changeComment);
-            checkFieldsEquals(result, oldEntity.getPriceMultiplier(), newEntity.getPriceMultiplier(), EventLogBuilder.EventDetailsKey.PRICE_MULTIPLIER, changeComment);
-            checkFieldsEquals(result, oldEntity.getContractCount(), newEntity.getContractCount(), EventLogBuilder.EventDetailsKey.CONTRACT_COUNT, changeComment);
-            checkFieldsEquals(result, oldEntity.getInAdvanceAmount(), newEntity.getInAdvanceAmount(), EventLogBuilder.EventDetailsKey.IN_ADVANCE_AMOUNT, changeComment);
-            checkFieldsEquals(result, oldEntity.getDelivType(), newEntity.getDelivType(), EventLogBuilder.EventDetailsKey.DELIV_TYPE, changeComment);
-            checkFieldsEquals(result, oldEntity.getExecutionDate(), newEntity.getExecutionDate(), EventLogBuilder.EventDetailsKey.EXECUTION_DATE, changeComment);
-            checkFieldsEquals(result, oldEntity.getEffectiveDate(), newEntity.getEffectiveDate(), EventLogBuilder.EventDetailsKey.EFFECTIVE_DATE, changeComment);
-            checkFieldsEquals(result, oldEntity.getMaturityDate(), newEntity.getMaturityDate(), EventLogBuilder.EventDetailsKey.MATURITY_DATE, changeComment);
-            checkFieldsEquals(result, oldEntity.getTerminationDate(), newEntity.getTerminationDate(), EventLogBuilder.EventDetailsKey.TERMINATION_DATE, changeComment);
-            checkFieldsEquals(result, oldEntity.getSettlementDate(), newEntity.getSettlementDate(), EventLogBuilder.EventDetailsKey.SETTLEMENT_DATE, changeComment);
-            checkFieldsEquals(result, oldEntity.getFrameworkAggrType(), newEntity.getFrameworkAggrType(), EventLogBuilder.EventDetailsKey.FRAMEWORK_AGGR_TYPE, changeComment);
-            checkFieldsEquals(result, oldEntity.getFrameworkAggrVer(), newEntity.getFrameworkAggrVer(), EventLogBuilder.EventDetailsKey.FRAMEWORK_AGGR_VER, changeComment);
-            checkFieldsEquals(result, oldEntity.getOptionType(), newEntity.getOptionType(), EventLogBuilder.EventDetailsKey.OPTION_TYPE, changeComment);
-            checkFieldsEquals(result, oldEntity.getOptionExecStyle(), newEntity.getOptionExecStyle(), EventLogBuilder.EventDetailsKey.OPTION_EXEC_STYLE, changeComment);
-            checkFieldsEquals(result, oldEntity.getOptionExecPrice(), newEntity.getOptionExecPrice(), EventLogBuilder.EventDetailsKey.OPTION_EXEC_PRICE, changeComment);
+            checkFieldsEquals(result, oldEntity.getSourceTransId(), newEntity.getSourceTransId(), EventLogBuilder.EventDetailsKey.SOURCE_TRANS_ID);
+            checkFieldsEquals(result, oldEntity.getPreviousSourceTransId(), newEntity.getPreviousSourceTransId(), EventLogBuilder.EventDetailsKey.PREVIOUS_SOURCE_TRANS_ID);
+            checkFieldsEquals(result, oldEntity.getSourceTransRefNr(), newEntity.getSourceTransRefNr(), EventLogBuilder.EventDetailsKey.SOURCE_TRANS_REF_NR);
+            checkFieldsEquals(result, oldEntity.getRealizationVenue(), newEntity.getRealizationVenue(), EventLogBuilder.EventDetailsKey.REALIZATION_VENUE);
+            checkFieldsEquals(result, oldEntity.getCompression(), newEntity.getCompression(), EventLogBuilder.EventDetailsKey.COMPRESSION);
+            checkFieldsEquals(result, oldEntity.getUnitPrice(), newEntity.getUnitPrice(), EventLogBuilder.EventDetailsKey.UNIT_PRICE);
+            checkFieldsEquals(result, oldEntity.getUnitPriceRate(), newEntity.getUnitPriceRate(), EventLogBuilder.EventDetailsKey.UNIT_PRICE_RATE);
+            checkFieldsEquals(result, oldEntity.getNominalAmount(), newEntity.getNominalAmount(), EventLogBuilder.EventDetailsKey.NOMINAL_AMOUNT);
+            checkFieldsEquals(result, oldEntity.getPriceMultiplier(), newEntity.getPriceMultiplier(), EventLogBuilder.EventDetailsKey.PRICE_MULTIPLIER);
+            checkFieldsEquals(result, oldEntity.getContractCount(), newEntity.getContractCount(), EventLogBuilder.EventDetailsKey.CONTRACT_COUNT);
+            checkFieldsEquals(result, oldEntity.getInAdvanceAmount(), newEntity.getInAdvanceAmount(), EventLogBuilder.EventDetailsKey.IN_ADVANCE_AMOUNT);
+            checkFieldsEquals(result, oldEntity.getDelivType(), newEntity.getDelivType(), EventLogBuilder.EventDetailsKey.DELIV_TYPE);
+            checkFieldsEquals(result, oldEntity.getExecutionDate(), newEntity.getExecutionDate(), EventLogBuilder.EventDetailsKey.EXECUTION_DATE);
+            checkFieldsEquals(result, oldEntity.getEffectiveDate(), newEntity.getEffectiveDate(), EventLogBuilder.EventDetailsKey.EFFECTIVE_DATE);
+            checkFieldsEquals(result, oldEntity.getMaturityDate(), newEntity.getMaturityDate(), EventLogBuilder.EventDetailsKey.MATURITY_DATE);
+            checkFieldsEquals(result, oldEntity.getTerminationDate(), newEntity.getTerminationDate(), EventLogBuilder.EventDetailsKey.TERMINATION_DATE);
+            checkFieldsEquals(result, oldEntity.getSettlementDate(), newEntity.getSettlementDate(), EventLogBuilder.EventDetailsKey.SETTLEMENT_DATE);
+            checkFieldsEquals(result, oldEntity.getFrameworkAggrType(), newEntity.getFrameworkAggrType(), EventLogBuilder.EventDetailsKey.FRAMEWORK_AGGR_TYPE);
+            checkFieldsEquals(result, oldEntity.getFrameworkAggrVer(), newEntity.getFrameworkAggrVer(), EventLogBuilder.EventDetailsKey.FRAMEWORK_AGGR_VER);
+            checkFieldsEquals(result, oldEntity.getOptionType(), newEntity.getOptionType(), EventLogBuilder.EventDetailsKey.OPTION_TYPE);
+            checkFieldsEquals(result, oldEntity.getOptionExecStyle(), newEntity.getOptionExecStyle(), EventLogBuilder.EventDetailsKey.OPTION_EXEC_STYLE);
+            checkFieldsEquals(result, oldEntity.getOptionExecPrice(), newEntity.getOptionExecPrice(), EventLogBuilder.EventDetailsKey.OPTION_EXEC_PRICE);
         }
     }
 

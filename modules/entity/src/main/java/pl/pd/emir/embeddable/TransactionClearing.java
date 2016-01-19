@@ -119,30 +119,30 @@ public class TransactionClearing implements Serializable {
         //EMPTY
     }
 
-    public static void checkEntity(List<ChangeLog> result, TransactionClearing oldEntity, TransactionClearing newEntity, String changeComment) {
+    public static void checkEntity(List<ChangeLog> result, TransactionClearing oldEntity, TransactionClearing newEntity) {
         if (oldEntity == null && newEntity == null) {
             return;
         }
         if (oldEntity == null || newEntity == null) {
             if (oldEntity == null) {
-                checkFieldsEquals(result, null, newEntity.getClearingOblig(), EventLogBuilder.EventDetailsKey.SETTLEMENT_OBLIG, changeComment);
-                checkFieldsEquals(result, null, newEntity.getCleared(), EventLogBuilder.EventDetailsKey.SETTLED, changeComment);
-                checkFieldsEquals(result, null, newEntity.getClearingDate(), EventLogBuilder.EventDetailsKey.CLEARING_DATE, changeComment);
-                checkFieldsEquals(result, null, newEntity.getCcpCode(), EventLogBuilder.EventDetailsKey.CCP_CODE, changeComment);
-                checkFieldsEquals(result, null, newEntity.getIntergropuTrans(), EventLogBuilder.EventDetailsKey.INTERGROPU_TRANS, changeComment);
+                checkFieldsEquals(result, null, newEntity.getClearingOblig(), EventLogBuilder.EventDetailsKey.SETTLEMENT_OBLIG);
+                checkFieldsEquals(result, null, newEntity.getCleared(), EventLogBuilder.EventDetailsKey.SETTLED);
+                checkFieldsEquals(result, null, newEntity.getClearingDate(), EventLogBuilder.EventDetailsKey.CLEARING_DATE);
+                checkFieldsEquals(result, null, newEntity.getCcpCode(), EventLogBuilder.EventDetailsKey.CCP_CODE);
+                checkFieldsEquals(result, null, newEntity.getIntergropuTrans(), EventLogBuilder.EventDetailsKey.INTERGROPU_TRANS);
             } else {
-                checkFieldsEquals(result, oldEntity.getClearingOblig(), null, EventLogBuilder.EventDetailsKey.SETTLEMENT_OBLIG, changeComment);
-                checkFieldsEquals(result, oldEntity.getCleared(), null, EventLogBuilder.EventDetailsKey.SETTLED, changeComment);
-                checkFieldsEquals(result, oldEntity.getClearingDate(), null, EventLogBuilder.EventDetailsKey.CLEARING_DATE, changeComment);
-                checkFieldsEquals(result, oldEntity.getCcpCode(), null, EventLogBuilder.EventDetailsKey.CCP_CODE, changeComment);
-                checkFieldsEquals(result, oldEntity.getIntergropuTrans(), null, EventLogBuilder.EventDetailsKey.INTERGROPU_TRANS, changeComment);
+                checkFieldsEquals(result, oldEntity.getClearingOblig(), null, EventLogBuilder.EventDetailsKey.SETTLEMENT_OBLIG);
+                checkFieldsEquals(result, oldEntity.getCleared(), null, EventLogBuilder.EventDetailsKey.SETTLED);
+                checkFieldsEquals(result, oldEntity.getClearingDate(), null, EventLogBuilder.EventDetailsKey.CLEARING_DATE);
+                checkFieldsEquals(result, oldEntity.getCcpCode(), null, EventLogBuilder.EventDetailsKey.CCP_CODE);
+                checkFieldsEquals(result, oldEntity.getIntergropuTrans(), null, EventLogBuilder.EventDetailsKey.INTERGROPU_TRANS);
             }
         } else {
-            checkFieldsEquals(result, oldEntity.getClearingOblig(), newEntity.getClearingOblig(), EventLogBuilder.EventDetailsKey.SETTLEMENT_OBLIG, changeComment);
-            checkFieldsEquals(result, oldEntity.getCleared(), newEntity.getCleared(), EventLogBuilder.EventDetailsKey.SETTLED, changeComment);
-            checkFieldsEquals(result, oldEntity.getClearingDate(), newEntity.getClearingDate(), EventLogBuilder.EventDetailsKey.CLEARING_DATE, changeComment);
-            checkFieldsEquals(result, oldEntity.getCcpCode(), newEntity.getCcpCode(), EventLogBuilder.EventDetailsKey.CCP_CODE, changeComment);
-            checkFieldsEquals(result, oldEntity.getIntergropuTrans(), newEntity.getIntergropuTrans(), EventLogBuilder.EventDetailsKey.INTERGROPU_TRANS, changeComment);
+            checkFieldsEquals(result, oldEntity.getClearingOblig(), newEntity.getClearingOblig(), EventLogBuilder.EventDetailsKey.SETTLEMENT_OBLIG);
+            checkFieldsEquals(result, oldEntity.getCleared(), newEntity.getCleared(), EventLogBuilder.EventDetailsKey.SETTLED);
+            checkFieldsEquals(result, oldEntity.getClearingDate(), newEntity.getClearingDate(), EventLogBuilder.EventDetailsKey.CLEARING_DATE);
+            checkFieldsEquals(result, oldEntity.getCcpCode(), newEntity.getCcpCode(), EventLogBuilder.EventDetailsKey.CCP_CODE);
+            checkFieldsEquals(result, oldEntity.getIntergropuTrans(), newEntity.getIntergropuTrans(), EventLogBuilder.EventDetailsKey.INTERGROPU_TRANS);
         }
     }
 

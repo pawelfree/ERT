@@ -14,30 +14,30 @@ public class HistoryUtils {
 
     protected final static Properties PROPERTIES = PropertyUtils.getProperties(HistoryUtils.class, PROPERTYFILE);
 
-    public static void checkFieldsEquals(List<ChangeLog> result, Object oldField, Object newField, EventLogBuilder.EventDetailsKey nameField, String changeComment) {
+    public static void checkFieldsEquals(List<ChangeLog> result, Object oldField, Object newField, EventLogBuilder.EventDetailsKey nameField) {
         if (EventLogBuilder.fieldsNotEquals(oldField, newField)) {
             if (oldField instanceof Date || newField instanceof Date) {
-                result.add(new ChangeLog(EventLogBuilder.getChangeLogData(nameField, (Date) oldField, (Date) newField, changeComment)));
+                result.add(new ChangeLog(EventLogBuilder.getChangeLogData(nameField, (Date) oldField, (Date) newField)));
             } else if (oldField instanceof BigDecimal || newField instanceof BigDecimal) {
                 BigDecimal bd1 = (BigDecimal) oldField;
                 BigDecimal bd2 = (BigDecimal) newField;
                 if (bd1 == null || bd2 == null) {
-                    result.add(new ChangeLog(EventLogBuilder.getChangeLogData(nameField, oldField, newField, changeComment)));
+                    result.add(new ChangeLog(EventLogBuilder.getChangeLogData(nameField, oldField, newField)));
 
                 } else if (bd1.compareTo(bd2) != 0) {
-                    result.add(new ChangeLog(EventLogBuilder.getChangeLogData(nameField, oldField, newField, changeComment)));
+                    result.add(new ChangeLog(EventLogBuilder.getChangeLogData(nameField, oldField, newField)));
                 }
             } else {
-                result.add(new ChangeLog(EventLogBuilder.getChangeLogData(nameField, oldField, newField, changeComment)));
+                result.add(new ChangeLog(EventLogBuilder.getChangeLogData(nameField, oldField, newField)));
             }
         }
     }
 
-    public static void checkFieldsEqualsMsg(List<ChangeLog> result, Object oldField, Object newField, EventLogBuilder.EventDetailsKey nameField, String changeComment) {
+    public static void checkFieldsEqualsMsg(List<ChangeLog> result, Object oldField, Object newField, EventLogBuilder.EventDetailsKey nameField) {
         if (EventLogBuilder.fieldsNotEquals(oldField, newField)) {
             result.add(new ChangeLog(EventLogBuilder.getChangeLogData(nameField,
                     PropertyUtils.getString(PROPERTIES, (String) oldField),
-                    PropertyUtils.getString(PROPERTIES, (String) newField), changeComment)));
+                    PropertyUtils.getString(PROPERTIES, (String) newField))));
         }
     }
 

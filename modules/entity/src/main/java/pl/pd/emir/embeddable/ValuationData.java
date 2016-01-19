@@ -141,28 +141,28 @@ public class ValuationData implements Serializable {
         //currencyCode=CurrencyCode.ERR;
     }
 
-    public static void checkEntity(List<ChangeLog> result, ValuationData oldEntity, ValuationData newEntity, String changeComment) {
+    public static void checkEntity(List<ChangeLog> result, ValuationData oldEntity, ValuationData newEntity) {
         if (oldEntity == null && newEntity == null) {
             return;
         }
         if (oldEntity == null) {
-            checkFieldsEquals(result, null, newEntity.getAmount(), EventLogBuilder.EventDetailsKey.AMOUNT, changeComment);
-            checkFieldsEquals(result, null, newEntity.getCurrencyCode(), EventLogBuilder.EventDetailsKey.CURRENCY_CODE, changeComment);
-            checkFieldsEquals(result, null, newEntity.getValuationDate(), EventLogBuilder.EventDetailsKey.VALUATION_DATE, changeComment);
-            checkFieldsEquals(result, null, newEntity.getValuationType(), EventLogBuilder.EventDetailsKey.VALUATION_TYPE, changeComment);
-            checkFieldsEquals(result, null, newEntity.getClientAmount(), EventLogBuilder.EventDetailsKey.AMOUNT_CLIENT, changeComment);
+            checkFieldsEquals(result, null, newEntity.getAmount(), EventLogBuilder.EventDetailsKey.AMOUNT);
+            checkFieldsEquals(result, null, newEntity.getCurrencyCode(), EventLogBuilder.EventDetailsKey.CURRENCY_CODE);
+            checkFieldsEquals(result, null, newEntity.getValuationDate(), EventLogBuilder.EventDetailsKey.VALUATION_DATE);
+            checkFieldsEquals(result, null, newEntity.getValuationType(), EventLogBuilder.EventDetailsKey.VALUATION_TYPE);
+            checkFieldsEquals(result, null, newEntity.getClientAmount(), EventLogBuilder.EventDetailsKey.AMOUNT_CLIENT);
         } else if (newEntity == null) {
-            checkFieldsEquals(result, oldEntity.getAmount(), null, EventLogBuilder.EventDetailsKey.AMOUNT, changeComment);
-            checkFieldsEquals(result, oldEntity.getCurrencyCode(), null, EventLogBuilder.EventDetailsKey.CURRENCY_CODE, changeComment);
-            checkFieldsEquals(result, oldEntity.getValuationDate(), null, EventLogBuilder.EventDetailsKey.VALUATION_DATE, changeComment);
-            checkFieldsEquals(result, oldEntity.getValuationType(), null, EventLogBuilder.EventDetailsKey.VALUATION_TYPE, changeComment);
-            checkFieldsEquals(result, oldEntity.getClientAmount(), null, EventLogBuilder.EventDetailsKey.AMOUNT_CLIENT, changeComment);
+            checkFieldsEquals(result, oldEntity.getAmount(), null, EventLogBuilder.EventDetailsKey.AMOUNT);
+            checkFieldsEquals(result, oldEntity.getCurrencyCode(), null, EventLogBuilder.EventDetailsKey.CURRENCY_CODE);
+            checkFieldsEquals(result, oldEntity.getValuationDate(), null, EventLogBuilder.EventDetailsKey.VALUATION_DATE);
+            checkFieldsEquals(result, oldEntity.getValuationType(), null, EventLogBuilder.EventDetailsKey.VALUATION_TYPE);
+            checkFieldsEquals(result, oldEntity.getClientAmount(), null, EventLogBuilder.EventDetailsKey.AMOUNT_CLIENT);
         } else {
-            checkFieldsEquals(result, oldEntity.getAmount(), newEntity.getAmount(), EventLogBuilder.EventDetailsKey.AMOUNT, changeComment);
-            checkFieldsEquals(result, oldEntity.getCurrencyCode(), newEntity.getCurrencyCode(), EventLogBuilder.EventDetailsKey.CURRENCY_CODE, changeComment);
-            checkFieldsEquals(result, oldEntity.getValuationDate(), newEntity.getValuationDate(), EventLogBuilder.EventDetailsKey.VALUATION_DATE, changeComment);
-            checkFieldsEquals(result, oldEntity.getValuationType(), newEntity.getValuationType(), EventLogBuilder.EventDetailsKey.VALUATION_TYPE, changeComment);
-            checkFieldsEquals(result, oldEntity.getClientAmount(), newEntity.getClientAmount(), EventLogBuilder.EventDetailsKey.AMOUNT_CLIENT, changeComment);
+            checkFieldsEquals(result, oldEntity.getAmount(), newEntity.getAmount(), EventLogBuilder.EventDetailsKey.AMOUNT);
+            checkFieldsEquals(result, oldEntity.getCurrencyCode(), newEntity.getCurrencyCode(), EventLogBuilder.EventDetailsKey.CURRENCY_CODE);
+            checkFieldsEquals(result, oldEntity.getValuationDate(), newEntity.getValuationDate(), EventLogBuilder.EventDetailsKey.VALUATION_DATE);
+            checkFieldsEquals(result, oldEntity.getValuationType(), newEntity.getValuationType(), EventLogBuilder.EventDetailsKey.VALUATION_TYPE);
+            checkFieldsEquals(result, oldEntity.getClientAmount(), newEntity.getClientAmount(), EventLogBuilder.EventDetailsKey.AMOUNT_CLIENT);
         }
     }
 

@@ -156,39 +156,39 @@ public class PercentageRateData implements Serializable {
         //EMPTY
     }
 
-    public static void checkEntity(List<ChangeLog> result, PercentageRateData oldEntity, PercentageRateData newEntity, String changeComment) {
+    public static void checkEntity(List<ChangeLog> result, PercentageRateData oldEntity, PercentageRateData newEntity) {
         if (oldEntity == null && newEntity == null) {
             return;
         }
         if (oldEntity == null || newEntity == null) {
             if (oldEntity == null) {
-                checkFieldsEquals(result, null, newEntity.getFixedRateLeg1(), EventLogBuilder.EventDetailsKey.FIXED_RATE_LEG1, changeComment);
-                checkFieldsEquals(result, null, newEntity.getFixedRateLeg2(), EventLogBuilder.EventDetailsKey.FIXED_RATE_LEG2, changeComment);
-                checkFieldsEquals(result, null, newEntity.getFixedRateDayCount(), EventLogBuilder.EventDetailsKey.FIXED_RATE_DAY_COUNT, changeComment);
-                checkFieldsEquals(result, null, newEntity.getFixedPaymentFreq(), EventLogBuilder.EventDetailsKey.FIXED_PAYMENT_FREQ, changeComment);
-                checkFieldsEquals(result, null, newEntity.getFloatPaymentFreq(), EventLogBuilder.EventDetailsKey.FLOAT_PAYMENT_FREQ, changeComment);
-                checkFieldsEquals(result, null, newEntity.getNewPaymentFreq(), EventLogBuilder.EventDetailsKey.NEW_PAYMENT_FREQ, changeComment);
-                checkFieldsEquals(result, null, newEntity.getFloatRateLeg1(), EventLogBuilder.EventDetailsKey.FLOAT_RATE_LEG1, changeComment);
-                checkFieldsEquals(result, null, newEntity.getFloatRateLeg2(), EventLogBuilder.EventDetailsKey.FLOAT_RATE_LEG2, changeComment);
+                checkFieldsEquals(result, null, newEntity.getFixedRateLeg1(), EventLogBuilder.EventDetailsKey.FIXED_RATE_LEG1);
+                checkFieldsEquals(result, null, newEntity.getFixedRateLeg2(), EventLogBuilder.EventDetailsKey.FIXED_RATE_LEG2);
+                checkFieldsEquals(result, null, newEntity.getFixedRateDayCount(), EventLogBuilder.EventDetailsKey.FIXED_RATE_DAY_COUNT);
+                checkFieldsEquals(result, null, newEntity.getFixedPaymentFreq(), EventLogBuilder.EventDetailsKey.FIXED_PAYMENT_FREQ);
+                checkFieldsEquals(result, null, newEntity.getFloatPaymentFreq(), EventLogBuilder.EventDetailsKey.FLOAT_PAYMENT_FREQ);
+                checkFieldsEquals(result, null, newEntity.getNewPaymentFreq(), EventLogBuilder.EventDetailsKey.NEW_PAYMENT_FREQ);
+                checkFieldsEquals(result, null, newEntity.getFloatRateLeg1(), EventLogBuilder.EventDetailsKey.FLOAT_RATE_LEG1);
+                checkFieldsEquals(result, null, newEntity.getFloatRateLeg2(), EventLogBuilder.EventDetailsKey.FLOAT_RATE_LEG2);
             } else {
-                checkFieldsEquals(result, oldEntity.getFixedRateLeg1(), null, EventLogBuilder.EventDetailsKey.FIXED_RATE_LEG1, changeComment);
-                checkFieldsEquals(result, oldEntity.getFixedRateLeg2(), null, EventLogBuilder.EventDetailsKey.FIXED_RATE_LEG2, changeComment);
-                checkFieldsEquals(result, oldEntity.getFixedRateDayCount(), null, EventLogBuilder.EventDetailsKey.FIXED_RATE_DAY_COUNT, changeComment);
-                checkFieldsEquals(result, oldEntity.getFixedPaymentFreq(), null, EventLogBuilder.EventDetailsKey.FIXED_PAYMENT_FREQ, changeComment);
-                checkFieldsEquals(result, oldEntity.getFloatPaymentFreq(), null, EventLogBuilder.EventDetailsKey.FLOAT_PAYMENT_FREQ, changeComment);
-                checkFieldsEquals(result, oldEntity.getNewPaymentFreq(), null, EventLogBuilder.EventDetailsKey.NEW_PAYMENT_FREQ, changeComment);
-                checkFieldsEquals(result, oldEntity.getFloatRateLeg1(), null, EventLogBuilder.EventDetailsKey.FLOAT_RATE_LEG1, changeComment);
-                checkFieldsEquals(result, oldEntity.getFloatRateLeg2(), null, EventLogBuilder.EventDetailsKey.FLOAT_RATE_LEG2, changeComment);
+                checkFieldsEquals(result, oldEntity.getFixedRateLeg1(), null, EventLogBuilder.EventDetailsKey.FIXED_RATE_LEG1);
+                checkFieldsEquals(result, oldEntity.getFixedRateLeg2(), null, EventLogBuilder.EventDetailsKey.FIXED_RATE_LEG2);
+                checkFieldsEquals(result, oldEntity.getFixedRateDayCount(), null, EventLogBuilder.EventDetailsKey.FIXED_RATE_DAY_COUNT);
+                checkFieldsEquals(result, oldEntity.getFixedPaymentFreq(), null, EventLogBuilder.EventDetailsKey.FIXED_PAYMENT_FREQ);
+                checkFieldsEquals(result, oldEntity.getFloatPaymentFreq(), null, EventLogBuilder.EventDetailsKey.FLOAT_PAYMENT_FREQ);
+                checkFieldsEquals(result, oldEntity.getNewPaymentFreq(), null, EventLogBuilder.EventDetailsKey.NEW_PAYMENT_FREQ);
+                checkFieldsEquals(result, oldEntity.getFloatRateLeg1(), null, EventLogBuilder.EventDetailsKey.FLOAT_RATE_LEG1);
+                checkFieldsEquals(result, oldEntity.getFloatRateLeg2(), null, EventLogBuilder.EventDetailsKey.FLOAT_RATE_LEG2);
             }
         } else {
-            checkFieldsEquals(result, oldEntity.getFixedRateLeg1(), newEntity.getFixedRateLeg1(), EventLogBuilder.EventDetailsKey.FIXED_RATE_LEG1, changeComment);
-            checkFieldsEquals(result, oldEntity.getFixedRateLeg2(), newEntity.getFixedRateLeg2(), EventLogBuilder.EventDetailsKey.FIXED_RATE_LEG2, changeComment);
-            checkFieldsEquals(result, oldEntity.getFixedRateDayCount(), newEntity.getFixedRateDayCount(), EventLogBuilder.EventDetailsKey.FIXED_RATE_DAY_COUNT, changeComment);
-            checkFieldsEquals(result, oldEntity.getFixedPaymentFreq(), newEntity.getFixedPaymentFreq(), EventLogBuilder.EventDetailsKey.FIXED_PAYMENT_FREQ, changeComment);
-            checkFieldsEquals(result, oldEntity.getFloatPaymentFreq(), newEntity.getFloatPaymentFreq(), EventLogBuilder.EventDetailsKey.FLOAT_PAYMENT_FREQ, changeComment);
-            checkFieldsEquals(result, oldEntity.getNewPaymentFreq(), newEntity.getNewPaymentFreq(), EventLogBuilder.EventDetailsKey.NEW_PAYMENT_FREQ, changeComment);
-            checkFieldsEquals(result, oldEntity.getFloatRateLeg1(), newEntity.getFloatRateLeg1(), EventLogBuilder.EventDetailsKey.FLOAT_RATE_LEG1, changeComment);
-            checkFieldsEquals(result, oldEntity.getFloatRateLeg2(), newEntity.getFloatRateLeg2(), EventLogBuilder.EventDetailsKey.FLOAT_RATE_LEG2, changeComment);
+            checkFieldsEquals(result, oldEntity.getFixedRateLeg1(), newEntity.getFixedRateLeg1(), EventLogBuilder.EventDetailsKey.FIXED_RATE_LEG1);
+            checkFieldsEquals(result, oldEntity.getFixedRateLeg2(), newEntity.getFixedRateLeg2(), EventLogBuilder.EventDetailsKey.FIXED_RATE_LEG2);
+            checkFieldsEquals(result, oldEntity.getFixedRateDayCount(), newEntity.getFixedRateDayCount(), EventLogBuilder.EventDetailsKey.FIXED_RATE_DAY_COUNT);
+            checkFieldsEquals(result, oldEntity.getFixedPaymentFreq(), newEntity.getFixedPaymentFreq(), EventLogBuilder.EventDetailsKey.FIXED_PAYMENT_FREQ);
+            checkFieldsEquals(result, oldEntity.getFloatPaymentFreq(), newEntity.getFloatPaymentFreq(), EventLogBuilder.EventDetailsKey.FLOAT_PAYMENT_FREQ);
+            checkFieldsEquals(result, oldEntity.getNewPaymentFreq(), newEntity.getNewPaymentFreq(), EventLogBuilder.EventDetailsKey.NEW_PAYMENT_FREQ);
+            checkFieldsEquals(result, oldEntity.getFloatRateLeg1(), newEntity.getFloatRateLeg1(), EventLogBuilder.EventDetailsKey.FLOAT_RATE_LEG1);
+            checkFieldsEquals(result, oldEntity.getFloatRateLeg2(), newEntity.getFloatRateLeg2(), EventLogBuilder.EventDetailsKey.FLOAT_RATE_LEG2);
         }
     }
 

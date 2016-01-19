@@ -71,20 +71,20 @@ public class InstitutionData implements Serializable, Initializable {
         //EMPTY
     }
 
-    public static void checkEntity(List<ChangeLog> result, InstitutionData oldEntity, InstitutionData newEntity, String changeComment) {
+    public static void checkEntity(List<ChangeLog> result, InstitutionData oldEntity, InstitutionData newEntity) {
         if (oldEntity == null && newEntity == null) {
             return;
         }
 
         if (oldEntity == null && newEntity != null) {
-            checkFieldsEquals(result, null, newEntity.getInstitutionId(), EventLogBuilder.EventDetailsKey.INSTITUTION_ID, changeComment);
-            checkFieldsEquals(result, null, newEntity.getInstitutionIdType(), EventLogBuilder.EventDetailsKey.INSTITUTION_ID_TYPE, changeComment);
+            checkFieldsEquals(result, null, newEntity.getInstitutionId(), EventLogBuilder.EventDetailsKey.INSTITUTION_ID);
+            checkFieldsEquals(result, null, newEntity.getInstitutionIdType(), EventLogBuilder.EventDetailsKey.INSTITUTION_ID_TYPE);
         } else if (oldEntity != null && newEntity == null) {
-            checkFieldsEquals(result, oldEntity.getInstitutionId(), null, EventLogBuilder.EventDetailsKey.INSTITUTION_ID, changeComment);
-            checkFieldsEquals(result, oldEntity.getInstitutionIdType(), null, EventLogBuilder.EventDetailsKey.INSTITUTION_ID_TYPE, changeComment);
+            checkFieldsEquals(result, oldEntity.getInstitutionId(), null, EventLogBuilder.EventDetailsKey.INSTITUTION_ID);
+            checkFieldsEquals(result, oldEntity.getInstitutionIdType(), null, EventLogBuilder.EventDetailsKey.INSTITUTION_ID_TYPE);
         } else {
-            checkFieldsEquals(result, oldEntity.getInstitutionId(), newEntity.getInstitutionId(), EventLogBuilder.EventDetailsKey.INSTITUTION_ID, changeComment);
-            checkFieldsEquals(result, oldEntity.getInstitutionIdType(), newEntity.getInstitutionIdType(), EventLogBuilder.EventDetailsKey.INSTITUTION_ID_TYPE, changeComment);
+            checkFieldsEquals(result, oldEntity.getInstitutionId(), newEntity.getInstitutionId(), EventLogBuilder.EventDetailsKey.INSTITUTION_ID);
+            checkFieldsEquals(result, oldEntity.getInstitutionIdType(), newEntity.getInstitutionIdType(), EventLogBuilder.EventDetailsKey.INSTITUTION_ID_TYPE);
         }
     }
 

@@ -126,31 +126,31 @@ public class InstitutionAddress implements Serializable, Initializable {
         //EMPTY
     }
 
-    static void checkEntity(List<ChangeLog> result, InstitutionAddress oldEntity, InstitutionAddress newEntity, String changeComment) {
+    static void checkEntity(List<ChangeLog> result, InstitutionAddress oldEntity, InstitutionAddress newEntity) {
         if (oldEntity == null && newEntity == null) {
             return;
         }
         if (oldEntity == null) {
-            checkFieldsEquals(result, null, newEntity.getBuildingId(), EventLogBuilder.EventDetailsKey.BUILDING_ID, changeComment);
-            checkFieldsEquals(result, null, newEntity.getCity(), EventLogBuilder.EventDetailsKey.CITY, changeComment);
-            checkFieldsEquals(result, null, newEntity.getDetails(), EventLogBuilder.EventDetailsKey.DETAILS, changeComment);
-            checkFieldsEquals(result, null, newEntity.getPostalCode(), EventLogBuilder.EventDetailsKey.POSTAL_CODE, changeComment);
-            checkFieldsEquals(result, null, newEntity.getPremisesId(), EventLogBuilder.EventDetailsKey.PREMISES_ID, changeComment);
-            checkFieldsEquals(result, null, newEntity.getStreetName(), EventLogBuilder.EventDetailsKey.STREET_NAME, changeComment);
+            checkFieldsEquals(result, null, newEntity.getBuildingId(), EventLogBuilder.EventDetailsKey.BUILDING_ID);
+            checkFieldsEquals(result, null, newEntity.getCity(), EventLogBuilder.EventDetailsKey.CITY);
+            checkFieldsEquals(result, null, newEntity.getDetails(), EventLogBuilder.EventDetailsKey.DETAILS);
+            checkFieldsEquals(result, null, newEntity.getPostalCode(), EventLogBuilder.EventDetailsKey.POSTAL_CODE);
+            checkFieldsEquals(result, null, newEntity.getPremisesId(), EventLogBuilder.EventDetailsKey.PREMISES_ID);
+            checkFieldsEquals(result, null, newEntity.getStreetName(), EventLogBuilder.EventDetailsKey.STREET_NAME);
         } else if (newEntity == null) {
-            checkFieldsEquals(result, oldEntity.getBuildingId(), null, EventLogBuilder.EventDetailsKey.BUILDING_ID, changeComment);
-            checkFieldsEquals(result, oldEntity.getCity(), null, EventLogBuilder.EventDetailsKey.CITY, changeComment);
-            checkFieldsEquals(result, oldEntity.getDetails(), null, EventLogBuilder.EventDetailsKey.DETAILS, changeComment);
-            checkFieldsEquals(result, oldEntity.getPostalCode(), null, EventLogBuilder.EventDetailsKey.POSTAL_CODE, changeComment);
-            checkFieldsEquals(result, oldEntity.getPremisesId(), null, EventLogBuilder.EventDetailsKey.PREMISES_ID, changeComment);
-            checkFieldsEquals(result, oldEntity.getStreetName(), null, EventLogBuilder.EventDetailsKey.STREET_NAME, changeComment);
+            checkFieldsEquals(result, oldEntity.getBuildingId(), null, EventLogBuilder.EventDetailsKey.BUILDING_ID);
+            checkFieldsEquals(result, oldEntity.getCity(), null, EventLogBuilder.EventDetailsKey.CITY);
+            checkFieldsEquals(result, oldEntity.getDetails(), null, EventLogBuilder.EventDetailsKey.DETAILS);
+            checkFieldsEquals(result, oldEntity.getPostalCode(), null, EventLogBuilder.EventDetailsKey.POSTAL_CODE);
+            checkFieldsEquals(result, oldEntity.getPremisesId(), null, EventLogBuilder.EventDetailsKey.PREMISES_ID);
+            checkFieldsEquals(result, oldEntity.getStreetName(), null, EventLogBuilder.EventDetailsKey.STREET_NAME);
         } else {
-            checkFieldsEquals(result, oldEntity.getBuildingId(), newEntity.getBuildingId(), EventLogBuilder.EventDetailsKey.BUILDING_ID, changeComment);
-            checkFieldsEquals(result, oldEntity.getCity(), newEntity.getCity(), EventLogBuilder.EventDetailsKey.CITY, changeComment);
-            checkFieldsEquals(result, oldEntity.getDetails(), newEntity.getDetails(), EventLogBuilder.EventDetailsKey.DETAILS, changeComment);
-            checkFieldsEquals(result, oldEntity.getPostalCode(), newEntity.getPostalCode(), EventLogBuilder.EventDetailsKey.POSTAL_CODE, changeComment);
-            checkFieldsEquals(result, oldEntity.getPremisesId(), newEntity.getPremisesId(), EventLogBuilder.EventDetailsKey.PREMISES_ID, changeComment);
-            checkFieldsEquals(result, oldEntity.getStreetName(), newEntity.getStreetName(), EventLogBuilder.EventDetailsKey.STREET_NAME, changeComment);
+            checkFieldsEquals(result, oldEntity.getBuildingId(), newEntity.getBuildingId(), EventLogBuilder.EventDetailsKey.BUILDING_ID);
+            checkFieldsEquals(result, oldEntity.getCity(), newEntity.getCity(), EventLogBuilder.EventDetailsKey.CITY);
+            checkFieldsEquals(result, oldEntity.getDetails(), newEntity.getDetails(), EventLogBuilder.EventDetailsKey.DETAILS);
+            checkFieldsEquals(result, oldEntity.getPostalCode(), newEntity.getPostalCode(), EventLogBuilder.EventDetailsKey.POSTAL_CODE);
+            checkFieldsEquals(result, oldEntity.getPremisesId(), newEntity.getPremisesId(), EventLogBuilder.EventDetailsKey.PREMISES_ID);
+            checkFieldsEquals(result, oldEntity.getStreetName(), newEntity.getStreetName(), EventLogBuilder.EventDetailsKey.STREET_NAME);
         }
     }
 

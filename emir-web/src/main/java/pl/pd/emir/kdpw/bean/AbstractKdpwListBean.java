@@ -45,8 +45,7 @@ public abstract class AbstractKdpwListBean<T extends Selectable<Long>, M extends
 
         NEW("transaction.kdpw.message.confirmation"),
         CANCEL_TRANSACTION("transaction.kdpw.message.confirmation.cancelTransaction"),
-        CANCEL_MUTATION("transaction.kdpw.message.confirmation.cancelMutation"),
-        MODIFY("transaction.kdpw.message.confirmation.bankChange");
+        CANCEL_MUTATION("transaction.kdpw.message.confirmation.cancelMutation");
 
         private final String confirmMsg;
 
@@ -74,13 +73,11 @@ public abstract class AbstractKdpwListBean<T extends Selectable<Long>, M extends
     }
 
     protected void defineDefaultFilters() {
-        LOGGER.debug("+++ defineDefaultFilters +++");
         // zakres dostepnych komunikatów
         criteria.setTransactionDateTo(DateUtils.getPreviousWorkingDayWithFreeDays(new Date()));
     }
 
     protected final void defineDefaultDateFilters() {
-        LOGGER.debug("+++ defineDefaultDateFilters +++");
         defineDefaultDateInfo();
         if (Objects.nonNull(dateFrom)) {
             criteria.setTransactionDate(dateFrom);
@@ -96,7 +93,6 @@ public abstract class AbstractKdpwListBean<T extends Selectable<Long>, M extends
     }
 
     protected final void defineDefaultSelectAll() {
-        LOGGER.debug("+++ defineDefaultSelectAll +++");
         // domyslne zaznaczenie 'SelectAll'
         final long recordCount = getService().getRecordCount(criteria);
         recordCounter = NumberUtils.safeLongToInt(recordCount);
@@ -114,7 +110,6 @@ public abstract class AbstractKdpwListBean<T extends Selectable<Long>, M extends
     }
 
     protected void initDefaultCriteria() {
-        LOGGER.debug("+++ initDefaultCriteria +++");
         criteria.setNeww(true);
         criteria.setOngoing(true);
         criteria.setCompleted(true);
@@ -124,7 +119,6 @@ public abstract class AbstractKdpwListBean<T extends Selectable<Long>, M extends
 
     @Override
     public void setFirstPage() {
-        LOGGER.debug("+++ setFirstPage +++");
         super.setFirstPage();
         super.selectAllListener();
     }
@@ -137,11 +131,6 @@ public abstract class AbstractKdpwListBean<T extends Selectable<Long>, M extends
     public final void createNewMode() {
         actionMode = ActionMode.NEW;
         showDialog("registerConfirmDialog", "noSelectedDialog");
-    }
-
-    public final void modifyMode() {
-        actionMode = ActionMode.MODIFY;
-        showDialog("bankChangeConfirmDialog", "noSelectedDialog");
     }
 
     public final void cancelTransactionMode() {

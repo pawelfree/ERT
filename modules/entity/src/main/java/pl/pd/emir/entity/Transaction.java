@@ -467,9 +467,6 @@ public class Transaction extends Extract implements Logable<Long>, Selectable<Lo
     @Column(name = "BACKLOADING")
     private Boolean backloading;
 
-    @Transient
-    private transient String changeComment;
-
     public Transaction() {
         super();
         initFields();
@@ -647,48 +644,43 @@ public class Transaction extends Extract implements Logable<Long>, Selectable<Lo
     @Override
     public List<ChangeLog> getChangeLogs(Transaction newEntity) {
         List<ChangeLog> result = new ArrayList<>();
-        if (newEntity.client != null) {
-            newEntity.getClient().setChangeComment(newEntity.getChangeComment());
-        }
-        if (newEntity.client2 != null) {
-            newEntity.getClient2().setChangeComment(newEntity.getChangeComment());
-        }
+
         //złożone pola
         Client.checkEntity(result, client, newEntity.client);
         Client.checkEntity(result, client2, newEntity.client2);
-        BusinessEntityData.checkEntity(result, client2Data, newEntity.client2Data, newEntity.getChangeComment(), true);
-        BusinessEntityData.checkEntity(result, clientData, newEntity.clientData, newEntity.getChangeComment(), false);
-        ContractDataDetailed.checkEntity(result, contractDetailedData, newEntity.contractDetailedData, newEntity.getChangeComment());
-        TransactionDetails.checkEntity(result, transactionDetails, newEntity.transactionDetails, newEntity.getChangeComment());
-        RiskReduce.checkEntity(result, riskReduce, newEntity.riskReduce, newEntity.getChangeComment());
-        TransactionClearing.checkEntity(result, transactionClearing, newEntity.transactionClearing, newEntity.getChangeComment());
-        PercentageRateData.checkEntity(result, percentageRateData, newEntity.percentageRateData, newEntity.getChangeComment());
-        CurrencyTradeData.checkEntity(result, currencyTradeData, newEntity.currencyTradeData, newEntity.getChangeComment());
-        CommodityTradeData.checkEntity(result, commodityTradeData, newEntity.commodityTradeData, newEntity.getChangeComment());
-        Protection.checkEntity(result, protection, newEntity.protection, newEntity.getChangeComment());
-        Valuation.checkEntity(result, valuation, newEntity.valuation, newEntity.getChangeComment());
+        BusinessEntityData.checkEntity(result, client2Data, newEntity.client2Data, true);
+        BusinessEntityData.checkEntity(result, clientData, newEntity.clientData, false);
+        ContractDataDetailed.checkEntity(result, contractDetailedData, newEntity.contractDetailedData);
+        TransactionDetails.checkEntity(result, transactionDetails, newEntity.transactionDetails);
+        RiskReduce.checkEntity(result, riskReduce, newEntity.riskReduce);
+        TransactionClearing.checkEntity(result, transactionClearing, newEntity.transactionClearing);
+        PercentageRateData.checkEntity(result, percentageRateData, newEntity.percentageRateData);
+        CurrencyTradeData.checkEntity(result, currencyTradeData, newEntity.currencyTradeData);
+        CommodityTradeData.checkEntity(result, commodityTradeData, newEntity.commodityTradeData);
+        Protection.checkEntity(result, protection, newEntity.protection);
+        Valuation.checkEntity(result, valuation, newEntity.valuation);
         //pols proste
-        checkFieldsEquals(result, originalId, newEntity.originalId, EventLogBuilder.EventDetailsKey.ORIGINAL_ID, newEntity.getChangeComment());
-        checkFieldsEquals(result, originalClientId, newEntity.originalClientId, EventLogBuilder.EventDetailsKey.ORIGINAL_CLIENT_ID, newEntity.getChangeComment());
-        checkFieldsEquals(result, originalClientId2, newEntity.originalClientId2, EventLogBuilder.EventDetailsKey.ORIGINAL_CLIENT_ID2, newEntity.getChangeComment());        
-        checkFieldsEquals(result, transactionParty, newEntity.transactionParty, EventLogBuilder.EventDetailsKey.TRANSACTION_PARTY, newEntity.getChangeComment());
+        checkFieldsEquals(result, originalId, newEntity.originalId, EventLogBuilder.EventDetailsKey.ORIGINAL_ID);
+        checkFieldsEquals(result, originalClientId, newEntity.originalClientId, EventLogBuilder.EventDetailsKey.ORIGINAL_CLIENT_ID);
+        checkFieldsEquals(result, originalClientId2, newEntity.originalClientId2, EventLogBuilder.EventDetailsKey.ORIGINAL_CLIENT_ID2);        
+        checkFieldsEquals(result, transactionParty, newEntity.transactionParty, EventLogBuilder.EventDetailsKey.TRANSACTION_PARTY);
         if (Objects.nonNull(confirmed) && Objects.nonNull(newEntity.confirmed)) {
-            checkFieldsEqualsMsg(result, confirmed.getMsgKey(), newEntity.confirmed.getMsgKey(), EventLogBuilder.EventDetailsKey.CONFIRMED, newEntity.getChangeComment());
+            checkFieldsEqualsMsg(result, confirmed.getMsgKey(), newEntity.confirmed.getMsgKey(), EventLogBuilder.EventDetailsKey.CONFIRMED);
         }
-        checkFieldsEquals(result, originalStatus, newEntity.originalStatus, EventLogBuilder.EventDetailsKey.ORIGINAL_STATUS, newEntity.getChangeComment());
+        checkFieldsEquals(result, originalStatus, newEntity.originalStatus, EventLogBuilder.EventDetailsKey.ORIGINAL_STATUS);
         if (Objects.nonNull(dataType) && Objects.nonNull(newEntity.dataType)) {
-            checkFieldsEqualsMsg(result, dataType.getMsgKey(), newEntity.dataType.getMsgKey(), EventLogBuilder.EventDetailsKey.DATA_TYPE, newEntity.getChangeComment());
+            checkFieldsEqualsMsg(result, dataType.getMsgKey(), newEntity.dataType.getMsgKey(), EventLogBuilder.EventDetailsKey.DATA_TYPE);
         }
         //pola dataset
-        checkFieldsEquals(result, dateSupply, newEntity.dateSupply, EventLogBuilder.EventDetailsKey.DATE_SUPPLY, newEntity.getChangeComment());
-        checkFieldsEquals(result, transactionDate, newEntity.transactionDate, EventLogBuilder.EventDetailsKey.TRANSACTION_DATE, newEntity.getChangeComment());
+        checkFieldsEquals(result, dateSupply, newEntity.dateSupply, EventLogBuilder.EventDetailsKey.DATE_SUPPLY);
+        checkFieldsEquals(result, transactionDate, newEntity.transactionDate, EventLogBuilder.EventDetailsKey.TRANSACTION_DATE);
         if (Objects.nonNull(processingStatus) && Objects.nonNull(newEntity.processingStatus)) {
-            checkFieldsEqualsMsg(result, processingStatus.getMsgKey(), newEntity.processingStatus.getMsgKey(), EventLogBuilder.EventDetailsKey.PROCESSING_STATUS, newEntity.getChangeComment());
+            checkFieldsEqualsMsg(result, processingStatus.getMsgKey(), newEntity.processingStatus.getMsgKey(), EventLogBuilder.EventDetailsKey.PROCESSING_STATUS);
         }
         if (Objects.nonNull(getValidationStatus()) && Objects.nonNull(newEntity.getValidationStatus())) {
-            checkFieldsEqualsMsg(result, getValidationStatus().getMsgKey(), newEntity.getValidationStatus().getMsgKey(), EventLogBuilder.EventDetailsKey.VALIDATION_STATUS, newEntity.getChangeComment());
+            checkFieldsEqualsMsg(result, getValidationStatus().getMsgKey(), newEntity.getValidationStatus().getMsgKey(), EventLogBuilder.EventDetailsKey.VALIDATION_STATUS);
         }
-        checkFieldsEquals(result, backloading, newEntity.backloading, EventLogBuilder.EventDetailsKey.BACKLOADING, newEntity.getChangeComment());
+        checkFieldsEquals(result, backloading, newEntity.backloading, EventLogBuilder.EventDetailsKey.BACKLOADING);
 
         return result;
     }
@@ -1113,14 +1105,6 @@ public class Transaction extends Extract implements Logable<Long>, Selectable<Lo
 
     public void setBackloading(Boolean backloading) {
         this.backloading = backloading;
-    }
-
-    public String getChangeComment() {
-        return changeComment;
-    }
-
-    public void setChangeComment(String changeComment) {
-        this.changeComment = changeComment;
     }
 
     @Override

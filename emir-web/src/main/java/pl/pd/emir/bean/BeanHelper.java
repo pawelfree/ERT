@@ -234,7 +234,4 @@ public final class BeanHelper implements Serializable {
         return typ == FormType.View && (processingStatus == ProcessingStatus.NEW || processingStatus == ProcessingStatus.REJECTED || validationStatus == ValidationStatus.INCOMPLETE);
     }
 
-    public static String getLogExtendedInformationValidationStatus(String status) {
-        return getMessage("eventLog.extendedInformation.validationStatus", status);
-    }
 }

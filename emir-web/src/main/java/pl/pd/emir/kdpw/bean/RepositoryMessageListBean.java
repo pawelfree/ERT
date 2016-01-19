@@ -168,7 +168,7 @@ public class RepositoryMessageListBean extends AbstractListBean<MessageLog, Mess
     }
 
     public MessageType[] getMessageTypes() {
-        return new MessageType[]{MessageType.TRANSACTION, MessageType.BANK,
+        return new MessageType[]{MessageType.TRANSACTION,
             MessageType.TRANSACTION_RESPONSE, MessageType.DATA_SET_RESPONSE, MessageType.RECONCILIATION};
     }
 

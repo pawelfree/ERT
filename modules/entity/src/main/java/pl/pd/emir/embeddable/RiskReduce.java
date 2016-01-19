@@ -59,21 +59,21 @@ public class RiskReduce implements Serializable {
         this.confirmationType = confirmationType;
     }
 
-    public static void checkEntity(List<ChangeLog> result, RiskReduce oldEntity, RiskReduce newEntity, String changeComment) {
+    public static void checkEntity(List<ChangeLog> result, RiskReduce oldEntity, RiskReduce newEntity) {
         if (oldEntity == null && newEntity == null) {
             return;
         }
         if (oldEntity == null || newEntity == null) {
             if (oldEntity == null) {
-                checkFieldsEquals(result, null, newEntity.getConfirmationDate(), EventLogBuilder.EventDetailsKey.CONFIRMATION_DATE, changeComment);
-                checkFieldsEquals(result, null, newEntity.getConfirmationType(), EventLogBuilder.EventDetailsKey.CONFIRMATION_TYPE, changeComment);
+                checkFieldsEquals(result, null, newEntity.getConfirmationDate(), EventLogBuilder.EventDetailsKey.CONFIRMATION_DATE);
+                checkFieldsEquals(result, null, newEntity.getConfirmationType(), EventLogBuilder.EventDetailsKey.CONFIRMATION_TYPE);
             } else {
-                checkFieldsEquals(result, oldEntity.getConfirmationDate(), null, EventLogBuilder.EventDetailsKey.CONFIRMATION_DATE, changeComment);
-                checkFieldsEquals(result, oldEntity.getConfirmationType(), null, EventLogBuilder.EventDetailsKey.CONFIRMATION_TYPE, changeComment);
+                checkFieldsEquals(result, oldEntity.getConfirmationDate(), null, EventLogBuilder.EventDetailsKey.CONFIRMATION_DATE);
+                checkFieldsEquals(result, oldEntity.getConfirmationType(), null, EventLogBuilder.EventDetailsKey.CONFIRMATION_TYPE);
             }
         } else {
-            checkFieldsEquals(result, oldEntity.getConfirmationDate(), newEntity.getConfirmationDate(), EventLogBuilder.EventDetailsKey.CONFIRMATION_DATE, changeComment);
-            checkFieldsEquals(result, oldEntity.getConfirmationType(), newEntity.getConfirmationType(), EventLogBuilder.EventDetailsKey.CONFIRMATION_TYPE, changeComment);
+            checkFieldsEquals(result, oldEntity.getConfirmationDate(), newEntity.getConfirmationDate(), EventLogBuilder.EventDetailsKey.CONFIRMATION_DATE);
+            checkFieldsEquals(result, oldEntity.getConfirmationType(), newEntity.getConfirmationType(), EventLogBuilder.EventDetailsKey.CONFIRMATION_TYPE);
         }
     }
 

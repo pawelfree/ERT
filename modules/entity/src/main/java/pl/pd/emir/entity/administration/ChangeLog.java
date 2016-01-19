@@ -16,9 +16,6 @@ public class ChangeLog implements Serializable {
     @Column(name = "NEW_VALUE", length = 512)
     private String newValue;
 
-    @Column(name = "CHANGE_COMMENT", length = 512)
-    private String changeComment;
-
     public ChangeLog() {
         super();
     }
@@ -35,7 +32,6 @@ public class ChangeLog implements Serializable {
         this.fieldName = modificationData[0];
         this.oldValue = modificationData[1];
         this.newValue = modificationData[2];
-        this.changeComment = modificationData.length == 4 ? modificationData[3] : null;
     }
 
     public String getFieldName() {
@@ -62,11 +58,4 @@ public class ChangeLog implements Serializable {
         this.newValue = newValue;
     }
 
-    public String getChangeComment() {
-        return changeComment;
-    }
-
-    public void setChangeComment(String changeComment) {
-        this.changeComment = changeComment;
-    }
 }

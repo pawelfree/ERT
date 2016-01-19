@@ -204,46 +204,46 @@ public class BusinessEntityData implements Serializable {
         //EMPTY
     }
 
-    public static void checkEntity(List<ChangeLog> result, BusinessEntityData oldEntity, BusinessEntityData newEntity, String changeComment, Boolean isBank) {
+    public static void checkEntity(List<ChangeLog> result, BusinessEntityData oldEntity, BusinessEntityData newEntity, Boolean isBank) {
         if (oldEntity == null && newEntity == null) {
             return;
         }
         if (oldEntity == null) {
-            checkFieldsEquals(result, null, newEntity.getIdCode(), isBank ? EventLogBuilder.EventDetailsKey.B_ID_CODE : EventLogBuilder.EventDetailsKey.C_ID_CODE, changeComment);
-            checkFieldsEquals(result, null, newEntity.getIdCodeType(), isBank ? EventLogBuilder.EventDetailsKey.B_ID_CODE_TYPE : EventLogBuilder.EventDetailsKey.C_ID_CODE_TYPE, changeComment);
-            checkFieldsEquals(result, null, newEntity.getMemberId(), isBank ? EventLogBuilder.EventDetailsKey.B_MEMBER_ID : EventLogBuilder.EventDetailsKey.C_MEMBER_ID, changeComment);
-            checkFieldsEquals(result, null, newEntity.getMemberIdType(), isBank ? EventLogBuilder.EventDetailsKey.B_MEMBER_ID_TYPE : EventLogBuilder.EventDetailsKey.C_MEMBER_ID_TYPE, changeComment);
-            checkFieldsEquals(result, null, newEntity.getSettlingAccout(), EventLogBuilder.EventDetailsKey.SETTLING_ACCOUT, changeComment);
-            checkFieldsEquals(result, null, newEntity.getBeneficiaryCode(), isBank ? EventLogBuilder.EventDetailsKey.B_BENEFICIARY_CODE : EventLogBuilder.EventDetailsKey.C_BENEFICIARY_CODE, changeComment);
-            checkFieldsEquals(result, null, newEntity.getBeneficiaryCodeType(), isBank ? EventLogBuilder.EventDetailsKey.B_BENEFICIARY_CODE_TYPE : EventLogBuilder.EventDetailsKey.C_BENEFICIARY_CODE_TYPE, changeComment);
-            checkFieldsEquals(result, null, newEntity.getTransactionType(), EventLogBuilder.EventDetailsKey.TRANSACTION_TYPE, changeComment);
-            checkFieldsEquals(result, null, newEntity.getCommercialActity(), EventLogBuilder.EventDetailsKey.COMMERCIAL_ACTITY, changeComment);
-            checkFieldsEquals(result, null, newEntity.getSettlementThreshold(), EventLogBuilder.EventDetailsKey.SETTLEMENT_THRESHOLD, changeComment);
-            checkFieldsEquals(result, null, newEntity.getCommWalletCode(), EventLogBuilder.EventDetailsKey.COMM_WALLET_CODE, changeComment);
+            checkFieldsEquals(result, null, newEntity.getIdCode(), isBank ? EventLogBuilder.EventDetailsKey.B_ID_CODE : EventLogBuilder.EventDetailsKey.C_ID_CODE);
+            checkFieldsEquals(result, null, newEntity.getIdCodeType(), isBank ? EventLogBuilder.EventDetailsKey.B_ID_CODE_TYPE : EventLogBuilder.EventDetailsKey.C_ID_CODE_TYPE);
+            checkFieldsEquals(result, null, newEntity.getMemberId(), isBank ? EventLogBuilder.EventDetailsKey.B_MEMBER_ID : EventLogBuilder.EventDetailsKey.C_MEMBER_ID);
+            checkFieldsEquals(result, null, newEntity.getMemberIdType(), isBank ? EventLogBuilder.EventDetailsKey.B_MEMBER_ID_TYPE : EventLogBuilder.EventDetailsKey.C_MEMBER_ID_TYPE);
+            checkFieldsEquals(result, null, newEntity.getSettlingAccout(), EventLogBuilder.EventDetailsKey.SETTLING_ACCOUT);
+            checkFieldsEquals(result, null, newEntity.getBeneficiaryCode(), isBank ? EventLogBuilder.EventDetailsKey.B_BENEFICIARY_CODE : EventLogBuilder.EventDetailsKey.C_BENEFICIARY_CODE);
+            checkFieldsEquals(result, null, newEntity.getBeneficiaryCodeType(), isBank ? EventLogBuilder.EventDetailsKey.B_BENEFICIARY_CODE_TYPE : EventLogBuilder.EventDetailsKey.C_BENEFICIARY_CODE_TYPE);
+            checkFieldsEquals(result, null, newEntity.getTransactionType(), EventLogBuilder.EventDetailsKey.TRANSACTION_TYPE);
+            checkFieldsEquals(result, null, newEntity.getCommercialActity(), EventLogBuilder.EventDetailsKey.COMMERCIAL_ACTITY);
+            checkFieldsEquals(result, null, newEntity.getSettlementThreshold(), EventLogBuilder.EventDetailsKey.SETTLEMENT_THRESHOLD);
+            checkFieldsEquals(result, null, newEntity.getCommWalletCode(), EventLogBuilder.EventDetailsKey.COMM_WALLET_CODE);
         } else if (newEntity == null) {
-            checkFieldsEquals(result, oldEntity.getIdCode(), null, isBank ? EventLogBuilder.EventDetailsKey.B_ID_CODE : EventLogBuilder.EventDetailsKey.C_ID_CODE, changeComment);
-            checkFieldsEquals(result, oldEntity.getIdCodeType(), null, isBank ? EventLogBuilder.EventDetailsKey.B_ID_CODE_TYPE : EventLogBuilder.EventDetailsKey.C_ID_CODE_TYPE, changeComment);
-            checkFieldsEquals(result, oldEntity.getMemberId(), null, isBank ? EventLogBuilder.EventDetailsKey.B_MEMBER_ID : EventLogBuilder.EventDetailsKey.C_MEMBER_ID, changeComment);
-            checkFieldsEquals(result, oldEntity.getMemberIdType(), null, isBank ? EventLogBuilder.EventDetailsKey.B_MEMBER_ID_TYPE : EventLogBuilder.EventDetailsKey.C_MEMBER_ID_TYPE, changeComment);
-            checkFieldsEquals(result, oldEntity.getSettlingAccout(), null, EventLogBuilder.EventDetailsKey.SETTLING_ACCOUT, changeComment);
-            checkFieldsEquals(result, oldEntity.getBeneficiaryCode(), null, isBank ? EventLogBuilder.EventDetailsKey.B_BENEFICIARY_CODE : EventLogBuilder.EventDetailsKey.C_BENEFICIARY_CODE, changeComment);
-            checkFieldsEquals(result, oldEntity.getBeneficiaryCodeType(), null, isBank ? EventLogBuilder.EventDetailsKey.B_BENEFICIARY_CODE_TYPE : EventLogBuilder.EventDetailsKey.C_BENEFICIARY_CODE_TYPE, changeComment);
-            checkFieldsEquals(result, oldEntity.getTransactionType(), null, EventLogBuilder.EventDetailsKey.TRANSACTION_TYPE, changeComment);
-            checkFieldsEquals(result, oldEntity.getCommercialActity(), null, EventLogBuilder.EventDetailsKey.COMMERCIAL_ACTITY, changeComment);
-            checkFieldsEquals(result, oldEntity.getSettlementThreshold(), null, EventLogBuilder.EventDetailsKey.SETTLEMENT_THRESHOLD, changeComment);
-            checkFieldsEquals(result, oldEntity.getCommWalletCode(), null, EventLogBuilder.EventDetailsKey.COMM_WALLET_CODE, changeComment);
+            checkFieldsEquals(result, oldEntity.getIdCode(), null, isBank ? EventLogBuilder.EventDetailsKey.B_ID_CODE : EventLogBuilder.EventDetailsKey.C_ID_CODE);
+            checkFieldsEquals(result, oldEntity.getIdCodeType(), null, isBank ? EventLogBuilder.EventDetailsKey.B_ID_CODE_TYPE : EventLogBuilder.EventDetailsKey.C_ID_CODE_TYPE);
+            checkFieldsEquals(result, oldEntity.getMemberId(), null, isBank ? EventLogBuilder.EventDetailsKey.B_MEMBER_ID : EventLogBuilder.EventDetailsKey.C_MEMBER_ID);
+            checkFieldsEquals(result, oldEntity.getMemberIdType(), null, isBank ? EventLogBuilder.EventDetailsKey.B_MEMBER_ID_TYPE : EventLogBuilder.EventDetailsKey.C_MEMBER_ID_TYPE);
+            checkFieldsEquals(result, oldEntity.getSettlingAccout(), null, EventLogBuilder.EventDetailsKey.SETTLING_ACCOUT);
+            checkFieldsEquals(result, oldEntity.getBeneficiaryCode(), null, isBank ? EventLogBuilder.EventDetailsKey.B_BENEFICIARY_CODE : EventLogBuilder.EventDetailsKey.C_BENEFICIARY_CODE);
+            checkFieldsEquals(result, oldEntity.getBeneficiaryCodeType(), null, isBank ? EventLogBuilder.EventDetailsKey.B_BENEFICIARY_CODE_TYPE : EventLogBuilder.EventDetailsKey.C_BENEFICIARY_CODE_TYPE);
+            checkFieldsEquals(result, oldEntity.getTransactionType(), null, EventLogBuilder.EventDetailsKey.TRANSACTION_TYPE);
+            checkFieldsEquals(result, oldEntity.getCommercialActity(), null, EventLogBuilder.EventDetailsKey.COMMERCIAL_ACTITY);
+            checkFieldsEquals(result, oldEntity.getSettlementThreshold(), null, EventLogBuilder.EventDetailsKey.SETTLEMENT_THRESHOLD);
+            checkFieldsEquals(result, oldEntity.getCommWalletCode(), null, EventLogBuilder.EventDetailsKey.COMM_WALLET_CODE);
         } else {
-            checkFieldsEquals(result, oldEntity.getIdCode(), newEntity.getIdCode(), isBank ? EventLogBuilder.EventDetailsKey.B_ID_CODE : EventLogBuilder.EventDetailsKey.C_ID_CODE, changeComment);
-            checkFieldsEquals(result, oldEntity.getIdCodeType(), newEntity.getIdCodeType(), isBank ? EventLogBuilder.EventDetailsKey.B_ID_CODE_TYPE : EventLogBuilder.EventDetailsKey.C_ID_CODE_TYPE, changeComment);
-            checkFieldsEquals(result, oldEntity.getMemberId(), newEntity.getMemberId(), isBank ? EventLogBuilder.EventDetailsKey.B_MEMBER_ID : EventLogBuilder.EventDetailsKey.C_MEMBER_ID, changeComment);
-            checkFieldsEquals(result, oldEntity.getMemberIdType(), newEntity.getMemberIdType(), isBank ? EventLogBuilder.EventDetailsKey.B_MEMBER_ID_TYPE : EventLogBuilder.EventDetailsKey.C_MEMBER_ID_TYPE, changeComment);
-            checkFieldsEquals(result, oldEntity.getSettlingAccout(), newEntity.getSettlingAccout(), EventLogBuilder.EventDetailsKey.SETTLING_ACCOUT, changeComment);
-            checkFieldsEquals(result, oldEntity.getBeneficiaryCode(), newEntity.getBeneficiaryCode(), isBank ? EventLogBuilder.EventDetailsKey.B_BENEFICIARY_CODE : EventLogBuilder.EventDetailsKey.C_BENEFICIARY_CODE, changeComment);
-            checkFieldsEquals(result, oldEntity.getBeneficiaryCodeType(), newEntity.getBeneficiaryCodeType(), isBank ? EventLogBuilder.EventDetailsKey.B_BENEFICIARY_CODE_TYPE : EventLogBuilder.EventDetailsKey.C_BENEFICIARY_CODE_TYPE, changeComment);
-            checkFieldsEquals(result, oldEntity.getTransactionType(), newEntity.getTransactionType(), EventLogBuilder.EventDetailsKey.TRANSACTION_TYPE, changeComment);
-            checkFieldsEquals(result, oldEntity.getCommercialActity(), newEntity.getCommercialActity(), EventLogBuilder.EventDetailsKey.COMMERCIAL_ACTITY, changeComment);
-            checkFieldsEquals(result, oldEntity.getSettlementThreshold(), newEntity.getSettlementThreshold(), EventLogBuilder.EventDetailsKey.SETTLEMENT_THRESHOLD, changeComment);
-            checkFieldsEquals(result, oldEntity.getCommWalletCode(), newEntity.getCommWalletCode(), EventLogBuilder.EventDetailsKey.COMM_WALLET_CODE, changeComment);
+            checkFieldsEquals(result, oldEntity.getIdCode(), newEntity.getIdCode(), isBank ? EventLogBuilder.EventDetailsKey.B_ID_CODE : EventLogBuilder.EventDetailsKey.C_ID_CODE);
+            checkFieldsEquals(result, oldEntity.getIdCodeType(), newEntity.getIdCodeType(), isBank ? EventLogBuilder.EventDetailsKey.B_ID_CODE_TYPE : EventLogBuilder.EventDetailsKey.C_ID_CODE_TYPE);
+            checkFieldsEquals(result, oldEntity.getMemberId(), newEntity.getMemberId(), isBank ? EventLogBuilder.EventDetailsKey.B_MEMBER_ID : EventLogBuilder.EventDetailsKey.C_MEMBER_ID);
+            checkFieldsEquals(result, oldEntity.getMemberIdType(), newEntity.getMemberIdType(), isBank ? EventLogBuilder.EventDetailsKey.B_MEMBER_ID_TYPE : EventLogBuilder.EventDetailsKey.C_MEMBER_ID_TYPE);
+            checkFieldsEquals(result, oldEntity.getSettlingAccout(), newEntity.getSettlingAccout(), EventLogBuilder.EventDetailsKey.SETTLING_ACCOUT);
+            checkFieldsEquals(result, oldEntity.getBeneficiaryCode(), newEntity.getBeneficiaryCode(), isBank ? EventLogBuilder.EventDetailsKey.B_BENEFICIARY_CODE : EventLogBuilder.EventDetailsKey.C_BENEFICIARY_CODE);
+            checkFieldsEquals(result, oldEntity.getBeneficiaryCodeType(), newEntity.getBeneficiaryCodeType(), isBank ? EventLogBuilder.EventDetailsKey.B_BENEFICIARY_CODE_TYPE : EventLogBuilder.EventDetailsKey.C_BENEFICIARY_CODE_TYPE);
+            checkFieldsEquals(result, oldEntity.getTransactionType(), newEntity.getTransactionType(), EventLogBuilder.EventDetailsKey.TRANSACTION_TYPE);
+            checkFieldsEquals(result, oldEntity.getCommercialActity(), newEntity.getCommercialActity(), EventLogBuilder.EventDetailsKey.COMMERCIAL_ACTITY);
+            checkFieldsEquals(result, oldEntity.getSettlementThreshold(), newEntity.getSettlementThreshold(), EventLogBuilder.EventDetailsKey.SETTLEMENT_THRESHOLD);
+            checkFieldsEquals(result, oldEntity.getCommWalletCode(), newEntity.getCommWalletCode(), EventLogBuilder.EventDetailsKey.COMM_WALLET_CODE);
         }
     }
 

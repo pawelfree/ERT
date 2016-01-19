@@ -97,26 +97,26 @@ public class CurrencyTradeData implements Serializable {
         //EMPTY
     }
 
-    public static void checkEntity(List<ChangeLog> result, CurrencyTradeData oldEntity, CurrencyTradeData newEntity, String changeComment) {
+    public static void checkEntity(List<ChangeLog> result, CurrencyTradeData oldEntity, CurrencyTradeData newEntity) {
         if (oldEntity == null && newEntity == null) {
             return;
         }
 
         if (oldEntity == null) {
-            checkFieldsEquals(result, null, newEntity.getCurrencyTradeCode(), EventLogBuilder.EventDetailsKey.CURRENCY_TRADE_CODE, changeComment);
-            checkFieldsEquals(result, null, newEntity.getCurrTradeExchRate(), EventLogBuilder.EventDetailsKey.CURR_TRADE_EXCHR_RATE, changeComment);
-            checkFieldsEquals(result, null, newEntity.getCurrTradeFrwdRate(), EventLogBuilder.EventDetailsKey.CURR_TRADE_FRWD_RATE, changeComment);
-            checkFieldsEquals(result, null, newEntity.getCurrTradeBasis(), EventLogBuilder.EventDetailsKey.CURR_TRADE_BASIS, changeComment);
+            checkFieldsEquals(result, null, newEntity.getCurrencyTradeCode(), EventLogBuilder.EventDetailsKey.CURRENCY_TRADE_CODE);
+            checkFieldsEquals(result, null, newEntity.getCurrTradeExchRate(), EventLogBuilder.EventDetailsKey.CURR_TRADE_EXCHR_RATE);
+            checkFieldsEquals(result, null, newEntity.getCurrTradeFrwdRate(), EventLogBuilder.EventDetailsKey.CURR_TRADE_FRWD_RATE);
+            checkFieldsEquals(result, null, newEntity.getCurrTradeBasis(), EventLogBuilder.EventDetailsKey.CURR_TRADE_BASIS);
         } else if (newEntity == null) {
-            checkFieldsEquals(result, oldEntity.getCurrencyTradeCode(), null, EventLogBuilder.EventDetailsKey.CURRENCY_TRADE_CODE, changeComment);
-            checkFieldsEquals(result, oldEntity.getCurrTradeExchRate(), null, EventLogBuilder.EventDetailsKey.CURR_TRADE_EXCHR_RATE, changeComment);
-            checkFieldsEquals(result, oldEntity.getCurrTradeFrwdRate(), null, EventLogBuilder.EventDetailsKey.CURR_TRADE_FRWD_RATE, changeComment);
-            checkFieldsEquals(result, oldEntity.getCurrTradeBasis(), null, EventLogBuilder.EventDetailsKey.CURR_TRADE_BASIS, changeComment);
+            checkFieldsEquals(result, oldEntity.getCurrencyTradeCode(), null, EventLogBuilder.EventDetailsKey.CURRENCY_TRADE_CODE);
+            checkFieldsEquals(result, oldEntity.getCurrTradeExchRate(), null, EventLogBuilder.EventDetailsKey.CURR_TRADE_EXCHR_RATE);
+            checkFieldsEquals(result, oldEntity.getCurrTradeFrwdRate(), null, EventLogBuilder.EventDetailsKey.CURR_TRADE_FRWD_RATE);
+            checkFieldsEquals(result, oldEntity.getCurrTradeBasis(), null, EventLogBuilder.EventDetailsKey.CURR_TRADE_BASIS);
         } else {
-            checkFieldsEquals(result, oldEntity.getCurrencyTradeCode(), newEntity.getCurrencyTradeCode(), EventLogBuilder.EventDetailsKey.CURRENCY_TRADE_CODE, changeComment);
-            checkFieldsEquals(result, oldEntity.getCurrTradeExchRate(), newEntity.getCurrTradeExchRate(), EventLogBuilder.EventDetailsKey.CURR_TRADE_EXCHR_RATE, changeComment);
-            checkFieldsEquals(result, oldEntity.getCurrTradeFrwdRate(), newEntity.getCurrTradeFrwdRate(), EventLogBuilder.EventDetailsKey.CURR_TRADE_FRWD_RATE, changeComment);
-            checkFieldsEquals(result, oldEntity.getCurrTradeBasis(), newEntity.getCurrTradeBasis(), EventLogBuilder.EventDetailsKey.CURR_TRADE_BASIS, changeComment);
+            checkFieldsEquals(result, oldEntity.getCurrencyTradeCode(), newEntity.getCurrencyTradeCode(), EventLogBuilder.EventDetailsKey.CURRENCY_TRADE_CODE);
+            checkFieldsEquals(result, oldEntity.getCurrTradeExchRate(), newEntity.getCurrTradeExchRate(), EventLogBuilder.EventDetailsKey.CURR_TRADE_EXCHR_RATE);
+            checkFieldsEquals(result, oldEntity.getCurrTradeFrwdRate(), newEntity.getCurrTradeFrwdRate(), EventLogBuilder.EventDetailsKey.CURR_TRADE_FRWD_RATE);
+            checkFieldsEquals(result, oldEntity.getCurrTradeBasis(), newEntity.getCurrTradeBasis(), EventLogBuilder.EventDetailsKey.CURR_TRADE_BASIS);
         }
     }
 

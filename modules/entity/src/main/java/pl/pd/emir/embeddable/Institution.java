@@ -76,20 +76,20 @@ public class Institution implements Serializable, Initializable, DescriptorCusto
         }
     }
 
-    public static void checkEntity(List<ChangeLog> result, Institution oldEntity, Institution newEntity, String changeComment) {
+    public static void checkEntity(List<ChangeLog> result, Institution oldEntity, Institution newEntity) {
         // walidacja not null
         if (oldEntity == null && newEntity == null) {
             return;
         }
         if (oldEntity == null && newEntity != null) {
-            InstitutionData.checkEntity(result, null, newEntity.getInstitutionData(), changeComment);
-            InstitutionAddress.checkEntity(result, null, newEntity.getInstitutionAddr(), changeComment);
+            InstitutionData.checkEntity(result, null, newEntity.getInstitutionData());
+            InstitutionAddress.checkEntity(result, null, newEntity.getInstitutionAddr());
         } else if (oldEntity != null && newEntity == null) {
-            InstitutionData.checkEntity(result, oldEntity.getInstitutionData(), null, changeComment);
-            InstitutionAddress.checkEntity(result, oldEntity.getInstitutionAddr(), null, changeComment);
+            InstitutionData.checkEntity(result, oldEntity.getInstitutionData(), null);
+            InstitutionAddress.checkEntity(result, oldEntity.getInstitutionAddr(), null);
         } else if (oldEntity != null && newEntity != null) {
-            InstitutionData.checkEntity(result, oldEntity.getInstitutionData(), newEntity.getInstitutionData(), changeComment);
-            InstitutionAddress.checkEntity(result, oldEntity.getInstitutionAddr(), newEntity.getInstitutionAddr(), changeComment);
+            InstitutionData.checkEntity(result, oldEntity.getInstitutionData(), newEntity.getInstitutionData());
+            InstitutionAddress.checkEntity(result, oldEntity.getInstitutionAddr(), newEntity.getInstitutionAddr());
         }
         //
     }

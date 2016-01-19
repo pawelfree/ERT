@@ -58,19 +58,19 @@ public class BusinessEntity implements Serializable, Initializable {
         //EMPTY
     }
 
-    public static void checkEntity(List<ChangeLog> result, BusinessEntity oldEntity, BusinessEntity newEntity, String changeComment) {
+    public static void checkEntity(List<ChangeLog> result, BusinessEntity oldEntity, BusinessEntity newEntity) {
         if (oldEntity == null && newEntity == null) {
             return;
         }
         if (oldEntity == null && newEntity != null) {
-            checkFieldsEquals(result, null, newEntity.getSubjectNip(), EventLogBuilder.EventDetailsKey.SUBJECT_NIP, changeComment);
-            checkFieldsEquals(result, null, newEntity.getSubjectRegon(), EventLogBuilder.EventDetailsKey.SUBJECT_REGON, changeComment);
+            checkFieldsEquals(result, null, newEntity.getSubjectNip(), EventLogBuilder.EventDetailsKey.SUBJECT_NIP);
+            checkFieldsEquals(result, null, newEntity.getSubjectRegon(), EventLogBuilder.EventDetailsKey.SUBJECT_REGON);
         } else if (oldEntity != null && newEntity == null) {
-            checkFieldsEquals(result, oldEntity.getSubjectNip(), null, EventLogBuilder.EventDetailsKey.SUBJECT_NIP, changeComment);
-            checkFieldsEquals(result, oldEntity.getSubjectRegon(), null, EventLogBuilder.EventDetailsKey.SUBJECT_REGON, changeComment);
+            checkFieldsEquals(result, oldEntity.getSubjectNip(), null, EventLogBuilder.EventDetailsKey.SUBJECT_NIP);
+            checkFieldsEquals(result, oldEntity.getSubjectRegon(), null, EventLogBuilder.EventDetailsKey.SUBJECT_REGON);
         } else if (oldEntity != null && newEntity != null) {
-            checkFieldsEquals(result, oldEntity.getSubjectNip(), newEntity.getSubjectNip(), EventLogBuilder.EventDetailsKey.SUBJECT_NIP, changeComment);
-            checkFieldsEquals(result, oldEntity.getSubjectRegon(), newEntity.getSubjectRegon(), EventLogBuilder.EventDetailsKey.SUBJECT_REGON, changeComment);
+            checkFieldsEquals(result, oldEntity.getSubjectNip(), newEntity.getSubjectNip(), EventLogBuilder.EventDetailsKey.SUBJECT_NIP);
+            checkFieldsEquals(result, oldEntity.getSubjectRegon(), newEntity.getSubjectRegon(), EventLogBuilder.EventDetailsKey.SUBJECT_REGON);
         }
     }
 

@@ -125,33 +125,33 @@ public class Protect implements Serializable {
         //EMPTY
     }
 
-    public static void checkEntity(List<ChangeLog> result, Protect oldEntity, Protect newEntity, String changeComment) {
+    public static void checkEntity(List<ChangeLog> result, Protect oldEntity, Protect newEntity) {
         if (oldEntity == null && newEntity == null) {
             return;
         }
         if (oldEntity == null || newEntity == null) {
             if (oldEntity == null) {
 
-                checkFieldsEquals(result, null, newEntity.getWalletProtection(), EventLogBuilder.EventDetailsKey.WALLET_PROTECTION, changeComment);
-                checkFieldsEquals(result, null, newEntity.getWalletId(), EventLogBuilder.EventDetailsKey.WALLET_ID, changeComment);
-                checkFieldsEquals(result, null, newEntity.getAmount(), EventLogBuilder.EventDetailsKey.AMOUNT, changeComment);
-                checkFieldsEquals(result, null, newEntity.getCurrencyCode(), EventLogBuilder.EventDetailsKey.CURRENCY_CODE, changeComment);
-                checkFieldsEquals(result, null, newEntity.getClientAmount(), EventLogBuilder.EventDetailsKey.AMOUNT_CLIENT, changeComment);
+                checkFieldsEquals(result, null, newEntity.getWalletProtection(), EventLogBuilder.EventDetailsKey.WALLET_PROTECTION);
+                checkFieldsEquals(result, null, newEntity.getWalletId(), EventLogBuilder.EventDetailsKey.WALLET_ID);
+                checkFieldsEquals(result, null, newEntity.getAmount(), EventLogBuilder.EventDetailsKey.AMOUNT);
+                checkFieldsEquals(result, null, newEntity.getCurrencyCode(), EventLogBuilder.EventDetailsKey.CURRENCY_CODE);
+                checkFieldsEquals(result, null, newEntity.getClientAmount(), EventLogBuilder.EventDetailsKey.AMOUNT_CLIENT);
             } else {
 
-                checkFieldsEquals(result, oldEntity.getWalletProtection(), null, EventLogBuilder.EventDetailsKey.WALLET_PROTECTION, changeComment);
-                checkFieldsEquals(result, oldEntity.getWalletId(), null, EventLogBuilder.EventDetailsKey.WALLET_ID, changeComment);
-                checkFieldsEquals(result, oldEntity.getAmount(), null, EventLogBuilder.EventDetailsKey.AMOUNT, changeComment);
-                checkFieldsEquals(result, oldEntity.getCurrencyCode(), null, EventLogBuilder.EventDetailsKey.CURRENCY_CODE, changeComment);
-                checkFieldsEquals(result, oldEntity.getClientAmount(), null, EventLogBuilder.EventDetailsKey.AMOUNT_CLIENT, changeComment);
+                checkFieldsEquals(result, oldEntity.getWalletProtection(), null, EventLogBuilder.EventDetailsKey.WALLET_PROTECTION);
+                checkFieldsEquals(result, oldEntity.getWalletId(), null, EventLogBuilder.EventDetailsKey.WALLET_ID);
+                checkFieldsEquals(result, oldEntity.getAmount(), null, EventLogBuilder.EventDetailsKey.AMOUNT);
+                checkFieldsEquals(result, oldEntity.getCurrencyCode(), null, EventLogBuilder.EventDetailsKey.CURRENCY_CODE);
+                checkFieldsEquals(result, oldEntity.getClientAmount(), null, EventLogBuilder.EventDetailsKey.AMOUNT_CLIENT);
             }
         } else {
 
-            checkFieldsEquals(result, oldEntity.getWalletProtection(), newEntity.getWalletProtection(), EventLogBuilder.EventDetailsKey.WALLET_PROTECTION, changeComment);
-            checkFieldsEquals(result, oldEntity.getWalletId(), newEntity.getWalletId(), EventLogBuilder.EventDetailsKey.WALLET_ID, changeComment);
-            checkFieldsEquals(result, oldEntity.getAmount(), newEntity.getAmount(), EventLogBuilder.EventDetailsKey.AMOUNT, changeComment);
-            checkFieldsEquals(result, oldEntity.getCurrencyCode(), newEntity.getCurrencyCode(), EventLogBuilder.EventDetailsKey.CURRENCY_CODE, changeComment);
-            checkFieldsEquals(result, oldEntity.getClientAmount(), newEntity.getClientAmount(), EventLogBuilder.EventDetailsKey.AMOUNT_CLIENT, changeComment);
+            checkFieldsEquals(result, oldEntity.getWalletProtection(), newEntity.getWalletProtection(), EventLogBuilder.EventDetailsKey.WALLET_PROTECTION);
+            checkFieldsEquals(result, oldEntity.getWalletId(), newEntity.getWalletId(), EventLogBuilder.EventDetailsKey.WALLET_ID);
+            checkFieldsEquals(result, oldEntity.getAmount(), newEntity.getAmount(), EventLogBuilder.EventDetailsKey.AMOUNT);
+            checkFieldsEquals(result, oldEntity.getCurrencyCode(), newEntity.getCurrencyCode(), EventLogBuilder.EventDetailsKey.CURRENCY_CODE);
+            checkFieldsEquals(result, oldEntity.getClientAmount(), newEntity.getClientAmount(), EventLogBuilder.EventDetailsKey.AMOUNT_CLIENT);
         }
     }
 
