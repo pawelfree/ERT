@@ -14,27 +14,12 @@ public interface IUserFacadeRemote {
     boolean isUsernamePasswordValid(String username, String password);
 
     /**
-     * Pobranie listy wszystkich rol z bazy danych.
-     *
-     * @return
-     */
-    List<String> getAllRoles();
-
-    /**
      * Metoda sprawdzająca czy użytkownik o danym loginie, znajduje się w bazie.
      *
      * @param loginName
      * @return true - jeśli znaliziono użytkownika, false - gdy nie znaleziono użytkownika.
      */
     boolean isLoginRegistered(String loginName);
-
-    /**
-     * Pobranie listy rol, przemapowanie grup na liste rol (poprzez baze danych)
-     *
-     * @param username
-     * @return
-     */
-    List<String> getUserRoles(String username);
 
     /**
      * Wyszukanie uzytkownikow - na potrzeby logowania WAS

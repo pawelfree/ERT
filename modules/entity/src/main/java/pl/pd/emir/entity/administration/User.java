@@ -50,13 +50,6 @@ public class User implements Logable<Long>, Selectable<Long> {
     @Column(name = "ACTIVE", nullable = false)
     private boolean active;
 
-    @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(name = "SYSTEM_USER_GROUP", joinColumns
-            = @JoinColumn(name = "USER_ID"),
-            inverseJoinColumns
-            = @JoinColumn(name = "GROUP_ID"))
-    private List<Group> groups;
-
     @Transient
     private boolean selected;
 
@@ -180,22 +173,6 @@ public class User implements Logable<Long>, Selectable<Long> {
     @Override
     public void setSelected(boolean selected) {
         this.selected = selected;
-    }
-
-    public List<Group> getGroups() {
-        return groups;
-    }
-
-    public void setGroups(List<Group> groups) {
-        this.groups = groups;
-    }
-
-    public Group getFirstGroup() {
-        if (groups != null && !groups.isEmpty()) {
-            return groups.get(0);
-        } else {
-            return null;
-        }
     }
 
 }

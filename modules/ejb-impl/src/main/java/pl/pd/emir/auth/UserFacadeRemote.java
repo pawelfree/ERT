@@ -41,18 +41,6 @@ public class UserFacadeRemote implements IUserFacadeRemote {
     }
 
     @Override
-    public List<String> getAllRoles() {
-        return userManager.getAllRoles();
-    }
-
-    @Override
-    @PermitAll
-    public List<String> getUserRoles(String username) {
-        LOGGER.info("getUserRoles {}", username);
-        return resourceBinder.getConfig().getFirstConnector().getConnector().getUserRoles(username);
-    }
-
-    @Override
     public List<String> getUsers(String pattern, int size) {
         List<String> users = new ArrayList<>();
 

@@ -1,7 +1,5 @@
 package pl.pd.emir.auth.ldap;
 
-import java.util.Collections;
-import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.Local;
 import javax.ejb.Stateless;
@@ -10,7 +8,6 @@ import pl.pd.emir.auth.IConnector;
 import pl.pd.emir.auth.IIDMConfig;
 import pl.pd.emir.auth.ILdapHelper;
 import pl.pd.emir.auth.config.LdapConfig;
-import pl.pd.emir.auth.enums.RoleMapper;
 import pl.pd.emir.entity.administration.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -52,27 +49,6 @@ public class LDAPConnector implements IConnector {
         }
 
         return result;
-    }
-
-    @Override
-    public List<String> getUserRoles(String username) {
-        RoleMapper mapper = idmConfig.getConfig().getLdapConfig().getRoleMapper();
-        if (null != mapper) {
-            switch (mapper) {
-                case DB:
-                    LOGGER.info("Pobieranie rol z bazy danych");
-                    return userManager.getUserRoles(username);
-                case LDAP:
-                    LOGGER.info("Pobieranie rol z LDAP");
-                    return ldapHelper.getUserRoles(username);
-                default:
-                    LOGGER.warn("Brak skonfigurowanego role mappera w pliku konfiguracyjnym");
-                    return Collections.EMPTY_LIST;
-            }
-        } else {
-            LOGGER.warn("Brak skonfigurowanego role mappera w pliku konfiguracyjnym");
-            return Collections.EMPTY_LIST;
-        }
     }
 
     private boolean isLoginRegisterdAndActiveInDb(String login) {

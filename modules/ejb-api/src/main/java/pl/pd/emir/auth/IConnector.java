@@ -1,7 +1,5 @@
 package pl.pd.emir.auth;
 
-import java.util.List;
-
 public interface IConnector {
 
     /**
@@ -13,11 +11,4 @@ public interface IConnector {
      */
     boolean checkUsernamePassword(String userName, String password);
 
-    /**
-     * Pobranie listy rol, role po przemapowaniu przez tabele grupa_rola
-     *
-     * @param username
-     * @return
-     */
-    List<String> getUserRoles(String username);
 }

@@ -54,8 +54,7 @@ public class IDMRealm extends AppservRealm {
                 throw new NoSuchUserException("User not found in data base: " + user);
             } else {
                 LOGGER.log(Level.INFO, "User {0} found in DB", user);
-                List<String> allRoles = userFacadeRemote.getAllRoles();
-                vector.addAll(allRoles);
+                vector.add("AUTHENTICATED_USER");
             }
 
         } catch (NamingException ex) {

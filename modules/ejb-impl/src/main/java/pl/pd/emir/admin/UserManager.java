@@ -3,7 +3,6 @@ package pl.pd.emir.admin;
 import java.security.Principal;
 import java.util.List;
 import java.util.Set;
-import java.util.stream.Collectors;
 import javax.annotation.Resource;
 import javax.ejb.EJB;
 import javax.ejb.SessionContext;
@@ -14,8 +13,6 @@ import javax.security.auth.Subject;
 import pl.pd.emir.auth.AuthUserService;
 import pl.pd.emir.auth.IPPrincipal;
 import pl.pd.emir.commons.AbstractManagerTemplate;
-import pl.pd.emir.entity.administration.Group;
-import pl.pd.emir.entity.administration.Role;
 import pl.pd.emir.entity.administration.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -58,15 +55,6 @@ public class UserManager extends AbstractManagerTemplate<User> {
         return sessionContext.getCallerPrincipal() != null ? sessionContext.getCallerPrincipal().getName() : "";
     }
 
-    public Group getGroupByName(String appGroup) {
-        List<Group> resultList = entityManager.createNamedQuery("Group.getByName").setParameter("name", appGroup).getResultList();
-        Group result = null;
-        if (!resultList.isEmpty()) {
-            result = resultList.get(0);
-        }
-        return result;
-    }
-
     public User getUserByLogin(String userName) {
         List<User> users = entityManager.createNamedQuery("User.getByLogin").setParameter("login", userName).setMaxResults(1).getResultList();
         if (!users.isEmpty()) {
@@ -74,52 +62,6 @@ public class UserManager extends AbstractManagerTemplate<User> {
         } else {
             return null;
         }
-    }
-
-    public List<String> getAllRoles() {
-        return ((List<Role>) entityManager
-                .createNamedQuery("Role.getAll")
-                .getResultList())
-                .stream()
-                .map(role -> role.getName().name())
-                .collect(Collectors.toList());
-    }
-
-    /**
-     * Pobieranie wszystkich grup
-     *
-     * @return
-     */
-    public List<Group> getAllGroups() {
-        return (List<Group>) entityManager
-                .createNamedQuery("Group.getAll")
-                .getResultList();
-    }
-
-    public List<String> getUserRoles(String username) {
-        return ((List<User>) entityManager
-                .createNamedQuery("User.getByLogin")
-                .setParameter("login", username)
-                .getResultList())
-                .stream()
-                .flatMap(user -> user.getGroups().stream())
-                .filter(group -> (group.getIsActive()))
-                .flatMap(group -> (group.getRoles()
-                        .stream()
-                        .map(role -> role.getName().name()))
-                )
-                .collect(Collectors.toList());
-    }
-
-    public List<String> getRolesForGroup(String appGroup) {
-        return ((List<Group>) entityManager
-                .createNamedQuery("Group.getByNameWithRoles")
-                .setParameter("name", appGroup)
-                .getResultList())
-                .stream()
-                .flatMap(group -> group.getRoles().stream())
-                .map(role -> role.getName().name())
-                .collect(Collectors.toList());
     }
 
     @TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)

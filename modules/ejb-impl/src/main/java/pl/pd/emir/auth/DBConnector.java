@@ -1,6 +1,5 @@
 package pl.pd.emir.auth;
 
-import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.Local;
 import javax.ejb.Stateless;
@@ -18,10 +17,5 @@ public class DBConnector implements IConnector {
     public boolean checkUsernamePassword(String userName, String password) {
         User userByLogin = userManager.getUserByLogin(userName);
         return userByLogin != null;
-    }
-
-    @Override
-    public List<String> getUserRoles(String username) {
-        return userManager.getUserRoles(username);
     }
 }

@@ -8,9 +8,7 @@ import pl.pd.emir.admin.UserManager;
 import pl.pd.emir.auth.IIDMConfig;
 import pl.pd.emir.auth.ILdapHelper;
 import pl.pd.emir.auth.config.LdapConfig;
-import pl.pd.emir.auth.enums.RoleMapper;
 import pl.pd.emir.commons.commonutils.PasswordUtils;
-import pl.pd.emir.entity.administration.Group;
 import pl.pd.emir.entity.administration.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -75,12 +73,6 @@ public class LdapHelper implements ILdapHelper {
             if (LdapErrorCodes.ERROR_SUCCESS == result) {
                 Map<String, List<String>> userAttributes = ldap.getUserAttributes(ldapLogin);
                 user = LdapMapper.mapLdapAttributesToUser(userAttributes);
-                if (mapGroups) {
-                    List<Group> userGroups = this.mapLdapGroupToAppGroup(ldapLogin);
-                    if (userGroups != null && userGroups.size() > 0) {
-                        user.setGroups(userGroups);
-                    }
-                }
             }
         } catch (Exception e) {
             LOGGER.error("Blad mapowania attrybotów LDAP na encje: ", e);
@@ -101,75 +93,4 @@ public class LdapHelper implements ILdapHelper {
         }
     }
 
-    /**
-     * Pobranie rol dla uzytkownika. w zaleznosci od konfiguracji role pobierane sa z LDAP i mapowane na role
-     * aplikacyjne lub pobierane sa z bazy danych tak jak dla DBConnectora
-     *
-     * @param username
-     * @return
-     */
-    @Override
-    public List<String> getUserRoles(String username) {
-        List<String> userRoles = Collections.EMPTY_LIST;
-        RoleMapper roleMapper = idmConfig.getConfig().getLdapConfig().getRoleMapper();
-        if (RoleMapper.DB.equals(roleMapper)) {
-            userRoles = userManager.getUserRoles(username);
-        } else if (RoleMapper.LDAP.equals(roleMapper)) {
-            try {
-                LdapConfig ldapConfig = idmConfig.getConfig().getLdapConfig();
-                List<String> ldapGroups = LdapUtils.getUserLdapGroups(username, ldapConfig);
-                ldapGroups.stream().forEach((g) -> {
-                    LOGGER.info("Grupy LDAP uzytkownika {}, {}", username, g);
-                });
-                userRoles = mapLdapGroupToAppRole(ldapGroups);
-            } catch (Exception e) {
-                LOGGER.error("Blad pobierania rol z ldap", e);
-            }
-        }
-
-        return userRoles;
-    }
-
-    /**
-     * Przemapowanie grup z ldam na grupy z app i pobranie rol odpowiadajacym grupom aplikacyjnym
-     *
-     * @param userRoles
-     * @param ldapGroups
-     * @return
-     */
-    private List<String> mapLdapGroupToAppRole(List<String> ldapGroups) {
-        List<String> userRoles = new ArrayList<>();
-        if (ldapGroups != null) {
-            LdapConfig ldapConfig = idmConfig.getConfig().getLdapConfig();
-            ldapGroups.stream()
-                    .map((ldapGroup) -> LdapUtils.getAppGroup(ldapGroup, ldapConfig))
-                    .filter((appGroup) -> (appGroup != null))
-                    .forEach(appGroup -> userRoles.add(appGroup));
-        }
-        return userRoles;
-    }
-
-    /**
-     * Przemapowanie grup z ldam na grupy z aplikacji.
-     *
-     * @param userName
-     * @return grupy aplikacyjne
-     */
-    private List<Group> mapLdapGroupToAppGroup(String userName) throws Exception {
-        List<Group> userGroups = Collections.EMPTY_LIST;
-        LdapConfig ldapConfig = idmConfig.getConfig().getLdapConfig();
-        List<String> ldapGroups = LdapUtils.getUserLdapGroups(userName, ldapConfig);
-        if (ldapGroups != null) {
-            userGroups = new ArrayList<>();
-            for (String ldapGroup : ldapGroups) {
-
-                String appGroup = LdapUtils.getAppGroup(ldapGroup, ldapConfig);
-                Group group = userManager.getGroupByName(appGroup);
-                if (group != null) {
-                    userGroups.add(group);
-                }
-            }
-        }
-        return userGroups;
-    }
 }

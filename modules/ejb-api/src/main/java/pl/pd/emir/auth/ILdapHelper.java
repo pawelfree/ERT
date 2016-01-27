@@ -24,12 +24,5 @@ public interface ILdapHelper {
      */
     User getUserFromLdap(String ldapLogin, boolean mapGroups);
 
-    /**
-     * Pobranie listy rol, role po przemapowaniu przez tabele grupa_rola.
-     *
-     * @param username - login uzytkownika
-     * @return lista grup
-     */
-    List<String> getUserRoles(String username);
 
 }

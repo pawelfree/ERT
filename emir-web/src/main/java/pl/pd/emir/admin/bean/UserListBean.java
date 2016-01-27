@@ -46,7 +46,6 @@ public class UserListBean extends AbstractListBean<User, UserManager, UserSC> {
                     wrapper.setName(user.getFirstName());
                     wrapper.setLastname(user.getLastName());
                     wrapper.setLogin(user.getLogin() == null ? "" : user.getLogin());
-                    wrapper.setRoles(user.getGroups() == null ? "" : user.getGroups().toString());
                     return wrapper;
                 })
                 .collect(Collectors.toList());

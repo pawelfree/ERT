@@ -5,7 +5,6 @@ public class UserListWrapper {
     private String login;
     private String name;
     private String lastname;
-    private String roles;
     private String active;
 
     public String getLogin() {
@@ -14,14 +13,6 @@ public class UserListWrapper {
 
     public void setLogin(String login) {
         this.login = login;
-    }
-
-    public String getRoles() {
-        return roles;
-    }
-
-    public void setRoles(String roles) {
-        this.roles = roles;
     }
 
     public String getActive() {
