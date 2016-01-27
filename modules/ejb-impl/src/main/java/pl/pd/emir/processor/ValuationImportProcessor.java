@@ -7,7 +7,6 @@ import java.io.Reader;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import javax.ejb.EJB;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import pl.pd.emir.commons.DateUtils;
@@ -35,7 +34,6 @@ public class ValuationImportProcessor extends ImportProcessor implements IImport
 
     static final Logger LOGGER = LoggerFactory.getLogger(ProtectionImportProcessor.class);
 
-    @EJB
     protected TransactionManager transactionManager;
 
     public ValuationImportProcessor() {

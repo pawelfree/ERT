@@ -2,28 +2,24 @@ package pl.pd.emir.kdpw.service;
 
 import java.util.Arrays;
 import java.util.List;
-import javax.ejb.Local;
 import javax.ejb.Stateless;
 import javax.persistence.NoResultException;
 import javax.persistence.NonUniqueResultException;
 import pl.pd.emir.commons.AbstractManagerTemplate;
 import pl.pd.emir.entity.kdpw.KdpwMsgItem;
 import pl.pd.emir.entity.kdpw.MessageType;
-import pl.pd.emir.kdpw.service.interfaces.KdpwMsgItemManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 @Stateless
-@Local(KdpwMsgItemManager.class)
-public class KdpwMsgItemManagerImpl extends AbstractManagerTemplate<KdpwMsgItem> implements KdpwMsgItemManager {
+public class KdpwMsgItemManager extends AbstractManagerTemplate<KdpwMsgItem> {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(KdpwMsgItemManagerImpl.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(KdpwMsgItemManager.class);
 
-    public KdpwMsgItemManagerImpl() {
+    public KdpwMsgItemManager() {
         super(KdpwMsgItem.class);
     }
 
-    @Override
     public List<KdpwMsgItem> findNonProcessed(final Long extractId, final MessageType... types) {
         return getEntityManager().createNamedQuery("KdpwMsgItem.findNonProcessed")
                 .setParameter("extractId", extractId)
@@ -31,7 +27,6 @@ public class KdpwMsgItemManagerImpl extends AbstractManagerTemplate<KdpwMsgItem>
                 .getResultList();
     }
 
-    @Override
     public final KdpwMsgItem findKdpwMsgItem(final String rltdRef) {
         KdpwMsgItem result = null;
         try {
@@ -45,7 +40,6 @@ public class KdpwMsgItemManagerImpl extends AbstractManagerTemplate<KdpwMsgItem>
         return result;
     }
 
-    @Override
     public final List<KdpwMsgItem> getNewest(final Long extractId, final MessageType... types) {
         return getEntityManager().createNamedQuery("KdpwMsgItem.getNewest")
                 .setParameter("extractId", extractId)
@@ -53,7 +47,6 @@ public class KdpwMsgItemManagerImpl extends AbstractManagerTemplate<KdpwMsgItem>
                 .getResultList();
     }
 
-    @Override
     public final List<KdpwMsgItem> getNewestRejected(final Long extractId, final MessageType... types) {
         return getEntityManager().createNamedQuery("KdpwMsgItem.getNewestRejectedForCancellation")
                 .setParameter("extractId", extractId)
@@ -70,10 +63,6 @@ public class KdpwMsgItemManagerImpl extends AbstractManagerTemplate<KdpwMsgItem>
         return item;
     }
 
-    /**
-     * {@inheritDoc }
-     */
-    @Override
     public KdpwMsgItem update(KdpwMsgItem item) {
         return super.save(item);
     }

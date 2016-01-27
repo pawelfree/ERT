@@ -27,7 +27,7 @@ public class ImportBean implements Serializable {
 
     @EJB
     private transient ImportCsvManager importCsvManager;
-    
+
     @EJB
     private ParameterManager parameterManager;
     @ManagedProperty(value = "#{importListBean}")
@@ -73,13 +73,8 @@ public class ImportBean implements Serializable {
         List<ImportScope> allSelected = new ArrayList<>();
         allSelected.addAll(clientSelectedScope);
         allSelected.addAll(transactionSelectedScope);
+        importOverview = importCsvManager.importCsv(allSelected, DateUtils.getDayBegin(extractDate), backloading);
 
-//        try {
-            importOverview = importCsvManager.importCsv(allSelected, DateUtils.getDayBegin(extractDate), backloading);
-//        } catch (EMIRException eMIRException) {
-//            //Do zmiany ....
-//            BeanHelper.addErrorMessage(eMIRException.getMessage());
-//        }
     }
 
     public String finishImport() {

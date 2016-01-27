@@ -12,7 +12,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import pl.pd.emir.auth.AuthUserService;
 import pl.pd.emir.auth.IFormAuthenticator;
-import pl.pd.emir.clientutils.SecurityUtil;
 
 @ManagedBean
 @ViewScoped
@@ -51,18 +50,15 @@ public class LoginBean implements Serializable {
         HttpServletRequest request = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
         
         IFormAuthenticator authenticator = authUserService.getFormAuthenticator();
-
         
         if (authenticator.authenticate(loginTo, password, request, response)) {
             LOGGER.info("Zalogowano poprawnie, uzytkownika {}", loginTo);
             return "home";
-
         } else {
             BeanHelper.addErrorMessageFromResource("login.failed", "loginForm:usernameInput");
             logout();
             return null;
         }
-
     }
 
     /**
@@ -71,7 +67,6 @@ public class LoginBean implements Serializable {
      * @return redirectPage
      */
     public final String logout() {
-        LOGGER.info("Start logout");
         IFormAuthenticator authenticator = authUserService.getFormAuthenticator();
         HttpServletResponse response = (HttpServletResponse) FacesContext.getCurrentInstance().getExternalContext().getResponse();
         HttpServletRequest request = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
@@ -80,7 +75,6 @@ public class LoginBean implements Serializable {
         HttpSession session = (HttpSession) fc.getExternalContext().getSession(false);
         session.invalidate();
         authenticator.logout(request, response);
-        LOGGER.info("End logout");
         return "login";
     }
 
@@ -90,7 +84,11 @@ public class LoginBean implements Serializable {
     }
 
     public String getLoginUser() {
-        return SecurityUtil.getCurrentUser();
+        String user = FacesContext.getCurrentInstance().getExternalContext().getRemoteUser();
+        if (null == user) {
+            user = "kazuhiro";
+        }
+        return user;
     }
 
 }

@@ -1,8 +1,6 @@
 package pl.pd.emir.admin;
 
-import javax.annotation.Resource;
 import javax.ejb.EJB;
-import javax.ejb.SessionContext;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
@@ -20,10 +18,6 @@ public class EventLogManager extends AbstractManagerTemplate<EventLog> {
     private static final Logger LOGGER = LoggerFactory.getLogger(EventLogManager.class);
     @EJB
     private UserManager userManager;
-    @EJB
-    private ExtendedLoggerFacade extendedLogger;
-    @Resource
-    protected SessionContext context;
 
     public EventLogManager() {
         super(EventLog.class);
@@ -34,7 +28,6 @@ public class EventLogManager extends AbstractManagerTemplate<EventLog> {
         LOGGER.debug(String.format("Transactional event: %s", eventType.name()));
         EventLog eventLog = new EventLog(eventType, referenceId, eventDetails, userManager.getCurrentUser(), null);
         entityManager.persist(eventLog);
-        logToExternalSystem(eventLog);
     }
     
     @TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
@@ -42,7 +35,6 @@ public class EventLogManager extends AbstractManagerTemplate<EventLog> {
         LOGGER.debug(String.format("Nontransactional event: %s", eventType.name()));
         EventLog eventLog = new EventLog(eventType, referenceId, eventDetails, userManager.getCurrentUser(), null);
         entityManager.persist(eventLog);
-        logToExternalSystem(eventLog);
     }
 
     @TransactionAttribute(TransactionAttributeType.REQUIRED)
@@ -50,7 +42,6 @@ public class EventLogManager extends AbstractManagerTemplate<EventLog> {
         LOGGER.debug(String.format("Transactional event: %s", eventType.name()));
         EventLog eventLog = new EventLog(eventType, referenceId, eventDetails, userManager.getCurrentUser(), changeLog);
         entityManager.persist(eventLog);
-        logToExternalSystem(eventLog);
     }
 
     @TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
@@ -58,7 +49,6 @@ public class EventLogManager extends AbstractManagerTemplate<EventLog> {
         LOGGER.debug(String.format("Nontransactional event: %s", eventType.name()));
         EventLog eventLog = new EventLog(eventType, referenceId, eventDetails, userManager.getCurrentUser(), changeLog);
         entityManager.persist(eventLog);
-        logToExternalSystem(eventLog);
     }
 
     /**
@@ -81,12 +71,5 @@ public class EventLogManager extends AbstractManagerTemplate<EventLog> {
             LOGGER.info("Cannot find EventLog: " + eventType);
         }
         return result;
-    }
-
-    private void logToExternalSystem(EventLog event) {
-        //jesli transakcja zapisu logu nie jest oznaczona do wycofania
-        if (!context.getRollbackOnly()) {
-            extendedLogger.addEvent(event);
-        }
     }
 }

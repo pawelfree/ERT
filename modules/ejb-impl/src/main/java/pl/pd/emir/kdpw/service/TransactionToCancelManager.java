@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
-import javax.ejb.Local;
 import javax.ejb.Stateless;
 import javax.persistence.NoResultException;
 import javax.persistence.Query;
@@ -16,11 +15,9 @@ import pl.pd.emir.criteria.TransactionToKdpwSC;
 import pl.pd.emir.dao.criteria.AbstractSearchCriteria;
 import pl.pd.emir.dao.criteria.PagedList;
 import pl.pd.emir.entity.Transaction;
-import pl.pd.emir.register.TransactionToCancelManager;
 
 @Stateless
-@Local(TransactionToCancelManager.class)
-public class TransactionToCancelManagerImpl extends AbstractManagerTemplate<Transaction> implements TransactionToCancelManager {
+public class TransactionToCancelManager extends AbstractManagerTemplate<Transaction>  {
 
     private static final String FROM_QUERY = " WHERE"
             + " ("
@@ -48,12 +45,12 @@ public class TransactionToCancelManagerImpl extends AbstractManagerTemplate<Tran
 
     private static final String FROM_ID = "fromId";
 
-    public TransactionToCancelManagerImpl() {
+    public TransactionToCancelManager() {
         super(Transaction.class);
     }
 
     @Override
-    public final PagedList<Transaction> find(final AbstractSearchCriteria abstractCriteria) {
+    public PagedList<Transaction> find(final AbstractSearchCriteria abstractCriteria) {
         if (abstractCriteria instanceof TransactionToKdpwSC) {
             final TransactionToKdpwSC criteria = (TransactionToKdpwSC) abstractCriteria;
             final PagedList<Transaction> result = new PagedList<>();
@@ -128,7 +125,6 @@ public class TransactionToCancelManagerImpl extends AbstractManagerTemplate<Tran
         }
     }
 
-    @Override
     public final Date getMaxDate() {
         Date result = null;
         final Query query = getEntityManager().createQuery(String.format("%s%s",
@@ -142,7 +138,6 @@ public class TransactionToCancelManagerImpl extends AbstractManagerTemplate<Tran
         return result;
     }
 
-    @Override
     public final Date getMinDate() {
         Date result = null;
         final Query query = getEntityManager().createQuery(String.format("%s%s",
@@ -157,7 +152,7 @@ public class TransactionToCancelManagerImpl extends AbstractManagerTemplate<Tran
     }
 
     @Override
-    public final List<Transaction> findWithoutDeselected(final AbstractSearchCriteria abstractCriteria, final List<Long> ids) {
+    public List<Transaction> findWithoutDeselected(final AbstractSearchCriteria abstractCriteria, final List<Long> ids) {
         if (abstractCriteria instanceof TransactionToKdpwSC) {
             final TransactionToKdpwSC criteria = (TransactionToKdpwSC) abstractCriteria;
             if (CollectionsUtils.isNotEmpty(criteria.getDataTypeList())) {
