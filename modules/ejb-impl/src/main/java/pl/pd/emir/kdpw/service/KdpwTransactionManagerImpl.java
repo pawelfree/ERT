@@ -98,36 +98,20 @@ public class KdpwTransactionManagerImpl implements KdpwTransactionManager {
         return transactionManager;
     }
 
-    protected GenericManager getCancelDateManager() {
-        return cancelManager;
-    }
-
     @Override
     public Long getKdpwReportsCount(final TransactionToKdpwSC criteria) {
         return transactionManager.getKdpwReportsCountForADay(criteria.getTransactionDate());
     }
 
-    private enum MsgType {
-
-        REGISTRATION, CANCELLATION, OTHER;
-
-    }
-
     @Override
     @TransactionAttribute(TransactionAttributeType.NEVER)
     public SendingResult generateRegistration(final TransactionToKdpwSC criteria) {
-        return process(getRegisterDateManager(), criteria, MsgType.REGISTRATION, false);
-    }
-
-    private SendingResult process(GenericManager manager, TransactionToKdpwSC criteria, MsgType msgType, boolean mutation) {
+        final GenericManager manager = getRegisterDateManager();
         final String userLogin = userManager.getCurrentUserLogin();
-
         final SendingResult mainResult = new SendingResult();
-
         final int batchSize = getBatchSize();
         criteria.getFitrSort().setSortField("id");
         criteria.getFitrSort().setSortOrder(FilterSortTO.SortOrder.ASCENDING);
-        final long total = manager.getRecordCount(criteria);
         int batchNumber = 0;
 
         final StringBuilder errorLog = new StringBuilder();
@@ -145,7 +129,7 @@ public class KdpwTransactionManagerImpl implements KdpwTransactionManager {
                 LOGGER.info("NEW MAX id = " + maxId);
             }
             LOGGER.debug("||| Define msg type |||");
-            List<ResultItem> resultItems = getResultItems(list, msgType);
+            List<ResultItem> resultItems = getRegistrationListByType(list);
             try {
                 SendingResult tmpResult = thisManager.generateMsg(resultItems, batchNumber, userLogin);
                 batchNumber = tmpResult.getBatchNumber();
@@ -281,18 +265,8 @@ public class KdpwTransactionManagerImpl implements KdpwTransactionManager {
         logCurrentTime("End of generating file");
     }
 
-    private List<ResultItem> getResultItems(List<Sendable> list, MsgType msgType) {
-
-        switch (msgType) {
-            case REGISTRATION:
-                return getRegistrationListByType(list);
-            default:
-                throw new IllegalStateException("Błąd generowania!");
-        }
-    }
-
     /**
-     * Definiuje możliwość i ew. typ komunikatu transakcji do wysyłki.
+     * Definiuje możliwość i typ komunikatu do wysyłki dla transakcji.
      *
      * @param list
      * @return
@@ -330,15 +304,11 @@ public class KdpwTransactionManagerImpl implements KdpwTransactionManager {
             return new ErrorItem(transaction.getOriginalId(),
                     SendingError.EXISTS_DATA_NEW_SENT_OR_CONFIRMED,
                     KdpwUtils.getVersionMsg(oldTrans));
+        } else if (hasValuationAndProtection(transaction)) {
+            return new TransactionToRepository(registable, TransactionMsgType.N);
         } else {
-            if (hasValuationAndProtection(transaction)) {
-                return new TransactionToRepository(registable, TransactionMsgType.N);
-            } else {
-                // status przetworzenia bieżącej transakcji pozostaje bez zmian
-                return new ErrorItem(transaction.getOriginalId(),
-                        SendingError.EMPTY_VALUATION_OR_PROTECTION_INFO,
-                        "");
-            }
+            // status przetworzenia bieżącej transakcji pozostaje bez zmian
+            return new ErrorItem(transaction.getOriginalId(), SendingError.EMPTY_VALUATION_OR_PROTECTION_INFO, "");
         }
     }
 
@@ -375,7 +345,6 @@ public class KdpwTransactionManagerImpl implements KdpwTransactionManager {
                 transaction.getTransactionDate());
         LOGGER.debug("getTypeForOngoing: {}", printTransaction(transaction));
         if (Objects.nonNull(oldTrans)) {
-            LOGGER.warn("Other unsent transactions was found: {}", printTransaction(oldTrans));
             result.add(new ErrorItem(transaction.getOriginalId(), SendingError.EXISTS_OTHER_UNSENT, getIdenAndVersionAndDate(oldTrans)));
         } else {
             final Transaction kdpwTrans = transactionManager.findNewestOtherVersion(transaction.getId(),
@@ -383,7 +352,6 @@ public class KdpwTransactionManagerImpl implements KdpwTransactionManager {
                     transaction.getTransactionDate(),
                     ProcessingStatus.CONFIRMED, ProcessingStatus.SENT);
             if (Objects.nonNull(kdpwTrans)) {
-                LOGGER.debug("Newest transaction in KDPW: {}", printTransaction(kdpwTrans));
                 boolean anyChanges = false;
                 if (hasValuationAndProtection(transaction)) {
                     if (isValuationOrProtectionChange(kdpwTrans, transaction)) {
@@ -392,7 +360,6 @@ public class KdpwTransactionManagerImpl implements KdpwTransactionManager {
                         } else {
                             result.add(new TransactionToRepository(registable, TransactionMsgType.V));
                         }
-                        LOGGER.debug("Valuation or protection change.");
                         anyChanges = true;
                     }
                 } else {
@@ -407,11 +374,9 @@ public class KdpwTransactionManagerImpl implements KdpwTransactionManager {
                     } else {
                         result.add(new TransactionToRepository(registable, TransactionMsgType.M));
                     }
-                    LOGGER.debug("Transaction details change.");
                     anyChanges = true;
                 }
                 if (!anyChanges) {
-                    LOGGER.debug("Transaction UNSENT - no changes.");
                     result.add(new UnsentItem(transaction.getOriginalId(), SendingError.ONGOING_NO_CHANGES, "", transaction));
                 }
             } else {
@@ -583,13 +548,13 @@ public class KdpwTransactionManagerImpl implements KdpwTransactionManager {
         }
         return eventLog.getDate();
     }
-    
+
     private String getReportingInstitutionId() {
         return parameterManager.getValue(ParameterKey.INSTITUTION_ID);
     }
-    
+
     private String getReportingInstitutionIdType() {
         return parameterManager.getValue(ParameterKey.INSTITUTION_ID_TYPE);
     }
-    
+
 }

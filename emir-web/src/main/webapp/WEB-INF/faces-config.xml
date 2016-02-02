@@ -113,11 +113,6 @@
             <to-view-id>/pages/userForm.xhtml</to-view-id>
             <redirect/>
         </navigation-case>
-        <navigation-case>
-            <from-outcome>transactionTemplate</from-outcome>
-            <to-view-id>/pages/transactionTemplate.xhtml</to-view-id>
-            <redirect/>
-        </navigation-case>
     </navigation-rule>
         
     <factory>
