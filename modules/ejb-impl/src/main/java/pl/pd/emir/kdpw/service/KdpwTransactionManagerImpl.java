@@ -8,6 +8,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.stream.Collectors;
 import javax.ejb.EJB;
 import javax.ejb.Local;
 import javax.ejb.Stateless;
@@ -57,6 +58,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import pl.pd.emir.admin.EventLogManager;
 import pl.pd.emir.entity.annotations.TransactionDataChange;
+import pl.pd.emir.kdpw.api.TransactionsToKdpwBag;
 
 @Stateless
 @Local(KdpwTransactionManager.class)
@@ -128,10 +130,9 @@ public class KdpwTransactionManagerImpl implements KdpwTransactionManager {
                 maxId = list.get(list.size() - 1).getId();
                 LOGGER.info("NEW MAX id = " + maxId);
             }
-            LOGGER.debug("||| Define msg type |||");
-            List<ResultItem> resultItems = getRegistrationListByType(list);
+            TransactionsToKdpwBag transactionsBag = getRegistrationListByType(list);
             try {
-                SendingResult tmpResult = thisManager.generateMsg(resultItems, batchNumber, userLogin);
+                SendingResult tmpResult = thisManager.generateMsg(transactionsBag, batchNumber, userLogin);
                 batchNumber = tmpResult.getBatchNumber();
                 mainResult.addItems(tmpResult.getSentList());
                 mainResult.addItems(tmpResult.getUnsentList());
@@ -163,14 +164,14 @@ public class KdpwTransactionManagerImpl implements KdpwTransactionManager {
 
     @Override
     @TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
-    public SendingResult generateMsg(List<ResultItem> resultItems, final int batchNumber, final String userLogin) {
+    public SendingResult generateMsg(TransactionsToKdpwBag transactionsBag, final int batchNumber, final String userLogin) {
         logCurrentTime("Start generate MSG");
         SendingResult tmpResult = new SendingResult();
         // zmiana statusu na: NIEWYSŁANA
         int unsentCounter = 0;
         int unprocessCounter = 0;
         final List<TransactionToRepository> toSendList = new ArrayList<>();
-        for (ResultItem resultItem : resultItems) {
+        for (ResultItem resultItem : transactionsBag.getItems()) {
             if (ItemType.UNSENT.equals(resultItem.getType())) {
                 unsentCounter += 1;
                 UnsentItem unsentItem = (UnsentItem) resultItem;
@@ -192,7 +193,7 @@ public class KdpwTransactionManagerImpl implements KdpwTransactionManager {
 
         if (CollectionsUtils.isNotEmpty(toSendList)) {
             try {
-                generateFile(toSendList, userLogin, batchNumber);
+                generateFile(toSendList, userLogin, batchNumber, transactionsBag.getInfo());
                 toSendList.stream().forEach((ttr) -> {
                     tmpResult.addItem(new SentItem(ttr.getRegistable().getOriginalId())); // dodaj wysłane
                 });
@@ -206,7 +207,7 @@ public class KdpwTransactionManagerImpl implements KdpwTransactionManager {
     }
 
     protected void generateFile(final List<TransactionToRepository> messages, final String userLogin,
-            final Integer batchNumber) throws XmlParseException, UnsupportedEncodingException {
+            final Integer batchNumber, final String info) throws XmlParseException, UnsupportedEncodingException {
 
         logCurrentTime(String.format("START generate file for %s messages.", messages.size()));
 
@@ -217,7 +218,8 @@ public class KdpwTransactionManagerImpl implements KdpwTransactionManager {
                 MessageType.TRANSACTION,
                 userLogin,
                 new String(message.getBytes(), "UTF-8"),
-                batchNumber));
+                batchNumber,
+                info));
 
         final List<TransactionToRepository> transactions = result.getTransactions();
         logEvent(messageLog, getEventType(transactions), transactions.size(), MessageType.TRANSACTION);
@@ -236,10 +238,10 @@ public class KdpwTransactionManagerImpl implements KdpwTransactionManager {
                         item.getRegistable().getClient2().getOriginalId());
                 LOGGER.debug("KDPW request: transId: " + request.getExtractId() + ", msgId: " + request.getSndrMsgRef());
 
-                request.assignToLog(messageLog); // powiazanie ITEM'u z logiem
+                request.assignToLog(messageLog);
                 final KdpwMsgItem itemSaved = kdpwItemManager.save(request);
 
-                transaction.addKdpwItem(itemSaved); // powiazanie ITEM'u z transakcja
+                transaction.addKdpwItem(itemSaved);
                 if (TransactionMsgType.O.equals(item.getMsgType())) {
                     //nie rób nic
                 } else if (TransactionMsgType.E.equals(item.getMsgType())) {
@@ -271,7 +273,7 @@ public class KdpwTransactionManagerImpl implements KdpwTransactionManager {
      * @param list
      * @return
      */
-    protected final List<ResultItem> getRegistrationListByType(final List<Sendable> list) {
+    protected final TransactionsToKdpwBag getRegistrationListByType(final List<Sendable> list) {
         final List<ResultItem> result = new ArrayList<>();
         LOGGER.info("START | getRegistrationType (" + list.size() + ") on: " + DateUtils.formatDate(new Date(), DateUtils.DATE_TIME_FORMAT));
         list.stream().filter((sendable) -> !(!checkClientCompleteness(sendable, result))).forEach((sendable) -> {
@@ -288,6 +290,17 @@ public class KdpwTransactionManagerImpl implements KdpwTransactionManager {
             }
         });
         LOGGER.info("END | getRegistrationType on: " + DateUtils.formatDate(new Date(), DateUtils.DATE_TIME_FORMAT));
+        return countKdpwMessageTypes(result);
+    }
+
+    private TransactionsToKdpwBag countKdpwMessageTypes(List<ResultItem> list) {
+        List<ResultItem> tmp = list.stream().filter(item -> item.getType() == ItemType.TO_SEND && item.getClass().equals(TransactionToRepository.class)).collect(Collectors.toList());
+
+        TransactionsToKdpwBag result = new TransactionsToKdpwBag(list);
+        result.setNewCounter(tmp.stream().filter(item -> ((TransactionToRepository) item).getMsgType() == TransactionMsgType.N).count());
+        result.setModCounter(tmp.stream().filter(item -> ((TransactionToRepository) item).getMsgType() == TransactionMsgType.M).count());
+        result.setValCounter(tmp.stream().filter(item -> ((TransactionToRepository) item).getMsgType() == TransactionMsgType.V).count()
+                + tmp.stream().filter(item -> ((TransactionToRepository) item).getMsgType() == TransactionMsgType.VR).count());
         return result;
     }
 

@@ -23,6 +23,7 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.persistence.Transient;
+import pl.pd.emir.commons.StringUtil;
 import pl.pd.emir.commons.interfaces.Logable;
 import pl.pd.emir.commons.interfaces.Selectable;
 import pl.pd.emir.enums.EventType;
@@ -92,6 +93,9 @@ public class MessageLog implements Logable<Long>, Selectable<Long> {
 
     @Column(name = "BATCH_NUMBER")
     private Integer batchNumber;
+    
+    @Column(name = "INFO")
+    private String info;
 
     @Transient
     private transient boolean selected;
@@ -143,10 +147,48 @@ public class MessageLog implements Logable<Long>, Selectable<Long> {
         this.hasResponse = Boolean.TRUE;
     }
 
+    public String getInfo() {
+        return info;
+    }
+
+    public void setInfo(String info) {
+        this.info = info;
+    }
+    
+    public boolean isInfo() {
+        return StringUtil.isNotEmpty(this.info);
+    }
+    
+    //TODO do it better
+    public String newMsg() {
+        return isInfo() ? info.substring(info.indexOf("N:")+2, info.indexOf(":V:")) : "" ;
+    }
+    
+    public String valMsg() {
+        return isInfo() ? info.substring(info.indexOf(":V:")+3, info.indexOf(":M:")) : "";
+    }
+    
+    public String modMsg() {
+        return isInfo() ? info.substring(info.indexOf(":M:")+3, info.indexOf(":T:")) : "";
+    }
+    
+    public String totalMsg() {
+        return isInfo() ? info.substring(info.indexOf(":T:")+3) : "";
+    }
+
     public static class Builder {
 
         private Builder() {
             super();
+        }
+
+        public static MessageLog getOutput(final String fileIden, final MessageType messageType,
+                final String userLogin, final String transportForm,
+                final Integer batchNumber,
+                final String info) {
+            final MessageLog result = getOutput(fileIden, messageType, userLogin, transportForm, batchNumber);
+            result.setInfo(info);
+            return result;
         }
 
         public static MessageLog getOutput(final String fileIden, final MessageType messageType,

@@ -9,5 +9,5 @@ public interface KdpwTransactionManager {
 
     SendingResult generateRegistration(TransactionToKdpwSC criteria);
 
-    SendingResult generateMsg(List<ResultItem> resultItems, int batchNumber, String userLogin);
+    SendingResult generateMsg(TransactionsToKdpwBag transactionsBag, int batchNumber, String userLogin);
 }

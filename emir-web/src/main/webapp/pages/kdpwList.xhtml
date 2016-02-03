@@ -148,7 +148,7 @@
                                value="#{messageLog.fileId}"
                                />
 
-                <emirui:actionColumn columns="2" rendered="true">
+                <emirui:actionColumn columns="3" rendered="true">
                     <p:commandButton id="downloadKDPWResponseReport"
                                      title="#{msgs['kdpw.message.table.action.report']}"
                                      ajax="false"
@@ -157,6 +157,12 @@
                                      >
                         <p:fileDownload value="#{reportBean.file}" />
                     </p:commandButton>
+                    <p:commandButton
+                        title="#{msgs['kdpw.message.table.action.info']}"
+                        icon="ui-icon-pencil"
+                        onclick="PF('infoDialog#{messageLog.id}').show();"
+                        rendered="#{messageLog.isInfo()}"
+                        />
                     <p:commandButton title="#{msgs['kdpw.message.table.action.link']}"
                                      rendered="#{not kdpwListBean.inRelatedView and messageLog.hasResponse}"
                                      icon="ui-icon-extlink"
@@ -164,8 +170,44 @@
                                      actionListener="#{kdpwListBean.addToSearchCriteria(messageLog)}"
                                      update=":mainForm:messagesTable :toolbarForm:mainToolbar :criteriaForm:searchPanel"
                                      />
+                    <p:dialog header="#{msgs['kdpw.message.dialog.info.header']}"
+                              widgetVar="infoDialog#{messageLog.id}"
+                              modal="true"
+                              resizable="false"
+                              width="400"
+                              closable="false"
+                              closeOnEscape="true"
+                              >
+
+                        <p:panel>
+                            <p:panelGrid columns="2">
+
+                                <h:outputText value="#{msgs['kdpw.message.dialog.info.title']}" style="font-weight: bold"/>
+                                <h:outputText value="" />
+
+                                <h:outputText value="&nbsp; "/><h:outputText value="&nbsp; "/>
+
+                                <h:outputText value="#{msgs['kdpw.message.dialog.info.new']}"/>
+                                <h:outputText value="#{messageLog.newMsg()}" />
+
+                                <h:outputText value="#{msgs['kdpw.message.dialog.info.mod']}" />
+                                <h:outputText value="#{messageLog.modMsg()}" />
+
+                                <h:outputText value="#{msgs['kdpw.message.dialog.info.val']}" />
+                                <h:outputText value="#{messageLog.valMsg()}" />
+
+                                <h:outputText value="&nbsp; "/><h:outputText value="&nbsp; "/>
+
+                                <h:outputText value="#{msgs['kdpw.message.dialog.info.total']}" style="font-weight: bold"/>  
+                                <h:outputText value="#{messageLog.totalMsg()}" style="font-weight: bold"/>
+                            </p:panelGrid>
+                        </p:panel>
+
+                        <emirui:popupButtons dialogId="infoDialog#{messageLog.id}" cancel="false" />
+                    </p:dialog>
                 </emirui:actionColumn>
             </emirui:resultsPanel>
+
         </h:form>
 
     </ui:define>
