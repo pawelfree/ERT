@@ -219,6 +219,7 @@ public class MessageLog implements Logable<Long>, Selectable<Long> {
             result.transportForm = transportForm;
             result.userLogin = userLogin;
             result.fileId = fileName;
+            result.info = "";
             return result;
         }
     }
