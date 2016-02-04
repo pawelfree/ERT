@@ -93,7 +93,7 @@ public class MessageLog implements Logable<Long>, Selectable<Long> {
 
     @Column(name = "BATCH_NUMBER")
     private Integer batchNumber;
-    
+
     @Column(name = "INFO")
     private String info;
 
@@ -154,26 +154,58 @@ public class MessageLog implements Logable<Long>, Selectable<Long> {
     public void setInfo(String info) {
         this.info = info;
     }
-    
+
     public boolean isInfo() {
         return StringUtil.isNotEmpty(this.info);
     }
-    
+
     //TODO do it better
     public String newMsg() {
-        return isInfo() ? info.substring(info.indexOf("N:")+2, info.indexOf(":V:")) : "" ;
+        //only new messages
+        return isInfo() ? info.substring(info.indexOf("N:") + 2, info.indexOf(":V:")) : "0";
     }
-    
+
+    public String newMsgRepo() {
+        return newMsg();
+    }
+
     public String valMsg() {
-        return isInfo() ? info.substring(info.indexOf(":V:")+3, info.indexOf(":M:")) : "";
+        //only valuations for both parties
+        long val = isInfo() ? Long.valueOf(info.substring(info.indexOf(":V:") + 3, info.indexOf(":VC:"))) : 0;
+        long valc = isInfo() ? Long.valueOf(info.substring(info.indexOf(":VC:") + 4, info.indexOf(":M:"))) : 0;
+        return String.valueOf(val + valc);
     }
-    
+
+    public String valMsgRepo() {
+        //only valuations for both parties
+        long val = isInfo() ? Long.valueOf(info.substring(info.indexOf(":V:") + 3, info.indexOf(":VC:"))) : 0;
+        long valc = isInfo() ? Long.valueOf(info.substring(info.indexOf(":VC:") + 4, info.indexOf(":M:"))) : 0;
+        return String.valueOf(val + valc * 2);
+    }
+
     public String modMsg() {
-        return isInfo() ? info.substring(info.indexOf(":M:")+3, info.indexOf(":T:")) : "";
+        //only modifications for both parties
+        long mod = isInfo() ? Long.valueOf(info.substring(info.indexOf(":M:") + 3, info.indexOf(":MC:"))) : 0;
+        long modc = isInfo() ? Long.valueOf(info.substring(info.indexOf(":MC:") + 4, info.indexOf(":T:"))) : 0;
+        return String.valueOf(mod + modc);
     }
-    
+
+    public String modMsgRepo() {
+        //only modifications for both parties
+        long mod = isInfo() ? Long.valueOf(info.substring(info.indexOf(":M:") + 3, info.indexOf(":MC:"))) : 0;
+        long modc = isInfo() ? Long.valueOf(info.substring(info.indexOf(":MC:") + 4, info.indexOf(":T:"))) : 0;
+        return String.valueOf(mod + modc * 2);
+    }
+
     public String totalMsg() {
-        return isInfo() ? info.substring(info.indexOf(":T:")+3) : "";
+        return isInfo() ? info.substring(info.indexOf(":T:") + 3) : "0";
+    }
+
+    public String totalMsgRepo() {
+        long modc = isInfo() ? Long.valueOf(info.substring(info.indexOf(":MC:") + 4, info.indexOf(":T:"))) : 0;
+        long valc = isInfo() ? Long.valueOf(info.substring(info.indexOf(":VC:") + 4, info.indexOf(":M:"))) : 0;
+        long tot  = isInfo() ? Long.valueOf(info.substring(info.indexOf(":T:") + 3)) : 0;
+        return String.valueOf(tot + modc + valc);
     }
 
     public static class Builder {

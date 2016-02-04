@@ -297,10 +297,17 @@ public class KdpwTransactionManagerImpl implements KdpwTransactionManager {
         List<ResultItem> tmp = list.stream().filter(item -> item.getType() == ItemType.TO_SEND && item.getClass().equals(TransactionToRepository.class)).collect(Collectors.toList());
 
         TransactionsToKdpwBag result = new TransactionsToKdpwBag(list);
-        result.setNewCounter(tmp.stream().filter(item -> ((TransactionToRepository) item).getMsgType() == TransactionMsgType.N).count());
-        result.setModCounter(tmp.stream().filter(item -> ((TransactionToRepository) item).getMsgType() == TransactionMsgType.M).count());
-        result.setValCounter(tmp.stream().filter(item -> ((TransactionToRepository) item).getMsgType() == TransactionMsgType.V).count()
-                + tmp.stream().filter(item -> ((TransactionToRepository) item).getMsgType() == TransactionMsgType.VR).count());
+        long newCounter = tmp.stream().filter(item -> ((TransactionToRepository) item).getMsgType() == TransactionMsgType.N).count();
+        long valCounter = tmp.stream().filter(item -> ((TransactionToRepository) item).getMsgType() == TransactionMsgType.V).count();
+        long valCCounter = tmp.stream().filter(item -> ((TransactionToRepository) item).getMsgType() == TransactionMsgType.VR).count();
+        long modCounter = tmp.stream().filter(item -> ((TransactionToRepository) item).getMsgType() == TransactionMsgType.M).count();
+        long modCCounter = tmp.stream().filter(item -> ((TransactionToRepository) item).getMsgType() == TransactionMsgType.MC).count();
+        
+        result.setNewCounter(newCounter);
+        result.setModCounter(modCounter);
+        result.setModCCounter(modCCounter);
+        result.setValCounter(valCounter);
+        result.setValCCounter(valCCounter);
         return result;
     }
 
@@ -382,7 +389,7 @@ public class KdpwTransactionManagerImpl implements KdpwTransactionManager {
                 }
 
                 if (isTransactionDetailsChange(kdpwTrans, transaction)) {
-                    if (isClientMofifyReported(transaction.getClient(), transaction.getTransactionDate())) {
+                    if (transaction.getClient().getReported()) {
                         result.add(new TransactionToRepository(registable, TransactionMsgType.MC));
                     } else {
                         result.add(new TransactionToRepository(registable, TransactionMsgType.M));
@@ -542,12 +549,6 @@ public class KdpwTransactionManagerImpl implements KdpwTransactionManager {
                 && (KdpwUtils.isNotEqual(oldTrans, transaction, TransactionDataChange.class)
                 || isClientDataChange(oldTrans.getClientVersion(), transaction.getClient())
                 || isClientDataChange(oldTrans.getClient2Version(), transaction.getClient2()));
-    }
-
-    protected final boolean isClientMofifyReported(final Client client, final Date transactionDate) {
-        return Objects.nonNull(client)
-                && client.getReported()
-                && KdpwUtils.isSameDateOrLater(getLastModifyDate(client.getId()), transactionDate);
     }
 
     protected final boolean isClientDataChange(final Integer oldClientVersion, Client newClientVersion) {

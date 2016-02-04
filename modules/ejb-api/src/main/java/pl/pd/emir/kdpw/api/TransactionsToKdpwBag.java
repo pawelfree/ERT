@@ -9,9 +9,11 @@ import java.util.List;
 public class TransactionsToKdpwBag {
 
     private List<ResultItem> items;
-    private long newCounter;
-    private long valCounter;
-    private long modCounter;
+    private long newCounter = 0;
+    private long valCounter = 0;
+    private long valCCounter = 0;
+    private long modCounter = 0;
+    private long modCCounter = 0;
 
     public TransactionsToKdpwBag(List<ResultItem> list) {
         items = list;
@@ -48,11 +50,29 @@ public class TransactionsToKdpwBag {
     public void setModCounter(long modCounter) {
         this.modCounter = modCounter;
     }
+
+    public long getModCCounter() {
+        return modCCounter;
+    }
+
+    public void setModCCounter(long modCCounter) {
+        this.modCCounter = modCCounter;
+    }
+    
+    public long getValCCounter() {
+        return valCCounter;
+    }
+
+    public void setValCCounter(long valCCounter) {
+        this.valCCounter = valCCounter;
+    }
     
     public String getInfo() {
         return "N:".concat(String.valueOf(newCounter))
                 .concat(":V:").concat(String.valueOf(valCounter))
+                .concat(":VC:").concat(String.valueOf(valCCounter))
                 .concat(":M:").concat(String.valueOf(modCounter))
-                .concat(":T:").concat(String.valueOf(newCounter + modCounter + valCounter));
+                .concat(":MC:").concat(String.valueOf(modCCounter))
+                .concat(":T:").concat(String.valueOf(newCounter + modCounter + modCCounter + valCounter + valCCounter));
     }
 }

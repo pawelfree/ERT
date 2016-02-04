@@ -751,10 +751,6 @@ public class XmlTransactionWriterImpl extends XmlWriterImpl implements Transacti
         return TransactionMsgType.VR.equals(changeType);
     }
 
-    protected final boolean isTransSideClientInfoRequired(final TransactionMsgType changeType) {
-        return TransactionMsgType.MC.equals(changeType);
-    }
-
     private TradeReference getTradeRefId(TransactionToRepository kdpwItem,
             Institution firstInstitution, Institution secondInstitution, TransactionParty transactionParty) {
         TradeReference result = new TradeReference();
