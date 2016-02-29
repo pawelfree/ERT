@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.2.0.final using JasperReports Library version 6.2.0  -->
+<!-- 2016-02-29T14:38:47 -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="euc_trade_data" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="595" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" isFloatColumnFooter="true" whenResourceMissingType="Empty" isIgnorePagination="true" uuid="5f85f644-ac4b-4970-94b0-d3c23e4c8b31">
+	<property name="ireport.zoom" value="1.3310000000000008"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="reportName" class="java.lang.String"/>
+	<field name="contractNo" class="java.lang.String"/>
+	<field name="customerCode" class="java.lang.String"/>
+	<field name="productType" class="java.lang.String"/>
+	<field name="ccy1" class="java.lang.String"/>
+	<field name="amount1" class="java.lang.String"/>
+	<field name="ccy2" class="java.lang.String"/>
+	<field name="amount2" class="java.lang.String"/>
+	<field name="dealDate" class="java.lang.String"/>
+	<field name="startDate" class="java.lang.String"/>
+	<field name="maturityDate" class="java.lang.String"/>
+	<field name="mtm" class="java.lang.String"/>
+	<detail>
+		<band height="16" splitType="Prevent">
+			<property name="com.jaspersoft.studio.layout" value="com.jaspersoft.studio.editor.layout.HorizontalRowLayout"/>
+			<textField isBlankWhenNull="true">
+				<reportElement x="0" y="0" width="82" height="16" isRemoveLineWhenBlank="true" uuid="d589854f-af3f-4b5a-a0f6-6f79a590020f">
+					<property name="com.jaspersoft.studio.layout" value="com.jaspersoft.studio.editor.layout.HorizontalRowLayout"/>
+				</reportElement>
+				<textFieldExpression><![CDATA[$F{contractNo}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="82" y="0" width="76" height="16" isRemoveLineWhenBlank="true" uuid="491e8398-6ade-4b9f-9ce2-d53dbc7597e7">
+					<property name="com.jaspersoft.studio.layout" value="com.jaspersoft.studio.editor.layout.HorizontalRowLayout"/>
+				</reportElement>
+				<textFieldExpression><![CDATA[$F{customerCode}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="158" y="0" width="76" height="16" isRemoveLineWhenBlank="true" uuid="4c7b8b94-1165-42e2-83df-38a1014191a0">
+					<property name="com.jaspersoft.studio.layout" value="com.jaspersoft.studio.editor.layout.HorizontalRowLayout"/>
+				</reportElement>
+				<textFieldExpression><![CDATA[$F{productType}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="234" y="0" width="76" height="16" isRemoveLineWhenBlank="true" uuid="b512b0c4-eef3-4d06-95dc-66a7d15b8676">
+					<property name="com.jaspersoft.studio.layout" value="com.jaspersoft.studio.editor.layout.HorizontalRowLayout"/>
+				</reportElement>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$F{ccy1}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="310" y="0" width="76" height="16" isRemoveLineWhenBlank="true" uuid="3f581ca7-7210-4046-8688-8ad6bfe40cf5">
+					<property name="com.jaspersoft.studio.layout" value="com.jaspersoft.studio.editor.layout.HorizontalRowLayout"/>
+				</reportElement>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$F{amount1}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="386" y="0" width="76" height="16" isRemoveLineWhenBlank="true" uuid="a0cd2976-4638-462e-b06f-90e8a3db40ec">
+					<property name="com.jaspersoft.studio.layout" value="com.jaspersoft.studio.editor.layout.HorizontalRowLayout"/>
+				</reportElement>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$F{ccy2}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="462" y="0" width="76" height="16" isRemoveLineWhenBlank="true" uuid="3c2bea12-ff99-4dbd-90a8-797086261b16">
+					<property name="com.jaspersoft.studio.layout" value="com.jaspersoft.studio.editor.layout.HorizontalRowLayout"/>
+				</reportElement>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$F{amount2}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="538" y="0" width="76" height="16" isRemoveLineWhenBlank="true" uuid="685568b0-ea72-47c1-abc1-d9b87d522da7">
+					<property name="com.jaspersoft.studio.layout" value="com.jaspersoft.studio.editor.layout.HorizontalRowLayout"/>
+				</reportElement>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$F{dealDate}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="614" y="0" width="76" height="16" isRemoveLineWhenBlank="true" uuid="582799d1-267a-4d28-b097-a949d52302f5">
+					<property name="com.jaspersoft.studio.layout" value="com.jaspersoft.studio.editor.layout.HorizontalRowLayout"/>
+				</reportElement>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$F{startDate}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="690" y="0" width="76" height="16" isRemoveLineWhenBlank="true" uuid="97e774cb-85d4-4562-a032-df11519c011e">
+					<property name="com.jaspersoft.studio.layout" value="com.jaspersoft.studio.editor.layout.HorizontalRowLayout"/>
+				</reportElement>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$F{maturityDate}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="766" y="0" width="76" height="16" isRemoveLineWhenBlank="true" uuid="78bec63b-a77f-466e-bfd9-11bf516eeb74">
+					<property name="com.jaspersoft.studio.layout" value="com.jaspersoft.studio.editor.layout.HorizontalRowLayout"/>
+				</reportElement>
+				<textFieldExpression><![CDATA[$F{mtm}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+</jasperReport>

@@ -20,7 +20,6 @@ public class ReportBean extends ValidationReport implements Serializable {
 
     @EJB
     transient private ReportManagerService reportService;
-    transient final private ReportFormat xlsFormat = ReportFormat.XLS;
     transient private static final long serialVersionUID = 1234567654321L;
     transient private StreamedContent file;
 
@@ -42,11 +41,10 @@ public class ReportBean extends ValidationReport implements Serializable {
     }
 
     public StreamedContent getFile() {
-
         return file;
     }
 
     public ReportFormat getXlsFormat() {
-        return xlsFormat;
+        return ReportFormat.XLS;
     }
 }

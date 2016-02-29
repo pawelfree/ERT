@@ -93,6 +93,11 @@
                                  icon="ui-icon-arrowthichk-s">
                     <p:fileDownload value="#{reportBean.file}" />
                 </p:commandButton>
+                <p:commandButton id="downloadEucTradeData" value="#{msgs['button.euc']}" ajax="false"
+                                 actionListener="#{reportBean.generateTableReport(transactionListBean.eucReportType, reportBean.xlsFormat, transactionListBean.eucReportData)}"
+                                 icon="ui-icon-arrowthichk-s" >
+                    <p:fileDownload value="#{reportBean.file}" />
+                </p:commandButton>
                 <p:commandButton  value="#{msgs['register.transactionForm.new']}" action="#{transactionFormBean.init()}"
                                   styleClass="nowrap" rendered="true"/>
             </p:panel>
