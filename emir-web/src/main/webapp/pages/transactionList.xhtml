@@ -14,9 +14,9 @@
         <h:outputLabel value="#{msgs['register.sets.transaction.head']}"/>
     </ui:define>
     <ui:define name="body"> 
-    
+
         <h:form id="valuationsFilter" >
-        
+
             <emir:searchPanel bean="#{transactionListBean}" columns="1" id="searchPanel" updateAfterSearch="transactionTable">
                 <p:panel toggleable="false">
                     <p:panelGrid columns="6">
@@ -93,6 +93,21 @@
                                  icon="ui-icon-arrowthichk-s">
                     <p:fileDownload value="#{reportBean.file}" />
                 </p:commandButton>
+
+                <p:outputLabel value="  #{msgs['register.transactionForm.rate']} :  " />
+                <p:inputText id="usdPlnRate"
+                             value="#{transactionListBean.rate}"
+                             label="#{msgs['register.transactionForm.rate']}"
+                             style="text-align: right">
+                    <f:attribute name="title" value="#{msgs['register.transactionForm.euc']}->#{msgs['register.transactionForm.rate']}"/>
+                    <f:converter converterId="pl.pd.emir.clientutils.converter.BigDecimalConverter"/>
+                    <f:attribute name="maxFractionDigits" value="#{'5'}"/>
+                    <f:validator validatorId="pl.pd.emir.register.bean.validators.MaxIntegerDigitsValidator"/>
+                    <f:attribute name="maxIntegerDigits" value="#{'10'}"/>
+                    <f:validator validatorId="pl.pd.emir.clientutils.validators.PositiveNumberValidator"/>
+                    <f:validator validatorId="pl.pd.emir.register.bean.validators.MaxFractionDigitsValidator"/>
+                </p:inputText>            
+
                 <p:commandButton id="downloadEucTradeData" value="#{msgs['button.euc']}" ajax="false"
                                  actionListener="#{reportBean.generateTableReport(transactionListBean.eucReportType, reportBean.xlsFormat, transactionListBean.eucReportData)}"
                                  icon="ui-icon-arrowthichk-s" >
@@ -114,78 +129,78 @@
                                  lazy="true"
                                  >
                         <emir:column value="#{kdpwMsg.messageLog.messageTime}"
-                                       header="Data i czas komunikatu"
-                                       format="datetime"
-                                       />
+                                     header="Data i czas komunikatu"
+                                     format="datetime"
+                                     />
                         <emir:column value="#{kdpwMsg.messageLog.fileId}"
-                                       header="Identyfikator pliku"
-                                       format="text"
-                                       />
+                                     header="Identyfikator pliku"
+                                     format="text"
+                                     />
                         <emir:column value="#{kdpwMsg.sndrMsgRef}"
-                                       header="Identyfikator komunikatu"
-                                       format="text"
-                                       />
+                                     header="Identyfikator komunikatu"
+                                     format="text"
+                                     />
                         <emir:column value="#{kdpwMsg.requestDetails.transMsgType.value}"
-                                       header="Typ komunikatu"
-                                       format="text"
-                                       />
+                                     header="Typ komunikatu"
+                                     format="text"
+                                     />
                         <emir:column value="#{msgs[kdpwMsg.status.msgKey]}"
-                                       header="Status"
-                                       format="text"
-                                       />
+                                     header="Status"
+                                     format="text"
+                                     />
                     </p:dataTable>
                 </p:rowExpansion>
 
                 <emir:column header="#{msgs['register.transactionForm.basicData.sourceTransId']}"
-                               bean="#{transactionListBean}"
-                               sortBy="transactionDetails.sourceTransId"
-                               value="#{transaction.transactionDetails.sourceTransId}"/>
+                             bean="#{transactionListBean}"
+                             sortBy="transactionDetails.sourceTransId"
+                             value="#{transaction.transactionDetails.sourceTransId}"/>
 
                 <emir:column header="#{msgs['register.transactionForm.basicData.originalId']}"
-                               sortBy="originalId"
-                               value="#{transaction.originalId}" />
+                             sortBy="originalId"
+                             value="#{transaction.originalId}" />
 
                 <emir:column header="#{msgs['register.transactionForm.basicData.transactionDate']}"
-                               format="date"
-                               sortBy="transactionDate"
-                               value="#{transaction.transactionDate}" />
+                             format="date"
+                             sortBy="transactionDate"
+                             value="#{transaction.transactionDate}" />
 
                 <emir:column header="#{msgs['register.transactionForm.basicData.originalClientId']}"
-                               sortBy="originalId"
-                               value="#{transaction.client.originalId}" />
+                             sortBy="originalId"
+                             value="#{transaction.client.originalId}" />
 
                 <emir:column header="#{msgs['register.transactionForm.basicData.dataType']}"
-                               sortBy="dataType"
-                               value="#{msgs[transaction.dataType.msgKey]}" />
+                             sortBy="dataType"
+                             value="#{msgs[transaction.dataType.msgKey]}" />
 
                 <emir:column header="#{msgs['register.transactionForm.basicData.processingStatus']}"
-                               sortBy="processingStatus"
-                               value="#{msgs[transaction.processingStatus.msgKey]}" />
+                             sortBy="processingStatus"
+                             value="#{msgs[transaction.processingStatus.msgKey]}" />
 
                 <emir:column header="#{msgs['register.transactionForm.basicData.validationStatus']}"
-                               sortBy="validationStatus"
-                               value="#{msgs[transaction.validationStatus.msgKey]}" />
+                             sortBy="validationStatus"
+                             value="#{msgs[transaction.validationStatus.msgKey]}" />
 
                 <emir:column header="#{msgs['register.transactionForm.basicData.clientValidationStatus']}"
-                               sortBy="client.validationStatus"
-                               value="#{transaction.client ne null
-                                        ? msgs['client.'.concat(transaction.client.validationStatus.msgKey)]
-                                        : msgs['register.transactionForm.basicData.noClient']}" />
+                             sortBy="client.validationStatus"
+                             value="#{transaction.client ne null
+                                      ? msgs['client.'.concat(transaction.client.validationStatus.msgKey)]
+                                      : msgs['register.transactionForm.basicData.noClient']}" />
 
                 <emir:column header="#{msgs['register.transactionForm.column.confirmed']}"
-                               sortBy="confirmed"
-                               value="#{msgs[transaction.getConfirmed().msgKey]}"/>
+                             sortBy="confirmed"
+                             value="#{msgs[transaction.getConfirmed().msgKey]}"/>
                 <ui:remove>
                     <!--Wersja – wersja danych transakcji na dany dzień-->
                 </ui:remove>
                 <emir:column header="Wersja"
-                               sortBy="extractVersion"
-                               value="#{transaction.extractVersion}" />
+                             sortBy="extractVersion"
+                             value="#{transaction.extractVersion}" />
 
                 <emir:column header="#{msgs['register.sets.search.dateSupply']}"
-                               format="datetime"
-                               sortBy="dateSupply"
-                               value="#{transaction.dateSupply}"/>
+                             format="datetime"
+                             sortBy="dateSupply"
+                             value="#{transaction.dateSupply}"/>
                 <emir:actionColumn columns="3" rendered="true">
                     <p:commandButton title="#{msgs['button.details']}" icon="ui-icon-pencil" action="#{transactionFormBean.init('View', transaction.id)}" styleClass="nowrap" rendered="true"/>
                     <p:commandButton title="#{msgs['commons.history']}" icon="ui-icon-document" action="#{transactionHistoryBean.init(transaction)}" />

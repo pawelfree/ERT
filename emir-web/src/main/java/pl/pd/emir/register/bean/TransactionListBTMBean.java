@@ -1,5 +1,6 @@
 package pl.pd.emir.register.bean;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Currency;
@@ -16,6 +17,7 @@ import pl.pd.emir.reports.model.RegistrationTransactionWrapper;
 import pl.pd.emir.reports.model.ReportData;
 import org.primefaces.context.RequestContext;
 import pl.pd.emir.enums.Instrument;
+import pl.pd.emir.enums.TransactionParty;
 import pl.pd.emir.report.enums.InstrumentType;
 import pl.pd.emir.reports.model.EucTradeDataWrapper;
 
@@ -26,6 +28,7 @@ public class TransactionListBTMBean extends AbstractTransactionListBaseBean {
     @EJB
     private transient TransactionManager service;
     private transient final ReportData<RegistrationTransactionWrapper> reportData = new ReportData<>();
+    private transient BigDecimal rate = BigDecimal.ONE;
 
     public TransactionListBTMBean() {
         super();
@@ -73,7 +76,7 @@ public class TransactionListBTMBean extends AbstractTransactionListBaseBean {
     public ReportData getEucReportData() {
         ReportData<EucTradeDataWrapper> eucReportData = new ReportData<>();
         Collection<EucTradeDataWrapper> data = new ArrayList<>();
-        String prod1_code, prod2_code, productType;
+        String prod1_code, prod2_code, productType, currency1, currency2, amount1, amount2;
 
         List<Transaction> transactions = service.findAll(criteria);
         for (Transaction transaction : transactions) {
@@ -82,24 +85,35 @@ public class TransactionListBTMBean extends AbstractTransactionListBaseBean {
 
             if (prod1_code.equalsIgnoreCase(InstrumentType.INTERESTRATE.getRealName()) && prod2_code.equalsIgnoreCase(Instrument.SWAP.getRealName())) {
                 productType = "IRS";
+                amount1 = amount2 = transaction.getTransactionDetails().getNominalAmount().toPlainString();
             } else if (prod1_code.equalsIgnoreCase(InstrumentType.CURRENCY.getRealName()) && prod2_code.equalsIgnoreCase(Instrument.FORWARD.getRealName())) {
                 productType = "FX Forward";
+                amount1 = transaction.getTransactionDetails().getNominalAmount().toPlainString();
+                amount2 = transaction.getTransactionDetails().getNominalAmount().multiply(transaction.getTransactionDetails().getUnitPrice()).toPlainString();
             } else {
-                productType = "";
+                productType = amount1 = amount2 = "";
             }
-
+            
+            if (transaction.getTransactionParty().equals(TransactionParty.B)) {
+                currency1 = transaction.getContractDetailedData().getUnderlCurrency1Code().toString();
+                currency2 = transaction.getContractDetailedData().getUnderlCurrency2Code().toString();
+            } else {
+                currency2 = transaction.getContractDetailedData().getUnderlCurrency1Code().toString();
+                currency1 = transaction.getContractDetailedData().getUnderlCurrency2Code().toString();
+            }
+            
             if (!productType.isEmpty()) {
 
                 EucTradeDataWrapper wrapper = new EucTradeDataWrapper(
                         transaction.getOriginalId(),
                         transaction.getClient().getOriginalId(),
                         productType, 
-                        transaction.getContractDetailedData().getUnderlCurrency1Code().toString(), "test2", 
-                        transaction.getContractDetailedData().getUnderlCurrency2Code().toString(), "test4", 
+                        currency1, amount1, 
+                        currency2, amount2, 
                         transaction.getTransactionDetails().getExecutionDate(),
                         transaction.getTransactionDetails().getEffectiveDate(),
                         transaction.getTransactionDetails().getMaturityDate(), 
-                        "test5");
+                        transaction.getValuation().getValuationData().getAmount().abs().multiply(rate).toPlainString());
 
                 data.add(wrapper);
             }
@@ -111,6 +125,14 @@ public class TransactionListBTMBean extends AbstractTransactionListBaseBean {
         eucReportData.setParameters(parameters.getParameters());
 
         return eucReportData;
+    }
+    
+    public BigDecimal getRate() {
+        return rate;
+    }
+    
+    public void setRate(BigDecimal rate) {
+        this.rate = rate;
     }
 
     public ReportType getReportType() {
