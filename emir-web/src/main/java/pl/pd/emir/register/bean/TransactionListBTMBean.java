@@ -1,6 +1,7 @@
 package pl.pd.emir.register.bean;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Currency;
@@ -76,7 +77,7 @@ public class TransactionListBTMBean extends AbstractTransactionListBaseBean {
     public ReportData getEucReportData() {
         ReportData<EucTradeDataWrapper> eucReportData = new ReportData<>();
         Collection<EucTradeDataWrapper> data = new ArrayList<>();
-        String prod1_code, prod2_code, productType, currency1, currency2, amount1, amount2;
+        String prod1_code, prod2_code, productType, amount1, amount2;
 
         List<Transaction> transactions = service.findAll(criteria);
         for (Transaction transaction : transactions) {
@@ -89,17 +90,15 @@ public class TransactionListBTMBean extends AbstractTransactionListBaseBean {
             } else if (prod1_code.equalsIgnoreCase(InstrumentType.CURRENCY.getRealName()) && prod2_code.equalsIgnoreCase(Instrument.FORWARD.getRealName())) {
                 productType = "FX Forward";
                 amount1 = transaction.getTransactionDetails().getNominalAmount().toPlainString();
-                amount2 = transaction.getTransactionDetails().getNominalAmount().multiply(transaction.getTransactionDetails().getUnitPrice()).toPlainString();
+
+                if (transaction.getTransactionParty().equals(TransactionParty.B)) {
+                    amount2 = transaction.getTransactionDetails().getNominalAmount().multiply(transaction.getTransactionDetails().getUnitPrice()).toPlainString();
+                } else {
+                    amount2 = transaction.getTransactionDetails().getNominalAmount().divide(transaction.getTransactionDetails().getUnitPrice(),4,RoundingMode.HALF_UP).toPlainString();
+                }
+
             } else {
                 productType = amount1 = amount2 = "";
-            }
-            
-            if (transaction.getTransactionParty().equals(TransactionParty.B)) {
-                currency1 = transaction.getContractDetailedData().getUnderlCurrency1Code().toString();
-                currency2 = transaction.getContractDetailedData().getUnderlCurrency2Code().toString();
-            } else {
-                currency2 = transaction.getContractDetailedData().getUnderlCurrency1Code().toString();
-                currency1 = transaction.getContractDetailedData().getUnderlCurrency2Code().toString();
             }
             
             if (!productType.isEmpty()) {
@@ -107,13 +106,13 @@ public class TransactionListBTMBean extends AbstractTransactionListBaseBean {
                 EucTradeDataWrapper wrapper = new EucTradeDataWrapper(
                         transaction.getOriginalId(),
                         transaction.getClient().getOriginalId(),
-                        productType, 
-                        currency1, amount1, 
-                        currency2, amount2, 
+                        productType,
+                        transaction.getContractDetailedData().getUnderlCurrency1Code().toString(), amount1,
+                        transaction.getContractDetailedData().getUnderlCurrency2Code().toString(), amount2,
                         transaction.getTransactionDetails().getExecutionDate(),
                         transaction.getTransactionDetails().getEffectiveDate(),
-                        transaction.getTransactionDetails().getMaturityDate(), 
-                        transaction.getValuation().getValuationData().getAmount().abs().divide(rate).toPlainString());
+                        transaction.getTransactionDetails().getMaturityDate(),
+                        transaction.getValuation().getValuationData().getAmount().abs().divide(rate, 4, RoundingMode.HALF_UP).toPlainString());
 
                 data.add(wrapper);
             }
@@ -126,11 +125,11 @@ public class TransactionListBTMBean extends AbstractTransactionListBaseBean {
 
         return eucReportData;
     }
-    
+
     public BigDecimal getRate() {
         return rate;
     }
-    
+
     public void setRate(BigDecimal rate) {
         this.rate = rate;
     }
