@@ -113,7 +113,7 @@ public class TransactionListBTMBean extends AbstractTransactionListBaseBean {
                         transaction.getTransactionDetails().getExecutionDate(),
                         transaction.getTransactionDetails().getEffectiveDate(),
                         transaction.getTransactionDetails().getMaturityDate(), 
-                        transaction.getValuation().getValuationData().getAmount().abs().multiply(rate).toPlainString());
+                        transaction.getValuation().getValuationData().getAmount().abs().divide(rate).toPlainString());
 
                 data.add(wrapper);
             }
