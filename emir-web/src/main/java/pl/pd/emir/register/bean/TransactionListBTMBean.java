@@ -91,7 +91,7 @@ public class TransactionListBTMBean extends AbstractTransactionListBaseBean {
                 productType = "FX Forward";
                 amount1 = transaction.getTransactionDetails().getNominalAmount().toPlainString();
 
-                if (transaction.getTransactionParty().equals(TransactionParty.B)) {
+                if (transaction.getCurrencyTradeData().getCurrTradeBasis().substring(0,2).equalsIgnoreCase(transaction.getContractDetailedData().getUnderlCurrency2Code().toString())) {
                     amount2 = transaction.getTransactionDetails().getNominalAmount().multiply(transaction.getTransactionDetails().getUnitPrice()).toPlainString();
                 } else {
                     amount2 = transaction.getTransactionDetails().getNominalAmount().divide(transaction.getTransactionDetails().getUnitPrice(),4,RoundingMode.HALF_UP).toPlainString();
