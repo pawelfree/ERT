@@ -4,8 +4,8 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Currency;
 import java.util.List;
+import java.util.stream.Collectors;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
@@ -18,7 +18,6 @@ import pl.pd.emir.reports.model.RegistrationTransactionWrapper;
 import pl.pd.emir.reports.model.ReportData;
 import org.primefaces.context.RequestContext;
 import pl.pd.emir.enums.Instrument;
-import pl.pd.emir.enums.TransactionParty;
 import pl.pd.emir.report.enums.InstrumentType;
 import pl.pd.emir.reports.model.EucTradeDataWrapper;
 
@@ -79,7 +78,8 @@ public class TransactionListBTMBean extends AbstractTransactionListBaseBean {
         Collection<EucTradeDataWrapper> data = new ArrayList<>();
         String prod1_code, prod2_code, productType, amount1, amount2;
 
-        List<Transaction> transactions = service.findAll(criteria);
+        List<Transaction> transactions = service.findAll(criteria).stream().filter(transaction -> transaction.getClient().getEucReported()).collect(Collectors.toList());
+        
         for (Transaction transaction : transactions) {
             prod1_code = transaction.getContractDetailedData().getContractData().getProd1Code();
             prod2_code = transaction.getContractDetailedData().getContractData().getProd2Code();

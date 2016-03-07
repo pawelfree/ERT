@@ -38,13 +38,14 @@ public class ClientCsvParser extends BaseCsvParser<Client> {
             CountryCode f3 = ImportValidationUtils.validateEnumField(CountryCode.class, data[2], "COUNTRY", true, "3", importResult);
             BusinessEntity f4 = ImportValidationUtils.validateBusinessEntity(Arrays.copyOfRange(data, 3, 5), false, importResult);
             Boolean f5 = ImportValidationUtils.validateBooleanField(data[7], "Y", "N", true, "RAPORTOWANY", "8", importResult);
+            Boolean f51 = true;
             Institution f6 = ImportValidationUtils.validateInstitution(institutionData, importResult);
             ContrPartyIndustry f7 = ImportValidationUtils.validateEnumField(ContrPartyIndustry.class, data[14], "CORPSCTR", false, "15", importResult);
             String f8 = ImportValidationUtils.validateStringField(data[15], 1, "FINNONFIN_ID", true, "16", importResult);
             String f9 = ImportValidationUtils.validateStringBooleanField(data[16], "Y", "N", true, "EOG", "17", importResult);
             Boolean f10 = ImportValidationUtils.validateBooleanField(data[17], "Y", "N", true, "OSOBA_FIZYCZNA", "18", importResult);
 
-            client = new Client(f1, f2, f3, f4, f5, f6, f7, f8, f9, f10, ValidationStatus.VALID);
+            client = new Client(f1, f2, f3, f4, f5, f51, f6, f7, f8, f9, f10, ValidationStatus.VALID);
 
             client.setValidationStatus(importResult.getValidationStatus());
 

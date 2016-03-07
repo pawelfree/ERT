@@ -208,17 +208,6 @@ public class ClientFormBean extends AbstractFormBean<Client> {
         return "clientList";
     }
 
-//    public Boolean getReported() {
-//        if (Objects.isNull(getEntity().getReported())) {
-//            return BeanHelper.getMessage("commons.select");
-//        } else {
-//            if (getEntity().getReported().equals("Y") || getEntity().getReported().equals("N")) {
-//                return BeanHelper.getMessage("YesNo.") + getEntity().getReported();
-//            } else {
-//                return getEntity().getReported();
-//            }
-//        }
-//    }
     protected boolean idNotUniquenessClient() {
         if (null != getEntity() && StringUtil.isNotEmpty(getEntity().getOriginalId())) {
             final List<Client> trans = getService().getUniquenessIdOriginal(getEntity().getOriginalId().trim());

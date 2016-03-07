@@ -79,6 +79,13 @@ public class Client extends Extract implements Selectable<Long>, DescriptorCusto
      */
     @Column(name = "REPORTED")
     private Boolean reported;
+    
+    /*
+     * client2 np BTMU raportuje informacje w imieniu kontrahenta
+     */
+    @Column(name = "EUC_REPORTED")
+    private Boolean eucReported;
+    
     /*
      * Dane podmiotu raportującego [3-4]
      */
@@ -148,7 +155,7 @@ public class Client extends Extract implements Selectable<Long>, DescriptorCusto
     }
 
     public Client(String originalId, String clientName, CountryCode countryCode, BusinessEntity businessEntity,
-            Boolean reported, Institution institution, ContrPartyIndustry contrPartyIndustry, String contrPartyType, String eog,
+            Boolean reported, Boolean eucReported, Institution institution, ContrPartyIndustry contrPartyIndustry, String contrPartyType, String eog,
             Boolean naturalPerson, ValidationStatus validationStatus) {
         this();
         this.originalId = originalId;
@@ -156,6 +163,7 @@ public class Client extends Extract implements Selectable<Long>, DescriptorCusto
         this.countryCode = countryCode;
         this.businessEntity = businessEntity;
         this.reported = reported;
+        this.eucReported = eucReported;
         this.institution = institution;
         this.contrPartyIndustry = contrPartyIndustry;
         this.contrPartyType = contrPartyType;
@@ -363,6 +371,7 @@ public class Client extends Extract implements Selectable<Long>, DescriptorCusto
                 countryCode,
                 businessEntity == null ? new BusinessEntity() : businessEntity.fullClone(),
                 reported,
+                eucReported,
                 institution == null ? new Institution() : institution.fullClone(),
                 contrPartyIndustry,
                 contrPartyType,
@@ -407,6 +416,14 @@ public class Client extends Extract implements Selectable<Long>, DescriptorCusto
 
     public void setIntraGroupTransactions(Boolean intraGroupTransactions) {
         this.intraGroupTransactions = intraGroupTransactions;
+    }
+
+    public Boolean getEucReported() {
+        return eucReported;
+    }
+
+    public void setEucReported(Boolean eucReported) {
+        this.eucReported = eucReported;
     }
 
 }
