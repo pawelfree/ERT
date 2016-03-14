@@ -120,7 +120,7 @@ public class TransactionListBTMBean extends AbstractTransactionListBaseBean {
 
         eucReportData.setReportData(data);
 
-        ParametersWrapper parameters = new ParametersWrapper();
+        ParametersWrapper parameters = new ParametersWrapper("c.idTransaction", "c.internalIdTransaction", "c.date", "c.idConctractors", "c.typeDate", "c.statusProcessing", "c.statusCorrect", "c.confirmed", "c.dataTimeSupply");
         eucReportData.setParameters(parameters.getParameters());
 
         return eucReportData;
