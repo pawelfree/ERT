@@ -1,5 +1,6 @@
 package pl.pd.emir.kdpw.service.utils;
 
+import pl.pd.emir.kdpw.api.ChangeRegister;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.text.ParseException;
@@ -78,37 +79,29 @@ public class KdpwUtils {
         return result;
     }
 
-    public static <T extends Object> boolean isNotEqual(final T object1, final T object2, final Class<? extends Annotation> annotation) {
-        if (Objects.isNull(object1)) {
-            return Objects.nonNull(object2);
-        } else if (Objects.isNull(object2)) {
-            return false;
+        public static <T extends Object> List<ChangeRegister> getChanges(final T oldItem, final T newItem, final Class<? extends Annotation> annotation) {
+        List<ChangeRegister> changes = new ArrayList<>();
+        
+        if (Objects.isNull(oldItem) || Objects.isNull(newItem)) {
+            return changes;
         }
 
-        Class clazz = object1.getClass();
+        Class clazz = oldItem.getClass();
         while (clazz != Object.class) {
             final Field[] allFields = clazz.getDeclaredFields();
             for (Field field : allFields) {
                 field.setAccessible(true);
                 if (Objects.nonNull(field.getAnnotation(annotation))) {
                     try {
-                        final boolean notEquals = notEquals(field.get(object1), field.get(object2));
-                        if (notEquals) {
-                            LOGGER.debug("NOT equals field: {}", field.getName());
-                            LOGGER.debug("VALUES: base: " + field.get(object1) + ", new: " + field.get(object2));
-                            return notEquals;
+                        if (notEquals(field.get(oldItem), field.get(newItem))) {
+                            changes.add( new ChangeRegister(clazz.getSimpleName(), field.getName(), field.get(oldItem).toString(), field.get(newItem).toString()));
                         }
                     } catch (IllegalAccessException | IllegalArgumentException ex) {
                         LOGGER.error("Error: ", ex);
                     }
                 } else if (isEmbedableObject(field)) {
                     try {
-                        boolean notEquals = isNotEqual(field.get(object1), field.get(object2), annotation);
-                        if (notEquals) {
-                            LOGGER.debug("NOT equals field: {}", field.getName());
-                            LOGGER.debug("VALUES: base: " + field.get(object1) + ", new: " + field.get(object2));
-                            return notEquals;
-                        }
+                        changes.addAll(getChanges(field.get(oldItem), field.get(newItem), annotation));
                     } catch (IllegalAccessException | IllegalArgumentException ex) {
                         LOGGER.error("Error: ", ex);
                     }
@@ -116,7 +109,7 @@ public class KdpwUtils {
             }
             clazz = clazz.getSuperclass();
         }
-        return false;
+        return changes;
     }
 
     protected static boolean isEmbedableObject(Field field) {

@@ -96,6 +96,11 @@ public class MessageLog implements Logable<Long>, Selectable<Long> {
 
     @Column(name = "INFO")
     private String info;
+    
+    @Basic(fetch = FetchType.LAZY)
+    @Column(name = "CHANGE_LOG")
+    @Lob
+    private String changeLog;
 
     @Transient
     private transient boolean selected;
@@ -145,6 +150,10 @@ public class MessageLog implements Logable<Long>, Selectable<Long> {
 
     public void responseFounded() {
         this.hasResponse = Boolean.TRUE;
+    }
+    
+    public String getChangeLog() {
+        return changeLog;
     }
 
     public String getInfo() {
@@ -217,9 +226,12 @@ public class MessageLog implements Logable<Long>, Selectable<Long> {
         public static MessageLog getOutput(final String fileIden, final MessageType messageType,
                 final String userLogin, final String transportForm,
                 final Integer batchNumber,
-                final String info) {
+                final String info,
+                final String changeLog
+            ) {
             final MessageLog result = getOutput(fileIden, messageType, userLogin, transportForm, batchNumber);
-            result.setInfo(info);
+            result.info = info;
+            result.changeLog = changeLog;
             return result;
         }
 
@@ -252,6 +264,7 @@ public class MessageLog implements Logable<Long>, Selectable<Long> {
             result.userLogin = userLogin;
             result.fileId = fileName;
             result.info = "";
+            result.changeLog = "";
             return result;
         }
     }

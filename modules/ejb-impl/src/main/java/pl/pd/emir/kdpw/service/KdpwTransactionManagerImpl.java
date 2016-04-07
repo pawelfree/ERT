@@ -1,5 +1,6 @@
 package pl.pd.emir.kdpw.service;
 
+import java.io.StringWriter;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -8,12 +9,16 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.logging.Level;
 import java.util.stream.Collectors;
 import javax.ejb.EJB;
 import javax.ejb.Local;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBException;
+import javax.xml.bind.Marshaller;
 import pl.pd.emir.admin.MultiNumberGenerator;
 import pl.pd.emir.admin.ParameterManager;
 import pl.pd.emir.admin.UserManager;
@@ -59,6 +64,9 @@ import org.slf4j.LoggerFactory;
 import pl.pd.emir.admin.EventLogManager;
 import pl.pd.emir.entity.annotations.TransactionDataChange;
 import pl.pd.emir.kdpw.api.TransactionsToKdpwBag;
+import pl.pd.emir.kdpw.api.ChangeRegister;
+import pl.pd.emir.kdpw.api.ChangesToTransactions;
+import pl.pd.emir.kdpw.api.TransactionChanges;
 
 @Stateless
 @Local(KdpwTransactionManager.class)
@@ -193,7 +201,7 @@ public class KdpwTransactionManagerImpl implements KdpwTransactionManager {
 
         if (CollectionsUtils.isNotEmpty(toSendList)) {
             try {
-                generateFile(toSendList, userLogin, batchNumber, transactionsBag.getInfo());
+                generateFile(toSendList, userLogin, batchNumber, transactionsBag.getInfo(), transactionsBag.getTransactionChanges());
                 toSendList.stream().forEach((ttr) -> {
                     tmpResult.addItem(new SentItem(ttr.getRegistable().getOriginalId())); // dodaj wysłane
                 });
@@ -206,20 +214,37 @@ public class KdpwTransactionManagerImpl implements KdpwTransactionManager {
         return tmpResult;
     }
 
+    private String getTransactionChangesXmlString(List<TransactionChanges> changes) {
+        String xmlString = "";
+        try {
+            StringWriter sw = new StringWriter();
+            JAXBContext jaxbContext = JAXBContext.newInstance(ChangesToTransactions.class);
+            Marshaller jaxbMarshaller = jaxbContext.createMarshaller();
+            jaxbMarshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
+            jaxbMarshaller.marshal(new ChangesToTransactions(changes), sw);
+            xmlString = sw.toString();
+        } catch (JAXBException ex) {
+            LOGGER.error("Convert changes to xml failed.",ex);
+        }
+        return xmlString;
+    }
+
     protected void generateFile(final List<TransactionToRepository> messages, final String userLogin,
-            final Integer batchNumber, final String info) throws XmlParseException, UnsupportedEncodingException {
+            final Integer batchNumber, final String info, final List<TransactionChanges> changes) throws XmlParseException, UnsupportedEncodingException {
 
         logCurrentTime(String.format("START generate file for %s messages.", messages.size()));
 
         TransactionWriterResult result = transactionWriter.write(messages, getReportingInstitutionId(), getReportingInstitutionIdType());
         logCurrentTime("End of writing file");
         String message = result.getMessage();
+
         final MessageLog messageLog = logManager.save(MessageLog.Builder.getOutput(KdpwUtils.getMsgLogNumber(numberGenerator),
                 MessageType.TRANSACTION,
                 userLogin,
                 new String(message.getBytes(), "UTF-8"),
                 batchNumber,
-                info));
+                info,
+                new String(getTransactionChangesXmlString(changes).getBytes(),"UTF-8")));
 
         final List<TransactionToRepository> transactions = result.getTransactions();
         logEvent(messageLog, getEventType(transactions), transactions.size(), MessageType.TRANSACTION);
@@ -267,6 +292,17 @@ public class KdpwTransactionManagerImpl implements KdpwTransactionManager {
         logCurrentTime("End of generating file");
     }
 
+    private class OngoingResults {
+
+        private List<ResultItem> results;
+        private TransactionChanges changes;
+
+        public OngoingResults(List<ResultItem> results, TransactionChanges changes) {
+            this.results = results;
+            this.changes = changes;
+        }
+    }
+
     /**
      * Definiuje możliwość i typ komunikatu do wysyłki dla transakcji.
      *
@@ -275,6 +311,7 @@ public class KdpwTransactionManagerImpl implements KdpwTransactionManager {
      */
     protected final TransactionsToKdpwBag getRegistrationListByType(final List<Sendable> list) {
         final List<ResultItem> result = new ArrayList<>();
+        final List<TransactionChanges> changeList = new ArrayList<>();
         LOGGER.info("START | getRegistrationType (" + list.size() + ") on: " + DateUtils.formatDate(new Date(), DateUtils.DATE_TIME_FORMAT));
         list.stream().filter((sendable) -> !(!checkClientCompleteness(sendable, result))).forEach((sendable) -> {
             if (KdpwUtils.isNew(sendable)) { // NOWA
@@ -282,7 +319,9 @@ public class KdpwTransactionManagerImpl implements KdpwTransactionManager {
             } else if (KdpwUtils.isCompleted(sendable)) { // ZAKONCZONA
                 result.add(getTypeForCompleted(sendable));
             } else if (KdpwUtils.isOngoing(sendable)) { // TRWAJACA
-                result.addAll(getTypeForOngoing(sendable));
+                OngoingResults results = getTypeForOngoing(sendable);
+                result.addAll(results.results);
+                changeList.add(results.changes);
             } else if (KdpwUtils.isCancelled(sendable)) {
                 result.add(getTypeForCancelled(sendable));
             } else {
@@ -290,19 +329,19 @@ public class KdpwTransactionManagerImpl implements KdpwTransactionManager {
             }
         });
         LOGGER.info("END | getRegistrationType on: " + DateUtils.formatDate(new Date(), DateUtils.DATE_TIME_FORMAT));
-        return countKdpwMessageTypes(result);
+        return countKdpwMessageTypes(result, changeList);
     }
 
-    private TransactionsToKdpwBag countKdpwMessageTypes(List<ResultItem> list) {
+    private TransactionsToKdpwBag countKdpwMessageTypes(List<ResultItem> list, List<TransactionChanges> changes) {
         List<ResultItem> tmp = list.stream().filter(item -> item.getType() == ItemType.TO_SEND && item.getClass().equals(TransactionToRepository.class)).collect(Collectors.toList());
 
-        TransactionsToKdpwBag result = new TransactionsToKdpwBag(list);
+        TransactionsToKdpwBag result = new TransactionsToKdpwBag(list, changes);
         long newCounter = tmp.stream().filter(item -> ((TransactionToRepository) item).getMsgType() == TransactionMsgType.N).count();
         long valCounter = tmp.stream().filter(item -> ((TransactionToRepository) item).getMsgType() == TransactionMsgType.V).count();
         long valCCounter = tmp.stream().filter(item -> ((TransactionToRepository) item).getMsgType() == TransactionMsgType.VR).count();
         long modCounter = tmp.stream().filter(item -> ((TransactionToRepository) item).getMsgType() == TransactionMsgType.M).count();
         long modCCounter = tmp.stream().filter(item -> ((TransactionToRepository) item).getMsgType() == TransactionMsgType.MC).count();
-        
+
         result.setNewCounter(newCounter);
         result.setModCounter(modCounter);
         result.setModCCounter(modCCounter);
@@ -355,10 +394,13 @@ public class KdpwTransactionManagerImpl implements KdpwTransactionManager {
         return new TransactionToRepository(registable, TransactionMsgType.C);
     }
 
-    private List<ResultItem> getTypeForOngoing(final Sendable registable) {
+    private OngoingResults getTypeForOngoing(final Sendable registable) {
         final List<ResultItem> result = new ArrayList<>();
         // sprawdza, że nie ma transakcji o tym samym ID (pole TRADID_ID),
         // o dacie nie późniejszej niż data przetwarzanej transakcji ze statusem przetwarzania NOWA
+        List<ChangeRegister> l1 = new ArrayList<>();
+        List<ChangeRegister> l2 = new ArrayList<>();
+
         final Transaction transaction = registable.getTransaction();
         final Transaction oldTrans = transactionManager.findOtherProcessingNew(transaction.getId(),
                 transaction.getTransactionDetails().getSourceTransId(),
@@ -374,7 +416,8 @@ public class KdpwTransactionManagerImpl implements KdpwTransactionManager {
             if (Objects.nonNull(kdpwTrans)) {
                 boolean anyChanges = false;
                 if (hasValuationAndProtection(transaction)) {
-                    if (isValuationOrProtectionChange(kdpwTrans, transaction)) {
+                    l1 = valuationOrProtectionChanges(kdpwTrans, transaction);
+                    if (!l1.isEmpty()) {
                         if (KdpwUtils.isReported(transaction.getClient())) {
                             result.add(new TransactionToRepository(registable, TransactionMsgType.VR));
                         } else {
@@ -388,7 +431,9 @@ public class KdpwTransactionManagerImpl implements KdpwTransactionManager {
                             ""));
                 }
 
-                if (isTransactionDetailsChange(kdpwTrans, transaction)) {
+                l2 = transactionChanges(kdpwTrans, transaction);
+                l1.addAll(l2);
+                if (!l2.isEmpty()) {
                     if (transaction.getClient().getReported()) {
                         result.add(new TransactionToRepository(registable, TransactionMsgType.MC));
                     } else {
@@ -405,7 +450,7 @@ public class KdpwTransactionManagerImpl implements KdpwTransactionManager {
                 result.add(new ErrorItem(transaction.getOriginalId(), SendingError.PREVIOUS_KDPW_VERSION_NOT_FOUND, ""));
             }
         }
-        return result;
+        return new OngoingResults(result, new TransactionChanges(transaction.getOriginalId(), l1));
     }
 
     protected final ResultItem getTypeForCancelled(final Sendable registable) {
@@ -538,21 +583,40 @@ public class KdpwTransactionManagerImpl implements KdpwTransactionManager {
         return true;
     }
 
-    protected final boolean isValuationOrProtectionChange(final Transaction oldTrans, final Transaction newTrans) {
-        return Objects.nonNull(oldTrans)
-                && (KdpwUtils.isNotEqual(oldTrans.getProtection(), newTrans.getProtection(), ProtectionChange.class)
-                || KdpwUtils.isNotEqual(oldTrans.getValuation(), newTrans.getValuation(), ValuationChange.class));
+    protected final List<ChangeRegister> valuationOrProtectionChanges(final Transaction oldTrans, final Transaction newTrans) {
+        List<ChangeRegister> changes = new ArrayList<>();
+
+        if (Objects.nonNull(oldTrans)) {
+            changes.addAll(KdpwUtils.getChanges(oldTrans.getProtection(), newTrans.getProtection(), ProtectionChange.class));
+            changes.addAll(KdpwUtils.getChanges(oldTrans.getValuation(), newTrans.getValuation(), ValuationChange.class));
+        }
+
+        return changes;
     }
 
-    protected final boolean isTransactionDetailsChange(final Transaction oldTrans, final Transaction transaction) {
-        return Objects.nonNull(oldTrans)
-                && (KdpwUtils.isNotEqual(oldTrans, transaction, TransactionDataChange.class)
-                || isClientDataChange(oldTrans.getClientVersion(), transaction.getClient())
-                || isClientDataChange(oldTrans.getClient2Version(), transaction.getClient2()));
+    protected final List<ChangeRegister> transactionChanges(final Transaction oldTrans, final Transaction transaction) {
+        List<ChangeRegister> changes = new ArrayList<>();
+
+        if (Objects.nonNull(oldTrans)) {
+
+            changes.addAll(KdpwUtils.getChanges(oldTrans, transaction, TransactionDataChange.class));
+            //TODO PAWEL TO CHYBA NIE MA SENSU - NIE JEST NIGDZIE DALEJ SPRAWDZANE
+            changes.addAll(clientDataChanges(oldTrans.getClientVersion(), transaction.getClient()));
+            changes.addAll(clientDataChanges(oldTrans.getClient2Version(), transaction.getClient2()));
+        }
+
+        return changes;
     }
 
-    protected final boolean isClientDataChange(final Integer oldClientVersion, Client newClientVersion) {
-        return Objects.nonNull(newClientVersion) && !java.util.Objects.equals(newClientVersion.getClientVersion(), oldClientVersion);
+    protected final List<ChangeRegister> clientDataChanges(final Integer oldClientVersion, Client newClientVersion) {
+        List<ChangeRegister> changes = new ArrayList<>();
+
+        if (Objects.nonNull(newClientVersion)) {
+            if (!java.util.Objects.equals(newClientVersion.getClientVersion(), oldClientVersion)) {
+                changes.add(new ChangeRegister("Client", "version", oldClientVersion.toString(), newClientVersion.getClientVersion().toString()));
+            }
+        }
+        return changes;
     }
 
     protected final Date getLastModifyDate(final Long clientId) {

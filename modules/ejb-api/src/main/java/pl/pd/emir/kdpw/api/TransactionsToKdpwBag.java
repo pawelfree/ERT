@@ -8,6 +8,7 @@ import java.util.List;
  */
 public class TransactionsToKdpwBag {
 
+    private List<TransactionChanges> changes;
     private List<ResultItem> items;
     private long newCounter = 0;
     private long valCounter = 0;
@@ -15,16 +16,17 @@ public class TransactionsToKdpwBag {
     private long modCounter = 0;
     private long modCCounter = 0;
 
-    public TransactionsToKdpwBag(List<ResultItem> list) {
+    public TransactionsToKdpwBag(List<ResultItem> list, List<TransactionChanges> changes) {
         items = list;
+        this.changes = changes;
     }
 
     public List<ResultItem> getItems() {
         return items;
     }
-
-    public void setItems(List<ResultItem> items) {
-        this.items = items;
+    
+    public List<TransactionChanges> getTransactionChanges() {
+        return changes;
     }
 
     public long getNewCounter() {
