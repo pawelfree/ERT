@@ -598,7 +598,6 @@ public class KdpwTransactionManagerImpl implements KdpwTransactionManager {
         List<ChangeRegister> changes = new ArrayList<>();
 
         if (Objects.nonNull(oldTrans)) {
-
             changes.addAll(KdpwUtils.getChanges(oldTrans, transaction, TransactionDataChange.class));
             //TODO PAWEL TO CHYBA NIE MA SENSU - NIE JEST NIGDZIE DALEJ SPRAWDZANE
             changes.addAll(clientDataChanges(oldTrans.getClientVersion(), transaction.getClient()));

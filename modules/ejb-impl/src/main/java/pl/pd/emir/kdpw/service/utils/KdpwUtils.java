@@ -79,9 +79,9 @@ public class KdpwUtils {
         return result;
     }
 
-        public static <T extends Object> List<ChangeRegister> getChanges(final T oldItem, final T newItem, final Class<? extends Annotation> annotation) {
+    public static <T extends Object> List<ChangeRegister> getChanges(final T oldItem, final T newItem, final Class<? extends Annotation> annotation) {
         List<ChangeRegister> changes = new ArrayList<>();
-        
+
         if (Objects.isNull(oldItem) || Objects.isNull(newItem)) {
             return changes;
         }
@@ -94,7 +94,10 @@ public class KdpwUtils {
                 if (Objects.nonNull(field.getAnnotation(annotation))) {
                     try {
                         if (notEquals(field.get(oldItem), field.get(newItem))) {
-                            changes.add( new ChangeRegister(clazz.getSimpleName(), field.getName(), field.get(oldItem).toString(), field.get(newItem).toString()));
+                            changes.add(new ChangeRegister(clazz.getSimpleName(),
+                                    field.getName(),
+                                    Objects.isNull(field.get(oldItem)) ? "" : field.get(oldItem).toString(),
+                                    Objects.isNull(field.get(newItem)) ? "" : field.get(newItem).toString()));
                         }
                     } catch (IllegalAccessException | IllegalArgumentException ex) {
                         LOGGER.error("Error: ", ex);
@@ -108,6 +111,7 @@ public class KdpwUtils {
                 }
             }
             clazz = clazz.getSuperclass();
+
         }
         return changes;
     }
