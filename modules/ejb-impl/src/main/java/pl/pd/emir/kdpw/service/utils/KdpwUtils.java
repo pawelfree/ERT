@@ -85,6 +85,9 @@ public class KdpwUtils {
         if (Objects.isNull(oldItem) || Objects.isNull(newItem)) {
             return changes;
         }
+        
+        String s1 = "";
+        String s2 = "";
 
         Class clazz = oldItem.getClass();
         while (clazz != Object.class) {
@@ -94,10 +97,16 @@ public class KdpwUtils {
                 if (Objects.nonNull(field.getAnnotation(annotation))) {
                     try {
                         if (notEquals(field.get(oldItem), field.get(newItem))) {
-                            changes.add(new ChangeRegister(clazz.getSimpleName(),
-                                    field.getName(),
-                                    Objects.isNull(field.get(oldItem)) ? "" : field.get(oldItem).toString(),
-                                    Objects.isNull(field.get(newItem)) ? "" : field.get(newItem).toString()));
+                            //TODO PAWEL - zabezpieczenie przed rejestrowaniem zmian miedzy polami o wartosciach null i ""
+                            //powinno byc usuniete po zapewnieniu wlasciwego wypelniania bazy danych
+                            s1 = Objects.isNull(field.get(oldItem)) ? "" : field.get(oldItem).toString();
+                            s2 = Objects.isNull(field.get(newItem)) ? "" : field.get(newItem).toString();
+                            if (!s1.equalsIgnoreCase(s2)) {
+                                changes.add(new ChangeRegister(clazz.getSimpleName(),
+                                        field.getName(),
+                                        s1,
+                                        s2));
+                            }
                         }
                     } catch (IllegalAccessException | IllegalArgumentException ex) {
                         LOGGER.error("Error: ", ex);
