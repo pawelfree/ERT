@@ -83,22 +83,22 @@
 
                         <emir:labeledOutput id="institutionId_out" label="#{msgs['register.client.institution.institutionData.institutionId']}"
                                             value="#{clientFormBean.entity.institution.institutionData.institutionId}"
-                                            rendered="#{clientFormBean.formType eq 'View'}"/>
+                                            rendered="#{not (clientFormBean.formType eq 'New')}"/>
                         <emir:inputText id="institutionId" label="#{msgs['register.client.institution.institutionData.institutionId']}"
                                         required="true"
                                         value="#{clientFormBean.entity.institution.institutionData.institutionId}"
                                         maxlength="#{clientFormBean.institutionIdLength}"
-                                        rendered="#{not (clientFormBean.formType == 'View')}">
+                                        rendered="#{clientFormBean.formType eq 'New'}">
                         </emir:inputText>
 
                         <emir:labeledOutput id="institutionIdType_out" label="#{msgs['register.client.institution.institutionData.institutionIdType']}"
                                             value="#{clientFormBean.entity.institution.institutionData.institutionIdType}"
-                                            rendered="#{clientFormBean.formType eq 'View'}"/>
+                                            rendered="#{not (clientFormBean.formType eq 'New')}"/>
                         <emir:inputSelect id="institutionIdType"
                                           label="#{msgs['register.client.institution.institutionData.institutionIdType']}"
                                           required="true"
                                           value="#{clientFormBean.entity.institution.institutionData.institutionIdType}"
-                                          rendered="#{not (clientFormBean.formType == 'View')}">
+                                          rendered="#{clientFormBean.formType == 'New'}">
                             <f:selectItem itemLabel="#{msgs['commons.select']}" itemValue="#{null}" itemDisabled="false" />
                             <f:selectItems value="#{clientFormBean.institutionIdTypes}" itemValue="#{option}" var="option" itemLabel="#{option}" />
                         </emir:inputSelect>
