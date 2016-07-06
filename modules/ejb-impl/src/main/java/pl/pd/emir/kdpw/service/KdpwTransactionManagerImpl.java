@@ -9,7 +9,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import java.util.logging.Level;
 import java.util.stream.Collectors;
 import javax.ejb.EJB;
 import javax.ejb.Local;
@@ -599,22 +598,8 @@ public class KdpwTransactionManagerImpl implements KdpwTransactionManager {
 
         if (Objects.nonNull(oldTrans)) {
             changes.addAll(KdpwUtils.getChanges(oldTrans, transaction, TransactionDataChange.class));
-            //TODO PAWEL TO CHYBA NIE MA SENSU - NIE JEST NIGDZIE DALEJ SPRAWDZANE
-            changes.addAll(clientDataChanges(oldTrans.getClientVersion(), transaction.getClient()));
-            changes.addAll(clientDataChanges(oldTrans.getClient2Version(), transaction.getClient2()));
         }
 
-        return changes;
-    }
-
-    protected final List<ChangeRegister> clientDataChanges(final Integer oldClientVersion, Client newClientVersion) {
-        List<ChangeRegister> changes = new ArrayList<>();
-
-        if (Objects.nonNull(newClientVersion)) {
-            if (!java.util.Objects.equals(newClientVersion.getClientVersion(), oldClientVersion)) {
-                changes.add(new ChangeRegister("Client", "version", oldClientVersion.toString(), newClientVersion.getClientVersion().toString()));
-            }
-        }
         return changes;
     }
 
