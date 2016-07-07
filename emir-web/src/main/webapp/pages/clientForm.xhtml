@@ -57,11 +57,11 @@
 
                     <emir:labeledOutput id="originalId_out" label="#{msgs['register.client.originalId']}"
                                         value="#{clientFormBean.entity.originalId}"
-                                        rendered="#{clientFormBean.formType eq 'View'}"/>
+                                        rendered="#{not( clientFormBean.formType eq 'New')}"/>
                     <emir:inputText id="originalId" label="#{msgs['register.client.originalId']}"
                                     value="#{clientFormBean.entity.originalId}"
                                     maxlength="#{clientFormBean.originalIdLength}"
-                                    rendered="#{not (clientFormBean.formType == 'View')}"
+                                    rendered="#{clientFormBean.formType == 'New'}"
                                     required="true"/>
 
 
