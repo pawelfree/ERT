@@ -133,7 +133,7 @@
                                    actionListener="#{kdpwListBean.addToSave(messageLog)}"
                                    ajax="false"
                                    >
-                        <p:fileDownload value="#{kdpwListBean.file}" />
+                        <p:fileDownload value="#{kdpwListBean.getFile(2)}" />
                     </p:commandLink>
                 </p:column>
 
@@ -148,7 +148,7 @@
                                value="#{messageLog.fileId}"
                                />
 
-                <emirui:actionColumn columns="3" rendered="true">
+                <emirui:actionColumn columns="4" rendered="true">
                     <p:commandButton id="downloadKDPWResponseReport"
                                      title="#{msgs['kdpw.message.table.action.report']}"
                                      ajax="false"
@@ -163,6 +163,15 @@
                         onclick="PF('infoDialog#{messageLog.id}').show();"
                         rendered="#{messageLog.isInfo()}"
                         />
+                    <p:commandButton id="changesReport" 
+                                     title="#{msgs['kdpw.message.table.action.changes']}"                                     
+                                     ajax="false"
+                                     icon="ui-icon-exit"
+                                     actionListener="#{kdpwListBean.addToSave(messageLog)}"   
+                                     rendered="#{kdpwListBean.hasChangeLog(messageLog)}"
+                                     >
+                        <p:fileDownload value="#{kdpwListBean.getFile(2)}" />                                  
+                    </p:commandButton>
                     <p:commandButton title="#{msgs['kdpw.message.table.action.link']}"
                                      rendered="#{not kdpwListBean.inRelatedView and messageLog.hasResponse}"
                                      icon="ui-icon-extlink"

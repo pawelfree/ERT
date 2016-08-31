@@ -31,6 +31,7 @@ import pl.pd.emir.resources.MultipleFilesResourceBundle;
 import org.primefaces.model.DefaultStreamedContent;
 import org.primefaces.model.SortOrder;
 import org.primefaces.model.StreamedContent;
+import pl.pd.emir.commons.StringUtil;
 
 /**
  * Obsługa widoku listy komunikatów wymienianych z KDPW.
@@ -223,20 +224,36 @@ public class RepositoryMessageListBean extends AbstractListBean<MessageLog, Mess
         this.logToSave = value;
         this.fileLocation = null;
     }
+    
+    public boolean hasChangeLog(final MessageLog value) {
+        return StringUtil.isNotEmpty(value.getChangeLog());
+    }
 
-    public StreamedContent getFile() {
+    public StreamedContent getFile(final int option) {
         StreamedContent result = null;
         if (Objects.isNull(logToSave)) {
             LOGGER.error("Cannot download file! No item selected!");
         } else {
-            final String fileName = String.format("%s.%s", logToSave.getMessageName(), getFileExt());
+            //TODO poprawka option
+            String fileName = null;
+            if (option == 1 ) {
+                fileName = String.format("%s.%s", logToSave.getMessageName(), getFileExt());
+            }
+            else fileName = "changes.xml";       
             LOGGER.info("Start downloading file: " + logToSave.getMessageName() + getFileExt());
             String temp = " ";//to do
             //do poprawienia ta fuszerka
             for (int i = 0; i < 4096; i++) {
                 temp = temp.concat(" ");
             }
-            String message = logToSave.getTransportForm();
+            String message = null;
+            //TODO słabe te parametry
+            if (option == 1) {
+                message = logToSave.getTransportForm();
+            }
+            else {
+                message = logToSave.getChangeLog();
+            }
             message = message.concat(temp);
 
             byte[] stream;

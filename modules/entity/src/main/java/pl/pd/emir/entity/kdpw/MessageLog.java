@@ -320,7 +320,7 @@ public class MessageLog implements Logable<Long>, Selectable<Long> {
     public Integer getBatchNumber() {
         return batchNumber;
     }
-
+    
     //setters
     public void setFileStatus(FileStatus fileStatus) {
         this.fileStatus = fileStatus;
