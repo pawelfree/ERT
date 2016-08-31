@@ -251,20 +251,12 @@ public class RepositoryMessageListBean extends AbstractListBean<MessageLog, Mess
 
     private StreamedContent getFile(final String fileName, final String data) {
         StreamedContent result = null;
-        String temp = " ";//to do
-        //do poprawienia ta fuszerka
-        for (int i = 0; i < 4096; i++) {
-            temp = temp.concat(" ");
-        }
-        String message = data;
-        message = message.concat(temp);
-
         byte[] stream;
         try {
-            stream = message.getBytes(DEFAULT_ENCODING);
+            stream = data.getBytes(DEFAULT_ENCODING);
         } catch (UnsupportedEncodingException e) {
             LOGGER.error("Encoding error: " + e);
-            stream = message.getBytes();
+            stream = data.getBytes();
         }
         result = new DefaultStreamedContent(new ByteArrayInputStream(stream),
                 String.format("%s; %s", getContentType(), DEFAULT_ENCODING),
