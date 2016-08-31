@@ -224,53 +224,56 @@ public class RepositoryMessageListBean extends AbstractListBean<MessageLog, Mess
         this.logToSave = value;
         this.fileLocation = null;
     }
-    
+
     public boolean hasChangeLog(final MessageLog value) {
         return StringUtil.isNotEmpty(value.getChangeLog());
     }
 
-    public StreamedContent getFile(final int option) {
+    public StreamedContent getChanges() {
         StreamedContent result = null;
         if (Objects.isNull(logToSave)) {
-            LOGGER.error("Cannot download file! No item selected!");
+            LOGGER.error("Cannot download changes file! No data available!");
         } else {
-            //TODO poprawka option
-            String fileName = null;
-            if (option == 1 ) {
-                fileName = String.format("%s.%s", logToSave.getMessageName(), getFileExt());
-            }
-            else fileName = "changes.xml";       
-            LOGGER.info("Start downloading file: " + logToSave.getMessageName() + getFileExt());
-            String temp = " ";//to do
-            //do poprawienia ta fuszerka
-            for (int i = 0; i < 4096; i++) {
-                temp = temp.concat(" ");
-            }
-            String message = null;
-            //TODO słabe te parametry
-            if (option == 1) {
-                message = logToSave.getTransportForm();
-            }
-            else {
-                message = logToSave.getChangeLog();
-            }
-            message = message.concat(temp);
-
-            byte[] stream;
-            try {
-                stream = message.getBytes(DEFAULT_ENCODING);
-            } catch (UnsupportedEncodingException e) {
-                LOGGER.error("Encoding error: " + e);
-                stream = message.getBytes();
-            }
-            result = new DefaultStreamedContent(new ByteArrayInputStream(stream),
-                    String.format("%s; %s", getContentType(), DEFAULT_ENCODING),
-                    fileName);
-            if (stream.length < FacesContext.getCurrentInstance().getExternalContext().getResponseBufferSize()) {
-                LOGGER.info("Start downloading file ResponseBufferSize: {}", fileName);
-                FacesContext.getCurrentInstance().getExternalContext().setResponseBufferSize(stream.length);
-            }
+            result = getFile(String.format("%s.%s", "changes", getFileExt()), logToSave.getChangeLog());
         }
+        return result;
+    }
+
+    public StreamedContent getTransportFile() {
+        StreamedContent result = null;
+        if (Objects.isNull(logToSave)) {
+            LOGGER.error("Cannot download transport file! No item selected!");
+        } else {
+            result = getFile(String.format("%s.%s", logToSave.getMessageName(), getFileExt()), logToSave.getTransportForm());
+        }
+        return result;
+    }
+
+    private StreamedContent getFile(final String fileName, final String data) {
+        StreamedContent result = null;
+        String temp = " ";//to do
+        //do poprawienia ta fuszerka
+        for (int i = 0; i < 4096; i++) {
+            temp = temp.concat(" ");
+        }
+        String message = data;
+        message = message.concat(temp);
+
+        byte[] stream;
+        try {
+            stream = message.getBytes(DEFAULT_ENCODING);
+        } catch (UnsupportedEncodingException e) {
+            LOGGER.error("Encoding error: " + e);
+            stream = message.getBytes();
+        }
+        result = new DefaultStreamedContent(new ByteArrayInputStream(stream),
+                String.format("%s; %s", getContentType(), DEFAULT_ENCODING),
+                fileName);
+        if (stream.length < FacesContext.getCurrentInstance().getExternalContext().getResponseBufferSize()) {
+            LOGGER.info("Start downloading file ResponseBufferSize: {}", fileName);
+            FacesContext.getCurrentInstance().getExternalContext().setResponseBufferSize(stream.length);
+        }
+
         return result;
     }
 

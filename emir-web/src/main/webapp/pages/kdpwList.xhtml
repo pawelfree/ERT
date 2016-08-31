@@ -133,7 +133,7 @@
                                    actionListener="#{kdpwListBean.addToSave(messageLog)}"
                                    ajax="false"
                                    >
-                        <p:fileDownload value="#{kdpwListBean.getFile(2)}" />
+                        <p:fileDownload value="#{kdpwListBean.getTransportFile()}" />
                     </p:commandLink>
                 </p:column>
 
@@ -170,7 +170,7 @@
                                      actionListener="#{kdpwListBean.addToSave(messageLog)}"   
                                      rendered="#{kdpwListBean.hasChangeLog(messageLog)}"
                                      >
-                        <p:fileDownload value="#{kdpwListBean.getFile(2)}" />                                  
+                        <p:fileDownload value="#{kdpwListBean.getChanges()}" />                                
                     </p:commandButton>
                     <p:commandButton title="#{msgs['kdpw.message.table.action.link']}"
                                      rendered="#{not kdpwListBean.inRelatedView and messageLog.hasResponse}"
