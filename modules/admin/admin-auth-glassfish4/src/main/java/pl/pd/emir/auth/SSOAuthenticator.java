@@ -36,7 +36,7 @@ public class SSOAuthenticator extends SpnegoServerAuthModule {
         IUserFacadeRemote userFacade;
         InitialContext ctx = new InitialContext();
         userFacade = (IUserFacadeRemote) ctx.lookup(jndiName);
-        LOG.log(Level.INFO, "Referencja do remote EJB znaleziona: {0}", (userFacade != null));
+        LOG.log(Level.FINE, "Referencja do remote EJB znaleziona: {0}", (userFacade != null));
         return userFacade;
     }
 

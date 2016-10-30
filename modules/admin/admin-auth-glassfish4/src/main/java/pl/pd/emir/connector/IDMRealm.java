@@ -53,7 +53,7 @@ public class IDMRealm extends AppservRealm {
                 LOGGER.log(Level.WARNING, "User not found in data base: {0}", user);
                 throw new NoSuchUserException("User not found in data base: " + user);
             } else {
-                LOGGER.log(Level.INFO, "User {0} found in DB", user);
+                LOGGER.log(Level.FINE, "User {0} found in DB", user);
                 vector.add("AUTHENTICATED_USER");
             }
 
@@ -80,7 +80,7 @@ public class IDMRealm extends AppservRealm {
         IUserFacadeRemote userFacade;
         InitialContext ctx = new InitialContext();
         userFacade = (IUserFacadeRemote) ctx.lookup(jndiName);
-        LOGGER.log(Level.INFO, "Referencja do remote EJB znaleziona:{0}", (userFacade != null));
+        LOGGER.log(Level.FINE, "Referencja do remote EJB znaleziona:{0}", (userFacade != null));
         return userFacade;
     }
 
