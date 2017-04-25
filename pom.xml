@@ -135,7 +135,7 @@
         <project.java.version>1.8</project.java.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <implementation.title>emir reporting tool</implementation.title>
-        <implementation.vendor>Bank of Tokyo-Mitsubishi UFJ (Polska) S.A.</implementation.vendor>
+        <implementation.vendor>MUFG Bank (Europe) N.V. S.A. Oddział w Polsce</implementation.vendor>
         <implementation.vendor.phone>(+48 22) 520 81 80</implementation.vendor.phone>
         <implementation.vendor.email>info@pl.mufg.jp</implementation.vendor.email>
         <implementation.version>1.0.0</implementation.version>
@@ -181,7 +181,7 @@
                 <groupId>org.primefaces</groupId>
                 <artifactId>primefaces</artifactId>
                 <scope>provided</scope>
-                <version>5.3</version>
+                <version>6.1</version>
             </dependency>
             <dependency>
                 <groupId>commons-io</groupId>
