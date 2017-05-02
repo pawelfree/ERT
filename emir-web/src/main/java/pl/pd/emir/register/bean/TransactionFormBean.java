@@ -139,6 +139,13 @@ public class TransactionFormBean extends AbstractFormBean<Transaction> {
             entity.getClientData().setBeneficiaryCode(client.getInstitution().getInstitutionData().getInstitutionId());
             entity.getClientData().setBeneficiaryCodeType(client.getInstitution().getInstitutionData().getInstitutionIdType());
         }
+        //TODO PAWEL KONIECZNIE DO zmiany - ustawiany przy imporcie z pliku a przy dodawaniu recznym musi byc robione jak ponizej - powinno byc jakos sparametryzowane
+        entity.getClient2().setOriginalId("200005");
+        client = clientManager.getClientByOrginalId(entity.getClient2().getOriginalId());
+        if (client != null) {
+            entity.getClient2Data().setBeneficiaryCode(client.getInstitution().getInstitutionData().getInstitutionId());
+            entity.getClient2Data().setBeneficiaryCodeType(client.getInstitution().getInstitutionData().getInstitutionIdType());
+        }
     }
 
     public boolean isBeneficiaryCodeEditingDisabled() {
