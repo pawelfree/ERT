@@ -2,7 +2,10 @@ package pl.pd.emir.parsers;
 
 import java.math.BigDecimal;
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
+import java.util.Objects;
 import org.apache.commons.lang3.ArrayUtils;
 import pl.pd.emir.commons.DateUtils;
 import pl.pd.emir.commons.StringUtil;
@@ -199,14 +202,31 @@ public class TransactionCsvParser extends BaseCsvParser<Transaction> {
         delivPriceField84 = ImportValidationUtils.validateAmountField(data[84], 12, 2, r84, false, false, "CMMDTYTRAD_PRIC", "85", importResult);
         optionExecPriceField87 = ImportValidationUtils.validateAmountField(data[87], 12, 2, r87, false, false, "OPTNTRAD_STRKPRIC", "88", importResult);
 
+        
         //kontrola dat
         transactionDateField1 = ImportValidationUtils.validateDateField(data[1], null, DateUtils.ISO_DATE_FORMAT, true, "DATA_TR", "2", importResult);
+        //TODO usunąć obejscie problemu AS
+        Calendar cal = GregorianCalendar.getInstance();
+        cal.setTimeInMillis(0);
+        cal.set( 2017, 04, 01, 00, 00, 00);
+        Date firstMay2017 = cal.getTime(); 
         tradeExecDateField49 = ImportValidationUtils.validateDateField(data[49], r49, DateUtils.ISO_DATE_TIME_FORMAT, true, "TRADADDTLINF_EXECDTTM", "50", importResult);
+        if (tradeExecDateField49.before(firstMay2017)) {
+            tradeExecDateField49 = firstMay2017;
+        }
+        //TODO usunąć obejscie problemu AS
         tradeEffDateField50 = ImportValidationUtils.validateDateField(data[50], r50, DateUtils.ISO_DATE_TIME_FORMAT, false, "TRADADDTLINF_FCTYDT", "51", importResult);
+        if (tradeEffDateField50.before(firstMay2017)) {
+            tradeEffDateField50 = firstMay2017;
+        }
         tradeMattDateField51 = ImportValidationUtils.validateDateField(data[51], r51, DateUtils.ISO_DATE_TIME_FORMAT, false, "TRADADDTLINF_MTRTYDT", "52", importResult);
         tradeTermDateField52 = ImportValidationUtils.validateDateField(data[52], r52, DateUtils.ISO_DATE_TIME_FORMAT, "C".equalsIgnoreCase(data[2]), "TRADADDTLINF_TRMNTNDT", "53", importResult);
         tradeSettlDateField53 = ImportValidationUtils.validateDateField(data[53], r53, DateUtils.ISO_DATE_TIME_FORMAT, false, "TRADADDTLINF_STTLMTDT", "54", importResult);
+        //TODO usunac obejscie problemu AS
         riskConfDateField56 = ImportValidationUtils.validateDateField(data[56], r56, DateUtils.ISO_DATE_TIME_FORMAT, false, "RSKMTGTN_CNFRMTNDTTM", "57", importResult);
+        if (Objects.nonNull(riskConfDateField56) && riskConfDateField56.before(firstMay2017)) {
+            riskConfDateField56 = firstMay2017;
+        }
         settlementDateField60 = ImportValidationUtils.validateDateField(data[60], r60, DateUtils.ISO_DATE_TIME_FORMAT, false, "CLRGINF_CLRDTTM", "61", importResult);
         delivStartField80 = ImportValidationUtils.validateDateField(data[80], r80, DateUtils.ISO_DATE_TIME_FORMAT, false, "CMMDTYTRAD_DLVRYSTARTDTTM", "81", importResult);
         delivEndField81 = ImportValidationUtils.validateDateField(data[81], r81, DateUtils.ISO_DATE_TIME_FORMAT, false, "CMMDTYTRAD_DLVRYENDDTTM", "82", importResult);
