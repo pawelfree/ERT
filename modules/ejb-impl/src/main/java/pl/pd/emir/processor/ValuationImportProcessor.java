@@ -7,6 +7,7 @@ import java.io.Reader;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import pl.pd.emir.commons.DateUtils;
@@ -49,7 +50,7 @@ public class ValuationImportProcessor extends ImportProcessor implements IImport
     @Override
     public void process(Reader reader, BaseCsvParser parser, String fileName, Date importFileDate,
             ImportLog importLog, boolean backloading,
-            ProcessingWarnings warnings, ImportOverview overview) throws IOException {
+            ProcessingWarnings warnings, ImportOverview overview, Set customersToRemoveFromImport, Set transactionsToRemoveFromImport) throws IOException {
         //Wyzerowanie licznika wierszy w parserze
         parser.setRowNum(0);
 
@@ -85,25 +86,36 @@ public class ValuationImportProcessor extends ImportProcessor implements IImport
             valuation.setFileName(fileName);
             valuation.setImportLog(importLog);
 
-            //Znalezienie transakcji odpowiadających wczytywanej wycenie
-            List<Transaction> transactions = transactionManager.getByDateAndOriginalId(valuation.getOriginalId(), valuation.getTransactionDate());
-            //Wybranie najnowszej transakcji
-            Transaction transaction = getExtractByVersion(transactions);
+            Transaction transaction = null;
+            boolean removed = false;
+            if (transactionsToRemoveFromImport.contains(valuation.getOriginalId())) {
+                //TODO remove
+                System.out.println("!!! --- valuation removed " + valuation.getOriginalId());
+                removed = true;
+            }
+            else {
+                //Znalezienie transakcji odpowiadających wczytywanej wycenie
+                List<Transaction> transactions = transactionManager.getByDateAndOriginalId(valuation.getOriginalId(), valuation.getTransactionDate());
+                //Wybranie najnowszej transakcji
+                transaction = getExtractByVersion(transactions);
+            }
 
             if (transaction == null) {
                 //W przypadku braku transakcji o wskazanym id i dacie, logowana jest pojedyncza informacja o
                 //błędzie a wycena nie jest zapisywana
-                LOGGER.warn(String.format("Import valuation with id %s and date %s failed - transaction doesn't exist.",
-                        valuation.getOriginalId(),
-                        DateUtils.formatDate(valuation.getTransactionDate(), DateUtils.DATE_FORMAT)));
-                valuationRow.clear();
-                valuationRow.addError(new ImportFailLog(ImportFaillogUtils.getString(
-                        ImportFaillogUtils.ImportFaillogKey.TRANSACTION_DOES_NOT_EXIST,
-                        valuation.getOriginalId(),
-                        DateUtils.formatDate(valuation.getTransactionDate(), DateUtils.DATE_FORMAT))));
+                if (!removed) {
+                    LOGGER.warn(String.format("Import valuation with id %s and date %s failed - transaction doesn't exist.",
+                            valuation.getOriginalId(),
+                            DateUtils.formatDate(valuation.getTransactionDate(), DateUtils.DATE_FORMAT)));
+                    valuationRow.clear();
+                    valuationRow.addError(new ImportFailLog(ImportFaillogUtils.getString(
+                            ImportFaillogUtils.ImportFaillogKey.TRANSACTION_DOES_NOT_EXIST,
+                            valuation.getOriginalId(),
+                            DateUtils.formatDate(valuation.getTransactionDate(), DateUtils.DATE_FORMAT))));
 
-                //Zapisanie błędów i ostrzeżeń w logu
-                importLog.processFailLogs(valuationRow.getImportErrors(), valuationRow.getImportWarnings());
+                    //Zapisanie błędów i ostrzeżeń w logu
+                    importLog.processFailLogs(valuationRow.getImportErrors(), valuationRow.getImportWarnings());
+                }
 
             } else if (transaction.getValuation() != null && !ProcessingStatus.NEW.equals(transaction.getProcessingStatus())) {
                 //W przypadku gdy znaleziona transakcja posiada już przypisaną wycenę oraz status inny

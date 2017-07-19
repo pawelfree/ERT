@@ -7,6 +7,7 @@ import java.io.Reader;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import pl.pd.emir.commons.DateUtils;
@@ -56,7 +57,7 @@ public class TransactionImportProcessor extends ImportProcessor implements IImpo
     @Override
     public void process(Reader reader, BaseCsvParser parser, String fileName, Date importFileDate,
             ImportLog importLog, boolean backloading,
-            ProcessingWarnings warnings, ImportOverview overview) throws IOException {        
+            ProcessingWarnings warnings, ImportOverview overview, Set customersToRemoveFromImport, Set transactionsToRemoveFromImport) throws IOException {        
         parser.setRowNum(0);
         CSVReader<ImportResult<Transaction>> csvTransactionReader = new CSVReaderBuilder<ImportResult<Transaction>>(reader).entryParser(parser).build();
         List<Transaction> batch = new ArrayList<>();
@@ -124,14 +125,24 @@ public class TransactionImportProcessor extends ImportProcessor implements IImpo
             transaction.setImportLog(importLog);
             transaction.setBackloading(backloading);
             transaction.setValidationStatus(validateTransactionCompletness(transaction));
-            //Walidacje biznesowe nie wpĹ‚ywajÄ…ce na status kompletnoĹ›ci transakcji
-            Transaction previousTransaction = transactionManager.getNewestVersion(transaction.getTransactionDate(), transaction.getOriginalId());
-            BusinessValidationUtils.validateExtractVersion(transaction, previousTransaction, transactionRow.getImportWarnings(), transactionRow.getRecordId());
-            importLog.processFailLogs(transactionRow.getImportErrors(), transactionRow.getImportWarnings());
-            batch.add(transaction);
-            LOGGER.debug(String.format("Add new transaction with id %s on date %s to save.",
-                    transaction.getOriginalId(),
-                    DateUtils.formatDate(transaction.getTransactionDate(), DateUtils.DATE_FORMAT)));
+            if (customersToRemoveFromImport.contains(client.getOriginalId())) {
+                System.out.println("!!! --- client id " + client.getOriginalId());
+                System.out.println("!!! --- transa id " + transaction.getOriginalId());
+                transactionsToRemoveFromImport.add(transaction.getOriginalId());
+                LOGGER.debug(String.format("Transaction with id %s on date %s to save removed from import.",
+                        transaction.getOriginalId(),
+                        DateUtils.formatDate(transaction.getTransactionDate(), DateUtils.DATE_FORMAT)));                
+            } else {
+                //Walidacje biznesowe nie wplywajace na status kompletnosci transakcji
+                //TODO co to robi i po co
+                Transaction previousTransaction = transactionManager.getNewestVersion(transaction.getTransactionDate(), transaction.getOriginalId());
+                BusinessValidationUtils.validateExtractVersion(transaction, previousTransaction, transactionRow.getImportWarnings(), transactionRow.getRecordId());
+                importLog.processFailLogs(transactionRow.getImportErrors(), transactionRow.getImportWarnings());
+                batch.add(transaction);
+                LOGGER.debug(String.format("Add new transaction with id %s on date %s to save.",
+                        transaction.getOriginalId(),
+                        DateUtils.formatDate(transaction.getTransactionDate(), DateUtils.DATE_FORMAT)));
+            }
             if (batch.size() == BATCH_SIZE) {
                 transactionManager.saveAll(batch);
                 batch.clear();

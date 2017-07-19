@@ -8,6 +8,7 @@ import java.io.Reader;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import pl.pd.emir.entity.Client;
@@ -45,7 +46,7 @@ public class ClientImportProcessor extends ImportProcessor implements IImportPro
     @Override
     public void process(Reader reader, BaseCsvParser parser, String fileName, Date importFileDate,
             ImportLog importLog, boolean backloading,
-            ProcessingWarnings warnings, ImportOverview overview) throws IOException {
+            ProcessingWarnings warnings, ImportOverview overview , Set customersToRemoveFromImport, Set transactionsToRemoveFromImport) throws IOException {
         parser.setRowNum(0);
         CSVReader<ImportResult<Client>> csvClientReader = new CSVReaderBuilder<ImportResult<Client>>(reader).entryParser(parser).build();
         List<Client> batch = new ArrayList<>();

@@ -21,7 +21,8 @@ public enum ParameterKey implements MsgEnum {
     
     INSTITUTION_ID,
     
-    INSTITUTION_ID_TYPE;
+    INSTITUTION_ID_TYPE,
+    CUSTOMERS_TO_SKIP_DURING_IMPORT;
 
     @Override
     public String getMsgKey() {

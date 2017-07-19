@@ -2,23 +2,17 @@ package pl.pd.emir.processor;
 
 import java.util.Date;
 import java.util.List;
-import javax.naming.InitialContext;
-import javax.naming.NamingException;
 import pl.pd.emir.commons.DateUtils;
 import pl.pd.emir.entity.Extract;
 import pl.pd.emir.entity.ImportFailLog;
 import pl.pd.emir.imports.ImportFaillogUtils;
 import pl.pd.emir.imports.ImportResult;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  *
  * @author PawelDudek
  */
 public abstract class ImportProcessor {
-
-    private static final Logger LOGGER = LoggerFactory.getLogger(TransactionImportProcessor.class);
 
     final int BATCH_SIZE = 100;
 

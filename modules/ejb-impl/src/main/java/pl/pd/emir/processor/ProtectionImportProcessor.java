@@ -8,6 +8,7 @@ import java.io.Reader;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import pl.pd.emir.commons.DateUtils;
@@ -49,7 +50,7 @@ public class ProtectionImportProcessor extends ImportProcessor implements IImpor
     @Override
     public void process(Reader reader, BaseCsvParser parser, String fileName, Date importFileDate,
             ImportLog importLog, boolean backloading,
-            ProcessingWarnings warnings, ImportOverview overview) throws IOException {
+            ProcessingWarnings warnings, ImportOverview overview, Set customersToRemoveFromImport, Set transactionsToRemoveFromImport) throws IOException {
         parser.setRowNum(0);
         CSVReader<ImportResult<Protection>> csvProtectionReader = new CSVReaderBuilder<ImportResult<Protection>>(reader).entryParser(parser).build();
         List<Transaction> batch = new ArrayList<>();
@@ -68,18 +69,29 @@ public class ProtectionImportProcessor extends ImportProcessor implements IImpor
             Protection protection = protectionRow.getExtract();
             protection.setFileName(fileName);
             protection.setImportLog(importLog);
-            List<Transaction> transactions = transactionManager.getByDateAndOriginalId(protection.getOriginalId(), protection.getTransactionDate());
-            Transaction transaction = getExtractByVersion(transactions);
+            Transaction transaction = null;
+            boolean removed = false;
+            if (transactionsToRemoveFromImport.contains(protection.getOriginalId())) {
+                //TODO remove
+                System.out.println("!!! --- protection removed " + protection.getOriginalId());
+                removed = true;
+            }
+            else {            
+                List<Transaction> transactions = transactionManager.getByDateAndOriginalId(protection.getOriginalId(), protection.getTransactionDate());
+                transaction = getExtractByVersion(transactions);
+            }
             if (transaction == null) {
-                LOGGER.warn(String.format("Import protection with id %s and date %s failed - transaction doesn't exist.",
-                        protection.getOriginalId(),
-                        DateUtils.formatDate(protection.getTransactionDate(), DateUtils.DATE_FORMAT)));
-                protectionRow.clear();
-                protectionRow.addError(new ImportFailLog(ImportFaillogUtils.getString(
-                        ImportFaillogUtils.ImportFaillogKey.TRANSACTION_DOES_NOT_EXIST,
-                        protection.getOriginalId(),
-                        DateUtils.formatDate(protection.getTransactionDate(), DateUtils.DATE_FORMAT))));
-                importLog.processFailLogs(protectionRow.getImportErrors(), protectionRow.getImportWarnings());
+                if (!removed) {
+                    LOGGER.warn(String.format("Import protection with id %s and date %s failed - transaction doesn't exist.",
+                            protection.getOriginalId(),
+                            DateUtils.formatDate(protection.getTransactionDate(), DateUtils.DATE_FORMAT)));
+                    protectionRow.clear();
+                    protectionRow.addError(new ImportFailLog(ImportFaillogUtils.getString(
+                            ImportFaillogUtils.ImportFaillogKey.TRANSACTION_DOES_NOT_EXIST,
+                            protection.getOriginalId(),
+                            DateUtils.formatDate(protection.getTransactionDate(), DateUtils.DATE_FORMAT))));
+                    importLog.processFailLogs(protectionRow.getImportErrors(), protectionRow.getImportWarnings());
+                }
             } else if (transaction.getProtection() != null && !ProcessingStatus.NEW.equals(transaction.getProcessingStatus())) {
                 LOGGER.warn(String.format("Import protection with id %s and date %s failed - transaction allready has protection.",
                         protection.getOriginalId(),

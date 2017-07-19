@@ -11,8 +11,10 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.EnumMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.stream.Collectors;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
@@ -70,6 +72,10 @@ public class ImportCsvManager {
     protected Map<ImportScope, IImportProcessor> processors = new EnumMap<>(ImportScope.class);
 
     protected Map<ImportScope, BaseCsvParser> parsers = new EnumMap<>(ImportScope.class);
+    
+    private Set<String> customersToRemoveFromImport;
+    
+    private Set<String> transactionsToRemoveFromImport;
 
     private boolean caseSensitive;
     private boolean backloading;
@@ -83,9 +89,12 @@ public class ImportCsvManager {
         processors.put(ImportScope.TRANSACTION_E, new TransactionImportProcessor());
         processors.put(ImportScope.PROTECTION_E, new ProtectionImportProcessor());
         processors.put(ImportScope.VALUATION_E, new ValuationImportProcessor());
+        
+        customersToRemoveFromImport = new HashSet<>();
+        transactionsToRemoveFromImport = new HashSet<>();
     }
 
-    protected void initParsers() {
+    protected void initParsers() {             
         parsers.put(ImportScope.CLIENT_E, new ClientCsvParser());
         parsers.put(ImportScope.TRANSACTION_E, new TransactionCsvParserTmb(clientManager));
         parsers.put(ImportScope.PROTECTION_E, new ProtectionParser());
@@ -111,6 +120,7 @@ public class ImportCsvManager {
             importFiles(ImportScope.CLIENT_E, new ResourceMask(parameterManager.getValue(ParameterKey.IMPORT_INPUT_MASK_CLIENT)));
         }
         if (importScope.contains(ImportScope.TRANSACTION_E)) {
+            customersToRemoveFromImport.addAll(java.util.Arrays.asList(parameterManager.get(ParameterKey.CUSTOMERS_TO_SKIP_DURING_IMPORT).getValue().split(",")));
             importFiles(ImportScope.TRANSACTION_E, new ResourceMask(parameterManager.getValue(ParameterKey.IMPORT_INPUT_MASK_TRANSACTION)));
         }
         if (importScope.contains(ImportScope.PROTECTION_E)) {
@@ -197,7 +207,8 @@ public class ImportCsvManager {
 
     private void importExtract(Reader reader, ImportScope extractType, String fileName, ImportLog importLog) throws IOException {
         BaseCsvParser parser = parsers.get(extractType);
-        processors.get(extractType).process(reader, parser, fileName, importFileDate, importLog, backloading, warnings, overview);
+        //TODO remove backloading
+        processors.get(extractType).process(reader, parser, fileName, importFileDate, importLog, backloading, warnings, overview, customersToRemoveFromImport, transactionsToRemoveFromImport);
     }
 
     private ImportLog getFailImportLog(ImportFailLog failLog, ImportScope extractType) {
