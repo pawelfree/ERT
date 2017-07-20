@@ -7,9 +7,6 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 import pl.pd.emir.commons.Constants;
 import pl.pd.emir.commons.DateUtils;
-import pl.pd.emir.embeddable.BusinessEntity;
-import pl.pd.emir.embeddable.Institution;
-import pl.pd.emir.embeddable.InstitutionData;
 import pl.pd.emir.embeddable.TransactionDetails;
 import pl.pd.emir.embeddable.ValuationData;
 import pl.pd.emir.entity.Client;
@@ -19,7 +16,6 @@ import pl.pd.emir.entity.Valuation;
 import pl.pd.emir.enums.CountryCode;
 import pl.pd.emir.enums.CurrencyCode;
 import pl.pd.emir.enums.DoProtection;
-import pl.pd.emir.enums.InstitutionIdType;
 import pl.pd.emir.enums.TransactionMsgType;
 import pl.pd.emir.enums.TransactionParty;
 import pl.pd.emir.enums.ValuationType;
@@ -313,25 +309,4 @@ public class XmlTransactionWriterImplTest {
 
     private static final String CLIENT2_NIP = "7762659238";
 
-    private static final String CLIENT_NIP = "5528271859";
-
-    private static final String CLIENT_REGON = "796463255";
-
-    private Client getClientN() {
-        final Client result = new Client();
-        result.setCountryCode(CountryCode.FR);
-        BusinessEntity businessEntity = new BusinessEntity();
-        businessEntity.setSubjectNip(CLIENT_NIP);
-        businessEntity.setSubjectRegon(CLIENT_REGON);
-        result.setBusinessEntity(businessEntity);
-
-        Institution institution = new Institution();
-        institution.setInstitutionData(new InstitutionData("clientInstDataId", InstitutionIdType.PLEI));
-        result.setInstitution(institution);
-
-        result.setNaturalPerson(Boolean.TRUE);
-        result.setEog("A");
-
-        return result;
-    }
 }

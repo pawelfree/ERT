@@ -1,8 +1,5 @@
 package pl.pd.emir.kdpw.xml.parser;
 
-import pl.pd.emir.embeddable.Institution;
-import pl.pd.emir.embeddable.InstitutionData;
-import pl.pd.emir.enums.InstitutionIdType;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;

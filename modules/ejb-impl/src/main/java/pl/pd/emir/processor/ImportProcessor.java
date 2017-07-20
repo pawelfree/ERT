@@ -14,7 +14,7 @@ import pl.pd.emir.imports.ImportResult;
  */
 public abstract class ImportProcessor {
 
-    final int BATCH_SIZE = 100;
+    static final int BATCH_SIZE = 100;
 
     protected <E extends Extract> boolean validateTransactionDate(ImportResult<E> row, Date transactionDate, Date importFileDate) {
         if (transactionDate == null || !DateUtils.getDayBegin(importFileDate).equals(DateUtils.getDayBegin(transactionDate))) {

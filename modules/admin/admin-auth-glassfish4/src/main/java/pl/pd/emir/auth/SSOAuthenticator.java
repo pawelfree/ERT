@@ -39,11 +39,4 @@ public class SSOAuthenticator extends SpnegoServerAuthModule {
         LOG.log(Level.FINE, "Referencja do remote EJB znaleziona: {0}", (userFacade != null));
         return userFacade;
     }
-
-    private String getUserLogin(Principal caller) {
-        String name = caller != null ? caller.getName() : "";
-        String[] split = name.split("\\@");
-        return split[0];
-    }
-
 }

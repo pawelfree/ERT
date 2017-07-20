@@ -126,7 +126,7 @@ public class Linkages {
      */
     public List<TradeReference> getTradRefId() {
         if (tradRefId == null) {
-            tradRefId = new ArrayList<TradeReference>();
+            tradRefId = new ArrayList<>();
         }
         return this.tradRefId;
     }

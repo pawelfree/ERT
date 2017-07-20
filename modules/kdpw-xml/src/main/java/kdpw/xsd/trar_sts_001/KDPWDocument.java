@@ -80,7 +80,7 @@ public class KDPWDocument implements IKDPWDocument {
      */
     public List<TrarSts00102> getTrarSts00102() {
         if (trarSts00102 == null) {
-            trarSts00102 = new ArrayList<TrarSts00102>();
+            trarSts00102 = new ArrayList<>();
         }
         return this.trarSts00102;
     }

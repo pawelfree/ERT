@@ -138,7 +138,7 @@ public class TrarNtf00101 {
      */
     public List<CounterpartyInformation> getCtrPtyInf() {
         if (ctrPtyInf == null) {
-            ctrPtyInf = new ArrayList<CounterpartyInformation>();
+            ctrPtyInf = new ArrayList<>();
         }
         return this.ctrPtyInf;
     }
@@ -167,7 +167,7 @@ public class TrarNtf00101 {
      */
     public List<ValuationAndCollateralInformation> getValtnAndCollInf() {
         if (valtnAndCollInf == null) {
-            valtnAndCollInf = new ArrayList<ValuationAndCollateralInformation>();
+            valtnAndCollInf = new ArrayList<>();
         }
         return this.valtnAndCollInf;
     }

@@ -72,45 +72,30 @@ public class TransactionCsvParser extends BaseCsvParser<Transaction> {
             String[] transactionDtls = ArrayUtils.addAll(Arrays.copyOfRange(data, 28, 31), Arrays.copyOfRange(data, 39, 56)); //szczegoly transakcji
             transactionDtls = ArrayUtils.addAll(transactionDtls, Arrays.copyOfRange(data, 85, 88)); //szczegoly transakcji
 
-            //Wczytanie wartości z szablonu transakcji
-            OriginalStatus r3 = null; //STATUS_TR
-            String r4 = null; //ID_KLIENTA
-            String r41 = null; //ID_KLIENTA2
-            String r5 = null; //POTWIERDZONA dla BTMU powinno być wymagane
-            BusinessEntityData r6 = null; //kontrahent: dane klienta2 np BTMU
-            BusinessEntityData r7 = null; //kontrahent: dane klienta
-            ContractDataDetailed r8 = null; //kontrakt 4.2
-            TransactionDetails r9 = null;
-            RiskReduce r10 = null; //ryzyko 4.4
-            TransactionClearing r11 = null; //rozliczanie 4.5
-            PercentageRateData r12 = null;
-            CurrencyTradeData r13 = null; //transakcje walut.
-            CommodityTradeData r14 = null;
-
             //walidacja pod kontem ostrzeżeń
             String f1 = ImportValidationUtils.validateStringField(data[0], null, 50, "ID_TR", true, "1", importResult); //ID_TR
-            OriginalStatus f3 = ImportValidationUtils.validateEnumField(OriginalStatus.class, r3, data[2], "STATUS_TR", true, "3", importResult); //STATUS_TR
+            OriginalStatus f3 = ImportValidationUtils.validateEnumField(OriginalStatus.class, null, data[2], "STATUS_TR", true, "3", importResult); //STATUS_TR
             //TODO chwilowe bo kontrachent i klient to nie to samo
-            String f4  = ImportValidationUtils.validateStringField(data[3],  r4, 100, "ID_KLIENTA", true, "4", importResult); //ID_KLIENTA
-            String f41 = ImportValidationUtils.validateStringField(data[11], r41, 100, "ID_KLIENTA2",true, "12", importResult); 
-            String f5 = ImportValidationUtils.validateStringBooleanField(data[5], "1", "0", r5, false, "POTWIERDZONA", "6", importResult); //POTWIERDZONA dla BTMU powinno być wymagane
-            BusinessEntityData f6 = ImportValidationUtils.validateBusinessEntityData(Arrays.copyOfRange(data, 6, 17), true, r6, importResult); //kontrahent2 dane klienta np BTMU
-            BusinessEntityData f7 = ImportValidationUtils.validateBusinessEntityData(Arrays.copyOfRange(data, 17, 28), false, r7, importResult); //kontrahent dane klienta
-            ContractDataDetailed f8 = ImportValidationUtils.validateContractDetailed(Arrays.copyOfRange(data, 31, 39), r8, importResult); //kontrakt 4.2
-            TransactionDetails f9 = ImportValidationUtils.validateTransactionDtls(transactionDtls, r9, importResult,
+            String f4  = ImportValidationUtils.validateStringField(data[3],  null, 100, "ID_KLIENTA", true, "4", importResult); //ID_KLIENTA
+            String f41 = ImportValidationUtils.validateStringField(data[11], null, 100, "ID_KLIENTA2",true, "12", importResult); 
+            String f5 = ImportValidationUtils.validateStringBooleanField(data[5], "1", "0", null, false, "POTWIERDZONA", "6", importResult); //POTWIERDZONA dla BTMU powinno być wymagane
+            BusinessEntityData f6 = ImportValidationUtils.validateBusinessEntityData(Arrays.copyOfRange(data, 6, 17), true, null, importResult); //kontrahent2 dane klienta np BTMU
+            BusinessEntityData f7 = ImportValidationUtils.validateBusinessEntityData(Arrays.copyOfRange(data, 17, 28), false, null, importResult); //kontrahent dane klienta
+            ContractDataDetailed f8 = ImportValidationUtils.validateContractDetailed(Arrays.copyOfRange(data, 31, 39), null, importResult); //kontrakt 4.2
+            TransactionDetails f9 = ImportValidationUtils.validateTransactionDtls(transactionDtls, null, importResult,
                     unitPriceField41, unitPriceCurrencyField42, unitPriceRateField43,
                     tradeNominalField44, tradeMultiplField45, tradeQtyField46,
                     tradeUppField47, tradeAggrVerField55, optionExecPriceField87,
                     tradeExecDateField49, tradeEffDateField50, tradeMattDateField51,
                     tradeTermDateField52, tradeSettlDateField53);
-            RiskReduce f10 = ImportValidationUtils.validateRiskReduce(Arrays.copyOfRange(data, 56, 58), r10, importResult, riskConfDateField56); //ryzyko 4.4
-            TransactionClearing f11 = ImportValidationUtils.validateTransactionClearing(Arrays.copyOfRange(data, 58, 63), r11, importResult, settlementDateField60); //rozliczanie 4.5
-            PercentageRateData f12 = ImportValidationUtils.validatePercentageRate(Arrays.copyOfRange(data, 63, 71), r12,
+            RiskReduce f10 = ImportValidationUtils.validateRiskReduce(Arrays.copyOfRange(data, 56, 58), null, importResult, riskConfDateField56); //ryzyko 4.4
+            TransactionClearing f11 = ImportValidationUtils.validateTransactionClearing(Arrays.copyOfRange(data, 58, 63), null, importResult, settlementDateField60); //rozliczanie 4.5
+            PercentageRateData f12 = ImportValidationUtils.validatePercentageRate(Arrays.copyOfRange(data, 63, 71), null,
                     importResult, //stopa procent.
                     percLeg1Field63, percLeg2Field64);
-            CurrencyTradeData f13 = ImportValidationUtils.validateCurrencyTrade(Arrays.copyOfRange(data, 71, 75), r13, importResult,
+            CurrencyTradeData f13 = ImportValidationUtils.validateCurrencyTrade(Arrays.copyOfRange(data, 71, 75), null, importResult,
                     currRate1Field72, currRate2Field73); //transakcje walut.
-            CommodityTradeData f14 = ImportValidationUtils.validateCommodityTrade(Arrays.copyOfRange(data, 75, 85), r14, importResult,
+            CommodityTradeData f14 = ImportValidationUtils.validateCommodityTrade(Arrays.copyOfRange(data, 75, 85), null, importResult,
                     delivStartField80, delivEndField81, delivQtyField83, delivPriceField84);
 
             //walidacja zależności pomiędzy ceną a symbolem waluty

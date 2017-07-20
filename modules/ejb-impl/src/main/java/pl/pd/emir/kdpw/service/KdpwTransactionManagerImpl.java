@@ -25,7 +25,6 @@ import pl.pd.emir.commons.CollectionsUtils;
 import pl.pd.emir.commons.DateUtils;
 import pl.pd.emir.criteria.TransactionToKdpwSC;
 import pl.pd.emir.dao.utils.FilterSortTO;
-import pl.pd.emir.entity.Client;
 import pl.pd.emir.entity.Sendable;
 import pl.pd.emir.entity.Transaction;
 import pl.pd.emir.entity.administration.EventLog;
@@ -179,19 +178,26 @@ public class KdpwTransactionManagerImpl implements KdpwTransactionManager {
         int unprocessCounter = 0;
         final List<TransactionToRepository> toSendList = new ArrayList<>();
         for (ResultItem resultItem : transactionsBag.getItems()) {
-            if (ItemType.UNSENT.equals(resultItem.getType())) {
-                unsentCounter += 1;
-                UnsentItem unsentItem = (UnsentItem) resultItem;
-                if (unsentItem.getTransaction() != null) {
-                    unsentItem.getTransaction().unsent();
-                    transactionManager.updateOnlyMerge(unsentItem.getTransaction());
-                    tmpResult.addItem(unsentItem); // dodaj niewysłane
+            if (null != resultItem.getType()) { 
+                switch (resultItem.getType()) {
+                    case UNSENT:
+                        unsentCounter += 1;
+                        UnsentItem unsentItem = (UnsentItem) resultItem;
+                        if (unsentItem.getTransaction() != null) {
+                            unsentItem.getTransaction().unsent();
+                            transactionManager.updateOnlyMerge(unsentItem.getTransaction());
+                            tmpResult.addItem(unsentItem); // dodaj niewysłane
+                        }   break;
+                    case TO_SEND:
+                        toSendList.add((TransactionToRepository) resultItem);
+                        break;
+                    case UNPROCESSED:
+                        unprocessCounter += 1;
+                        tmpResult.addItem(resultItem); // dodaj nieprocesowane
+                        break;
+                    default:
+                        break;
                 }
-            } else if (ItemType.TO_SEND.equals(resultItem.getType())) {
-                toSendList.add((TransactionToRepository) resultItem);
-            } else if (ItemType.UNPROCESSED.equals(resultItem.getType())) {
-                unprocessCounter += 1;
-                tmpResult.addItem(resultItem); // dodaj nieprocesowane
             }
         }
         LOGGER.info("ToSend transactions list =  {}", toSendList.size());
@@ -398,7 +404,7 @@ public class KdpwTransactionManagerImpl implements KdpwTransactionManager {
         // sprawdza, że nie ma transakcji o tym samym ID (pole TRADID_ID),
         // o dacie nie późniejszej niż data przetwarzanej transakcji ze statusem przetwarzania NOWA
         List<ChangeRegister> l1 = new ArrayList<>();
-        List<ChangeRegister> l2 = new ArrayList<>();
+        List<ChangeRegister> l2;
 
         final Transaction transaction = registable.getTransaction();
         final Transaction oldTrans = transactionManager.findOtherProcessingNew(transaction.getId(),
@@ -473,7 +479,7 @@ public class KdpwTransactionManagerImpl implements KdpwTransactionManager {
     protected final int getBatchSize() {
         final Parameter batchParameter = parameterManager.get(ParameterKey.KDPW_BATCH_SIZE);
         if (Objects.nonNull(batchParameter)) {
-            return Integer.valueOf(batchParameter.getValue());
+            return Integer.parseInt(batchParameter.getValue());
         }
         throw new IllegalStateException("Cannot find parameter: KDPW_BATCH_SIZE");
     }

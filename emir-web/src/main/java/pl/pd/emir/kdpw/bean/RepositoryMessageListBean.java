@@ -250,7 +250,7 @@ public class RepositoryMessageListBean extends AbstractListBean<MessageLog, Mess
     }
 
     private StreamedContent getFile(final String fileName, final String data) {
-        StreamedContent result = null;
+        StreamedContent result;
         byte[] stream;
         try {
             stream = data.getBytes(DEFAULT_ENCODING);

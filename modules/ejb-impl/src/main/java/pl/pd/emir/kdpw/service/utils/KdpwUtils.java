@@ -86,8 +86,8 @@ public class KdpwUtils {
             return changes;
         }
         
-        String s1 = "";
-        String s2 = "";
+        String s1;
+        String s2;
 
         Class clazz = oldItem.getClass();
         while (clazz != Object.class) {

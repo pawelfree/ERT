@@ -1,6 +1,5 @@
 package pl.pd.emir.kdpw.api;
 
-import java.util.List;
 import pl.pd.emir.criteria.TransactionToKdpwSC;
 
 public interface KdpwTransactionManager {

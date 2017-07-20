@@ -206,7 +206,7 @@ public final class DateUtils {
     }
 
     public static String getEasterDate(String year) {
-        return getDateFormatted("yyyyMMdd", 0, getEasterDate(Integer.valueOf(year)));
+        return getDateFormatted("yyyyMMdd", 0, getEasterDate(Integer.parseInt(year)));
     }
 
     public static Calendar getEasterDate(int year) {

@@ -34,7 +34,7 @@ public class EucTradeDataWrapper {
         this.ccy2 = ccy2;
         this.amount2 = amount2;
         this.dealDate = DateUtils.formatDate(dealDate, DateUtils.DATE_FORMAT_2);
-        this.startDate = DateUtils.formatDate(startDate, DateUtils.DATE_FORMAT_2);;
+        this.startDate = DateUtils.formatDate(startDate, DateUtils.DATE_FORMAT_2);
         this.maturityDate = DateUtils.formatDate(maturityDate, DateUtils.DATE_FORMAT_2);
         this.mtm = mtm;
     }

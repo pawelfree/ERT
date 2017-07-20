@@ -302,7 +302,7 @@ public class ObjectFactory {
      */
     @XmlElementDecl(namespace = "urn:kdpw:xsd:trar.sts.001.02", name = "KDPWDocument")
     public JAXBElement<KDPWDocument> createKDPWDocument(KDPWDocument value) {
-        return new JAXBElement<KDPWDocument>(_KDPWDocument_QNAME, KDPWDocument.class, null, value);
+        return new JAXBElement<>(_KDPWDocument_QNAME, KDPWDocument.class, null, value);
     }
 
 }

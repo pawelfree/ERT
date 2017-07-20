@@ -180,22 +180,22 @@ public class MessageLog implements Logable<Long>, Selectable<Long> {
 
     public String valMsg() {
         //only valuations for both parties
-        long val = isInfo() ? Long.valueOf(info.substring(info.indexOf(":V:") + 3, info.indexOf(":VC:"))) : 0;
-        long valc = isInfo() ? Long.valueOf(info.substring(info.indexOf(":VC:") + 4, info.indexOf(":M:"))) : 0;
+        long val = isInfo() ? Long.parseLong(info.substring(info.indexOf(":V:") + 3, info.indexOf(":VC:"))) : 0;
+        long valc = isInfo() ? Long.parseLong(info.substring(info.indexOf(":VC:") + 4, info.indexOf(":M:"))) : 0;
         return String.valueOf(val + valc);
     }
 
     public String valMsgRepo() {
         //only valuations for both parties
-        long val = isInfo() ? Long.valueOf(info.substring(info.indexOf(":V:") + 3, info.indexOf(":VC:"))) : 0;
-        long valc = isInfo() ? Long.valueOf(info.substring(info.indexOf(":VC:") + 4, info.indexOf(":M:"))) : 0;
+        long val = isInfo() ? Long.parseLong(info.substring(info.indexOf(":V:") + 3, info.indexOf(":VC:"))) : 0;
+        long valc = isInfo() ? Long.parseLong(info.substring(info.indexOf(":VC:") + 4, info.indexOf(":M:"))) : 0;
         return String.valueOf(val + valc * 2);
     }
 
     public String modMsg() {
         //only modifications for both parties
-        long mod = isInfo() ? Long.valueOf(info.substring(info.indexOf(":M:") + 3, info.indexOf(":MC:"))) : 0;
-        long modc = isInfo() ? Long.valueOf(info.substring(info.indexOf(":MC:") + 4, info.indexOf(":T:"))) : 0;
+        long mod = isInfo() ? Long.parseLong(info.substring(info.indexOf(":M:") + 3, info.indexOf(":MC:"))) : 0;
+        long modc = isInfo() ? Long.parseLong(info.substring(info.indexOf(":MC:") + 4, info.indexOf(":T:"))) : 0;
         return String.valueOf(mod + modc);
     }
 

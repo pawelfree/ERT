@@ -77,7 +77,7 @@ public class KDPWDocument implements IKDPWDocument {
      */
     public List<AdmiErr00101> getAdmiErr00101() {
         if (admiErr00101 == null) {
-            admiErr00101 = new ArrayList<AdmiErr00101>();
+            admiErr00101 = new ArrayList<>();
         }
         return this.admiErr00101;
     }

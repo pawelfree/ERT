@@ -25,8 +25,7 @@ public class PasswordsEqualValidator implements Validator {
                     .toString();
 
             // Let required="true" do its job.
-            if (password == null || password.isEmpty() || confirmPassword == null
-                    || confirmPassword.isEmpty()) {
+            if (password.isEmpty() || confirmPassword.isEmpty()) {
                 return;
             }
 
