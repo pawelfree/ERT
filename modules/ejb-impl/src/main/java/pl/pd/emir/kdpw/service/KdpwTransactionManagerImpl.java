@@ -239,7 +239,7 @@ public class KdpwTransactionManagerImpl implements KdpwTransactionManager {
 
         logCurrentTime(String.format("START generate file for %s messages.", messages.size()));
 
-        TransactionWriterResult result = transactionWriter.write(messages, getReportingInstitutionId(), getReportingInstitutionIdType());
+        TransactionWriterResult result = transactionWriter.write(messages, getReportingInstitutionId());
         logCurrentTime("End of writing file");
         String message = result.getMessage();
 
@@ -619,10 +619,6 @@ public class KdpwTransactionManagerImpl implements KdpwTransactionManager {
 
     private String getReportingInstitutionId() {
         return parameterManager.getValue(ParameterKey.INSTITUTION_ID);
-    }
-
-    private String getReportingInstitutionIdType() {
-        return parameterManager.getValue(ParameterKey.INSTITUTION_ID_TYPE);
     }
 
 }

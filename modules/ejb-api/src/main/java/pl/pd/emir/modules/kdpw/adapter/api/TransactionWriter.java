@@ -6,5 +6,5 @@ import pl.pd.emir.modules.kdpw.adapter.model.TransactionWriterResult;
 
 public interface TransactionWriter<E extends TransactionToRepository> {
 
-    TransactionWriterResult write(List<E> list, String institutionId, String institutionIdType);
+    TransactionWriterResult write(List<E> list, String institutionId);
 }

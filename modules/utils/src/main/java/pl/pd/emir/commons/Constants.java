@@ -15,7 +15,9 @@ public final class Constants {
     public static final String ISO_DATE = "yyyy-MM-dd";
 
     public static final String ISO_DATE_TIME = "yyyy-MM-dd'T'HH:mm:ss";
-
+    
+    public static final String ISO_DATE_TIME_Z = "yyyy-MM-dd'T'HH:mm:ss'Z'";
+    
     public static final String CLIENT_REPORTED_YES = "Y";
 
     public static final String CLIENT_REPORTED_NO = "N";

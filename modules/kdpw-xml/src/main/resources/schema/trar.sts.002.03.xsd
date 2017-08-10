@@ -1,0 +1,239 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns="urn:kdpw:xsd:trar.sts.002.03" targetNamespace="urn:kdpw:xsd:trar.sts.002.03" elementFormDefault="qualified" attributeFormDefault="unqualified">
+	<xs:annotation>
+		<xs:documentation source="Name" xml:lang="EN">Message processing status</xs:documentation>
+		<xs:documentation source="Definition" xml:lang="EN">Message processing status.</xs:documentation>
+	</xs:annotation>
+	<xs:element name="KDPWDocument" type="KDPWDocument">
+		<xs:annotation>
+			<xs:documentation source="Name" xml:lang="EN">KDPW_TR system message</xs:documentation>
+			<xs:documentation source="Definition" xml:lang="EN">KDPW_TR system message</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+	<xs:simpleType name="Code4Text">
+		<xs:annotation>
+			<xs:documentation source="Name" xml:lang="EN">Qualifier</xs:documentation>
+			<xs:documentation source="Definition" xml:lang="EN">Qualifier</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:whiteSpace value="collapse"/>
+			<xs:minLength value="4"/>
+			<xs:maxLength value="4"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:complexType name="DateAndDateTimeChoice">
+		<xs:annotation>
+			<xs:documentation source="Name" xml:lang="EN">Date and time</xs:documentation>
+			<xs:documentation source="Definition" xml:lang="EN">Date and time</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:choice>
+				<xs:element name="Dt" type="ISODate">
+					<xs:annotation>
+						<xs:documentation source="Name" xml:lang="EN">Date</xs:documentation>
+						<xs:documentation source="Definition" xml:lang="EN">Date</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="DtTm" type="ISODateTime">
+					<xs:annotation>
+						<xs:documentation source="Name" xml:lang="EN">Date and time</xs:documentation>
+						<xs:documentation source="Definition" xml:lang="EN">Date and time</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+			</xs:choice>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="GeneralInformation">
+		<xs:annotation>
+			<xs:documentation source="Name" xml:lang="EN">General information</xs:documentation>
+			<xs:documentation source="Definition" xml:lang="EN">General information</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="SndrMsgRef" type="Max16Text">
+				<xs:annotation>
+					<xs:documentation source="Name" xml:lang="EN">Sender message reference</xs:documentation>
+					<xs:documentation source="Definition" xml:lang="EN">Sender message reference</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="RepTmStmp" type="ISODateTime" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation source="Name" xml:lang="EN">ReportingTimestamp</xs:documentation>
+					<xs:documentation source="Definition" xml:lang="EN">Reporting timestamp</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="ActnTp" type="Max1Text">
+				<xs:annotation>
+					<xs:documentation source="Name" xml:lang="EN">ActionType</xs:documentation>
+					<xs:documentation source="Definition" xml:lang="EN">Action type as defined by ESMA</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="EligDt" type="ISODate" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation source="Name" xml:lang="EN">Eligible date</xs:documentation>
+					<xs:documentation source="Definition" xml:lang="EN">Eligible date</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Lnk" type="Linkages">
+				<xs:annotation>
+					<xs:documentation source="Name" xml:lang="EN">Linkages</xs:documentation>
+					<xs:documentation source="Definition" xml:lang="EN">Linkages to related messages</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:simpleType name="ISODate">
+		<xs:annotation>
+			<xs:documentation source="Name" xml:lang="EN">ISODate</xs:documentation>
+			<xs:documentation source="Definition" xml:lang="EN">A particular point in the progression of time in a calendar year expressed in the YYYY-MM-DD format. This representation is defined in "XML Schema Part 2: Datatypes Second Edition - W3C Recommendation 28 October 2004" which is aligned with ISO 8601.</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:date"/>
+	</xs:simpleType>
+	<xs:simpleType name="ISODateTime">
+		<xs:annotation>
+			<xs:documentation source="Name" xml:lang="EN">ISODateTime</xs:documentation>
+			<xs:documentation source="Definition" xml:lang="EN">an ISODateTime</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:dateTime"/>
+	</xs:simpleType>
+	<xs:complexType name="KDPWDocument">
+		<xs:annotation>
+			<xs:documentation source="Name" xml:lang="EN">KDPW_TR system message</xs:documentation>
+			<xs:documentation source="Definition" xml:lang="EN">KDPW_TR system message </xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="trar.sts.002.03" type="trar.sts.002.03" maxOccurs="10000">
+				<xs:annotation>
+					<xs:documentation source="Name" xml:lang="EN">Message processing status</xs:documentation>
+					<xs:documentation source="Definition" xml:lang="EN">Message processing status</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+		<xs:attribute name="Sndr" type="KDPWMemberIdentifier" use="required">
+			<xs:annotation>
+				<xs:documentation source="Name" xml:lang="EN">Senders KDPW institution code</xs:documentation>
+				<xs:documentation source="Definition" xml:lang="EN">Senders KDPW institution code</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="Rcvr" type="KDPWMemberIdentifier" use="required">
+			<xs:annotation>
+				<xs:documentation source="Name" xml:lang="EN">Receivers KDPW institution code</xs:documentation>
+				<xs:documentation source="Definition" xml:lang="EN">Receivers KDPW institution code</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+	</xs:complexType>
+	<xs:simpleType name="KDPWMemberIdentifier">
+		<xs:annotation>
+			<xs:documentation source="Name" xml:lang="EN">KDPW institution code</xs:documentation>
+			<xs:documentation source="Definition" xml:lang="EN">KDPW institution code</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:whiteSpace value="collapse"/>
+			<xs:minLength value="4"/>
+			<xs:maxLength value="4"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:complexType name="Linkages">
+		<xs:annotation>
+			<xs:documentation source="Name" xml:lang="EN">Linkages</xs:documentation>
+			<xs:documentation source="Definition" xml:lang="EN">Linkages to related messages</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="PrvsSndrMsgRef" type="Max16Text">
+				<xs:annotation>
+					<xs:documentation source="Name" xml:lang="EN">PreviousReference</xs:documentation>
+					<xs:documentation source="Definition" xml:lang="EN">Previous message reference</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:simpleType name="Max1Text">
+		<xs:annotation>
+			<xs:documentation source="Name" xml:lang="EN">Max1Text</xs:documentation>
+			<xs:documentation source="Definition" xml:lang="EN">Specifies a character string with a maximum length of 1 character.</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:minLength value="1"/>
+			<xs:maxLength value="1"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="Max16Text">
+		<xs:annotation>
+			<xs:documentation source="Name" xml:lang="EN">Max16Text</xs:documentation>
+			<xs:documentation source="Definition" xml:lang="EN">Specifies a character string with a maximum length of 16 characters.</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:minLength value="1"/>
+			<xs:maxLength value="16"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="Max140Text">
+		<xs:annotation>
+			<xs:documentation source="Name" xml:lang="EN">Max140Text</xs:documentation>
+			<xs:documentation source="Definition" xml:lang="EN">Specifies a character string with a maximum length of 140 characters.</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:minLength value="1"/>
+			<xs:maxLength value="140"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:complexType name="Reason">
+		<xs:annotation>
+			<xs:documentation source="Name" xml:lang="EN">Reason</xs:documentation>
+			<xs:documentation source="Definition" xml:lang="EN">Reason</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="RsnCd" type="Code4Text" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation source="Name" xml:lang="EN">ReasonCode</xs:documentation>
+					<xs:documentation source="Definition" xml:lang="EN">Reason code</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="RsnTxt" type="Max140Text" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation source="Name" xml:lang="EN">ReasonText</xs:documentation>
+					<xs:documentation source="Definition" xml:lang="EN">Reason description</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="Status">
+		<xs:annotation>
+			<xs:documentation source="Name" xml:lang="EN">Status</xs:documentation>
+			<xs:documentation source="Definition" xml:lang="EN">Status</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="StsCd" type="Code4Text">
+				<xs:annotation>
+					<xs:documentation source="Name" xml:lang="EN">StatusCode</xs:documentation>
+					<xs:documentation source="Definition" xml:lang="EN">Status code</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Rsn" type="Reason" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation source="Name" xml:lang="EN">Reason</xs:documentation>
+					<xs:documentation source="Definition" xml:lang="EN">Reason</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="trar.sts.002.03">
+		<xs:annotation>
+			<xs:documentation source="Name" xml:lang="EN">Message processing status</xs:documentation>
+			<xs:documentation source="Definition" xml:lang="EN">Message processing status</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="GnlInf" type="GeneralInformation">
+				<xs:annotation>
+					<xs:documentation source="Name" xml:lang="EN">General information</xs:documentation>
+					<xs:documentation source="Definition" xml:lang="EN">General information</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Sts" type="Status">
+				<xs:annotation>
+					<xs:documentation source="Name" xml:lang="EN">Status</xs:documentation>
+					<xs:documentation source="Definition" xml:lang="EN">Status</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+</xs:schema>

@@ -114,7 +114,7 @@
                     </execution>
                 </executions>
             </plugin>
-            <!--            <plugin>
+<!--            <plugin>
                 <groupId>org.jvnet.jaxb2.maven2</groupId>
                 <artifactId>maven-jaxb2-plugin</artifactId>
                 <version>0.12.3</version>
@@ -126,12 +126,12 @@
                         <configuration>
                             <strict>false</strict>
                             <schemaIncludes>
-                                <include>schema/trar.ins.001.02.xsd</include>
+                                <include>schema/trar.ins.001.03.xsd</include>
                             </schemaIncludes>
-                            <episodeFile>${project.build.directory}/generated-sources/xjc/META-INF/jaxb-ins_001_02.episode</episodeFile>
+                            <episodeFile>${project.build.directory}/generated-sources/xjc/META-INF/jaxb-ins_001_03.episode</episodeFile>
                             <generatePackage>kdpw.xsd.trar_ins_001</generatePackage>
                         </configuration>
-                        <id>jaxb-generate-ins_001_02</id>
+                        <id>jaxb-generate-ins_001_03</id>
                     </execution>
                     <execution>
                         <goals>
@@ -140,12 +140,12 @@
                         <configuration>
                             <strict>false</strict>
                             <schemaIncludes>
-                                <include>schema/trar.ins.002.02.xsd</include>
+                                <include>schema/trar.ins.002.03.xsd</include>
                             </schemaIncludes>
-                            <episodeFile>${project.build.directory}/generated-sources/xjc/META-INF/jaxb-ins_002_02.episode</episodeFile>
+                            <episodeFile>${project.build.directory}/generated-sources/xjc/META-INF/jaxb-ins_002_03.episode</episodeFile>
                             <generatePackage>kdpw.xsd.trar_ins_002</generatePackage>
                         </configuration>
-                        <id>jaxb-generate-ins_002_02</id>
+                        <id>jaxb-generate-ins_002_03</id>
                     </execution>
                     <execution>
                         <goals>
@@ -196,12 +196,12 @@
                         <configuration>
                             <strict>false</strict>
                             <schemaIncludes>
-                                <include>schema/trar.ins.006.01.xsd</include>
+                                <include>schema/trar.ins.006.02.xsd</include>
                             </schemaIncludes>
-                            <episodeFile>${project.build.directory}/generated-sources/xjc/META-INF/jaxb-ins_006_01.episode</episodeFile>
+                            <episodeFile>${project.build.directory}/generated-sources/xjc/META-INF/jaxb-ins_006_02.episode</episodeFile>
                             <generatePackage>kdpw.xsd.trar_ins_006</generatePackage>
                         </configuration>
-                        <id>jaxb-generate-ins_006_01</id>
+                        <id>jaxb-generate-ins_006_02</id>
                     </execution>
                     <execution>
                         <goals>
@@ -224,12 +224,12 @@
                         <configuration>
                             <strict>false</strict>
                             <schemaIncludes>
-                                <include>schema/trar.rcn.001.02.xsd</include>
+                                <include>schema/trar.rcn.001.03.xsd</include>
                             </schemaIncludes>
-                            <episodeFile>${project.build.directory}/generated-sources/xjc/META-INF/jaxb-rcn_001_02.episode</episodeFile>
+                            <episodeFile>${project.build.directory}/generated-sources/xjc/META-INF/jaxb-rcn_001_03.episode</episodeFile>
                             <generatePackage>kdpw.xsd.trar_rcn_001</generatePackage>
                         </configuration>
-                        <id>jaxb-generate-rcn_001_02</id>
+                        <id>jaxb-generate-rcn_001_03</id>
                     </execution>
                     <execution>
                         <goals>
@@ -252,12 +252,12 @@
                         <configuration>
                             <strict>false</strict>
                             <schemaIncludes>
-                                <include>schema/trar.sts.001.02.xsd</include>
+                                <include>schema/trar.sts.001.03.xsd</include>
                             </schemaIncludes>
-                            <episodeFile>${project.build.directory}/generated-sources/xjc/META-INF/jaxb-sts_001_02.episode</episodeFile>
+                            <episodeFile>${project.build.directory}/generated-sources/xjc/META-INF/jaxb-sts_001_03.episode</episodeFile>
                             <generatePackage>kdpw.xsd.trar_sts_001</generatePackage>
                         </configuration>
-                        <id>jaxb-generate-sts_001_02</id>
+                        <id>jaxb-generate-sts_001_03</id>
                     </execution>
                     <execution>
                         <goals>
@@ -266,12 +266,12 @@
                         <configuration>
                             <strict>false</strict>
                             <schemaIncludes>
-                                <include>schema/trar.sts.002.02.xsd</include>
+                                <include>schema/trar.sts.002.03.xsd</include>
                             </schemaIncludes>
-                            <episodeFile>${project.build.directory}/generated-sources/xjc/META-INF/jaxb-sts_002_02.episode</episodeFile>
+                            <episodeFile>${project.build.directory}/generated-sources/xjc/META-INF/jaxb-sts_002_03.episode</episodeFile>
                             <generatePackage>kdpw.xsd.trar_sts_002</generatePackage>
                         </configuration>
-                        <id>jaxb-generate-sts_002_02</id>
+                        <id>jaxb-generate-sts_002_03</id>
                     </execution>
                     <execution>
                         <goals>
@@ -280,26 +280,12 @@
                         <configuration>
                             <strict>false</strict>
                             <schemaIncludes>
-                                <include>schema/trar.ntf.001.01.xsd</include>
+                                <include>schema/trar.sts.003.02.xsd</include>
                             </schemaIncludes>
-                            <episodeFile>${project.build.directory}/generated-sources/xjc/META-INF/jaxb-ntf_001_01.episode</episodeFile>
-                            <generatePackage>kdpw.xsd.trar_ntf_001</generatePackage>
-                        </configuration>
-                        <id>jaxb-generate-ntf_001_01</id>
-                    </execution>
-                    <execution>
-                        <goals>
-                            <goal>generate</goal>
-                        </goals>
-                        <configuration>
-                            <strict>false</strict>
-                            <schemaIncludes>
-                                <include>schema/trar.sts.003.01.xsd</include>
-                            </schemaIncludes>
-                            <episodeFile>${project.build.directory}/generated-sources/xjc/META-INF/jaxb-sts_003_01.episode</episodeFile>
+                            <episodeFile>${project.build.directory}/generated-sources/xjc/META-INF/jaxb-sts_003_02.episode</episodeFile>
                             <generatePackage>kdpw.xsd.trar_sts_003</generatePackage>
                         </configuration>
-                        <id>jaxb-generate-sts_003_01</id>
+                        <id>jaxb-generate-sts_003_02</id>
                     </execution>
                     <execution>
                         <goals>
@@ -337,7 +323,8 @@
                     <generateDirectory>${basedir}/src/main/java/</generateDirectory>
                     <verbose>true</verbose>
                 </configuration>
-            </plugin>  -->
+            </plugin>
+            -->
         </plugins>
     </build>
 </project>

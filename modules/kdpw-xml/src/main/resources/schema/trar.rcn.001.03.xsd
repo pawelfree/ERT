@@ -1,0 +1,306 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns="urn:kdpw:xsd:trar.rcn.001.03" targetNamespace="urn:kdpw:xsd:trar.rcn.001.03" elementFormDefault="qualified" attributeFormDefault="unqualified">
+	<xs:annotation>
+		<xs:documentation source="Name" xml:lang="EN">Report pairing or comparison failure message</xs:documentation>
+		<xs:documentation source="Definition" xml:lang="EN">Report pairing or comparison failure message.</xs:documentation>
+	</xs:annotation>
+	<xs:element name="KDPWDocument" type="KDPWDocument">
+		<xs:annotation>
+			<xs:documentation source="Name" xml:lang="EN">KDPW_TR system message</xs:documentation>
+			<xs:documentation source="Definition" xml:lang="EN">KDPW_TR system message</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+	<xs:simpleType name="Code4Text">
+		<xs:annotation>
+			<xs:documentation source="Name" xml:lang="EN">Qualifier</xs:documentation>
+			<xs:documentation source="Definition" xml:lang="EN">Qualifier</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:whiteSpace value="collapse"/>
+			<xs:minLength value="4"/>
+			<xs:maxLength value="4"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:complexType name="DateAndDateTimeChoice">
+		<xs:annotation>
+			<xs:documentation source="Name" xml:lang="EN">Date and time</xs:documentation>
+			<xs:documentation source="Definition" xml:lang="EN">Date and time</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:choice>
+				<xs:element name="Dt" type="ISODate">
+					<xs:annotation>
+						<xs:documentation source="Name" xml:lang="EN">Date</xs:documentation>
+						<xs:documentation source="Definition" xml:lang="EN">Date</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="DtTm" type="ISODateTime">
+					<xs:annotation>
+						<xs:documentation source="Name" xml:lang="EN">Date and time</xs:documentation>
+						<xs:documentation source="Definition" xml:lang="EN">Date and time</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+			</xs:choice>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:simpleType name="ESMAMax50AlphaNumeric">
+		<xs:annotation>
+			<xs:documentation source="Name" xml:lang="EN">ESMAMax50AlphaNumeric</xs:documentation>
+			<xs:documentation source="Definition" xml:lang="EN">A string of up to 50 captial letters (A-Z) or numbers (0-9).</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:pattern value="[A-Z0-9]{1,50}"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="ESMAMax52AlphaNumericAdditionalCharacters">
+		<xs:annotation>
+			<xs:documentation source="Name" xml:lang="EN">ESMAMax52AlphaNumericAdditionalCharacters</xs:documentation>
+			<xs:documentation source="Definition" xml:lang="EN">A string of up to 52 captial letters (A-Z), numbers (0-9) or special characters ":", ".", "-", "_". Special characters not allowed at the beginning and at the end.</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:pattern value="[A-Z0-9]{1}[A-Z0-9:\.-_]{0,50}[A-Z0-9]{1}|[A-Z0-9]{1,52}"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:complexType name="GeneralInformation">
+		<xs:annotation>
+			<xs:documentation source="Name" xml:lang="EN">General information</xs:documentation>
+			<xs:documentation source="Definition" xml:lang="EN">General information</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="SndrMsgRef" type="Max16Text">
+				<xs:annotation>
+					<xs:documentation source="Name" xml:lang="EN">Sender message reference</xs:documentation>
+					<xs:documentation source="Definition" xml:lang="EN">Sender message reference</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="RepTmStmp" type="ISODateTime" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation source="Name" xml:lang="EN">ReportingTimestamp</xs:documentation>
+					<xs:documentation source="Definition" xml:lang="EN">Reporting timestamp</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="ParDt" type="ISODate">
+				<xs:annotation>
+					<xs:documentation source="Name" xml:lang="EN">Pairing date</xs:documentation>
+					<xs:documentation source="Definition" xml:lang="EN">Pairing date</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="CompDt" type="ISODate" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation source="Name" xml:lang="EN">Comparison date</xs:documentation>
+					<xs:documentation source="Definition" xml:lang="EN">Comparison date</xs:documentation>
+				</xs:annotation>
+			</xs:element>			
+			<xs:element name="EligDt" type="ISODate">
+				<xs:annotation>
+					<xs:documentation source="Name" xml:lang="EN">Eligible date</xs:documentation>
+					<xs:documentation source="Definition" xml:lang="EN">Eligible date</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Lnk" type="Linkages">
+				<xs:annotation>
+					<xs:documentation source="Name" xml:lang="EN">Linkages</xs:documentation>
+					<xs:documentation source="Definition" xml:lang="EN">Linkages to related messages</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:simpleType name="ISODate">
+		<xs:annotation>
+			<xs:documentation source="Name" xml:lang="EN">ISODate</xs:documentation>
+			<xs:documentation source="Definition" xml:lang="EN">A particular point in the progression of time in a calendar year expressed in the YYYY-MM-DD format. This representation is defined in "XML Schema Part 2: Datatypes Second Edition - W3C Recommendation 28 October 2004" which is aligned with ISO 8601.</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:date"/>
+	</xs:simpleType>
+	<xs:simpleType name="ISODateTime">
+		<xs:annotation>
+			<xs:documentation source="Name" xml:lang="EN">ISODateTime</xs:documentation>
+			<xs:documentation source="Definition" xml:lang="EN">an ISODateTime</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:dateTime"/>
+	</xs:simpleType>
+	<xs:complexType name="KDPWDocument">
+		<xs:annotation>
+			<xs:documentation source="Name" xml:lang="EN">KDPW_TR system message</xs:documentation>
+			<xs:documentation source="Definition" xml:lang="EN">KDPW_TR system message </xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="trar.rcn.001.03" type="trar.rcn.001.03" maxOccurs="10000">
+				<xs:annotation>
+					<xs:documentation source="Name" xml:lang="EN">Report pairing or comparison failure message</xs:documentation>
+					<xs:documentation source="Definition" xml:lang="EN">Report pairing or comparison failure message</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+		<xs:attribute name="Sndr" type="KDPWMemberIdentifier" use="required">
+			<xs:annotation>
+				<xs:documentation source="Name" xml:lang="EN">Senders KDPW institution code</xs:documentation>
+				<xs:documentation source="Definition" xml:lang="EN">Senders KDPW institution code</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="Rcvr" type="KDPWMemberIdentifier" use="required">
+			<xs:annotation>
+				<xs:documentation source="Name" xml:lang="EN">Receivers KDPW institution code</xs:documentation>
+				<xs:documentation source="Definition" xml:lang="EN">Receivers KDPW institution code</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+	</xs:complexType>
+	<xs:simpleType name="KDPWMemberIdentifier">
+		<xs:annotation>
+			<xs:documentation source="Name" xml:lang="EN">KDPW institution code</xs:documentation>
+			<xs:documentation source="Definition" xml:lang="EN">KDPW institution code</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:whiteSpace value="collapse"/>
+			<xs:minLength value="4"/>
+			<xs:maxLength value="4"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="LEIIdentifier">
+		<xs:annotation>
+			<xs:documentation source="Name" xml:lang="EN">LEIIdentifier</xs:documentation>
+			<xs:documentation source="Definition" xml:lang="EN">Legal Entity Identifier is a code allocated to a party as described in ISO 17442 "Financial Services - Legal Entity Identifier (LEI)".</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:pattern value="[A-Z0-9]{18,18}[0-9]{2,2}"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:complexType name="Linkages">
+		<xs:annotation>
+			<xs:documentation source="Name" xml:lang="EN">Linkages</xs:documentation>
+			<xs:documentation source="Definition" xml:lang="EN">Linkages to related messages</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="UnqTradIdr" type="ESMAMax52AlphaNumericAdditionalCharacters">
+				<xs:annotation>
+					<xs:documentation source="Name" xml:lang="EN">UniqueTradeIdentifier</xs:documentation>
+					<xs:documentation source="Definition" xml:lang="EN">Unique Trade identifier</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="RptgCtrPtyId" type="LEIIdentifier">
+				<xs:annotation>
+					<xs:documentation source="Name" xml:lang="EN">CounterpartyIdentication</xs:documentation>
+					<xs:documentation source="Definition" xml:lang="EN">Counterparty identication</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="OthrCtrPtyId" type="ESMAMax50AlphaNumeric">
+				<xs:annotation>
+					<xs:documentation source="Name" xml:lang="EN">OtherCounterpartyIdentication</xs:documentation>
+					<xs:documentation source="Definition" xml:lang="EN">Other counterparty identication</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:simpleType name="Max1Text">
+		<xs:annotation>
+			<xs:documentation source="Name" xml:lang="EN">Max1Text</xs:documentation>
+			<xs:documentation source="Definition" xml:lang="EN">Specifies a character string with a maximum length of 1 character.</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:minLength value="1"/>
+			<xs:maxLength value="1"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="Max16Text">
+		<xs:annotation>
+			<xs:documentation source="Name" xml:lang="EN">Max16Text</xs:documentation>
+			<xs:documentation source="Definition" xml:lang="EN">Specifies a character string with a maximum length of 16 characters.</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:minLength value="1"/>
+			<xs:maxLength value="16"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="Max60Text">
+		<xs:annotation>
+			<xs:documentation source="Name" xml:lang="EN">Max60Text</xs:documentation>
+			<xs:documentation source="Definition" xml:lang="EN">Specifies a character string with a maximum length of 60 characters.</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:minLength value="1"/>
+			<xs:maxLength value="60"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="Max140Text">
+		<xs:annotation>
+			<xs:documentation source="Name" xml:lang="EN">Max140Text</xs:documentation>
+			<xs:documentation source="Definition" xml:lang="EN">Specifies a character string with a maximum length of 140 characters.</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:minLength value="1"/>
+			<xs:maxLength value="140"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:complexType name="Reason">
+		<xs:annotation>
+			<xs:documentation source="Name" xml:lang="EN">Reason</xs:documentation>
+			<xs:documentation source="Definition" xml:lang="EN">Reason</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="RsnCd" type="Code4Text">
+				<xs:annotation>
+					<xs:documentation source="Name" xml:lang="EN">ReasonCode</xs:documentation>
+					<xs:documentation source="Definition" xml:lang="EN">Reason code</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="RsnTxt" type="Max140Text" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation source="Name" xml:lang="EN">ReasonText</xs:documentation>
+					<xs:documentation source="Definition" xml:lang="EN">Reason description</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="CtrPtyVal" type="Max60Text" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation source="Name" xml:lang="EN">Counterparty (conflicting) value</xs:documentation>
+					<xs:documentation source="Definition" xml:lang="EN">Counterparty (conflicting) value</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="OthrCtrPtyVal" type="Max60Text" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation source="Name" xml:lang="EN">Other counterparty (conflicting) value</xs:documentation>
+					<xs:documentation source="Definition" xml:lang="EN">Other counterparty (conflicting) value</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="Status">
+		<xs:annotation>
+			<xs:documentation source="Name" xml:lang="EN">Status</xs:documentation>
+			<xs:documentation source="Definition" xml:lang="EN">Status</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="StsCd" type="Code4Text">
+				<xs:annotation>
+					<xs:documentation source="Name" xml:lang="EN">StatusCode</xs:documentation>
+					<xs:documentation source="Definition" xml:lang="EN">Status code</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Rsn" type="Reason" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation source="Name" xml:lang="EN">Reason</xs:documentation>
+					<xs:documentation source="Definition" xml:lang="EN">Reason</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="trar.rcn.001.03">
+		<xs:annotation>
+			<xs:documentation source="Name" xml:lang="EN">Report pairing or comparison failure message</xs:documentation>
+			<xs:documentation source="Definition" xml:lang="EN">Report pairing or comparison failure message</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="GnlInf" type="GeneralInformation">
+				<xs:annotation>
+					<xs:documentation source="Name" xml:lang="EN">General information</xs:documentation>
+					<xs:documentation source="Definition" xml:lang="EN">General information</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Sts" type="Status">
+				<xs:annotation>
+					<xs:documentation source="Name" xml:lang="EN">Status</xs:documentation>
+					<xs:documentation source="Definition" xml:lang="EN">Status</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+</xs:schema>
