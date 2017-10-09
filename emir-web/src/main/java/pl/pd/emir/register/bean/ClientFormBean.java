@@ -1,5 +1,6 @@
 package pl.pd.emir.register.bean;
 
+import java.util.ArrayList;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
@@ -14,7 +15,6 @@ import pl.pd.emir.embeddable.Institution;
 import pl.pd.emir.embeddable.InstitutionAddress;
 import pl.pd.emir.embeddable.InstitutionData;
 import pl.pd.emir.entity.Client;
-import pl.pd.emir.enums.ContrPartyIndustry;
 import pl.pd.emir.enums.CountryCode;
 import pl.pd.emir.enums.EventType;
 import pl.pd.emir.enums.FormType;
@@ -129,7 +129,8 @@ public class ClientFormBean extends AbstractFormBean<Client> {
     }
 
     public List<SelectItem> getContrPartyIndustries() {
-        return BeanHelper.fillMsgSelectList(ContrPartyIndustry.values());
+        //TODO wypelnic liste
+        return BeanHelper.fillMsgSelectList(null);
     }
 
     @Override

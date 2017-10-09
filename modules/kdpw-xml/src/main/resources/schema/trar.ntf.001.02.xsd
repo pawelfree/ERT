@@ -96,15 +96,6 @@ This field shall be filled from the perspective of the reporting counterparty. I
 			<xs:pattern value="[A-Z0-9]{1,50}"/>
 		</xs:restriction>
 	</xs:simpleType>
-	<xs:simpleType name="ESMAMax52AlphaNumericAdditionalCharacters">
-		<xs:annotation>
-			<xs:documentation source="Name" xml:lang="EN">ESMAMax52AlphaNumericAdditionalCharacters</xs:documentation>
-			<xs:documentation source="Definition" xml:lang="EN">A string of up to 52 captial letters (A-Z), numbers (0-9) or special characters ":", ".", "-", "_". Special characters not allowed at the beginning and at the end.</xs:documentation>
-		</xs:annotation>
-		<xs:restriction base="xs:string">
-			<xs:pattern value="[A-Z0-9]{1}[A-Z0-9:\.-_]{0,50}[A-Z0-9]{1}|[A-Z0-9]{1,52}"/>
-		</xs:restriction>
-	</xs:simpleType>
 	<xs:complexType name="GeneralInformation">
 		<xs:annotation>
 			<xs:documentation source="Name" xml:lang="EN">General information</xs:documentation>
@@ -189,6 +180,15 @@ This field shall be filled from the perspective of the reporting counterparty. I
 			</xs:annotation>
 		</xs:attribute>
 	</xs:complexType>
+	<xs:simpleType name="KDPWMax52AlphaNumericAdditionalCharacters">
+		<xs:annotation>
+			<xs:documentation source="Name" xml:lang="EN">ESMAMax52AlphaNumericAdditionalCharacters</xs:documentation>
+			<xs:documentation source="Definition" xml:lang="EN">A string of up to 52 captial letters (A-Z), numbers (0-9) or special characters ":", ".", "-", "_". Special characters not allowed at the beginning and at the end.</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:pattern value="[A-Z0-9]{1}[A-Z0-9:\.\-_]{0,50}[A-Z0-9]{1}|[A-Z0-9]{1,52}"/>
+		</xs:restriction>
+	</xs:simpleType>
 	<xs:simpleType name="KDPWMemberIdentifier">
 		<xs:annotation>
 			<xs:documentation source="Name" xml:lang="EN">KDPW institution code</xs:documentation>
@@ -393,7 +393,7 @@ This field shall be filled from the perspective of the reporting counterparty. I
 			<xs:documentation source="Definition" xml:lang="EN">Provides details of trade transaction.</xs:documentation>
 		</xs:annotation>
 		<xs:sequence>
-			<xs:element name="UnqTradIdr" type="ESMAMax52AlphaNumericAdditionalCharacters">
+			<xs:element name="UnqTradIdr" type="KDPWMax52AlphaNumericAdditionalCharacters">
 				<xs:annotation>
 					<xs:documentation source="Name" xml:lang="EN">UniqueTradeIdentifier</xs:documentation>
 					<xs:documentation source="Definition" xml:lang="EN">Unique trade Identifier (UTI) as agreed with the other counterparty.</xs:documentation>

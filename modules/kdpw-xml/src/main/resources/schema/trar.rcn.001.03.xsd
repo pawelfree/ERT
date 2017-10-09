@@ -52,15 +52,6 @@
 			<xs:pattern value="[A-Z0-9]{1,50}"/>
 		</xs:restriction>
 	</xs:simpleType>
-	<xs:simpleType name="ESMAMax52AlphaNumericAdditionalCharacters">
-		<xs:annotation>
-			<xs:documentation source="Name" xml:lang="EN">ESMAMax52AlphaNumericAdditionalCharacters</xs:documentation>
-			<xs:documentation source="Definition" xml:lang="EN">A string of up to 52 captial letters (A-Z), numbers (0-9) or special characters ":", ".", "-", "_". Special characters not allowed at the beginning and at the end.</xs:documentation>
-		</xs:annotation>
-		<xs:restriction base="xs:string">
-			<xs:pattern value="[A-Z0-9]{1}[A-Z0-9:\.-_]{0,50}[A-Z0-9]{1}|[A-Z0-9]{1,52}"/>
-		</xs:restriction>
-	</xs:simpleType>
 	<xs:complexType name="GeneralInformation">
 		<xs:annotation>
 			<xs:documentation source="Name" xml:lang="EN">General information</xs:documentation>
@@ -73,7 +64,7 @@
 					<xs:documentation source="Definition" xml:lang="EN">Sender message reference</xs:documentation>
 				</xs:annotation>
 			</xs:element>
-			<xs:element name="RepTmStmp" type="ISODateTime" minOccurs="0">
+			<xs:element name="RepTmStmp" type="ISODateTime">
 				<xs:annotation>
 					<xs:documentation source="Name" xml:lang="EN">ReportingTimestamp</xs:documentation>
 					<xs:documentation source="Definition" xml:lang="EN">Reporting timestamp</xs:documentation>
@@ -90,7 +81,7 @@
 					<xs:documentation source="Name" xml:lang="EN">Comparison date</xs:documentation>
 					<xs:documentation source="Definition" xml:lang="EN">Comparison date</xs:documentation>
 				</xs:annotation>
-			</xs:element>			
+			</xs:element>
 			<xs:element name="EligDt" type="ISODate">
 				<xs:annotation>
 					<xs:documentation source="Name" xml:lang="EN">Eligible date</xs:documentation>
@@ -145,6 +136,15 @@
 			</xs:annotation>
 		</xs:attribute>
 	</xs:complexType>
+	<xs:simpleType name="KDPWMax52AlphaNumericAdditionalCharacters">
+		<xs:annotation>
+			<xs:documentation source="Name" xml:lang="EN">ESMAMax52AlphaNumericAdditionalCharacters</xs:documentation>
+			<xs:documentation source="Definition" xml:lang="EN">A string of up to 52 captial letters (A-Z), numbers (0-9) or special characters ":", ".", "-", "_". Special characters not allowed at the beginning and at the end.</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:pattern value="[A-Z0-9]{1}[A-Z0-9:\.\-_]{0,50}[A-Z0-9]{1}|[A-Z0-9]{1,52}"/>
+		</xs:restriction>
+	</xs:simpleType>
 	<xs:simpleType name="KDPWMemberIdentifier">
 		<xs:annotation>
 			<xs:documentation source="Name" xml:lang="EN">KDPW institution code</xs:documentation>
@@ -171,7 +171,7 @@
 			<xs:documentation source="Definition" xml:lang="EN">Linkages to related messages</xs:documentation>
 		</xs:annotation>
 		<xs:sequence>
-			<xs:element name="UnqTradIdr" type="ESMAMax52AlphaNumericAdditionalCharacters">
+			<xs:element name="UnqTradIdr" type="KDPWMax52AlphaNumericAdditionalCharacters">
 				<xs:annotation>
 					<xs:documentation source="Name" xml:lang="EN">UniqueTradeIdentifier</xs:documentation>
 					<xs:documentation source="Definition" xml:lang="EN">Unique Trade identifier</xs:documentation>
@@ -275,7 +275,7 @@
 					<xs:documentation source="Definition" xml:lang="EN">Status code</xs:documentation>
 				</xs:annotation>
 			</xs:element>
-			<xs:element name="Rsn" type="Reason" minOccurs="0">
+			<xs:element name="Rsn" type="Reason" maxOccurs="unbounded">
 				<xs:annotation>
 					<xs:documentation source="Name" xml:lang="EN">Reason</xs:documentation>
 					<xs:documentation source="Definition" xml:lang="EN">Reason</xs:documentation>

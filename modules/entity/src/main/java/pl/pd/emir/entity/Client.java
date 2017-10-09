@@ -23,7 +23,6 @@ import pl.pd.emir.embeddable.Institution;
 import pl.pd.emir.entity.administration.ChangeLog;
 import pl.pd.emir.entity.annotations.ValidateCompleteness;
 import static pl.pd.emir.entity.utils.HistoryUtils.checkFieldsEquals;
-import pl.pd.emir.enums.ContrPartyIndustry;
 import pl.pd.emir.enums.CountryCode;
 import pl.pd.emir.enums.EventType;
 import pl.pd.emir.enums.ValidationStatus;
@@ -100,9 +99,8 @@ public class Client extends Extract implements Selectable<Long>, DescriptorCusto
     /*
      * CORPSCTR, Branża, do której należy kontrahent [14]
      */
-    @Enumerated(EnumType.STRING)
     @Column(name = "CONTR_PARTY_INDUSTRY", length = 3)
-    private ContrPartyIndustry contrPartyIndustry;
+    private String contrPartyIndustry;
     /*
      * FINNONFIN_ID, Flaga - Kontrahent finansowy / niefinansowy [15]
      */
@@ -155,7 +153,7 @@ public class Client extends Extract implements Selectable<Long>, DescriptorCusto
     }
 
     public Client(String originalId, String clientName, CountryCode countryCode, BusinessEntity businessEntity,
-            Boolean reported, Boolean eucReported, Institution institution, ContrPartyIndustry contrPartyIndustry, String contrPartyType, String eog,
+            Boolean reported, Boolean eucReported, Institution institution, String contrPartyIndustry, String contrPartyType, String eog,
             Boolean naturalPerson, ValidationStatus validationStatus) {
         this();
         this.originalId = originalId;
@@ -199,11 +197,11 @@ public class Client extends Extract implements Selectable<Long>, DescriptorCusto
         this.originalId = originalId;
     }
 
-    public ContrPartyIndustry getContrPartyIndustry() {
+    public String getContrPartyIndustry() {
         return contrPartyIndustry;
     }
 
-    public void setContrPartyIndustry(ContrPartyIndustry contrPartyIndustry) {
+    public void setContrPartyIndustry(String contrPartyIndustry) {
         this.contrPartyIndustry = contrPartyIndustry;
     }
 

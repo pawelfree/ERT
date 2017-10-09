@@ -6,7 +6,6 @@ import pl.pd.emir.embeddable.BusinessEntity;
 import pl.pd.emir.embeddable.Institution;
 import pl.pd.emir.entity.Client;
 import pl.pd.emir.entity.ImportFailLog;
-import pl.pd.emir.enums.ContrPartyIndustry;
 import pl.pd.emir.enums.CountryCode;
 import pl.pd.emir.enums.ValidationStatus;
 import pl.pd.emir.imports.ImportFaillogUtils;
@@ -40,7 +39,7 @@ public class ClientCsvParser extends BaseCsvParser<Client> {
             Boolean f5 = ImportValidationUtils.validateBooleanField(data[7], "Y", "N", true, "RAPORTOWANY", "8", importResult);
             Boolean f51 = true;
             Institution f6 = ImportValidationUtils.validateInstitution(institutionData, importResult);
-            ContrPartyIndustry f7 = ImportValidationUtils.validateEnumField(ContrPartyIndustry.class, data[14], "CORPSCTR", false, "15", importResult);
+            String f7 = ImportValidationUtils.validateStringField(data[14], 1, "CORPSCTR", false, "15", importResult);
             String f8 = ImportValidationUtils.validateStringField(data[15], 1, "FINNONFIN_ID", true, "16", importResult);
             String f9 = ImportValidationUtils.validateStringBooleanField(data[16], "Y", "N", true, "EOG", "17", importResult);
             Boolean f10 = ImportValidationUtils.validateBooleanField(data[17], "Y", "N", true, "OSOBA_FIZYCZNA", "18", importResult);

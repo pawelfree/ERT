@@ -14,7 +14,9 @@ import java.util.logging.Logger;
 import javax.ejb.Local;
 import javax.ejb.Stateless;
 import kdpw.xsd.trar_ins_001.ActiveCurrencyAnd20Amount;
+import kdpw.xsd.trar_ins_001.ActiveCurrencyAnd20AmountN;
 import kdpw.xsd.trar_ins_001.ActiveOrHistoricCurrencyAnd20Amount;
+import kdpw.xsd.trar_ins_001.ActiveOrHistoricCurrencyAnd20AmountNegative;
 import kdpw.xsd.trar_ins_001.ClearingObligationCode;
 import kdpw.xsd.trar_ins_001.CollateralisationType1Code;
 import kdpw.xsd.trar_ins_001.CommonTradeDataReport171;
@@ -156,7 +158,8 @@ public class XmlTransactionWriterImpl extends XmlWriterImpl implements Transacti
 
     protected final GeneralInformation getGeneralInfo(final String senderMessageReference, final String institutionId) {
         final GeneralInformation result = new GeneralInformation();
-        result.setRptgNtty(institutionId);
+        //TODO jesli wysyłamy tylko wlasne transakcje to to pole pozostaje niewypełnione/puste
+        //result.setRptgNtty(institutionId);
         result.setSndrMsgRef(senderMessageReference);
         return result;
     }
@@ -391,8 +394,8 @@ public class XmlTransactionWriterImpl extends XmlWriterImpl implements Transacti
         return result;
     }
     
-    protected final ActiveOrHistoricCurrencyAnd20Amount getNewMntry(final TransactionDetails transactionDetails) {
-        ActiveOrHistoricCurrencyAnd20Amount result = new ActiveOrHistoricCurrencyAnd20Amount();
+    protected final ActiveOrHistoricCurrencyAnd20AmountNegative getNewMntry(final TransactionDetails transactionDetails) {
+        ActiveOrHistoricCurrencyAnd20AmountNegative result = new ActiveOrHistoricCurrencyAnd20AmountNegative();
         result.setValue(transactionDetails.getUnitPrice());
         result.setCcy(transactionDetails.getUnitPriceCurrency().toString());
         return result;
@@ -573,7 +576,7 @@ public class XmlTransactionWriterImpl extends XmlWriterImpl implements Transacti
                 }                
             }
             if (result != null){
-                ActiveCurrencyAnd20Amount amount = new ActiveCurrencyAnd20Amount();
+                ActiveCurrencyAnd20AmountN amount = new ActiveCurrencyAnd20AmountN();
                 amount.setCcy(XmlUtils.enumName(valuationData.getCurrencyCode()));
                 if (clientSide) {
                     amount.setValue(valuationData.getClientAmount());
@@ -609,7 +612,10 @@ public class XmlTransactionWriterImpl extends XmlWriterImpl implements Transacti
         result.setRptgCtrPtyId(client.getInstitution().getInstitutionData().getInstitutionId());
         result.setCtrPtySd(getTransactionParty(item.getRegistable().getTransaction().getTransactionParty(), Boolean.FALSE));
 //TODO to musi byc wypelnione i nie tak jak u nas max 3 literki (w rzeczywistosci jedna)
-        result.getSctr().add("!!! CAN BE EMPTY !!!");
+//TODO to trzeba przedyskutowac 
+        //TODO dla MUFG "C"
+        result.getSctr().add(client.getContrPartyIndustry());
+        //TODO dla mufg "F"
         result.setNtr(getClientNature(client.getContrPartyType()));
         BusinessEntityData businessData = item.getRegistable().getTransaction().getClient2Data();
         //TODO null wywala walidacje
@@ -617,8 +623,10 @@ public class XmlTransactionWriterImpl extends XmlWriterImpl implements Transacti
         //result.setClrMmb(getClrMmb(businessData));
         result.setBnfcry(getPartyId(businessData));
         result.setTradgCpcty(getTradgCpcty(businessData));
-        result.setCmmrclActvty(getCommercialActivity(businessData));
-        result.setClrTrshld(getClrTrshld(businessData));
+        //TODO jesli kontrachent finansowy to tego sie nie wypełnia
+        //result.setCmmrclActvty(getCommercialActivity(businessData));
+        //TODO jesli kontrachent finansowy to tego sie nie wypełnia
+        //result.setClrTrshld(getClrTrshld(businessData));
         result.setOthrCtrPty(getOthrCtrPty(item.getRegistable().getTransaction().getClient().getCountryCode(), item.getRegistable().getTransaction().getClientData(), !item.getRegistable().getTransaction().getClient().getNaturalPerson()));
         
         return result;
@@ -631,7 +639,8 @@ public class XmlTransactionWriterImpl extends XmlWriterImpl implements Transacti
         result.setRptgCtrPtyId(client.getInstitution().getInstitutionData().getInstitutionId());
         result.setCtrPtySd(getTransactionParty(item.getRegistable().getTransaction().getTransactionParty(), Boolean.TRUE));
 //TODO to musi byc wypelnione i nie tak jak u nas max 3 literki (w rzeczywistosci jedna)
-        result.getSctr().add("!!! CAN BE EMPTY !!!");
+//TODO to trzeba przedyskutowac w zaleznowci od Ntr
+        result.getSctr().add(client.getContrPartyIndustry());
         result.setNtr(getClientNature(client.getContrPartyType()));        
         BusinessEntityData businessData = item.getRegistable().getTransaction().getClientData();
         //TODO null wywala walidacje
