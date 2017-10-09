@@ -56,17 +56,9 @@
                                sortBy="clientName"
                                value="#{client.clientName}" />
 
-                <emir:column header="#{msgs['register.client.businessEntity.subjectNip']}"
-                               bean="#{clientListBean}"
-                               value="#{client.businessEntity.subjectNip}" />
-
-                <emir:column header="#{msgs['register.client.businessEntity.subjectRegon']}"
-                               bean="#{clientListBean}"
-                               value="#{client.businessEntity.subjectRegon}" />
-
                 <emir:column header="#{msgs['register.client.institution.institutionData.institutionId']}"
                                bean="#{clientListBean}"
-                               value="#{client.institution.institutionData.institutionId}" />
+                               value="#{client.institutionId}" />
 
                 <emir:column header="#{msgs['register.client.validationStatus']}"
                                sortBy="validationStatus"

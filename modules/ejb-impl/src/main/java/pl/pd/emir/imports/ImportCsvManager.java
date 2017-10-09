@@ -31,11 +31,9 @@ import pl.pd.emir.enums.ImportStatus;
 import pl.pd.emir.enums.ParameterKey;
 import pl.pd.emir.exceptions.FileUtilsException;
 import pl.pd.emir.parsers.BaseCsvParser;
-import pl.pd.emir.parsers.ClientCsvParser;
 import pl.pd.emir.parsers.ProtectionParser;
 import pl.pd.emir.parsers.TransactionCsvParserTmb;
 import pl.pd.emir.parsers.ValuationParser;
-import pl.pd.emir.processor.ClientImportProcessor;
 import pl.pd.emir.processor.IImportProcessor;
 import pl.pd.emir.processor.ProcessingWarnings;
 import pl.pd.emir.processor.ProtectionImportProcessor;
@@ -85,7 +83,6 @@ public class ImportCsvManager {
     private ImportOverview overview;
 
     public ImportCsvManager() {
-        processors.put(ImportScope.CLIENT_E, new ClientImportProcessor());
         processors.put(ImportScope.TRANSACTION_E, new TransactionImportProcessor());
         processors.put(ImportScope.PROTECTION_E, new ProtectionImportProcessor());
         processors.put(ImportScope.VALUATION_E, new ValuationImportProcessor());
@@ -95,7 +92,6 @@ public class ImportCsvManager {
     }
 
     protected void initParsers() {             
-        parsers.put(ImportScope.CLIENT_E, new ClientCsvParser());
         parsers.put(ImportScope.TRANSACTION_E, new TransactionCsvParserTmb(clientManager));
         parsers.put(ImportScope.PROTECTION_E, new ProtectionParser());
         parsers.put(ImportScope.VALUATION_E, new ValuationParser());
@@ -116,9 +112,6 @@ public class ImportCsvManager {
         overview = new ImportOverview();
 
         //kolejność musi zostać
-        if (importScope.contains(ImportScope.CLIENT_E)) {
-            importFiles(ImportScope.CLIENT_E, new ResourceMask(parameterManager.getValue(ParameterKey.IMPORT_INPUT_MASK_CLIENT)));
-        }
         if (importScope.contains(ImportScope.TRANSACTION_E)) {
             customersToRemoveFromImport.addAll(java.util.Arrays.asList(parameterManager.get(ParameterKey.CUSTOMERS_TO_SKIP_DURING_IMPORT).getValue().split(",")));
             importFiles(ImportScope.TRANSACTION_E, new ResourceMask(parameterManager.getValue(ParameterKey.IMPORT_INPUT_MASK_TRANSACTION)));

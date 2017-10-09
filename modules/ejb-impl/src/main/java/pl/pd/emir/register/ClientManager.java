@@ -99,24 +99,16 @@ public class ClientManager extends AbstractManagerTemplate<Client>  {
 
     private void checkEntityChanges(Client newClient, Client oldClient) {
         if (newClient.getId() != null) {
-            Institution oldInstitution = oldClient.getInstitution();
-            Institution newInstitution = newClient.getInstitution();
             Integer actualVersion = oldClient.getClientVersion() == null ? 1 : oldClient.getClientVersion();
-            boolean isChange = isFieldNotEquals(oldInstitution.getInstitutionData().getInstitutionId(), newInstitution.getInstitutionData().getInstitutionId())
-                    || isFieldNotEquals(oldInstitution.getInstitutionData().getInstitutionIdType(), newInstitution.getInstitutionData().getInstitutionIdType())
+            boolean isChange = isFieldNotEquals(oldClient.getInstitutionId(), newClient.getInstitutionId())
+                    || isFieldNotEquals(oldClient.getInstitutionIdType(), newClient.getInstitutionIdType())
                     || isFieldNotEquals(oldClient.getContrPartyIndustry(), newClient.getContrPartyIndustry())
                     || isFieldNotEquals(oldClient.getContrPartyType(), newClient.getContrPartyType())
                     || isFieldNotEquals(oldClient.getEog(), newClient.getEog())
                     || isFieldNotEquals(oldClient.getNaturalPerson(), newClient.getNaturalPerson())
                     || isFieldNotEquals(oldClient.getReported(), newClient.getReported())
                     || isFieldNotEquals(oldClient.getContrPartyType(), newClient.getContrPartyType())
-                    || isFieldNotEquals(oldClient.getCountryCode(), newClient.getCountryCode())
-                    || isFieldNotEquals(oldInstitution.getInstitutionAddr().getPostalCode(), newInstitution.getInstitutionAddr().getPostalCode())
-                    || isFieldNotEquals(oldInstitution.getInstitutionAddr().getCity(), newInstitution.getInstitutionAddr().getCity())
-                    || isFieldNotEquals(oldInstitution.getInstitutionAddr().getStreetName(), newInstitution.getInstitutionAddr().getStreetName())
-                    || isFieldNotEquals(oldInstitution.getInstitutionAddr().getBuildingId(), newInstitution.getInstitutionAddr().getBuildingId())
-                    || isFieldNotEquals(oldInstitution.getInstitutionAddr().getPremisesId(), newInstitution.getInstitutionAddr().getPremisesId())
-                    || isFieldNotEquals(oldInstitution.getInstitutionAddr().getDetails(), newInstitution.getInstitutionAddr().getDetails());
+                    || isFieldNotEquals(oldClient.getCountryCode(), newClient.getCountryCode());
             if (isChange) {
                 newClient.setClientVersion(actualVersion + 1);
             } else {

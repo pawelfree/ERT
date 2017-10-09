@@ -1,6 +1,5 @@
 package pl.pd.emir.register.bean;
 
-import java.util.ArrayList;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
@@ -11,9 +10,6 @@ import javax.faces.model.SelectItem;
 import pl.pd.emir.bean.BeanHelper;
 import pl.pd.emir.commons.StringUtil;
 import pl.pd.emir.embeddable.BusinessEntity;
-import pl.pd.emir.embeddable.Institution;
-import pl.pd.emir.embeddable.InstitutionAddress;
-import pl.pd.emir.embeddable.InstitutionData;
 import pl.pd.emir.entity.Client;
 import pl.pd.emir.enums.CountryCode;
 import pl.pd.emir.enums.EventType;
@@ -85,35 +81,11 @@ public class ClientFormBean extends AbstractFormBean<Client> {
     }
 
     public int getInstitutionIdLength() {
-        return getSizeValue(InstitutionData.class, "institutionId");
+        return getSizeValue("institutionId");
     }
 
     public int geteOGLength() {
         return getSizeValue("eog");
-    }
-
-    public int getAddressPostalCodeLength() {
-        return getSizeValue(InstitutionAddress.class, "postalCode");
-    }
-
-    public int getAddressCityLength() {
-        return getSizeValue(InstitutionAddress.class, "city");
-    }
-
-    public int getAddressStreetNameLength() {
-        return getSizeValue(InstitutionAddress.class, "streetName");
-    }
-
-    public int getAddressBuildingIdLength() {
-        return getSizeValue(InstitutionAddress.class, "buildingId");
-    }
-
-    public int getAddressPremisesIdLength() {
-        return getSizeValue(InstitutionAddress.class, "premisesId");
-    }
-
-    public int getAddressDetailsLength() {
-        return getSizeValue(InstitutionAddress.class, "details");
     }
 
     public int getOriginalIdLength() {
@@ -150,11 +122,6 @@ public class ClientFormBean extends AbstractFormBean<Client> {
     protected void initEntity() {
         Client cl;
         cl = new Client();
-        Institution inst = new Institution();
-        inst.setInstitutionAddr(new InstitutionAddress());
-        inst.setInstitutionData(new InstitutionData());
-        cl.setInstitution(inst);
-        cl.setBusinessEntity(new BusinessEntity());
         cl.setIntraGroupTransactions(false);
         setEntity(cl);
     }
@@ -230,19 +197,6 @@ public class ClientFormBean extends AbstractFormBean<Client> {
         EventLogBuilder eventLogBuilder = new EventLogBuilder();
         eventLogBuilder.append(EventLogBuilder.EventDetailsKey.VALIDATION_STATUS, valueStatus.getMsgKey(), true);
         getEventLogManager().addEventNonTransactional(EventType.CLIENT_INSERT, null, eventLogBuilder.toString());
-    }
-
-    public boolean isClientInfoRequired() {
-
-        if (InstitutionIdType.LEIC.equals(entity.getInstitution().getInstitutionData().getInstitutionIdType())) {
-            boolean xmlName = StringUtil.isNotEmpty(entity.getClientName());
-            boolean code = entity.getCountryCode() != null;
-            boolean city = entity.getInstitution().getInstitutionAddr() != null
-                    && StringUtil.isNotEmpty(entity.getInstitution().getInstitutionAddr().getCity());
-            return xmlName != code || xmlName != city || code != city;
-        } else {
-            return true;
-        }
     }
 
     public ClientListBean getListBean() {

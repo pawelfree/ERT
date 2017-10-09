@@ -3,7 +3,6 @@ package pl.pd.emir.enums;
 public enum ParameterKey implements MsgEnum {
 
     IMPORT_INPUT_URI,
-    IMPORT_INPUT_MASK_CLIENT,
     IMPORT_INPUT_MASK_VALUATION,
     IMPORT_INPUT_MASK_PROTECTION,
     IMPORT_INPUT_MASK_TRANSACTION,

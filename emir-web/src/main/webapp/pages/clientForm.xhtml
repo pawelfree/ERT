@@ -24,7 +24,7 @@
                                  ajax="true"
                                  action="#{clientFormBean.saveStep1()}"
                                  id="buttonSave"
-                                 update="#{applicationBean.facesMessagesFormID} generalData addressData confirmDialogError"
+                                 update="#{applicationBean.facesMessagesFormID} generalData confirmDialogError"
                                  disabled="#{clientFormBean.formType eq 'View' }" />
 
                 <p:commandButton type="cancel" action="#{clientListBean.init()}" value="#{msgs['button.cancel']}"
@@ -82,22 +82,22 @@
                     <p:panelGrid columns="2">
 
                         <emir:labeledOutput id="institutionId_out" label="#{msgs['register.client.institution.institutionData.institutionId']}"
-                                            value="#{clientFormBean.entity.institution.institutionData.institutionId}"
+                                            value="#{clientFormBean.entity.institutionId}"
                                             rendered="#{not (clientFormBean.formType eq 'New')}"/>
                         <emir:inputText id="institutionId" label="#{msgs['register.client.institution.institutionData.institutionId']}"
                                         required="true"
-                                        value="#{clientFormBean.entity.institution.institutionData.institutionId}"
+                                        value="#{clientFormBean.entity.institutionId}"
                                         maxlength="#{clientFormBean.institutionIdLength}"
                                         rendered="#{clientFormBean.formType eq 'New'}">
                         </emir:inputText>
 
                         <emir:labeledOutput id="institutionIdType_out" label="#{msgs['register.client.institution.institutionData.institutionIdType']}"
-                                            value="#{clientFormBean.entity.institution.institutionData.institutionIdType}"
+                                            value="#{clientFormBean.entity.institutionIdType}"
                                             rendered="#{not (clientFormBean.formType eq 'New')}"/>
                         <emir:inputSelect id="institutionIdType"
                                           label="#{msgs['register.client.institution.institutionData.institutionIdType']}"
                                           required="true"
-                                          value="#{clientFormBean.entity.institution.institutionData.institutionIdType}"
+                                          value="#{clientFormBean.entity.institutionIdType}"
                                           rendered="#{clientFormBean.formType == 'New'}">
                             <f:selectItem itemLabel="#{msgs['commons.select']}" itemValue="#{null}" itemDisabled="false" />
                             <f:selectItems value="#{clientFormBean.institutionIdTypes}" itemValue="#{option}" var="option" itemLabel="#{option}" />
@@ -106,30 +106,6 @@
                     </p:panelGrid>
                 </p:panel>
 
-                <p:panel toggleable="true">
-                    <f:facet name="header">#{msgs['register.client.headers.innerIdentifier']}</f:facet>
-                    <p:panelGrid columns="2">
-                        <emir:labeledOutput id="subjectNip_out" label="#{msgs['register.client.businessEntity.subjectNip']}"
-                                            value="#{clientFormBean.entity.businessEntity.subjectNip}"
-                                            rendered="#{clientFormBean.formType eq 'View'}"/>
-                        <emir:inputText id="subjectNip" label="#{msgs['register.client.businessEntity.subjectNip']}"
-                                        value="#{clientFormBean.entity.businessEntity.subjectNip}"
-                                        maxlength="#{clientFormBean.nipLength}"
-                                        rendered="#{not (clientFormBean.formType == 'View')}">
-                            <f:validator validatorId="pl.pd.emir.clientutils.validators.NipValidator"/>
-                        </emir:inputText>
-
-                        <emir:labeledOutput id="subjectRegon_out" label="#{msgs['register.client.businessEntity.subjectRegon']}"
-                                            value="#{clientFormBean.entity.businessEntity.subjectRegon}"
-                                            rendered="#{clientFormBean.formType eq 'View'}"/>
-                        <emir:inputText id="subjectRegon" label="#{msgs['register.client.businessEntity.subjectRegon']}"
-                                        value="#{clientFormBean.entity.businessEntity.subjectRegon}"
-                                        maxlength="#{clientFormBean.regonLength}"
-                                        rendered="#{not (clientFormBean.formType == 'View')}">
-                            <f:validator validatorId="pl.pd.emir.clientutils.validators.RegonValidator"/>
-                        </emir:inputText>
-                    </p:panelGrid>
-                </p:panel>
                 <p:panelGrid columns="2">
 
                     <emir:labeledOutput id="contrPartyIndustry_out" label="#{msgs['register.client.contrPartyIndustry']}"
@@ -216,78 +192,6 @@
                         <f:selectItem itemLabel="#{msgs['button.no']}" itemValue="#{false}"/>
                     </emir:inputSelect>
 
-                </p:panelGrid>
-            </p:panel>
-            <p:panel id="addressData" toggleable="true">
-                <f:facet name="header">#{msgs['register.client.headers.addressInfo']}</f:facet>
-                <p:panelGrid columns="2">
-
-                    <emir:labeledOutput id="countryCode_out" label="#{msgs['register.client.institution.institutionAddr.country']}"
-                                        value="#{clientFormBean.entity.countryCode}"
-                                        rendered="#{clientFormBean.formType eq 'View'}"/>
-                    <emir:inputSelect  value="#{clientFormBean.entity.countryCode}"
-                                       filter="true"
-                                       id="countryCode"
-                                       required="true"
-                                       label="#{msgs['register.client.institution.institutionAddr.country']}"
-                                       rendered="#{not (clientFormBean.formType == 'View')}"  allowEmpty="true">
-                        <f:selectItems value="#{clientFormBean.countryCodes}" var="option" itemLabel="#{option}" itemValue="#{option}" />
-                    </emir:inputSelect>
-
-                    <emir:labeledOutput id="postalCode_out" label="#{msgs['register.client.institution.institutionAddr.postalCode']}"
-                                        value="#{clientFormBean.entity.institution.institutionAddr.postalCode}"
-                                        rendered="#{clientFormBean.formType eq 'View'}"/>
-                    <emir:inputText id="postalCode" label="#{msgs['register.client.institution.institutionAddr.postalCode']}"
-
-                                    value="#{clientFormBean.entity.institution.institutionAddr.postalCode}"
-                                    maxlength="#{clientFormBean.addressPostalCodeLength}"
-                                    rendered="#{not (clientFormBean.formType == 'View')}"/>
-
-                    <emir:labeledOutput id="city_out" label="#{msgs['register.client.institution.institutionAddr.city']}"
-                                        value="#{clientFormBean.entity.institution.institutionAddr.city}"
-                                        rendered="#{clientFormBean.formType eq 'View'}"/>
-                    <emir:inputText id="city" label="#{msgs['register.client.institution.institutionAddr.city']}"
-                                    required="false"
-                                    value="#{clientFormBean.entity.institution.institutionAddr.city}"
-                                    maxlength="#{clientFormBean.addressCityLength}"
-                                    rendered="#{not (clientFormBean.formType == 'View')}">
-                    </emir:inputText>
-
-                    <emir:labeledOutput id="streetName_out" label="#{msgs['register.client.institution.institutionAddr.streetName']}"
-                                        value="#{clientFormBean.entity.institution.institutionAddr.streetName}"
-                                        rendered="#{clientFormBean.formType eq 'View'}"/>
-                    <emir:inputText id="streetName" label="#{msgs['register.client.institution.institutionAddr.streetName']}"
-
-                                    value="#{clientFormBean.entity.institution.institutionAddr.streetName}"
-                                    maxlength="#{clientFormBean.addressStreetNameLength}"
-                                    rendered="#{not (clientFormBean.formType == 'View')}"/>
-
-                    <emir:labeledOutput id="buildingId_out" label="#{msgs['register.client.institution.institutionAddr.buildingId']}"
-                                        value="#{clientFormBean.entity.institution.institutionAddr.buildingId}"
-                                        rendered="#{clientFormBean.formType eq 'View'}"/>
-                    <emir:inputText id="buildingId" label="#{msgs['register.client.institution.institutionAddr.buildingId']}"
-
-                                    value="#{clientFormBean.entity.institution.institutionAddr.buildingId}"
-                                    maxlength="#{clientFormBean.addressBuildingIdLength}"
-                                    rendered="#{not (clientFormBean.formType == 'View')}"/>
-
-                    <emir:labeledOutput id="premisesId_out" label="#{msgs['register.client.institution.institutionAddr.premisesId']}"
-                                        value="#{clientFormBean.entity.institution.institutionAddr.premisesId}"
-                                        rendered="#{clientFormBean.formType eq 'View'}"/>
-                    <emir:inputText id="premisesId" label="#{msgs['register.client.institution.institutionAddr.premisesId']}"
-
-                                    value="#{clientFormBean.entity.institution.institutionAddr.premisesId}"
-                                    maxlength="#{clientFormBean.addressPremisesIdLength}"
-                                    rendered="#{not (clientFormBean.formType == 'View')}"/>
-
-                    <emir:labeledOutput id="addressDetails_out" label="#{msgs['register.client.institution.institutionAddr.details']}"
-                                        value="#{clientFormBean.entity.institution.institutionAddr.details}"
-                                        rendered="#{clientFormBean.formType eq 'View'}"/>
-                    <emir:inputText id="addressDetails" label="#{msgs['register.client.institution.institutionAddr.details']}"
-
-                                    value="#{clientFormBean.entity.institution.institutionAddr.details}"
-                                    maxlength="#{clientFormBean.addressDetailsLength}"
-                                    rendered="#{not (clientFormBean.formType == 'View')}"/>
                 </p:panelGrid>
             </p:panel>
             <p:confirmDialog id="confirmDialogError" widgetVar="confirmDialogError" message="#{clientFormBean.infoWindow}" header="#{msgs['commons.MessageDialogType.INFO']}">

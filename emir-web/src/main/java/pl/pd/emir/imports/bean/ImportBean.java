@@ -33,9 +33,7 @@ public class ImportBean implements Serializable {
     @ManagedProperty(value = "#{importListBean}")
     private transient ImportListBean importListBean;
 
-    private List<ImportScope> clientSelectedScope;
     private List<ImportScope> transactionSelectedScope;
-    private List<ImportScope> clientDisplayedScope;
     private List<ImportScope> transactionDisplayedScope;
     private Date extractDate;
     private boolean backloading;
@@ -52,13 +50,10 @@ public class ImportBean implements Serializable {
 
     @PostConstruct
     public void init() {
-        clientDisplayedScope = new ArrayList<>();
-        clientSelectedScope = new ArrayList<>();
         transactionSelectedScope = new ArrayList<>();
         transactionSelectedScope.add(ImportScope.VALUATION_E);
         transactionSelectedScope.add(ImportScope.PROTECTION_E);
         transactionSelectedScope.add(ImportScope.TRANSACTION_E);
-        clientDisplayedScope.add(ImportScope.CLIENT_E);
         transactionDisplayedScope = new ArrayList<>();
         transactionDisplayedScope.add(ImportScope.VALUATION_E);
         transactionDisplayedScope.add(ImportScope.PROTECTION_E);
@@ -71,7 +66,6 @@ public class ImportBean implements Serializable {
 
     public void importExtract() {
         List<ImportScope> allSelected = new ArrayList<>();
-        allSelected.addAll(clientSelectedScope);
         allSelected.addAll(transactionSelectedScope);
         importOverview = importCsvManager.importCsv(allSelected, DateUtils.getDayBegin(extractDate), backloading);
 
@@ -89,28 +83,12 @@ public class ImportBean implements Serializable {
         this.importListBean = importListBean;
     }
 
-    public List<ImportScope> getClientSelectedScope() {
-        return clientSelectedScope;
-    }
-
-    public void setClientSelectedScope(List<ImportScope> clientSelectedScope) {
-        this.clientSelectedScope = clientSelectedScope;
-    }
-
     public List<ImportScope> getTransactionSelectedScope() {
         return transactionSelectedScope;
     }
 
     public void setTransactionSelectedScope(List<ImportScope> transactionSelectedScope) {
         this.transactionSelectedScope = transactionSelectedScope;
-    }
-
-    public List<ImportScope> getClientDisplayScope() {
-        return clientDisplayedScope;
-    }
-
-    public void setClientDisplayScope(List<ImportScope> clientDisplayScope) {
-        this.clientDisplayedScope = clientDisplayScope;
     }
 
     public List<ImportScope> getTransactionDisplayScope() {

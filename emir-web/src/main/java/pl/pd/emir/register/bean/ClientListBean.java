@@ -74,28 +74,8 @@ public class ClientListBean extends AbstractListBean<Client, ClientManager, Clie
         List<Client> clients = getService().findAll(criteria);
         clients.stream().map((client) -> {
             ClientListWrapper wrapper = new ClientListWrapper();
-            if (client.getBusinessEntity() != null) {
-                BusinessEntity bussinesEntity = client.getBusinessEntity();
-                if (bussinesEntity.getSubjectNip() != null) {
-                    wrapper.setBusinessEntitySubjectNip(client.getBusinessEntity().getSubjectNip());
-                }
-            }
-            if (client.getBusinessEntity() != null) {
-                BusinessEntity bussinesEntity = client.getBusinessEntity();
-                if (bussinesEntity.getSubjectRegon() != null) {
-                    wrapper.setBusinessEntitySubjectRegon(client.getBusinessEntity().getSubjectRegon());
-                }
-            }
             wrapper.setClientName(client.getClientName() == null ? "" : client.getClientName());
-            if (client.getInstitution() != null) {
-                Institution institution = client.getInstitution();
-                if (institution.getInstitutionData() != null) {
-                    InstitutionData institutionData = institution.getInstitutionData();
-                    if (institutionData.getInstitutionId() != null) {
-                        wrapper.setInstitutionInstitutionDataInstitutionId(institutionData.getInstitutionId());
-                    }
-                }
-            }
+            wrapper.setInstitutionInstitutionDataInstitutionId(client.getInstitutionId());
             wrapper.setOriginalId(client.getOriginalId());
             if (client.getValidationStatus() != null) {
                 wrapper.setValidationStatusMsgKey(client.getValidationStatus().getMsgKey() == null ? ""

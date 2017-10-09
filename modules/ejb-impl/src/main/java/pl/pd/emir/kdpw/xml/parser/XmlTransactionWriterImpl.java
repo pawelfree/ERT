@@ -15,7 +15,6 @@ import javax.ejb.Local;
 import javax.ejb.Stateless;
 import kdpw.xsd.trar_ins_001.ActiveCurrencyAnd20Amount;
 import kdpw.xsd.trar_ins_001.ActiveCurrencyAnd20AmountN;
-import kdpw.xsd.trar_ins_001.ActiveOrHistoricCurrencyAnd20Amount;
 import kdpw.xsd.trar_ins_001.ActiveOrHistoricCurrencyAnd20AmountNegative;
 import kdpw.xsd.trar_ins_001.ClearingObligationCode;
 import kdpw.xsd.trar_ins_001.CollateralisationType1Code;
@@ -196,10 +195,8 @@ public class XmlTransactionWriterImpl extends XmlWriterImpl implements Transacti
         ContractType31 result = new ContractType31();
         final ContractDataDetailed contractDetailedData = transaction.getContractDetailedData();
         final ContractData contractData = contractDetailedData.getContractData();
-        System.out.println("!!! 2 --- " + contractData.getProd2Code());
         result.setCtrctTp(FinancialInstrumentContractType2Code.fromValue(contractData.getProd2Code()));
         //TODO tylko CU i IR 
-        System.out.println("!!! 1 --- " + contractData.getProd1Code());
         result.setAsstClss(ProductType4Code1.fromValue(contractData.getProd1Code())); 
         result.setCtrctDtls(getNewConntractDetails(contractDetailedData));
         return result;
@@ -543,8 +540,6 @@ public class XmlTransactionWriterImpl extends XmlWriterImpl implements Transacti
                 result.setCollstn(CollateralisationType1Code.fromValue(protection.getProtection().toString()));
             }
             result.setPrtflColl(protection.getWalletProtection().getLogical());
-            //TODO remove
-            System.out.println("!!! --- prtfl " + protection.getWalletId() );
             //pusty portfel wywala xml null lub "" zweryfikowac format danych zrodlowych
             //result.setPrtfl(protection.getWalletId());
             result.setInitlMrgnPstd(createValue(new BigDecimal("999999"),CurrencyCode.PLN));
@@ -609,7 +604,7 @@ public class XmlTransactionWriterImpl extends XmlWriterImpl implements Transacti
     protected final CounterpartyTRN getBankCounterparty(TransactionToRepository item) {
         CounterpartyTRN result = new CounterpartyTRN();
         Client client = item.getRegistable().getClient2();
-        result.setRptgCtrPtyId(client.getInstitution().getInstitutionData().getInstitutionId());
+        result.setRptgCtrPtyId(client.getInstitutionId());
         result.setCtrPtySd(getTransactionParty(item.getRegistable().getTransaction().getTransactionParty(), Boolean.FALSE));
 //TODO to musi byc wypelnione i nie tak jak u nas max 3 literki (w rzeczywistosci jedna)
 //TODO to trzeba przedyskutowac 
@@ -636,7 +631,7 @@ public class XmlTransactionWriterImpl extends XmlWriterImpl implements Transacti
         //TODO identyczna prawie jak powyzej
         CounterpartyTRN result = new CounterpartyTRN();
         Client client = item.getRegistable().getClient();
-        result.setRptgCtrPtyId(client.getInstitution().getInstitutionData().getInstitutionId());
+        result.setRptgCtrPtyId(client.getInstitutionId());
         result.setCtrPtySd(getTransactionParty(item.getRegistable().getTransaction().getTransactionParty(), Boolean.TRUE));
 //TODO to musi byc wypelnione i nie tak jak u nas max 3 literki (w rzeczywistosci jedna)
 //TODO to trzeba przedyskutowac w zaleznowci od Ntr

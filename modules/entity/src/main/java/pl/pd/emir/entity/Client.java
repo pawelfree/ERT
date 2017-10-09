@@ -32,6 +32,7 @@ import org.eclipse.persistence.config.DescriptorCustomizer;
 import org.eclipse.persistence.descriptors.ClassDescriptor;
 import org.eclipse.persistence.mappings.AggregateObjectMapping;
 import pl.pd.emir.entity.annotations.TransactionDataChange;
+import pl.pd.emir.enums.InstitutionIdType;
 
 /**
  * Pojedynczy rekord z ekstraktu CLIENT_E
@@ -85,17 +86,12 @@ public class Client extends Extract implements Selectable<Long>, DescriptorCusto
     @Column(name = "EUC_REPORTED")
     private Boolean eucReported;
     
-    /*
-     * Dane podmiotu raportującego [3-4]
-     */
-    @Embedded
-    private BusinessEntity businessEntity;
-    /*
-     * Dane instytucji (identyfikacja, dane adresowe) [5-6, 8-13]
-     */
-    @ValidateCompleteness(subjectClass = Client.class, entry = true)
-    @Embedded
-    private Institution institution;
+    @Column(name = "INSTITUTION_ID", length = 50)
+    private String institutionId;
+
+    @Column(name = "INSTITUTION_ID_TYPE", length = 4)
+    @Enumerated(EnumType.STRING)
+    private InstitutionIdType institutionIdType;
     /*
      * CORPSCTR, Branża, do której należy kontrahent [14]
      */
@@ -152,17 +148,18 @@ public class Client extends Extract implements Selectable<Long>, DescriptorCusto
         initFields();
     }
 
-    public Client(String originalId, String clientName, CountryCode countryCode, BusinessEntity businessEntity,
-            Boolean reported, Boolean eucReported, Institution institution, String contrPartyIndustry, String contrPartyType, String eog,
+    public Client(String originalId, String clientName, CountryCode countryCode, 
+            Boolean reported, Boolean eucReported, String institutionId, InstitutionIdType institutionIdType,
+            String contrPartyIndustry, String contrPartyType, String eog,
             Boolean naturalPerson, ValidationStatus validationStatus) {
         this();
         this.originalId = originalId;
         this.clientName = clientName;
         this.countryCode = countryCode;
-        this.businessEntity = businessEntity;
         this.reported = reported;
         this.eucReported = eucReported;
-        this.institution = institution;
+        this.institutionId = institutionId;
+        this.institutionIdType = institutionIdType;
         this.contrPartyIndustry = contrPartyIndustry;
         this.contrPartyType = contrPartyType;
         this.eog = eog;
@@ -179,14 +176,6 @@ public class Client extends Extract implements Selectable<Long>, DescriptorCusto
     @Override
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public BusinessEntity getBusinessEntity() {
-        return businessEntity;
-    }
-
-    public void setBusinessEntity(BusinessEntity businessEntity) {
-        this.businessEntity = businessEntity;
     }
 
     public String getOriginalId() {
@@ -219,14 +208,6 @@ public class Client extends Extract implements Selectable<Long>, DescriptorCusto
 
     public void setCountryCode(CountryCode countryCode) {
         this.countryCode = countryCode;
-    }
-
-    public Institution getInstitution() {
-        return institution;
-    }
-
-    public void setInstitution(Institution institution) {
-        this.institution = institution;
     }
 
     public String getEog() {
@@ -286,12 +267,6 @@ public class Client extends Extract implements Selectable<Long>, DescriptorCusto
 
     @Override
     public final void initFields() {
-        if (this.institution == null) {
-            this.institution = new Institution();
-        }
-        if (this.businessEntity == null) {
-            this.businessEntity = new BusinessEntity();
-        }
     }
 
     @Override
@@ -306,8 +281,8 @@ public class Client extends Extract implements Selectable<Long>, DescriptorCusto
             return;
         }
         if (oldEntity != null && newEntity != null) {
-            BusinessEntity.checkEntity(result, oldEntity.getBusinessEntity(), newEntity.getBusinessEntity());
-            Institution.checkEntity(result, oldEntity.getInstitution(), newEntity.getInstitution());
+            //TODO pawel check entity institution_id, institution id typpe
+            //Institution.checkEntity(result, oldEntity.getInstitution(), newEntity.getInstitution());
             checkFieldsEquals(result, oldEntity.getOriginalId(), newEntity.getOriginalId(), EventLogBuilder.EventDetailsKey.CLIENT_ID);
             checkFieldsEquals(result, oldEntity.getClientName(), newEntity.getClientName(), EventLogBuilder.EventDetailsKey.CLIENT_NAME);
             checkFieldsEquals(result, oldEntity.getCountryCode(), newEntity.getCountryCode(), EventLogBuilder.EventDetailsKey.COUNTRY_CODE);
@@ -319,8 +294,8 @@ public class Client extends Extract implements Selectable<Long>, DescriptorCusto
             checkFieldsEquals(result, oldEntity.getValidationStatus(), newEntity.getValidationStatus(), EventLogBuilder.EventDetailsKey.VALIDATION_STATUS);
         } else {
             if (oldEntity == null) {
-                BusinessEntity.checkEntity(result, null, newEntity.getBusinessEntity());
-                Institution.checkEntity(result, null, newEntity.getInstitution());
+                //TODO pawel check entity institution_id, institution id typpe
+                //Institution.checkEntity(result, null, newEntity.getInstitution());
                 checkFieldsEquals(result, null, newEntity.getOriginalId(), EventLogBuilder.EventDetailsKey.CLIENT_ID);
                 checkFieldsEquals(result, null, newEntity.getClientName(), EventLogBuilder.EventDetailsKey.CLIENT_NAME);
                 checkFieldsEquals(result, null, newEntity.getCountryCode(), EventLogBuilder.EventDetailsKey.COUNTRY_CODE);
@@ -332,8 +307,8 @@ public class Client extends Extract implements Selectable<Long>, DescriptorCusto
                 checkFieldsEquals(result, null, newEntity.getValidationStatus(), EventLogBuilder.EventDetailsKey.VALIDATION_STATUS);
             } else {
                 //TODO do poprawy ....
-                BusinessEntity.checkEntity(result, oldEntity.getBusinessEntity(), null);
-                Institution.checkEntity(result, oldEntity.getInstitution(), null);
+                //TODO pawel check entity institution_id, institution id typpe
+                //Institution.checkEntity(result, oldEntity.getInstitution(), null);
                 checkFieldsEquals(result, oldEntity.getOriginalId(), null, EventLogBuilder.EventDetailsKey.CLIENT_ID);
                 checkFieldsEquals(result, oldEntity.getClientName(), null, EventLogBuilder.EventDetailsKey.CLIENT_NAME);
                 checkFieldsEquals(result, oldEntity.getCountryCode(), null, EventLogBuilder.EventDetailsKey.COUNTRY_CODE);
@@ -367,10 +342,10 @@ public class Client extends Extract implements Selectable<Long>, DescriptorCusto
                 originalId,
                 clientName,
                 countryCode,
-                businessEntity == null ? new BusinessEntity() : businessEntity.fullClone(),
                 reported,
                 eucReported,
-                institution == null ? new Institution() : institution.fullClone(),
+                institutionId,
+                institutionIdType,
                 contrPartyIndustry,
                 contrPartyType,
                 eog,
@@ -424,4 +399,20 @@ public class Client extends Extract implements Selectable<Long>, DescriptorCusto
         this.eucReported = eucReported;
     }
 
+    public String getInstitutionId() {
+        return institutionId;
+    }
+
+    public void setInstitutionId(String institutionId) {
+        this.institutionId = institutionId;
+    }
+
+    public InstitutionIdType getInstitutionIdType() {
+        return institutionIdType;
+    }
+
+    public void setInstitutionIdType(InstitutionIdType institutionIdType) {
+        this.institutionIdType = institutionIdType;
+    }
+    
 }

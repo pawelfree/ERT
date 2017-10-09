@@ -22,24 +22,10 @@
                 <p:commandButton  value="#{msgs['importPanel.button.import']}"
                                   actionListener="#{importBean.importExtract()}"
                                   oncomplete="PF('confirmImportDialog').show();"
-                                  update="clientInputMessages :confirmImportForm:messageDialogMessagePanel"
+                                  update=":confirmImportForm:messageDialogMessagePanel"
                                   styleClass="nowrap" />
             </p:panel>
 
-            <p:message id="clientInputMessages" for="clientScopeInput" />
-            <!--<p:messages id="importMessages" autoUpdate="true" closable="true" />-->
-
-            <p:panel header="#{msgs['importPanel.parametersProcess']}">
-                <p:panelGrid columns="2" styleClass="gridWithoutBorder" columnClasses="importPanelCol1, importPanelCol2">
-
-                    <p:outputLabel value="#{msgs['importPanel.importScope']}" />
-                    <p:selectManyCheckbox binding="#{importBean.clientScopeInput}" id="clientScopeInput" value="#{importBean.clientSelectedScope}" layout="pageDirection" converter="importScopeConverter" >
-                        <f:selectItems value="#{importBean.clientDisplayScope}" var="item" itemLabel="#{msgs[item.msgKey]}" itemValue="#{item}" />
-                        <f:validator binding="#{importBean.scopeCrossValidator}" />
-                    </p:selectManyCheckbox>
-
-                </p:panelGrid>
-            </p:panel>
             <p:panel header="#{msgs['importPanel.transactionData']}">
                 <p:panelGrid columns="2" styleClass="gridWithoutBorder" columnClasses="importPanelCol1, importPanelCol2">
 

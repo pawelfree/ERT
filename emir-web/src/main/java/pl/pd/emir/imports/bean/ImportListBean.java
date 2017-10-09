@@ -104,7 +104,7 @@ public class ImportListBean extends AbstractListBean<ImportLog, ImportLogManager
     }
 
     public ImportScope[] getImportScope() {
-        ImportScope[] importScope = {ImportScope.CLIENT_E,
+        ImportScope[] importScope = {
             ImportScope.PROTECTION_E,
             ImportScope.TRANSACTION_E,
             ImportScope.VALUATION_E};

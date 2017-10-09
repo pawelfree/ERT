@@ -121,11 +121,9 @@ public class TransactionCsvParserTmb extends TransactionCsvParser {
             businessEnt[5] = "";
             return data;
         }
-        if (Objects.nonNull(client)
-                && Objects.nonNull(client.getInstitution())
-                && Objects.nonNull(client.getInstitution().getInstitutionData())) {
-            businessEnt[5] = client.getInstitution().getInstitutionData().getInstitutionId() == null ? "" : client.getInstitution().getInstitutionData().getInstitutionId();
-            businessEnt[6] = client.getInstitution().getInstitutionData().getInstitutionIdType() == null ? "" : client.getInstitution().getInstitutionData().getInstitutionIdType().toString();
+        if (Objects.nonNull(client)) {
+            businessEnt[5] = client.getInstitutionId() == null ? "" : client.getInstitutionId();
+            businessEnt[6] = client.getInstitutionIdType() == null ? "" : client.getInstitutionIdType().toString();
         }
         return businessEnt;
     }
