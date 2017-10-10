@@ -22,8 +22,6 @@ public class RepositoryRegisterListBean extends AbstractKdpwListBean<Transaction
     @EJB
     private ParameterManager parameterManager;
 
-    private boolean backloadingOptionShown;
-
     public RepositoryRegisterListBean() {
         super(TransactionToKdpwSC.class);
     }
@@ -35,20 +33,12 @@ public class RepositoryRegisterListBean extends AbstractKdpwListBean<Transaction
 
     @Override
     public final String getFilterDateSame() {
-        if (backloadingOptionShown) {
-            return "transaction.kdpw.sc.transactionDate.info.register.single.backloading";
-        } else {
-            return "transaction.kdpw.sc.transactionDate.info.register.single";
-        }
+        return "transaction.kdpw.sc.transactionDate.info.register.single";
     }
 
     @Override
     public final String getFilterDateScope() {
-        if (backloadingOptionShown) {
-            return "transaction.kdpw.sc.transactionDate.info.register.multi.backloading";
-        } else {
-            return "transaction.kdpw.sc.transactionDate.info.register.multi";
-        }
+        return "transaction.kdpw.sc.transactionDate.info.register.multi";
     }
 
     @Override
@@ -61,17 +51,8 @@ public class RepositoryRegisterListBean extends AbstractKdpwListBean<Transaction
         super.initDefaultCriteria();
         criteria.setSourceTransId(null);
         criteria.setDataToSend(Boolean.TRUE);
-        backloadingOptionShown = isBackloadingEnabled();
     }
-
-    public boolean isBackloadingOptionShown() {
-        return backloadingOptionShown;
-    }
-
-    public void setBackloadingOptionShown(boolean backloadingOptionShown) {
-        this.backloadingOptionShown = backloadingOptionShown;
-    }
-
+    
     private Long reportsCount = 0L;
 
     /**
@@ -87,11 +68,6 @@ public class RepositoryRegisterListBean extends AbstractKdpwListBean<Transaction
         LOGGER.debug("Generate messages result: {}", sendingResult);
         setFirstPage();
         defineDefaultDateInfo();
-    }
-
-    public boolean isBackloadingEnabled() {
-        String value = parameterManager.getValue(ParameterKey.ENABLE_BACKLOADING);
-        return value == null ? false : "true".equals(value.toLowerCase());
     }
 
     public Long getReports() {

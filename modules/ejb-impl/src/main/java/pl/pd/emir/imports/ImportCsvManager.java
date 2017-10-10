@@ -76,7 +76,6 @@ public class ImportCsvManager {
     private Set<String> transactionsToRemoveFromImport;
 
     private boolean caseSensitive;
-    private boolean backloading;
     private Date importFileDate;
     private Path inputDirectory;
     private ProcessingWarnings warnings;
@@ -98,12 +97,11 @@ public class ImportCsvManager {
     }
 
     @TransactionAttribute(TransactionAttributeType.NEVER)
-    public ImportOverview importCsv(List<ImportScope> importScope, Date importFileDate, boolean backloading) {
+    public ImportOverview importCsv(List<ImportScope> importScope, Date importFileDate) {
         inputDirectory = Paths.get(parameterManager.getValue(ParameterKey.IMPORT_INPUT_URI));
         LOGGER.info(String.format("Import CSV from %s", inputDirectory.toString()));
 
         caseSensitive = getCaseSensitiveFlag();
-        this.backloading = backloading;
         this.importFileDate = importFileDate;
 
         initParsers();
@@ -200,8 +198,7 @@ public class ImportCsvManager {
 
     private void importExtract(Reader reader, ImportScope extractType, String fileName, ImportLog importLog) throws IOException {
         BaseCsvParser parser = parsers.get(extractType);
-        //TODO remove backloading
-        processors.get(extractType).process(reader, parser, fileName, importFileDate, importLog, backloading, warnings, overview, customersToRemoveFromImport, transactionsToRemoveFromImport);
+        processors.get(extractType).process(reader, parser, fileName, importFileDate, importLog, warnings, overview, customersToRemoveFromImport, transactionsToRemoveFromImport);
     }
 
     private ImportLog getFailImportLog(ImportFailLog failLog, ImportScope extractType) {

@@ -68,8 +68,6 @@ public class TransactionToKdpwSC extends AbstractSearchCriteria {
 
     protected Boolean newestVersion;
 
-    protected boolean backloading;
-
     private transient List<Long> selectedIds = new ArrayList<>();
 
     private transient List<Long> deselectedIds = new ArrayList<>();
@@ -140,14 +138,6 @@ public class TransactionToKdpwSC extends AbstractSearchCriteria {
         this.newestVersion = value;
     }
 
-    public boolean isBackloading() {
-        return backloading;
-    }
-
-    public void setBackloading(boolean backloading) {
-        this.backloading = backloading;
-    }
-
     public List<DataType> getDataTypes() {
         dataTypes.clear();
         if (isNeww()) {
@@ -180,11 +170,7 @@ public class TransactionToKdpwSC extends AbstractSearchCriteria {
             getFitrSort().getFilters().add(FilterObjectTO.valueOf("", "validationStatus", "=", validationStatus));
             getFitrSort().getFilters().add(FilterEnumTO.valueOf("", "dataType", "IN", dataTypeList));
             getFitrSort().getFilters().add(FilterObjectTO.valueOf("", "newestVersion", "=", newestVersion));
-            if (backloading) {
-                getFitrSort().getFilters().add(FilterObjectTO.valueOf("", "backloading", "=", backloading));
-            } else {
-                getFitrSort().getFilters().add(FilterObjectTO.valueOf("", "backloading", "!=", true));
-            }
+
             if (CollectionsUtils.isNotEmpty(selectedIds)) {
                 getFitrSort().getFilters().add(FilterLongListTO.valueOf("", "id", "IN", selectedIds));
             }

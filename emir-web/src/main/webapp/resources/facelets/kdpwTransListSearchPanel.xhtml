@@ -10,7 +10,6 @@
         <composite:attribute name="bean" type="pl.pd.emir.kdpw.bean.AbstractKdpwListBean" required="true" />
         <composite:attribute name="toUpdate" type="java.lang.String" required="false" />
         <composite:attribute name="panelId" type="java.lang.String" required="true" />
-        <composite:attribute name="backloading" type="java.lang.Boolean" required="false" default="false" />
     </composite:interface>
 
     <composite:implementation>
@@ -54,9 +53,6 @@
                         <p:outputLabel value="#{msgs['DataType.COMPLETED']}" />
 
                     </h:panelGrid>
-
-                    <p:outputLabel value="#{msgs['transaction.kdpw.sc.backloading']}" rendered="#{cc.attrs.backloading}" />
-                    <p:selectBooleanCheckbox value="#{cc.attrs.bean.criteria.backloading}" rendered="#{cc.attrs.backloading}" style="padding-left: 3px;" />
 
                 </h:panelGrid>
             </h:panelGrid>

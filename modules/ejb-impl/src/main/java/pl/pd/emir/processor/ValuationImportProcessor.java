@@ -48,8 +48,7 @@ public class ValuationImportProcessor extends ImportProcessor implements IImport
     }
 
     @Override
-    public void process(Reader reader, BaseCsvParser parser, String fileName, Date importFileDate,
-            ImportLog importLog, boolean backloading,
+    public void process(Reader reader, BaseCsvParser parser, String fileName, Date importFileDate, ImportLog importLog,
             ProcessingWarnings warnings, ImportOverview overview, Set customersToRemoveFromImport, Set transactionsToRemoveFromImport) throws IOException {
         //Wyzerowanie licznika wierszy w parserze
         parser.setRowNum(0);
@@ -89,8 +88,6 @@ public class ValuationImportProcessor extends ImportProcessor implements IImport
             Transaction transaction = null;
             boolean removed = false;
             if (transactionsToRemoveFromImport.contains(valuation.getOriginalId())) {
-                //TODO remove
-                System.out.println("!!! --- valuation removed " + valuation.getOriginalId());
                 removed = true;
             }
             else {

@@ -10,7 +10,6 @@ public enum ParameterKey implements MsgEnum {
     AUTH_CONFIG_PATH,
     KDPW_RECEIVER,
     KDPW_BATCH_SIZE,
-    ENABLE_BACKLOADING,
     SHOW_EXTRACT_VERSION,
     KDPW_SENDER,
     /**

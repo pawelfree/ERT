@@ -15,6 +15,6 @@ import pl.pd.emir.parsers.BaseCsvParser;
 public interface IImportProcessor {
 
     public void process(Reader reader, BaseCsvParser parser, String fileName, Date importFileDate,
-            ImportLog importLog, boolean backloading, ProcessingWarnings warnings, ImportOverview overview, Set customersToRemoveFromReport, Set transactionsToRemoveFromReport) throws IOException;
+            ImportLog importLog, ProcessingWarnings warnings, ImportOverview overview, Set customersToRemoveFromReport, Set transactionsToRemoveFromReport) throws IOException;
 
 }

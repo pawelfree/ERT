@@ -805,10 +805,6 @@ public class EventLogBuilder {
          */
         PRODUCT,
         REPORT_STATUS,
-        /**
-         * Flaga określająca czy transakcja pochodzi z backloadingu.
-         */
-        BACKLOADING,
         CONTROL_STATUS,
         CONTRACTTYPE,
         CONTRACTTYPE1,

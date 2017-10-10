@@ -36,10 +36,7 @@ public class ImportBean implements Serializable {
     private List<ImportScope> transactionSelectedScope;
     private List<ImportScope> transactionDisplayedScope;
     private Date extractDate;
-    private boolean backloading;
-    private boolean backloadingOptionShown;
 
-    private UIInput clientScopeInput;
     private UIInput transactionScopeInput;
 
     private ImportOverview importOverview;
@@ -59,15 +56,13 @@ public class ImportBean implements Serializable {
         transactionDisplayedScope.add(ImportScope.PROTECTION_E);
         transactionDisplayedScope.add(ImportScope.TRANSACTION_E);
         extractDate = DateUtils.getDayBegin(DateUtils.getPreviousWorkingDayWithFreeDays(new Date()));
-        backloading = false;
-        backloadingOptionShown = isBackloadingEnabled();
         importOverview = new ImportOverview();
     }
 
     public void importExtract() {
         List<ImportScope> allSelected = new ArrayList<>();
         allSelected.addAll(transactionSelectedScope);
-        importOverview = importCsvManager.importCsv(allSelected, DateUtils.getDayBegin(extractDate), backloading);
+        importOverview = importCsvManager.importCsv(allSelected, DateUtils.getDayBegin(extractDate));
 
     }
 
@@ -107,30 +102,6 @@ public class ImportBean implements Serializable {
         this.extractDate = extractDate;
     }
 
-    public boolean isBackloading() {
-        return backloading;
-    }
-
-    public void setBackloading(boolean backloading) {
-        this.backloading = backloading;
-    }
-
-    public boolean isBackloadingOptionShown() {
-        return backloadingOptionShown;
-    }
-
-    public void setBackloadingOptionShown(boolean backloadingOptionShown) {
-        this.backloadingOptionShown = backloadingOptionShown;
-    }
-
-    public UIInput getClientScopeInput() {
-        return clientScopeInput;
-    }
-
-    public void setClientScopeInput(UIInput clientScopeInput) {
-        this.clientScopeInput = clientScopeInput;
-    }
-
     public UIInput getTransactionScopeInput() {
         return transactionScopeInput;
     }
@@ -141,18 +112,11 @@ public class ImportBean implements Serializable {
 
     public Validator getScopeCrossValidator() {
         return (FacesContext fc, UIComponent uic, Object o) -> {
-            Object clientScope = clientScopeInput.getSubmittedValue();
             Object transactionScope = transactionScopeInput.getSubmittedValue();
-            String[] clientScopeArray = (String[]) clientScope;
             String[] transactionScopeArray = (String[]) transactionScope;
-            if ((clientScope == null || clientScopeArray.length == 0) && (transactionScope == null || transactionScopeArray.length == 0)) {
+            if (transactionScope == null || transactionScopeArray.length == 0) {
                 BeanHelper.throwValidatorError("pl.pd.emir.validator.ManyCheckboxCrossValidator.EMPTY");
             }
         };
-    }
-
-    public boolean isBackloadingEnabled() {
-        String value = parameterManager.getValue(ParameterKey.ENABLE_BACKLOADING);
-        return value == null ? false : "true".equals(value.toLowerCase());
     }
 }

@@ -2,13 +2,13 @@ package pl.pd.emir.entity.kdpw;
 
 public enum MessageType {
 
-    TRANSACTION("trar.ins.001.02", "kdpw.message.type.transaction"),
-    VALUATION("trar.ins.002.02", "kdpw.message.type.valuation"),
+    TRANSACTION("trar.ins.001.03", "kdpw.message.type.transaction"),
+    VALUATION("trar.ins.002.03", "kdpw.message.type.valuation"),
     PROTECTION("trar.ins.003.02", "kdpw.message.type.protection"),
-    TRANSACTION_RESPONSE("trar.sts.001.02", "kdpw.message.type.transaction.response"),
-    DATA_SET_RESPONSE("trar.sts.002.02", "kdpw.message.type.dataSet.response"),
-    RECONCILIATION("trar.rcn.001.01", "kdpw.message.type.reconciliation"),
-    TRANSACTION_RESPONSE_2("trar.sts.003.01", "kdwp.message.type.transaction.response.2");
+    TRANSACTION_RESPONSE("trar.sts.001.03", "kdpw.message.type.transaction.response"),
+    DATA_SET_RESPONSE("trar.sts.002.03", "kdpw.message.type.dataSet.response"),
+    RECONCILIATION("trar.rcn.001.03", "kdpw.message.type.reconciliation"),
+    TRANSACTION_RESPONSE_2("trar.sts.003.02", "kdwp.message.type.transaction.response.2");
 
     private final String msgName;
 

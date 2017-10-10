@@ -115,12 +115,10 @@ import pl.pd.emir.entity.annotations.TransactionDataChange;
             + " AND t.processingStatus = pl.pd.emir.enums.ProcessingStatus.SENT"),
     @NamedQuery(name = "Transaction.getValidMaxDate",
             query = "SELECT MAX(t.transactionDate) FROM Transaction t WHERE"
-            + " t.validationStatus = pl.pd.emir.enums.ValidationStatus.VALID"
-            + " AND (t.backloading IS NULL OR t.backloading = FALSE)"),
+            + " t.validationStatus = pl.pd.emir.enums.ValidationStatus.VALID"),
     @NamedQuery(name = "Transaction.getValidMinDate",
             query = "SELECT MIN(t.transactionDate) FROM Transaction t WHERE"
-            + " t.validationStatus = pl.pd.emir.enums.ValidationStatus.VALID"
-            + " AND (t.backloading IS NULL OR t.backloading = FALSE)"),
+            + " t.validationStatus = pl.pd.emir.enums.ValidationStatus.VALID"),
     @NamedQuery(name = "Transaction.isPossibilityDeleteTransaction",
             query = "SELECT MAX(t.id), MAX(t.transactionDate), MAX(t.extractVersion) FROM Transaction t WHERE t.originalId = :originalId"),
     @NamedQuery(name = "Transaction.getNewerMutationsCount",
@@ -461,12 +459,6 @@ public class Transaction extends Extract implements Logable<Long>, Selectable<Lo
     @Column(name = "CLIENT2_VERSION")
     private Integer client2Version;
 
-    /**
-     * Flaga określająca czy transakcja pochodzi z backloadingu.
-     */
-    @Column(name = "BACKLOADING")
-    private Boolean backloading;
-
     public Transaction() {
         super();
         initFields();
@@ -680,8 +672,6 @@ public class Transaction extends Extract implements Logable<Long>, Selectable<Lo
         if (Objects.nonNull(getValidationStatus()) && Objects.nonNull(newEntity.getValidationStatus())) {
             checkFieldsEqualsMsg(result, getValidationStatus().getMsgKey(), newEntity.getValidationStatus().getMsgKey(), EventLogBuilder.EventDetailsKey.VALIDATION_STATUS);
         }
-        checkFieldsEquals(result, backloading, newEntity.backloading, EventLogBuilder.EventDetailsKey.BACKLOADING);
-
         return result;
     }
 
@@ -1097,14 +1087,6 @@ public class Transaction extends Extract implements Logable<Long>, Selectable<Lo
     
     public void setClientVersion(Integer clientVersion) {
         this.clientVersion = clientVersion;
-    }
-
-    public Boolean getBackloading() {
-        return backloading;
-    }
-
-    public void setBackloading(Boolean backloading) {
-        this.backloading = backloading;
     }
 
     @Override

@@ -56,7 +56,7 @@ public class TransactionImportProcessor extends ImportProcessor implements IImpo
 
     @Override
     public void process(Reader reader, BaseCsvParser parser, String fileName, Date importFileDate,
-            ImportLog importLog, boolean backloading,
+            ImportLog importLog,
             ProcessingWarnings warnings, ImportOverview overview, Set customersToRemoveFromImport, Set transactionsToRemoveFromImport) throws IOException {        
         parser.setRowNum(0);
         CSVReader<ImportResult<Transaction>> csvTransactionReader = new CSVReaderBuilder<ImportResult<Transaction>>(reader).entryParser(parser).build();
@@ -104,7 +104,6 @@ public class TransactionImportProcessor extends ImportProcessor implements IImpo
                 transaction.setValidationStatus(ValidationStatus.INCOMPLETE);
             } 
 
-            //TODO PAWEL jak zrobic intragroup transactions w przypadku GUR???
             transaction.setClient2(client2);
             
             BusinessValidationUtils.validateBankBeneficiaryCode(transaction, transactionRow.getImportWarnings(), transactionRow.getRecordId());
@@ -112,10 +111,10 @@ public class TransactionImportProcessor extends ImportProcessor implements IImpo
             BusinessValidationUtils.validateClientBeneficiaryCode(transaction, transactionRow.getImportWarnings(), transactionRow.getRecordId());
             BusinessValidationUtils.validateRealizationValue(transaction, transactionRow.getImportWarnings(), transactionRow.getRecordId());
             BusinessValidationUtils.validateFrameworkAggrVer(transaction, transactionRow.getImportWarnings(), transactionRow.getRecordId());
-            if (!backloading) {
-                Transaction prevTrans = transactionManager.findNewestTransaction(transaction.getTransactionDetails().getSourceTransId(), DateUtils.getPreviousWorkingDay(transaction.getTransactionDate(), DateUtils.getFreeDaysAll()), transaction.getTransactionDate());
-                BusinessValidationUtils.validateErrorCategory(transaction, prevTrans, transactionRow.getImportWarnings(), transactionRow.getRecordId());
-            }
+
+            Transaction prevTrans = transactionManager.findNewestTransaction(transaction.getTransactionDetails().getSourceTransId(), DateUtils.getPreviousWorkingDay(transaction.getTransactionDate(), DateUtils.getFreeDaysAll()), transaction.getTransactionDate());
+            BusinessValidationUtils.validateErrorCategory(transaction, prevTrans, transactionRow.getImportWarnings(), transactionRow.getRecordId());
+
             transaction.setValidationStatus(transactionRow.getValidationStatus());
             if (ValidationStatus.INCOMPLETE.equals(transaction.getValidationStatus())) {
                 warnings.setFlagWarningPro(true);
@@ -123,11 +122,8 @@ public class TransactionImportProcessor extends ImportProcessor implements IImpo
             }
             transaction.setFileName(fileName);
             transaction.setImportLog(importLog);
-            transaction.setBackloading(backloading);
             transaction.setValidationStatus(validateTransactionCompletness(transaction));
             if (customersToRemoveFromImport.contains(client.getOriginalId())) {
-                System.out.println("!!! --- client id " + client.getOriginalId());
-                System.out.println("!!! --- transa id " + transaction.getOriginalId());
                 transactionsToRemoveFromImport.add(transaction.getOriginalId());
                 LOGGER.debug(String.format("Transaction with id %s on date %s to save removed from import.",
                         transaction.getOriginalId(),

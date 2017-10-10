@@ -43,10 +43,9 @@ public class TransactionImportProcessorTest {
 //                ImportScope.TRANSACTION_E, importFileDate, ImportStatus.DURING_PROCESSING, null);
 //        importLog.setFileName(fileName);
 //
-//        boolean backloading = false;
 //        ProcessingWarnings warnings = new ProcessingWarnings();
 //
-//        instance.process(reader, parser, fileName, importFileDate, importLog, backloading, warnings, new ImportOverview());
+//        instance.process(reader, parser, fileName, importFileDate, importLog, warnings, new ImportOverview());
 //
 //        assertEquals(parser.getRowNum(), 107);
 //    }

@@ -49,7 +49,7 @@ public class ProtectionImportProcessor extends ImportProcessor implements IImpor
 
     @Override
     public void process(Reader reader, BaseCsvParser parser, String fileName, Date importFileDate,
-            ImportLog importLog, boolean backloading,
+            ImportLog importLog,
             ProcessingWarnings warnings, ImportOverview overview, Set customersToRemoveFromImport, Set transactionsToRemoveFromImport) throws IOException {
         parser.setRowNum(0);
         CSVReader<ImportResult<Protection>> csvProtectionReader = new CSVReaderBuilder<ImportResult<Protection>>(reader).entryParser(parser).build();

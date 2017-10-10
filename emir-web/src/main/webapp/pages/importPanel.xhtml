@@ -37,9 +37,6 @@
                         <f:selectItems value="#{importBean.transactionDisplayScope}" var="item" itemLabel="#{msgs[item.msgKey]}" itemValue="#{item}" />
                     </p:selectManyCheckbox>
 
-                    <p:outputLabel value="#{msgs['importPanel.backloading']}" rendered="#{importBean.backloadingOptionShown}" />
-                    <p:selectBooleanCheckbox value="#{importBean.backloading}" rendered="#{importBean.backloadingOptionShown}" style="padding-left: 10px;" />
-
                 </p:panelGrid>
             </p:panel>
         </h:form>

@@ -64,6 +64,7 @@ import kdpw.xsd.trar_ins_001.TradeConfirmationTypeRT;
 import kdpw.xsd.trar_ins_001.TradeNewTransactionTR;
 import kdpw.xsd.trar_ins_001.TradeReportChoiceTR;
 import kdpw.xsd.trar_ins_001.TradeTransaction101;
+import kdpw.xsd.trar_ins_001.TradeTransactionModificationTR;
 import kdpw.xsd.trar_ins_001.TradeTransactionReportChoiceTR;
 import kdpw.xsd.trar_ins_001.TradingCapacity7Code;
 import kdpw.xsd.trar_ins_001.TrarIns00103;
@@ -122,8 +123,11 @@ public class XmlTransactionWriterImpl extends XmlWriterImpl implements Transacti
                 final TransactionMsgType msgType = transToRepo.getMsgType();
                 if (msgType.isNew()) {
                     trar.setRpt(getNewTransactionReportChoice(transToRepo));
-                } 
-//
+                }
+                else if (msgType.isModification()) {
+                    trar.setRpt(getModTransactionReportChoice(transToRepo));
+                }
+//          
 //                if (msgType.isNew() || msgType.isModification() || msgType.equals(TransactionMsgType.C) || msgType.equals(TransactionMsgType.Z)) {
 //                    trar.setTradDtls(getTransactionDetails(transToRepo.getRegistable().getTransaction(), transToRepo.getMsgType()));
 //                }
@@ -151,13 +155,19 @@ public class XmlTransactionWriterImpl extends XmlWriterImpl implements Transacti
         return result;
     }
     
+    protected final TradeReportChoiceTR getModTransactionReportChoice(final TransactionToRepository item) {
+        final TradeReportChoiceTR result = new TradeReportChoiceTR();
+        result.setTx(getModTransactionReport(item));
+        return result;
+    }
+    
     protected final String getSndrMsgRef(Date date, Long newNumber) {
         return String.format("%s%s", DateUtils.formatDate(date, "yyMMdd"), newNumber);
     }
 
     protected final GeneralInformation getGeneralInfo(final String senderMessageReference, final String institutionId) {
         final GeneralInformation result = new GeneralInformation();
-        //TODO jesli wysyłamy tylko wlasne transakcje to to pole pozostaje niewypełnione/puste
+        //TODO tego pola nie wypełniamy bo raportujemy tylko własne transakcje
         //result.setRptgNtty(institutionId);
         result.setSndrMsgRef(senderMessageReference);
         return result;
@@ -166,6 +176,18 @@ public class XmlTransactionWriterImpl extends XmlWriterImpl implements Transacti
     protected final TradeTransactionReportChoiceTR getNewTransactionReport(TransactionToRepository item) {
         TradeTransactionReportChoiceTR result = new TradeTransactionReportChoiceTR();
         result.setNew(getNewTransaction(item));        
+        return result;
+    }
+    
+    protected final TradeTransactionReportChoiceTR getModTransactionReport(TransactionToRepository item) {
+        TradeTransactionReportChoiceTR result = new TradeTransactionReportChoiceTR();
+        result.setMod(getModTransaction(item));
+        return result;
+    }
+    
+    protected final TradeTransactionModificationTR getModTransaction(TransactionToRepository item) {
+        TradeTransactionModificationTR result = new TradeTransactionModificationTR();
+        
         return result;
     }
     
@@ -231,9 +253,7 @@ public class XmlTransactionWriterImpl extends XmlWriterImpl implements Transacti
         // result.setId(details.getSourceTransId());
         // result.setPrvsId(null); // TODO - brak informacji w dokumentacji
         // result.setTradRefNb(nullOnEmpty(details.getSourceTransRefNr()));
-        //TODO remove
-        System.out.println("!!! --- setUnqTradIdr " + transactionDetails.getSourceTransId());
-        result.setUnqTradIdr(transactionDetails.getSourceTransId());
+         result.setUnqTradIdr(transactionDetails.getSourceTransId());
         //TODO w MUFG puste? 
         //result.setRptTrckgNb(null);
         //TODO w MUFG puste?
