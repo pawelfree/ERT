@@ -353,42 +353,123 @@
                                     <f:selectItems value="#{transactionFormBean.importCurrencyCode}" var="option" itemLabel="#{option}" itemValue="#{option}"/>
                                     <p:ajax event="change" update="protectionPg1" partialSubmit="true"/>
                                 </emir:inputSelect>
+                   
+                                <ui:remove><!-- Wniesiony początkowy depozyt zabezpieczający --></ui:remove>
+                                <emir:labeledOutput id="protectionInitlMrgnPstd" value="#{transactionFormBean.entity.protection.initlMrgnPstd}" label="Wniesiony początkowy depozyt zabezpieczający" rendered="#{transactionFormBean.formType == 'View'}" >
+                                    <f:converter converterId="pl.pd.emir.clientutils.converter.BigDecimalConverter"/>
+                                    <f:attribute name="maxFractionDigits" value="#{'5'}"/>
+                                </emir:labeledOutput>
+                                <emir:inputText id="protectionInitlMrgnPstdInput" rendered="#{not (transactionFormBean.formType == 'View')}"
+                                                value="#{transactionFormBean.entity.protection.initlMrgnPstd}"
+                                                label="Wniesiony początkowy depozyt zabezpieczający"
+                                                info="#{msgs['register.transactionForm.tabs.protection']}->#{msgs['register.transactionForm.protection.section.protection']}->Wniesiony początkowy depozyt zabezpieczający"  >
+                                    <f:converter converterId="pl.pd.emir.clientutils.converter.BigDecimalConverter"/>
+                                    <f:attribute name="maxFractionDigits" value="#{'5'}"/>
+                                    <f:validator validatorId="pl.pd.emir.register.bean.validators.MaxIntegerDigitsValidator"/>
+                                    <f:attribute name="maxIntegerDigits" value="#{'20'}"/>
+                                    <f:validator validatorId="pl.pd.emir.clientutils.validators.PositiveNumberValidator"/>
+                                    <f:validator validatorId="pl.pd.emir.register.bean.validators.MaxFractionDigitsValidator"/>
+                                    <p:ajax event="change" update="protectionPg1" partialSubmit="true"/>
+                                </emir:inputText>
 
+                                <ui:remove><!-- Otrzymany początkowy depozyt zabezpieczający --></ui:remove>
+                                <emir:labeledOutput id="protectionInitlMrgnRcvd" value="#{transactionFormBean.entity.protection.initlMrgnRcvd}" label="Otrzymany początkowy depozyt zabezpieczający" rendered="#{transactionFormBean.formType == 'View'}" >
+                                    <f:converter converterId="pl.pd.emir.clientutils.converter.BigDecimalConverter"/>
+                                    <f:attribute name="maxFractionDigits" value="#{'5'}"/>
+                                </emir:labeledOutput>
+                                <emir:inputText id="protectionInitlMrgnRcvdInput" rendered="#{not (transactionFormBean.formType == 'View')}"
+                                                value="#{transactionFormBean.entity.protection.initlMrgnRcvd}"
+                                                label="Otrzymany początkowy depozyt zabezpieczający"
+                                                info="#{msgs['register.transactionForm.tabs.protection']}->#{msgs['register.transactionForm.protection.section.protection']}->Otrzymany początkowy depozyt zabezpieczający"  >
+                                    <f:converter converterId="pl.pd.emir.clientutils.converter.BigDecimalConverter"/>
+                                    <f:attribute name="maxFractionDigits" value="#{'5'}"/>
+                                    <f:validator validatorId="pl.pd.emir.register.bean.validators.MaxIntegerDigitsValidator"/>
+                                    <f:attribute name="maxIntegerDigits" value="#{'20'}"/>
+                                    <f:validator validatorId="pl.pd.emir.clientutils.validators.PositiveNumberValidator"/>
+                                    <f:validator validatorId="pl.pd.emir.register.bean.validators.MaxFractionDigitsValidator"/>
+                                    <p:ajax event="change" update="protectionPg1" partialSubmit="true"/>
+                                </emir:inputText>
+                                <ui:remove><!-- Wniesiony zmienny depozyt zabezpieczający --></ui:remove>
+                                <emir:labeledOutput id="protectionVartnMrgnPstd" value="#{transactionFormBean.entity.protection.vartnMrgnPstd}" label="Wniesiony zmienny depozyt zabezpieczający" rendered="#{transactionFormBean.formType == 'View'}" >
+                                    <f:converter converterId="pl.pd.emir.clientutils.converter.BigDecimalConverter"/>
+                                    <f:attribute name="maxFractionDigits" value="#{'5'}"/>
+                                </emir:labeledOutput>
+                                <emir:inputText id="protectionVartnMrgnPstdInput" rendered="#{not (transactionFormBean.formType == 'View')}"
+                                                value="#{transactionFormBean.entity.protection.vartnMrgnPstd}"
+                                                label="Wniesiony zmienny depozyt zabezpieczający"
+                                                info="#{msgs['register.transactionForm.tabs.protection']}->#{msgs['register.transactionForm.protection.section.protection']}->Wniesiony zmienny depozyt zabezpieczający"  >
+                                    <f:converter converterId="pl.pd.emir.clientutils.converter.BigDecimalConverter"/>
+                                    <f:attribute name="maxFractionDigits" value="#{'5'}"/>
+                                    <f:validator validatorId="pl.pd.emir.register.bean.validators.MaxIntegerDigitsValidator"/>
+                                    <f:attribute name="maxIntegerDigits" value="#{'20'}"/>
+                                    <f:validator validatorId="pl.pd.emir.clientutils.validators.PositiveNumberValidator"/>
+                                    <f:validator validatorId="pl.pd.emir.register.bean.validators.MaxFractionDigitsValidator"/>
+                                    <p:ajax event="change" update="protectionPg1" partialSubmit="true"/>
+                                </emir:inputText>
+
+                                <ui:remove><!-- Otrzymany zmienny depozyt zabezpieczający --></ui:remove>
+                                <emir:labeledOutput id="protectionVartnMrgnRcvd" value="#{transactionFormBean.entity.protection.vartnMrgnRcvd}" label="Otrzymany zmienny depozyt zabezpieczający" rendered="#{transactionFormBean.formType == 'View'}" >
+                                    <f:converter converterId="pl.pd.emir.clientutils.converter.BigDecimalConverter"/>
+                                    <f:attribute name="maxFractionDigits" value="#{'5'}"/>
+                                </emir:labeledOutput>
+                                <emir:inputText id="protectionVartnMrgnRcvdInput" rendered="#{not (transactionFormBean.formType == 'View')}"
+                                                value="#{transactionFormBean.entity.protection.vartnMrgnRcvd}"
+                                                label="Otrzymany zmienny depozyt zabezpieczający"
+                                                info="#{msgs['register.transactionForm.tabs.protection']}->#{msgs['register.transactionForm.protection.section.protection']}->Otrzymany zmienny depozyt zabezpieczający"  >
+                                    <f:converter converterId="pl.pd.emir.clientutils.converter.BigDecimalConverter"/>
+                                    <f:attribute name="maxFractionDigits" value="#{'5'}"/>
+                                    <f:validator validatorId="pl.pd.emir.register.bean.validators.MaxIntegerDigitsValidator"/>
+                                    <f:attribute name="maxIntegerDigits" value="#{'20'}"/>
+                                    <f:validator validatorId="pl.pd.emir.clientutils.validators.PositiveNumberValidator"/>
+                                    <f:validator validatorId="pl.pd.emir.register.bean.validators.MaxFractionDigitsValidator"/>
+                                    <p:ajax event="change" update="protectionPg1" partialSubmit="true"/>
+                                </emir:inputText>
+                                <ui:remove><!-- Nadwyżka wniesionego zabezpieczenia --></ui:remove>
+                                <emir:labeledOutput id="protectionXcssCollPstd" value="#{transactionFormBean.entity.protection.xcssCollPstd}" label="Nadwyżka wniesionego zabezpieczenia" rendered="#{transactionFormBean.formType == 'View'}" >
+                                    <f:converter converterId="pl.pd.emir.clientutils.converter.BigDecimalConverter"/>
+                                    <f:attribute name="maxFractionDigits" value="#{'5'}"/>
+                                </emir:labeledOutput>
+                                <emir:inputText id="protectionXcssCollPstdInput" rendered="#{not (transactionFormBean.formType == 'View')}"
+                                                value="#{transactionFormBean.entity.protection.xcssCollPstd}"
+                                                label="Nadwyżka wniesionego zabezpieczenia"
+                                                info="#{msgs['register.transactionForm.tabs.protection']}->#{msgs['register.transactionForm.protection.section.protection']}->Nadwyżka wniesionego zabezpieczenia"  >
+                                    <f:converter converterId="pl.pd.emir.clientutils.converter.BigDecimalConverter"/>
+                                    <f:attribute name="maxFractionDigits" value="#{'5'}"/>
+                                    <f:validator validatorId="pl.pd.emir.register.bean.validators.MaxIntegerDigitsValidator"/>
+                                    <f:attribute name="maxIntegerDigits" value="#{'20'}"/>
+                                    <f:validator validatorId="pl.pd.emir.clientutils.validators.PositiveNumberValidator"/>
+                                    <f:validator validatorId="pl.pd.emir.register.bean.validators.MaxFractionDigitsValidator"/>
+                                    <p:ajax event="change" update="protectionPg1" partialSubmit="true"/>
+                                </emir:inputText>
+
+                                <ui:remove><!-- Nadwyżka otrzymanego zabezpieczenia --></ui:remove>
+                                <emir:labeledOutput id="protectionXcssCollRcvd" value="#{transactionFormBean.entity.protection.xcssCollRcvd}" label="Nadwyżka otrzymanego zabezpieczenia" rendered="#{transactionFormBean.formType == 'View'}" >
+                                    <f:converter converterId="pl.pd.emir.clientutils.converter.BigDecimalConverter"/>
+                                    <f:attribute name="maxFractionDigits" value="#{'5'}"/>
+                                </emir:labeledOutput>
+                                <emir:inputText id="protectionXcssCollRcvdInput" rendered="#{not (transactionFormBean.formType == 'View')}"
+                                                value="#{transactionFormBean.entity.protection.xcssCollRcvd}"
+                                                label="Nadwyżka otrzymanego zabezpieczenia"
+                                                info="#{msgs['register.transactionForm.tabs.protection']}->#{msgs['register.transactionForm.protection.section.protection']}->Nadwyżka otrzymanego zabezpieczenia"  >
+                                    <f:converter converterId="pl.pd.emir.clientutils.converter.BigDecimalConverter"/>
+                                    <f:attribute name="maxFractionDigits" value="#{'5'}"/>
+                                    <f:validator validatorId="pl.pd.emir.register.bean.validators.MaxIntegerDigitsValidator"/>
+                                    <f:attribute name="maxIntegerDigits" value="#{'20'}"/>
+                                    <f:validator validatorId="pl.pd.emir.clientutils.validators.PositiveNumberValidator"/>
+                                    <f:validator validatorId="pl.pd.emir.register.bean.validators.MaxFractionDigitsValidator"/>
+                                    <p:ajax event="change" update="protectionPg1" partialSubmit="true"/>
+                                </emir:inputText>   
+                                
                                 <ui:remove><!--Wartość zabezpieczenia instytucji raportującej--></ui:remove>
                                 <emir:labeledOutput id="protectionAmountOutput" value="#{transactionFormBean.entity.protection.amount}" label="#{msgs['register.transactionForm.protection.amount']}" rendered="#{transactionFormBean.formType == 'View'}" >
                                     <f:converter converterId="pl.pd.emir.clientutils.converter.BigDecimalConverter"/>
                                     <f:attribute name="maxFractionDigits" value="#{'5'}"/>
                                 </emir:labeledOutput>
-                                <emir:inputText id="protectionAmountInput" rendered="#{not (transactionFormBean.formType == 'View')}"
-                                                value="#{transactionFormBean.entity.protection.amount}"
-                                                label="#{msgs['register.transactionForm.protection.amount']}"
-                                                info="#{msgs['register.transactionForm.tabs.protection']}->#{msgs['register.transactionForm.protection.section.protection']}->#{msgs['register.transactionForm.protection.amount']}"  >
-                                    <f:converter converterId="pl.pd.emir.clientutils.converter.BigDecimalConverter"/>
-                                    <f:attribute name="maxFractionDigits" value="#{'5'}"/>
-                                    <f:validator validatorId="pl.pd.emir.register.bean.validators.MaxIntegerDigitsValidator"/>
-                                    <f:attribute name="maxIntegerDigits" value="#{'20'}"/>
-                                    <f:validator validatorId="pl.pd.emir.clientutils.validators.PositiveNumberValidator"/>
-                                    <f:validator validatorId="pl.pd.emir.register.bean.validators.MaxFractionDigitsValidator"/>
-                                    <p:ajax event="change" update="protectionPg1" partialSubmit="true"/>
-                                </emir:inputText>
-
                                 <ui:remove><!--Wartość zabezpieczenia kontrahenta--></ui:remove>
                                 <emir:labeledOutput id="protectionAmountClientOutput" value="#{transactionFormBean.entity.protection.clientAmount}" label="#{msgs['register.transactionForm.protection.amountClient']}" rendered="#{transactionFormBean.formType == 'View'}" >
                                     <f:converter converterId="pl.pd.emir.clientutils.converter.BigDecimalConverter"/>
                                     <f:attribute name="maxFractionDigits" value="#{'5'}"/>
-                                </emir:labeledOutput>
-                                <emir:inputText id="protectionAmountClientInput" rendered="#{not (transactionFormBean.formType == 'View')}"
-                                                value="#{transactionFormBean.entity.protection.clientAmount}"
-                                                label="#{msgs['register.transactionForm.protection.amountClient']}"
-                                                info="#{msgs['register.transactionForm.tabs.protection']}->#{msgs['register.transactionForm.protection.section.protection']}->#{msgs['register.transactionForm.protection.amountClient']}"  >
-                                    <f:converter converterId="pl.pd.emir.clientutils.converter.BigDecimalConverter"/>
-                                    <f:attribute name="maxFractionDigits" value="#{'5'}"/>
-                                    <f:validator validatorId="pl.pd.emir.register.bean.validators.MaxIntegerDigitsValidator"/>
-                                    <f:attribute name="maxIntegerDigits" value="#{'20'}"/>
-                                    <f:validator validatorId="pl.pd.emir.clientutils.validators.PositiveNumberValidator"/>
-                                    <f:validator validatorId="pl.pd.emir.register.bean.validators.MaxFractionDigitsValidator"/>
-                                    <p:ajax event="change" update="protectionPg1" partialSubmit="true"/>
-                                </emir:inputText>
+                                </emir:labeledOutput>                                
                             </p:panelGrid>
                         </p:panel>
                     </h:panelGroup>
