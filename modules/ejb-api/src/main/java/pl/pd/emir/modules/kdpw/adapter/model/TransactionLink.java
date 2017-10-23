@@ -6,9 +6,11 @@ public class TransactionLink {
 
     private String tradeIdId;
 
-    private String ctrPtyTRId;
+//TODO to remove    
+//    private String ctrPtyTRId;
 
-    private Date eligDate;
+ //TODO to remove
+//    private Date eligDate;
 
     public String getTradeIdId() {
         return tradeIdId;
@@ -18,20 +20,20 @@ public class TransactionLink {
         this.tradeIdId = tradeIdId;
     }
 
-    public String getCtrPtyTRId() {
-        return ctrPtyTRId;
-    }
+//    public String getCtrPtyTRId() {
+//        return ctrPtyTRId;
+//    }
+//
+//    public void setCtrPtyTRId(String ctrPtyTRId) {
+//        this.ctrPtyTRId = ctrPtyTRId;
+//    }
 
-    public void setCtrPtyTRId(String ctrPtyTRId) {
-        this.ctrPtyTRId = ctrPtyTRId;
-    }
-
-    public Date getEligDate() {
-        return eligDate;
-    }
-
-    public void setEligDate(Date eligDate) {
-        this.eligDate = eligDate;
-    }
+//    public Date getEligDate() {
+//        return eligDate;
+//    }
+//
+//    public void setEligDate(Date eligDate) {
+//        this.eligDate = eligDate;
+//    }
 
 }

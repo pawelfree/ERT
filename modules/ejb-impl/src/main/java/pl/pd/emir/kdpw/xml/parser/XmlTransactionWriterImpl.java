@@ -18,12 +18,18 @@ import kdpw.xsd.trar_ins_001.ActiveCurrencyAnd20AmountN;
 import kdpw.xsd.trar_ins_001.ActiveOrHistoricCurrencyAnd20AmountNegative;
 import kdpw.xsd.trar_ins_001.ClearingObligationCode;
 import kdpw.xsd.trar_ins_001.CollateralisationType1Code;
+import kdpw.xsd.trar_ins_001.CommonTradeDataReport134;
 import kdpw.xsd.trar_ins_001.CommonTradeDataReport171;
+import kdpw.xsd.trar_ins_001.ContractDetailsTRM;
 import kdpw.xsd.trar_ins_001.ContractDetailsTRN;
 import kdpw.xsd.trar_ins_001.ContractType31;
+import kdpw.xsd.trar_ins_001.ContractType42;
 import kdpw.xsd.trar_ins_001.ContractValuationDataTRN;
+import kdpw.xsd.trar_ins_001.CounterpartyOtherTRM;
 import kdpw.xsd.trar_ins_001.CounterpartyOtherTRN;
+import kdpw.xsd.trar_ins_001.CounterpartySpecificDataTRM;
 import kdpw.xsd.trar_ins_001.CounterpartySpecificDataTRN;
+import kdpw.xsd.trar_ins_001.CounterpartyTRM;
 import kdpw.xsd.trar_ins_001.CounterpartyTRN;
 import kdpw.xsd.trar_ins_001.CounterpartyTradeNatureTR;
 import kdpw.xsd.trar_ins_001.CurrencyExchange101;
@@ -58,6 +64,7 @@ import kdpw.xsd.trar_ins_001.ProductType4Code1;
 import kdpw.xsd.trar_ins_001.RegulationIndicator;
 import kdpw.xsd.trar_ins_001.SecuritiesTransactionPrice7ChoiceTR;
 import kdpw.xsd.trar_ins_001.TradeClearingTR;
+import kdpw.xsd.trar_ins_001.TradeClearingTRM;
 import kdpw.xsd.trar_ins_001.TradeCollateralReportTRN;
 import kdpw.xsd.trar_ins_001.TradeConfirmationTR;
 import kdpw.xsd.trar_ins_001.TradeConfirmationTypeRT;
@@ -66,6 +73,8 @@ import kdpw.xsd.trar_ins_001.TradeReportChoiceTR;
 import kdpw.xsd.trar_ins_001.TradeTransaction101;
 import kdpw.xsd.trar_ins_001.TradeTransactionModificationTR;
 import kdpw.xsd.trar_ins_001.TradeTransactionReportChoiceTR;
+import kdpw.xsd.trar_ins_001.TradeTransactionTRM;
+import kdpw.xsd.trar_ins_001.TradeTransactionValuationUpdateTR;
 import kdpw.xsd.trar_ins_001.TradingCapacity7Code;
 import kdpw.xsd.trar_ins_001.TrarIns00103;
 import kdpw.xsd.trar_ins_001.ValuationType1Code;
@@ -119,18 +128,17 @@ public class XmlTransactionWriterImpl extends XmlWriterImpl implements Transacti
                 final TrarIns00103 trar = new TrarIns00103();
 
                 trar.setGnlInf(getGeneralInfo(transToRepo.getSndrMsgRef(), institutionId));
-                
+                //TODO pawel a co jesli jednoczesnie modyfikacja i wycena
                 final TransactionMsgType msgType = transToRepo.getMsgType();
                 if (msgType.isNew()) {
                     trar.setRpt(getNewTransactionReportChoice(transToRepo));
                 }
                 else if (msgType.isModification()) {
                     trar.setRpt(getModTransactionReportChoice(transToRepo));
+                } 
+                else if (msgType.isValuation()) {
+                    trar.setRpt(getValUpdTransactionReportChoice(transToRepo));
                 }
-//          
-//                if (msgType.isNew() || msgType.isModification() || msgType.equals(TransactionMsgType.C) || msgType.equals(TransactionMsgType.Z)) {
-//                    trar.setTradDtls(getTransactionDetails(transToRepo.getRegistable().getTransaction(), transToRepo.getMsgType()));
-//                }
 
                 document.getTrarIns00103().add(trar);
                 //TODO czy to nie nadpisuje fora z poczatku metody?
@@ -160,6 +168,12 @@ public class XmlTransactionWriterImpl extends XmlWriterImpl implements Transacti
         result.setTx(getModTransactionReport(item));
         return result;
     }
+
+    protected final TradeReportChoiceTR getValUpdTransactionReportChoice(final TransactionToRepository item) {
+        final TradeReportChoiceTR result = new TradeReportChoiceTR();
+        result.setTx(getValUpdTransactionReport(item));
+        return result;
+    }
     
     protected final String getSndrMsgRef(Date date, Long newNumber) {
         return String.format("%s%s", DateUtils.formatDate(date, "yyMMdd"), newNumber);
@@ -167,8 +181,8 @@ public class XmlTransactionWriterImpl extends XmlWriterImpl implements Transacti
 
     protected final GeneralInformation getGeneralInfo(final String senderMessageReference, final String institutionId) {
         final GeneralInformation result = new GeneralInformation();
-        //TODO tego pola nie wypełniamy bo raportujemy tylko własne transakcje
-        //result.setRptgNtty(institutionId);
+        //TODO tego pola nie wypełniamy bo raportujemy tylko własne transakcje rowniez za drugą stronę
+        result.setRptgNtty(institutionId);
         result.setSndrMsgRef(senderMessageReference);
         return result;
     }
@@ -184,10 +198,10 @@ public class XmlTransactionWriterImpl extends XmlWriterImpl implements Transacti
         result.setMod(getModTransaction(item));
         return result;
     }
-    
-    protected final TradeTransactionModificationTR getModTransaction(TransactionToRepository item) {
-        TradeTransactionModificationTR result = new TradeTransactionModificationTR();
-        
+
+    protected final TradeTransactionReportChoiceTR getValUpdTransactionReport(TransactionToRepository item) {
+        TradeTransactionReportChoiceTR result = new TradeTransactionReportChoiceTR();
+        result.setValtnUpd(getValUpdTransaction(item));
         return result;
     }
     
@@ -195,38 +209,77 @@ public class XmlTransactionWriterImpl extends XmlWriterImpl implements Transacti
         TradeNewTransactionTR result = new TradeNewTransactionTR();
         result.setRglntInd(RegulationIndicator.E);
         final Client client = item.getRegistable().getClient();
-        //COMMENT bank(client2) i ten drugi(client)
-        result.getCtrPtySpcfcData().add(getBankCounterPartySpecificData(item));
-        //COMMENT rozdzielic na dwa raporty?
+        result.getCtrPtySpcfcData().add(getBankCounterPartySpecificDataN(item));
         if (client.getReported()) {
-            //COMMENT ten drugi potem bank
-            result.getCtrPtySpcfcData().add(getClientCounterPartySpecificData(item));
+            result.getCtrPtySpcfcData().add(getClientCounterPartySpecificDataN(item));
         }        
         result.setCmonTradData(getNewCmonTradeData(item.getRegistable().getTransaction()));
         return result;
     }
+ 
+    protected final TradeTransactionModificationTR getModTransaction(TransactionToRepository item) {
+        TradeTransactionModificationTR result = new TradeTransactionModificationTR();
+        result.setEligDt(XmlUtils.formatDate(item.getRegistable().getTransaction().getTransactionDate(), Constants.ISO_DATE));
+        final Client client = item.getRegistable().getClient();
+        result.getCtrPtySpcfcData().add(getBankCounterPartySpecificDataM(item));
+        if (client.getReported()) {
+            result.getCtrPtySpcfcData().add(getClientCounterPartySpecificDataM(item));
+        } 
+        result.setCmonTradData(getModCmonTradeData(item.getRegistable().getTransaction()));
+        return result;
+    }
+    
+    protected final TradeTransactionValuationUpdateTR getValUpdTransaction(TransactionToRepository item) {
+        TradeTransactionValuationUpdateTR result = new TradeTransactionValuationUpdateTR();
+        final Client client = item.getRegistable().getClient();
+        //TODO empty
+        result.getCtrPtySpcfcData().add(null);
+        if (client.getEucReported()) {
+            //TODO empty
+            result.getCtrPtySpcfcData().add(null);
+        }
+        return result;
+    }    
+    
     
     protected final CommonTradeDataReport171 getNewCmonTradeData(final Transaction transaction) {
         CommonTradeDataReport171 result = new CommonTradeDataReport171();
         result.setCtrctData(getNewCtrctData(transaction));
-        result.setTxData(getTxData(transaction));
+        result.setTxData(getNewTxData(transaction));
         return result;
     }
+
+    protected final CommonTradeDataReport134 getModCmonTradeData(final Transaction transaction) {
+        CommonTradeDataReport134 result = new CommonTradeDataReport134();
+        result.setCtrctData(getModCtrctData(transaction));
+        result.setTxData(getModTxData(transaction));
+        return result;
+    }
+    
     
     protected final ContractType31 getNewCtrctData(final Transaction transaction) {
         ContractType31 result = new ContractType31();
         final ContractDataDetailed contractDetailedData = transaction.getContractDetailedData();
         final ContractData contractData = contractDetailedData.getContractData();
         result.setCtrctTp(FinancialInstrumentContractType2Code.fromValue(contractData.getProd2Code()));
-        //TODO tylko CU i IR 
         result.setAsstClss(ProductType4Code1.fromValue(contractData.getProd1Code())); 
         result.setCtrctDtls(getNewConntractDetails(contractDetailedData));
         return result;
     }
     
+    protected final ContractType42 getModCtrctData(final Transaction transaction) {
+        ContractType42 result = new ContractType42();
+        final ContractDataDetailed contractDetailedData = transaction.getContractDetailedData();
+        final ContractData contractData = contractDetailedData.getContractData();
+        result.setCtrctTp(FinancialInstrumentContractType2Code.fromValue(contractData.getProd2Code()));
+        result.setAsstClss(ProductType4Code1.fromValue(contractData.getProd1Code())); 
+        result.setCtrctDtls(getModConntractDetails(contractDetailedData));
+        return result;
+    }
+    
     protected final ContractDetailsTRN getNewConntractDetails(ContractDataDetailed contractDetailedData) {
         ContractDetailsTRN result = new ContractDetailsTRN();
-        result.setPdctClssfctn(getPdctClssfctn());
+        result.setPdctClssfctn(getPdctClssfctn(contractDetailedData.getContractData()));
         //TODO to chyba jest w MUFG puste
         result.setPdctId(null);
         //TODO underlying jest puste lub NA MUFG nie uzywa - refactor condition and line length
@@ -238,15 +291,54 @@ public class XmlTransactionWriterImpl extends XmlWriterImpl implements Transacti
         result.setDlvrblCcy(XmlUtils.enumName(contractDetailedData.getDelivCurrencyCode()));
         return result;
     }
-    
-    protected final ProductClassification1Choice getPdctClssfctn() {
+
+    protected final ContractDetailsTRM getModConntractDetails(ContractDataDetailed contractDetailedData) {
+        ContractDetailsTRM result = new ContractDetailsTRM();
+        result.setPdctClssfctn(getPdctClssfctn(contractDetailedData.getContractData()));
+        //TODO to chyba jest w MUFG puste
+        result.setPdctId(null);
+        //TODO underlying jest puste lub NA MUFG nie uzywa - refactor condition and line length
+        result.setUndrlygInstrm(null);
+        //TODO technical underlying nie jest uzywane
+        result.setTechUndrlyg(null);
+        result.setNtnlCcyFrstLeg(XmlUtils.enumName(contractDetailedData.getUnderlCurrency1Code()));
+        result.setNtnlCcyScndLeg(XmlUtils.enumName(contractDetailedData.getUnderlCurrency2Code()));
+        result.setDlvrblCcy(XmlUtils.enumName(contractDetailedData.getDelivCurrencyCode()));
+        return result;
+    }    
+    protected final ProductClassification1Choice getPdctClssfctn(ContractData contractData) {
         ProductClassification1Choice result = new ProductClassification1Choice();
-        //TODO do zmiany
-        result.setClssfctnFinInstrm("ABCDEF");
+        
+        String assetClass = contractData.getProd1Code(); 
+        String contractType = contractData.getProd2Code();
+        
+        //TODO  moze przeniesc do parametrow?
+        if (assetClass.equalsIgnoreCase("CU")) {
+            if (contractType.equalsIgnoreCase("SW")) {
+                result.setClssfctnFinInstrm("SFAXXP");
+            }
+            else if (contractType.equalsIgnoreCase("FW")) {
+                result.setClssfctnFinInstrm("JFRXFP");
+            }
+            else {
+                throw new RuntimeException("Contract type not defined");
+            }
+        }
+        else if (assetClass.equalsIgnoreCase("IR")) {
+            if (contractType.equalsIgnoreCase("SW")) {
+                result.setClssfctnFinInstrm("SRCDSC");
+            }
+            else {
+                throw new RuntimeException("Contract type not defined");
+            }        }
+        else {
+            throw new RuntimeException("Asset class not defined");
+        }
+        
         return result; 
     } 
     
-    protected final TradeTransaction101 getTxData(final Transaction transaction) {
+    protected final TradeTransaction101 getNewTxData(final Transaction transaction) {
         TradeTransaction101 result = new TradeTransaction101();
         TransactionDetails transactionDetails = transaction.getTransactionDetails();
         //TODO trzy linijki z poprzedniego xmla
@@ -281,12 +373,51 @@ public class XmlTransactionWriterImpl extends XmlWriterImpl implements Transacti
         //TODO to powinno być inaczej rozpoznawane
         //if (null != transaction.getPercentageRateData())
         //    result.setIntrstRate(getNewIntrestRate(transaction.getPercentageRateData()));
+        //TODO rozmaite produkty
         if (null != transaction.getCurrencyTradeData())
             result.setCcy(getNewCcy(transaction.getCurrencyTradeData()));
 
         return result;
     }
   
+        protected final TradeTransactionTRM getModTxData(final Transaction transaction) {
+        TradeTransactionTRM result = new TradeTransactionTRM();
+        TransactionDetails transactionDetails = transaction.getTransactionDetails();
+        //TODO trzy linijki z poprzedniego xmla
+        // result.setId(details.getSourceTransId());
+        // result.setPrvsId(null); // TODO - brak informacji w dokumentacji
+        // result.setTradRefNb(nullOnEmpty(details.getSourceTransRefNr()));
+         result.setUnqTradIdr(transactionDetails.getSourceTransId());
+        //TODO w MUFG puste? 
+        //result.setRptTrckgNb(null);
+        //TODO w MUFG puste?
+        //result.setCmplxTradId(null);
+        result.setPric(getNewPric(transactionDetails));
+        result.setNtnlAmt(transactionDetails.getNominalAmount());
+        result.setPricMltplr(NumberUtils.integerToBigDecimal(transactionDetails.getPriceMultiplier()));
+        result.setQty(NumberUtils.integerToBigDecimal(transactionDetails.getContractCount()));
+        result.setUpFrntPmt(null == transactionDetails.getInAdvanceAmount() ? null : transactionDetails.getInAdvanceAmount());
+        //TODO zweryfikowac czy sa takie same enumy i czy potrzebne
+        result.setDlvryTp(PhysicalTransferType4Code.fromValue(transactionDetails.getDelivType().toString()));
+        //TODO czy te daty nie moga byc puste?
+        result.setExctnDtTm(XmlUtils.formatDate(getUTCDate(transactionDetails.getExecutionDate()), Constants.ISO_DATE_TIME_Z));
+        result.setFctvDt(XmlUtils.formatDate(transactionDetails.getEffectiveDate(), Constants.ISO_DATE));
+        result.setMtrtyDt(XmlUtils.formatDate(transactionDetails.getMaturityDate(), Constants.ISO_DATE));
+        result.getSttlmDt().add(XmlUtils.formatDate(transactionDetails.getSettlementDate(), Constants.ISO_DATE));
+        result.setMstrAgrmt(getNewMstrAgrmt(transaction.getTransactionDetails()));
+        result.setTradConf(getNewTradConf(transaction.getRiskReduce()));
+        result.setTradClr(getModTradClr(transaction.getTransactionClearing()));
+        //TODO a to ciekawe - return new TradeAdditionalInformationValidator().nullOnEmpty(result);
+        //TODO to powinno być inaczej rozpoznawane
+        //if (null != transaction.getPercentageRateData())
+        //    result.setIntrstRate(getNewIntrestRate(transaction.getPercentageRateData()));
+        //TODO rozmaite produkty
+        if (null != transaction.getCurrencyTradeData())
+            result.setCcy(getNewCcy(transaction.getCurrencyTradeData()));
+
+        return result;
+    }
+    
     protected final InterestRateLegs41 getNewIntrestRate(PercentageRateData percentageRateData) {
         InterestRateLegs41 result = new InterestRateLegs41();
         Objects.nonNull(percentageRateData);
@@ -461,6 +592,23 @@ public class XmlTransactionWriterImpl extends XmlWriterImpl implements Transacti
         //TODO to ciekawe - return new ClearingInformationValidator().nullOnEmpty(result);
         return result;
     }
+
+    protected final TradeClearingTRM getModTradClr(final TransactionClearing transactionClearing) {
+        TradeClearingTRM result = new TradeClearingTRM();
+        Objects.requireNonNull(transactionClearing);
+        //TODO zmienic typ ? po co tyle enumów
+        result.setClrOblgtn(ClearingObligationCode.fromValue(transactionClearing.getClearingOblig().toString()));
+        //TODO zmienić typ ? po co tyle enumów
+        result.setClrd(transactionClearing.getCleared() == Cleared.Y);
+        result.setClrDtTm(null == transactionClearing.getClearingDate() ? null : XmlUtils.formatDate(getUTCDate(transactionClearing.getClearingDate()), Constants.ISO_DATE_TIME_Z));
+        //TODO może byc tylko LEI
+        //TODO null or ""
+        //result.setCCP(transactionClearing.getCcpCode());
+        //TODO zmienic typ - i wyeliminiowac ERR?
+        result.setIntraGrp(transactionClearing.getIntergropuTrans() == null ? null : (transactionClearing.getIntergropuTrans() == IntergropuTrans.Y));
+        //TODO to ciekawe - return new ClearingInformationValidator().nullOnEmpty(result);
+        return result;
+    }
     
     protected final ActiveCurrencyAnd20Amount createValue(BigDecimal amount, CurrencyCode currency) {
         ActiveCurrencyAnd20Amount result = null;
@@ -540,12 +688,16 @@ public class XmlTransactionWriterImpl extends XmlWriterImpl implements Transacti
         return SettlementThreshold.Y.equals(businessData.getSettlementThreshold());
     }
     
-    protected final CounterpartySpecificDataTRN getBankCounterPartySpecificData(TransactionToRepository item) {
+    protected final CounterpartySpecificDataTRN getBankCounterPartySpecificDataN(TransactionToRepository item) {
         CounterpartySpecificDataTRN result = new CounterpartySpecificDataTRN();
-        result.setCtrPty(getBankCounterparty(item));
-        //TODO - change
+        result.setCtrPty(getBankCounterpartyN(item));
         result.setValtn(getValtn(item.getRegistable().getTransaction().getValuation(), false));
         result.setColl(getColl(item.getRegistable().getTransaction().getProtection(), false));
+        return result;
+    }
+    protected final CounterpartySpecificDataTRM getBankCounterPartySpecificDataM(TransactionToRepository item) {
+        CounterpartySpecificDataTRM result = new CounterpartySpecificDataTRM();
+        result.setCtrPty(getBankCounterpartyM(item));
         return result;
     }
     
@@ -562,12 +714,14 @@ public class XmlTransactionWriterImpl extends XmlWriterImpl implements Transacti
             result.setPrtflColl(protection.getWalletProtection().getLogical());
             //pusty portfel wywala xml null lub "" zweryfikowac format danych zrodlowych
             //result.setPrtfl(protection.getWalletId());
-            result.setInitlMrgnPstd(createValue(new BigDecimal("999999"),CurrencyCode.PLN));
-            result.setVartnMrgnPstd(createValue(new BigDecimal("999999"),CurrencyCode.PLN));
-            result.setInitlMrgnRcvd(createValue(new BigDecimal("999999"),CurrencyCode.PLN));
-            result.setVartnMrgnRcvd(createValue(new BigDecimal("999999"),CurrencyCode.PLN));
-            result.setXcssCollPstd(createValue(new BigDecimal("999999"),CurrencyCode.PLN));
-            result.setXcssCollRcvd(createValue(new BigDecimal("999999"),CurrencyCode.PLN));
+            
+            //TODO obsluzyc dla portfela byc moze jesli zabezpiecznie rozne od U w praktyce = FC
+            //result.setInitlMrgnPstd(createValue(new BigDecimal("999999"),CurrencyCode.PLN));
+            //result.setVartnMrgnPstd(createValue(new BigDecimal("999999"),CurrencyCode.PLN));
+            //result.setInitlMrgnRcvd(createValue(new BigDecimal("999999"),CurrencyCode.PLN));
+            //result.setVartnMrgnRcvd(createValue(new BigDecimal("999999"),CurrencyCode.PLN));
+            //result.setXcssCollPstd(createValue(new BigDecimal("999999"),CurrencyCode.PLN));
+            //result.setXcssCollRcvd(createValue(new BigDecimal("999999"),CurrencyCode.PLN));
         }
         return result;
     }
@@ -608,12 +762,18 @@ public class XmlTransactionWriterImpl extends XmlWriterImpl implements Transacti
         return result;
     } 
     
-    protected final CounterpartySpecificDataTRN getClientCounterPartySpecificData(TransactionToRepository item) {
+    protected final CounterpartySpecificDataTRN getClientCounterPartySpecificDataN(TransactionToRepository item) {
         CounterpartySpecificDataTRN result = new CounterpartySpecificDataTRN();
-        result.setCtrPty(getClientCounterparty(item));
+        result.setCtrPty(getClientCounterpartyN(item));
         //TODO - czy to jest zbędne dla klienta
         result.setValtn(getValtn(item.getRegistable().getTransaction().getValuation(), true));
         result.setColl(getColl(item.getRegistable().getTransaction().getProtection(), true));
+        return result;
+    }
+
+    protected final CounterpartySpecificDataTRM getClientCounterPartySpecificDataM(TransactionToRepository item) {
+        CounterpartySpecificDataTRM result = new CounterpartySpecificDataTRM();
+        result.setCtrPty(getClientCounterpartyM(item));
         return result;
     }
     
@@ -621,16 +781,12 @@ public class XmlTransactionWriterImpl extends XmlWriterImpl implements Transacti
         return CounterpartyTradeNatureTR.fromValue(type);
     }
             
-    protected final CounterpartyTRN getBankCounterparty(TransactionToRepository item) {
+    protected final CounterpartyTRN getBankCounterpartyN(TransactionToRepository item) {
         CounterpartyTRN result = new CounterpartyTRN();
         Client client = item.getRegistable().getClient2();
         result.setRptgCtrPtyId(client.getInstitutionId());
         result.setCtrPtySd(getTransactionParty(item.getRegistable().getTransaction().getTransactionParty(), Boolean.FALSE));
-//TODO to musi byc wypelnione i nie tak jak u nas max 3 literki (w rzeczywistosci jedna)
-//TODO to trzeba przedyskutowac 
-        //TODO dla MUFG "C"
         result.getSctr().add(client.getContrPartyIndustry());
-        //TODO dla mufg "F"
         result.setNtr(getClientNature(client.getContrPartyType()));
         BusinessEntityData businessData = item.getRegistable().getTransaction().getClient2Data();
         //TODO null wywala walidacje
@@ -642,12 +798,34 @@ public class XmlTransactionWriterImpl extends XmlWriterImpl implements Transacti
         //result.setCmmrclActvty(getCommercialActivity(businessData));
         //TODO jesli kontrachent finansowy to tego sie nie wypełnia
         //result.setClrTrshld(getClrTrshld(businessData));
-        result.setOthrCtrPty(getOthrCtrPty(item.getRegistable().getTransaction().getClient().getCountryCode(), item.getRegistable().getTransaction().getClientData(), !item.getRegistable().getTransaction().getClient().getNaturalPerson()));
+        result.setOthrCtrPty(getOthrCtrPtyN(item.getRegistable().getTransaction().getClient().getCountryCode(), item.getRegistable().getTransaction().getClientData(), !item.getRegistable().getTransaction().getClient().getNaturalPerson()));
+        
+        return result;
+    }
+
+    protected final CounterpartyTRM getBankCounterpartyM(TransactionToRepository item) {
+        CounterpartyTRM result = new CounterpartyTRM();
+        Client client = item.getRegistable().getClient2();
+        result.setRptgCtrPtyId(client.getInstitutionId());
+        result.setCtrPtySd(getTransactionParty(item.getRegistable().getTransaction().getTransactionParty(), Boolean.FALSE));
+        result.getSctr().add(client.getContrPartyIndustry());
+        result.setNtr(getClientNature(client.getContrPartyType()));
+        BusinessEntityData businessData = item.getRegistable().getTransaction().getClient2Data();
+        //TODO null wywala walidacje
+        //result.setBrkr(getBrkr(businessData));
+        //result.setClrMmb(getClrMmb(businessData));
+        result.setBnfcry(getPartyId(businessData));
+        result.setTradgCpcty(getTradgCpcty(businessData));
+        //TODO jesli kontrachent finansowy to tego sie nie wypełnia
+        //result.setCmmrclActvty(getCommercialActivity(businessData));
+        //TODO jesli kontrachent finansowy to tego sie nie wypełnia
+        //result.setClrTrshld(getClrTrshld(businessData));
+        result.setOthrCtrPty(getOthrCtrPtyM(item.getRegistable().getTransaction().getClient().getCountryCode(), item.getRegistable().getTransaction().getClientData(), !item.getRegistable().getTransaction().getClient().getNaturalPerson()));
         
         return result;
     }
     
-    protected final CounterpartyTRN getClientCounterparty(TransactionToRepository item) {
+    protected final CounterpartyTRN getClientCounterpartyN(TransactionToRepository item) {
         //TODO identyczna prawie jak powyzej
         CounterpartyTRN result = new CounterpartyTRN();
         Client client = item.getRegistable().getClient();
@@ -665,13 +843,45 @@ public class XmlTransactionWriterImpl extends XmlWriterImpl implements Transacti
         result.setTradgCpcty(getTradgCpcty(businessData));
         result.setCmmrclActvty(getCommercialActivity(businessData));
         result.setClrTrshld(getClrTrshld(businessData));
-        result.setOthrCtrPty(getOthrCtrPty(item.getRegistable().getTransaction().getClient2().getCountryCode(), item.getRegistable().getTransaction().getClient2Data(),false));
+        //TODO emirobligation czemu zawsze false
+        result.setOthrCtrPty(getOthrCtrPtyN(item.getRegistable().getTransaction().getClient2().getCountryCode(), item.getRegistable().getTransaction().getClient2Data(),false));
          
         return result;
     }
 
-    protected final CounterpartyOtherTRN getOthrCtrPty(CountryCode country, BusinessEntityData businessEntity, boolean emirOblgtn) {
+        protected final CounterpartyTRM getClientCounterpartyM(TransactionToRepository item) {
+        //TODO identyczna prawie jak powyzej
+        CounterpartyTRM result = new CounterpartyTRM();
+        Client client = item.getRegistable().getClient();
+        result.setRptgCtrPtyId(client.getInstitutionId());
+        result.setCtrPtySd(getTransactionParty(item.getRegistable().getTransaction().getTransactionParty(), Boolean.TRUE));
+        result.getSctr().add(client.getContrPartyIndustry());
+        result.setNtr(getClientNature(client.getContrPartyType()));        
+        BusinessEntityData businessData = item.getRegistable().getTransaction().getClientData();
+        //TODO null wywala walidacje
+        //result.setBrkr(getBrkr(businessData));
+        //result.setClrMmb(getClrMmb(businessData));
+        result.setBnfcry(getPartyId(businessData));
+        result.setTradgCpcty(getTradgCpcty(businessData));
+        result.setCmmrclActvty(getCommercialActivity(businessData));
+        result.setClrTrshld(getClrTrshld(businessData));
+        //TODO emirobligation czemu zawsze false
+        result.setOthrCtrPty(getOthrCtrPtyM(item.getRegistable().getTransaction().getClient2().getCountryCode(), item.getRegistable().getTransaction().getClient2Data(),false));
+         
+        return result;
+    }
+    
+    
+    protected final CounterpartyOtherTRN getOthrCtrPtyN(CountryCode country, BusinessEntityData businessEntity, boolean emirOblgtn) {
         CounterpartyOtherTRN result = new CounterpartyOtherTRN();
+        result.setId(getPartyId(businessEntity));
+        result.setCtry(country.toString());
+        result.setEMIROblgtn(emirOblgtn);
+        return result;
+    }
+    
+    protected final CounterpartyOtherTRM getOthrCtrPtyM(CountryCode country, BusinessEntityData businessEntity, boolean emirOblgtn) {
+        CounterpartyOtherTRM result = new CounterpartyOtherTRM();
         result.setId(getPartyId(businessEntity));
         result.setCtry(country.toString());
         result.setEMIROblgtn(emirOblgtn);

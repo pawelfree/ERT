@@ -1510,7 +1510,7 @@ This field shall be filled from the perspective of the reporting counterparty. I
 			<xs:element name="EMIROblgtn" type="YesNoIndicator">
 				<xs:annotation>
 					<xs:documentation source="Name" xml:lang="EN">Subject to EMIR regulation obligation</xs:documentation>
-					<xs:documentation source="Definition" xml:lang="EN">Is the other counterparty individual not subject to the EMIR regulation reporting obligation?</xs:documentation>
+					<xs:documentation source="Definition" xml:lang="EN">Is the other counterparty subject to the EMIR regulation reporting obligation?</xs:documentation>
 				</xs:annotation>
 			</xs:element>
 		</xs:sequence>
@@ -1540,7 +1540,7 @@ This field shall be filled from the perspective of the reporting counterparty. I
 			<xs:element name="EMIROblgtn" type="YesNoIndicator" minOccurs="0">
 				<xs:annotation>
 					<xs:documentation source="Name" xml:lang="EN">Subject to EMIR regulation obligation</xs:documentation>
-					<xs:documentation source="Definition" xml:lang="EN">Is the other counterparty individual not subject to the EMIR regulation reporting obligation?</xs:documentation>
+					<xs:documentation source="Definition" xml:lang="EN">Is the other counterparty subject to the EMIR regulation reporting obligation?</xs:documentation>
 				</xs:annotation>
 			</xs:element>
 		</xs:sequence>
@@ -1570,7 +1570,7 @@ This field shall be filled from the perspective of the reporting counterparty. I
 			<xs:element name="EMIROblgtn" type="YesNoIndicator">
 				<xs:annotation>
 					<xs:documentation source="Name" xml:lang="EN">Subject to EMIR regulation obligation</xs:documentation>
-					<xs:documentation source="Definition" xml:lang="EN">Is the other counterparty individual not subject to the EMIR regulation reporting obligation?</xs:documentation>
+					<xs:documentation source="Definition" xml:lang="EN">Is the other counterparty subject to the EMIR regulation reporting obligation?</xs:documentation>
 				</xs:annotation>
 			</xs:element>
 		</xs:sequence>
@@ -1687,7 +1687,7 @@ This field shall be filled from the perspective of the reporting counterparty. I
 					<xs:documentation source="Definition" xml:lang="EN">Data specific to counterparties of the reported transaction/position.</xs:documentation>
 				</xs:annotation>
 			</xs:element>
-			<xs:element name="Coll" type="TradeCollateralReport_TR_PC">
+			<xs:element name="Coll" type="TradeCollateralReport_TR_PC" minOccurs="0">
 				<xs:annotation>
 					<xs:documentation source="Name" xml:lang="EN">Collateral</xs:documentation>
 					<xs:documentation source="Definition" xml:lang="EN">Information related to collateral agreement existing between counterparties.</xs:documentation>
@@ -2351,11 +2351,16 @@ Currency in which leg 2 of the swap is denominated, in case of swaptions where t
 					<xs:documentation source="Definition" xml:lang="EN">MTherm per day.</xs:documentation>
 				</xs:annotation>
 			</xs:enumeration>
+			<xs:enumeration value="cm/d">
+				<xs:annotation>
+					<xs:documentation source="Name" xml:lang="EN">CMPerDay</xs:documentation>
+					<xs:documentation source="Definition" xml:lang="EN">Cm per day.&#13;</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
 			<xs:enumeration value="mcm/d">
 				<xs:annotation>
 					<xs:documentation source="Name" xml:lang="EN">MCMPerDay</xs:documentation>
-					<xs:documentation source="Definition" xml:lang="EN">Mcm per day.&#13;
-</xs:documentation>
+					<xs:documentation source="Definition" xml:lang="EN">Mcm per day.&#13;</xs:documentation>
 				</xs:annotation>
 			</xs:enumeration>
 			<xs:enumeration value="KWh/h">
@@ -4523,7 +4528,7 @@ Usage: When absent, default value is false.</xs:documentation>
 					<xs:documentation source="Definition" xml:lang="EN">Information indicating the type of collateral agreement existing between counterparties.</xs:documentation>
 				</xs:annotation>
 			</xs:element>
-			<xs:element name="PrtflColl" type="YesNoIndicator">
+			<xs:element name="PrtflColl" type="YesNoIndicator" minOccurs="0">
 				<xs:annotation>
 					<xs:documentation source="Name" xml:lang="EN">Collateral portfolio</xs:documentation>
 					<xs:documentation source="Definition" xml:lang="EN">Collateral portfolio</xs:documentation>
@@ -4588,7 +4593,13 @@ Usage:Where variation margin is received on a portfolio basis, this field should
 			<xs:documentation source="Definition" xml:lang="EN">Details of collateral agreement between counterparties.</xs:documentation>
 		</xs:annotation>
 		<xs:sequence>
-			<xs:element name="PrtflColl" type="YesNoIndicator">
+			<xs:element name="Collstn" type="CollateralisationType1Code">
+				<xs:annotation>
+					<xs:documentation source="Name" xml:lang="EN">Collateralisation</xs:documentation>
+					<xs:documentation source="Definition" xml:lang="EN">Information indicating the type of collateral agreement existing between counterparties.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="PrtflColl" type="YesNoIndicator" minOccurs="0">
 				<xs:annotation>
 					<xs:documentation source="Name" xml:lang="EN">Collateral portfolio</xs:documentation>
 					<xs:documentation source="Definition" xml:lang="EN">Collateral portfolio</xs:documentation>
@@ -4626,7 +4637,7 @@ Usage:Where variation margin is received on a portfolio basis, this field should
 					<xs:documentation source="Definition" xml:lang="EN">Information indicating the type of collateral agreement existing between counterparties.</xs:documentation>
 				</xs:annotation>
 			</xs:element>
-			<xs:element name="PrtflColl" type="YesNoIndicator">
+			<xs:element name="PrtflColl" type="YesNoIndicator" minOccurs="0">
 				<xs:annotation>
 					<xs:documentation source="Name" xml:lang="EN">Collateral portfolio</xs:documentation>
 					<xs:documentation source="Definition" xml:lang="EN">Collateral portfolio</xs:documentation>

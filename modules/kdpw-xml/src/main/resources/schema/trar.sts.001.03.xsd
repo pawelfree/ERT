@@ -675,7 +675,7 @@ This field shall be filled from the perspective of the reporting counterparty. I
 			<xs:element name="EMIROblgtn" type="YesNoIndicator">
 				<xs:annotation>
 					<xs:documentation source="Name" xml:lang="EN">Subject to EMIR regulation obligation</xs:documentation>
-					<xs:documentation source="Definition" xml:lang="EN">Is the other counterparty individual not subject to the EMIR regulation reporting obligation?</xs:documentation>
+					<xs:documentation source="Definition" xml:lang="EN">Is the other counterparty subject to the EMIR regulation reporting obligation?</xs:documentation>
 				</xs:annotation>
 			</xs:element>
 		</xs:sequence>
@@ -1122,6 +1122,12 @@ Currency in which leg 2 of the swap is denominated, in case of swaptions where t
 				<xs:annotation>
 					<xs:documentation source="Name" xml:lang="EN">MThermPerDay</xs:documentation>
 					<xs:documentation source="Definition" xml:lang="EN">MTherm per day.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="cm/d">
+				<xs:annotation>
+					<xs:documentation source="Name" xml:lang="EN">CMPerDay</xs:documentation>
+					<xs:documentation source="Definition" xml:lang="EN">Cm per day.&#13;</xs:documentation>
 				</xs:annotation>
 			</xs:enumeration>
 			<xs:enumeration value="mcm/d">
