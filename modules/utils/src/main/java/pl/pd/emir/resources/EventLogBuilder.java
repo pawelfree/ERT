@@ -817,6 +817,12 @@ public class EventLogBuilder {
         SOURCECONTRACTTYPE,
         ADDITIONALUNITPRICECURRENCY,
         // ==================== Użytkownik ====================
+        INITLMRGNPSTD,
+        INITLMRGNRCVD,
+        VARTNMRGNPSTD,
+        VARTNMRGNRCVD,
+        XCSSCOLLPSTD,
+        XCSSCOLLRCVD,
         /**
          * Login
          */

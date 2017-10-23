@@ -720,22 +720,56 @@ public class XmlTransactionWriterImpl extends XmlWriterImpl implements Transacti
         if (null != protection
                 && (notAllEmpty(protection.getProtection(), protection.getWalletProtection(), protection.getWalletId(),
                         protection.getCurrencyCode())
+                //TODO warunek na nowe wartosci zabezpieczen                
                 || (clientSide && null != protection.getClientAmount()) || (!clientSide && null != protection.getAmount())))  {
             result = new TradeCollateralReportTRN();
             if (null != protection.getProtection()) {
                 result.setCollstn(CollateralisationType1Code.fromValue(protection.getProtection().toString()));
             }
+            //TODO zabezpieczenie klienta
             result.setPrtflColl(protection.getWalletProtection().getLogical());
-            //pusty portfel wywala xml null lub "" zweryfikowac format danych zrodlowych
-            //result.setPrtfl(protection.getWalletId());
-            
-            //TODO obsluzyc dla portfela byc moze jesli zabezpiecznie rozne od U w praktyce = FC
-            //result.setInitlMrgnPstd(createValue(new BigDecimal("999999"),CurrencyCode.PLN));
-            //result.setVartnMrgnPstd(createValue(new BigDecimal("999999"),CurrencyCode.PLN));
-            //result.setInitlMrgnRcvd(createValue(new BigDecimal("999999"),CurrencyCode.PLN));
-            //result.setVartnMrgnRcvd(createValue(new BigDecimal("999999"),CurrencyCode.PLN));
-            //result.setXcssCollPstd(createValue(new BigDecimal("999999"),CurrencyCode.PLN));
-            //result.setXcssCollRcvd(createValue(new BigDecimal("999999"),CurrencyCode.PLN));
+            if (null != protection.getWalletId() && !protection.getWalletId().equalsIgnoreCase("")) {
+                result.setPrtfl(protection.getWalletId());
+            }
+            if (null != protection.getCurrencyCode()) {
+                String currency = protection.getCurrencyCode().name();
+                if (protection.getInitlMrgnPstd().compareTo(BigDecimal.ZERO) > 0) {
+                    ActiveCurrencyAnd20Amount amount = new ActiveCurrencyAnd20Amount();
+                    amount.setCcy(currency);
+                    amount.setValue(protection.getInitlMrgnPstd());
+                    result.setInitlMrgnPstd(amount);
+                }
+                if (protection.getInitlMrgnRcvd().compareTo(BigDecimal.ZERO) > 0) {
+                    ActiveCurrencyAnd20Amount amount = new ActiveCurrencyAnd20Amount();
+                    amount.setCcy(currency);
+                    amount.setValue(protection.getInitlMrgnRcvd());
+                    result.setInitlMrgnRcvd(amount);
+                }            
+                if (protection.getVartnMrgnPstd().compareTo(BigDecimal.ZERO) > 0) {
+                    ActiveCurrencyAnd20Amount amount = new ActiveCurrencyAnd20Amount();
+                    amount.setCcy(currency);
+                    amount.setValue(protection.getVartnMrgnPstd());
+                    result.setVartnMrgnPstd(amount);                
+                }            
+                if (protection.getVartnMrgnRcvd().compareTo(BigDecimal.ZERO) > 0) {
+                    ActiveCurrencyAnd20Amount amount = new ActiveCurrencyAnd20Amount();
+                    amount.setCcy(currency);
+                    amount.setValue(protection.getVartnMrgnRcvd());
+                    result.setVartnMrgnRcvd(amount);                 
+                }            
+                if (protection.getXcssCollPstd().compareTo(BigDecimal.ZERO) > 0) {
+                    ActiveCurrencyAnd20Amount amount = new ActiveCurrencyAnd20Amount();
+                    amount.setCcy(currency);
+                    amount.setValue(protection.getXcssCollPstd());
+                    result.setXcssCollPstd(amount);                 
+                }            
+                if (protection.getXcssCollRcvd().compareTo(BigDecimal.ZERO) > 0) {
+                    ActiveCurrencyAnd20Amount amount = new ActiveCurrencyAnd20Amount();
+                    amount.setCcy(currency);
+                    amount.setValue(protection.getXcssCollRcvd());
+                    result.setXcssCollRcvd(amount);                 
+                } 
+            }           
         }
         return result;
     }
@@ -745,6 +779,7 @@ public class XmlTransactionWriterImpl extends XmlWriterImpl implements Transacti
         if (null != protection
                 && (notAllEmpty(protection.getProtection(), protection.getWalletProtection(), protection.getWalletId(),
                         protection.getCurrencyCode())
+                //TODO warunek na nowe wartosci zabezpieczen
                 || (clientSide && null != protection.getClientAmount()) || (!clientSide && null != protection.getAmount())))  {
             result = new TradeCollateralReportTRV();
             result.setUnqTradIdr(uniqueTransactionId);
@@ -753,16 +788,49 @@ public class XmlTransactionWriterImpl extends XmlWriterImpl implements Transacti
                 result.setCollstn(CollateralisationType1Code.fromValue(protection.getProtection().toString()));
             }
             result.setPrtflColl(protection.getWalletProtection().getLogical());
-            //pusty portfel wywala xml null lub "" zweryfikowac format danych zrodlowych
-            //result.setPrtfl(protection.getWalletId());
-            
-            //TODO obsluzyc dla portfela byc moze jesli zabezpiecznie rozne od U w praktyce = FC
-            //result.setInitlMrgnPstd(createValue(new BigDecimal("999999"),CurrencyCode.PLN));
-            //result.setVartnMrgnPstd(createValue(new BigDecimal("999999"),CurrencyCode.PLN));
-            //result.setInitlMrgnRcvd(createValue(new BigDecimal("999999"),CurrencyCode.PLN));
-            //result.setVartnMrgnRcvd(createValue(new BigDecimal("999999"),CurrencyCode.PLN));
-            //result.setXcssCollPstd(createValue(new BigDecimal("999999"),CurrencyCode.PLN));
-            //result.setXcssCollRcvd(createValue(new BigDecimal("999999"),CurrencyCode.PLN));
+            //TODO zabezpieczenie klienta
+            if (null != protection.getWalletId() && !protection.getWalletId().equalsIgnoreCase("")) {
+                result.setPrtfl(protection.getWalletId());
+            }
+            if (null != protection.getCurrencyCode()) {
+                String currency = protection.getCurrencyCode().name();
+                if (protection.getInitlMrgnPstd().compareTo(BigDecimal.ZERO) > 0) {
+                    ActiveCurrencyAnd20Amount amount = new ActiveCurrencyAnd20Amount();
+                    amount.setCcy(currency);
+                    amount.setValue(protection.getInitlMrgnPstd());
+                    result.setInitlMrgnPstd(amount);
+                }
+                if (protection.getInitlMrgnRcvd().compareTo(BigDecimal.ZERO) > 0) {
+                    ActiveCurrencyAnd20Amount amount = new ActiveCurrencyAnd20Amount();
+                    amount.setCcy(currency);
+                    amount.setValue(protection.getInitlMrgnRcvd());
+                    result.setInitlMrgnRcvd(amount);
+                }            
+                if (protection.getVartnMrgnPstd().compareTo(BigDecimal.ZERO) > 0) {
+                    ActiveCurrencyAnd20Amount amount = new ActiveCurrencyAnd20Amount();
+                    amount.setCcy(currency);
+                    amount.setValue(protection.getVartnMrgnPstd());
+                    result.setVartnMrgnPstd(amount);                
+                }            
+                if (protection.getVartnMrgnRcvd().compareTo(BigDecimal.ZERO) > 0) {
+                    ActiveCurrencyAnd20Amount amount = new ActiveCurrencyAnd20Amount();
+                    amount.setCcy(currency);
+                    amount.setValue(protection.getVartnMrgnRcvd());
+                    result.setVartnMrgnRcvd(amount);                 
+                }            
+                if (protection.getXcssCollPstd().compareTo(BigDecimal.ZERO) > 0) {
+                    ActiveCurrencyAnd20Amount amount = new ActiveCurrencyAnd20Amount();
+                    amount.setCcy(currency);
+                    amount.setValue(protection.getXcssCollPstd());
+                    result.setXcssCollPstd(amount);                 
+                }            
+                if (protection.getXcssCollRcvd().compareTo(BigDecimal.ZERO) > 0) {
+                    ActiveCurrencyAnd20Amount amount = new ActiveCurrencyAnd20Amount();
+                    amount.setCcy(currency);
+                    amount.setValue(protection.getXcssCollRcvd());
+                    result.setXcssCollRcvd(amount);                 
+                } 
+            }
         }
         return result;
     }    

@@ -44,7 +44,8 @@ public class ProtectionParser extends BaseCsvParser<Protection> {
             YesNo f4 = ImportValidationUtils.validateEnumField(YesNo.class, r6, data[3], "PRTFCOLL", false, "4", importResult);
             String f5 = ImportValidationUtils.validateStringField(data[4], r5, 35, "PRTFID", false, "5", importResult);
             CurrencyCode f7 = ImportValidationUtils.validateEnumField(CurrencyCode.class, r3, data[6], "COLLCCY", false, "7", importResult);
-            protection = new Protection(f1, transactionDate, f3, f4, f5, protectionAmount, f7, protectionClientAmount);
+            protection = new Protection(f1, transactionDate, f3, f4, f5, protectionAmount, f7, protectionClientAmount, 
+                    BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO);
             importResult.setExtract(protection);
         }
 

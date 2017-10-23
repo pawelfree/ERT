@@ -102,6 +102,40 @@ public class Protection extends Extract implements Historable<Protection>, Logab
     @Column(name = "AMOUNT_C", precision = 25, scale = 5)
     @ProtectionChange
     private BigDecimal clientAmount;
+    
+    //new collateral values 1.11.2017
+    @ValidateCompleteness(subjectClass = Protection.class)
+    @Column(name = "IMP", precision = 25, scale = 5)
+    @ProtectionChange    
+    private BigDecimal initlMrgnPstd;
+    
+    @ValidateCompleteness(subjectClass = Protection.class)
+    @Column(name = "IMR", precision = 25, scale = 5)
+    @ProtectionChange
+    private BigDecimal initlMrgnRcvd;
+    
+    @ValidateCompleteness(subjectClass = Protection.class)
+    @Column(name = "VMP", precision = 25, scale = 5)
+    @ProtectionChange
+    private BigDecimal vartnMrgnPstd;
+    
+    @ValidateCompleteness(subjectClass = Protection.class)
+    @Column(name = "VMR", precision = 25, scale = 5)
+    @ProtectionChange
+    private BigDecimal vartnMrgnRcvd;
+    
+    @ValidateCompleteness(subjectClass = Protection.class)
+    @Column(name = "XCP", precision = 25, scale = 5)
+    @ProtectionChange    
+    private BigDecimal xcssCollPstd;
+    
+    @ValidateCompleteness(subjectClass = Protection.class)
+    @Column(name = "XCR", precision = 25, scale = 5)
+    @ProtectionChange
+    private BigDecimal xcssCollRcvd;    
+    
+    //end new collateral valuse 1.11.2017  
+    
     /**
      * Wersja ekstraktu z którego wczytano encję.
      */
@@ -118,7 +152,11 @@ public class Protection extends Extract implements Historable<Protection>, Logab
         initFields();
     }
 
-    public Protection(String originalId, Date transactionDate, DoProtection commision, YesNo walletProtection, String walletId, BigDecimal amount, CurrencyCode currencyCode, BigDecimal clientAmount) {
+    public Protection(String originalId, Date transactionDate, DoProtection commision, YesNo walletProtection, 
+            String walletId, BigDecimal amount, CurrencyCode currencyCode, BigDecimal clientAmount,
+            BigDecimal initlMrgnPstd, BigDecimal initlMrgnRcvd, 
+            BigDecimal vartnMrgnPstd, BigDecimal vartnMrgnRcvd,
+            BigDecimal xcssCollPstd , BigDecimal xcssCollRcvd) {
         super();
         this.originalId = originalId;
         this.transactionDate = transactionDate;
@@ -128,6 +166,12 @@ public class Protection extends Extract implements Historable<Protection>, Logab
         this.amount = amount;
         this.currencyCode = currencyCode;
         this.clientAmount = clientAmount;
+        this.initlMrgnPstd = initlMrgnPstd;
+        this.initlMrgnRcvd = initlMrgnRcvd;
+        this.xcssCollPstd = xcssCollPstd;
+        this.xcssCollRcvd = xcssCollRcvd;
+        this.vartnMrgnPstd = vartnMrgnPstd;
+        this.vartnMrgnRcvd = vartnMrgnRcvd;
         initFields();
     }
 
@@ -243,7 +287,13 @@ public class Protection extends Extract implements Historable<Protection>, Logab
             checkFieldsEquals(result, null, newEntity.getWalletId(), EventLogBuilder.EventDetailsKey.WALLET_ID);
             checkFieldsEquals(result, null, newEntity.getAmount(), EventLogBuilder.EventDetailsKey.AMOUNT);
             checkFieldsEquals(result, null, newEntity.getCurrencyCode(), EventLogBuilder.EventDetailsKey.CURRENCY_CODE);
-            checkFieldsEquals(result, null, newEntity.getClientAmount(), EventLogBuilder.EventDetailsKey.AMOUNT_CLIENT);
+            checkFieldsEquals(result, null, newEntity.getClientAmount(), EventLogBuilder.EventDetailsKey.AMOUNT_CLIENT);          
+            checkFieldsEquals(result, null, newEntity.getInitlMrgnPstd(), EventLogBuilder.EventDetailsKey.INITLMRGNPSTD);
+            checkFieldsEquals(result, null, newEntity.getInitlMrgnRcvd(), EventLogBuilder.EventDetailsKey.INITLMRGNRCVD);
+            checkFieldsEquals(result, null, newEntity.getVartnMrgnPstd(), EventLogBuilder.EventDetailsKey.VARTNMRGNPSTD);
+            checkFieldsEquals(result, null, newEntity.getVartnMrgnRcvd(), EventLogBuilder.EventDetailsKey.VARTNMRGNRCVD);
+            checkFieldsEquals(result, null, newEntity.getXcssCollPstd(), EventLogBuilder.EventDetailsKey.XCSSCOLLPSTD);
+            checkFieldsEquals(result, null, newEntity.getXcssCollRcvd(), EventLogBuilder.EventDetailsKey.XCSSCOLLPSTD);
         } else if (newEntity == null) {
             checkFieldsEquals(result, oldEntity.getProtection(), null, EventLogBuilder.EventDetailsKey.PROTECTION);
             checkFieldsEquals(result, oldEntity.getWalletProtection(), null, EventLogBuilder.EventDetailsKey.WALLET_PROTECTION);
@@ -251,6 +301,12 @@ public class Protection extends Extract implements Historable<Protection>, Logab
             checkFieldsEquals(result, oldEntity.getAmount(), null, EventLogBuilder.EventDetailsKey.AMOUNT);
             checkFieldsEquals(result, oldEntity.getCurrencyCode(), null, EventLogBuilder.EventDetailsKey.CURRENCY_CODE);
             checkFieldsEquals(result, oldEntity.getClientAmount(), null, EventLogBuilder.EventDetailsKey.AMOUNT_CLIENT);
+            checkFieldsEquals(result, oldEntity.getInitlMrgnPstd(), null, EventLogBuilder.EventDetailsKey.INITLMRGNPSTD);
+            checkFieldsEquals(result, oldEntity.getInitlMrgnRcvd(), null, EventLogBuilder.EventDetailsKey.INITLMRGNRCVD);
+            checkFieldsEquals(result, oldEntity.getVartnMrgnPstd(), null, EventLogBuilder.EventDetailsKey.VARTNMRGNPSTD);
+            checkFieldsEquals(result, oldEntity.getVartnMrgnRcvd(), null, EventLogBuilder.EventDetailsKey.VARTNMRGNRCVD);
+            checkFieldsEquals(result, oldEntity.getXcssCollPstd(), null, EventLogBuilder.EventDetailsKey.XCSSCOLLPSTD);
+            checkFieldsEquals(result, oldEntity.getXcssCollRcvd(), null, EventLogBuilder.EventDetailsKey.XCSSCOLLPSTD);            
         } else {
             checkFieldsEquals(result, oldEntity.getProtection(), newEntity.getProtection(), EventLogBuilder.EventDetailsKey.PROTECTION);
             checkFieldsEquals(result, oldEntity.getWalletProtection(), newEntity.getWalletProtection(), EventLogBuilder.EventDetailsKey.WALLET_PROTECTION);
@@ -258,11 +314,19 @@ public class Protection extends Extract implements Historable<Protection>, Logab
             checkFieldsEquals(result, oldEntity.getAmount(), newEntity.getAmount(), EventLogBuilder.EventDetailsKey.AMOUNT);
             checkFieldsEquals(result, oldEntity.getCurrencyCode(), newEntity.getCurrencyCode(), EventLogBuilder.EventDetailsKey.CURRENCY_CODE);
             checkFieldsEquals(result, oldEntity.getClientAmount(), newEntity.getClientAmount(), EventLogBuilder.EventDetailsKey.AMOUNT_CLIENT);
+            checkFieldsEquals(result, oldEntity.getInitlMrgnPstd(), newEntity.getInitlMrgnPstd(), EventLogBuilder.EventDetailsKey.INITLMRGNPSTD);
+            checkFieldsEquals(result, oldEntity.getInitlMrgnRcvd(), newEntity.getInitlMrgnRcvd(), EventLogBuilder.EventDetailsKey.INITLMRGNRCVD);
+            checkFieldsEquals(result, oldEntity.getVartnMrgnPstd(), newEntity.getVartnMrgnPstd(), EventLogBuilder.EventDetailsKey.VARTNMRGNPSTD);
+            checkFieldsEquals(result, oldEntity.getVartnMrgnRcvd(), newEntity.getVartnMrgnRcvd(), EventLogBuilder.EventDetailsKey.VARTNMRGNRCVD);
+            checkFieldsEquals(result, oldEntity.getXcssCollPstd(), newEntity.getXcssCollPstd(), EventLogBuilder.EventDetailsKey.XCSSCOLLPSTD);
+            checkFieldsEquals(result, oldEntity.getXcssCollRcvd(), newEntity.getXcssCollRcvd(), EventLogBuilder.EventDetailsKey.XCSSCOLLPSTD);            
         }
     }
 
     public Protection fullClone() {
-        return new Protection(originalId, transactionDate, isProtection, walletProtection, walletId, amount, currencyCode, clientAmount);
+        return new Protection(originalId, transactionDate, isProtection, walletProtection, walletId, amount,
+                currencyCode, clientAmount, initlMrgnPstd, initlMrgnRcvd, vartnMrgnPstd, vartnMrgnRcvd,
+                xcssCollPstd, xcssCollRcvd);
     }
 
     @Override
@@ -285,7 +349,7 @@ public class Protection extends Extract implements Historable<Protection>, Logab
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
-    public boolean isEmpty() {
+     public boolean isEmpty() {
         return StringUtil.isEmpty(originalId)
                 && Objects.isNull(transactionDate)
                 && Objects.isNull(isProtection)
@@ -295,6 +359,66 @@ public class Protection extends Extract implements Historable<Protection>, Logab
                 && Objects.isNull(currencyCode)
                 && Objects.isNull(clientAmount)
                 && Objects.isNull(extractVersion)
-                && Objects.isNull(fileName);
+                && Objects.isNull(fileName)
+                && Objects.isNull(initlMrgnPstd)
+                && Objects.isNull(initlMrgnRcvd)
+                && Objects.isNull(vartnMrgnPstd)
+                && Objects.isNull(vartnMrgnRcvd)
+                && Objects.isNull(xcssCollPstd)
+                && Objects.isNull(xcssCollRcvd);
+    }
+
+    public BigDecimal getInitlMrgnPstd() {
+        if (null == initlMrgnPstd) return BigDecimal.ZERO;
+        return initlMrgnPstd;
+    }
+
+    public void setInitlMrgnPstd(BigDecimal initlMrgnPstd) {
+        this.initlMrgnPstd = initlMrgnPstd;
+    }
+
+    public BigDecimal getInitlMrgnRcvd() {
+        if (null == initlMrgnRcvd) return BigDecimal.ZERO;
+        return initlMrgnRcvd;
+    }
+
+    public void setInitlMrgnRcvd(BigDecimal initlMrgnRcvd) {
+        this.initlMrgnRcvd = initlMrgnRcvd;
+    }
+
+    public BigDecimal getVartnMrgnPstd() {
+        if (null == vartnMrgnPstd) return BigDecimal.ZERO;
+        return vartnMrgnPstd;
+    }
+
+    public void setVartnMrgnPstd(BigDecimal vartnMrgnPstd) {
+        this.vartnMrgnPstd = vartnMrgnPstd;
+    }
+
+    public BigDecimal getVartnMrgnRcvd() {
+        if (null == vartnMrgnRcvd) return BigDecimal.ZERO;        
+        return vartnMrgnRcvd;
+    }
+
+    public void setVartnMrgnRcvd(BigDecimal vartnMrgnRcvd) {
+        this.vartnMrgnRcvd = vartnMrgnRcvd;
+    }
+
+    public BigDecimal getXcssCollPstd() {
+        if (null == xcssCollPstd) return BigDecimal.ZERO;
+        return xcssCollPstd;
+    }
+
+    public void setXcssCollPstd(BigDecimal xcssCollPstd) {
+        this.xcssCollPstd = xcssCollPstd;
+    }
+
+    public BigDecimal getXcssCollRcvd() {
+        if (null == xcssCollRcvd) return BigDecimal.ZERO;        
+        return xcssCollRcvd;
+    }
+
+    public void setXcssCollRcvd(BigDecimal xcssCollRcvd) {
+        this.xcssCollRcvd = xcssCollRcvd;
     }
 }
