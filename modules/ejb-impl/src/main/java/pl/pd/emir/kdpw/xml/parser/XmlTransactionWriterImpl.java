@@ -65,6 +65,7 @@ import kdpw.xsd.trar_ins_001.OrganisationIdentification3Choice1;
 import kdpw.xsd.trar_ins_001.PhysicalTransferType4Code;
 import kdpw.xsd.trar_ins_001.ProductClassification1Choice;
 import kdpw.xsd.trar_ins_001.ProductType4Code1;
+import kdpw.xsd.trar_ins_001.RateBasis1CodeTR;
 import kdpw.xsd.trar_ins_001.RegulationIndicator;
 import kdpw.xsd.trar_ins_001.SecuritiesTransactionPrice7ChoiceTR;
 import kdpw.xsd.trar_ins_001.TradeClearingTR;
@@ -380,7 +381,10 @@ public class XmlTransactionWriterImpl extends XmlWriterImpl implements Transacti
         //TODO rozmaite produkty
         if (null != transaction.getCurrencyTradeData())
             result.setCcy(getNewCcy(transaction.getCurrencyTradeData()));
-
+        else if (null != transaction.getPercentageRateData())
+            result.setIntrstRate(getIntrestRate(transaction.getPercentageRateData()));
+        else 
+            throw new RuntimeException("Product not implemented");
         return result;
     }
   
@@ -418,11 +422,14 @@ public class XmlTransactionWriterImpl extends XmlWriterImpl implements Transacti
         //TODO rozmaite produkty
         if (null != transaction.getCurrencyTradeData())
             result.setCcy(getNewCcy(transaction.getCurrencyTradeData()));
-
+        else if (null != transaction.getPercentageRateData())
+            result.setIntrstRate(getIntrestRate(transaction.getPercentageRateData()));
+        else 
+            throw new RuntimeException("Product not implemented");
         return result;
     }
     
-    protected final InterestRateLegs41 getNewIntrestRate(PercentageRateData percentageRateData) {
+    protected final InterestRateLegs41 getIntrestRate(PercentageRateData percentageRateData) {
         InterestRateLegs41 result = new InterestRateLegs41();
         Objects.nonNull(percentageRateData);
         //TODO czy zawsze mamy obie nogi
@@ -446,54 +453,81 @@ public class XmlTransactionWriterImpl extends XmlWriterImpl implements Transacti
     }    
     
     protected final FixedRateTR getNewFxd1(PercentageRateData percentageRateData) {
-        FixedRateTR result = new FixedRateTR();
-        result.setRate(percentageRateData.getFixedRateLeg1());
-        result.setDayCnt(percentageRateData.getFixedRateDayCount());
-        //TODO mamy to - percentageRateData.getFixedPaymentFreq()
-        //result.setPmtFrqcyTmPrd(RateBasis1CodeTR.D);
-        //result.setPmtFrqcyMltplr(BigDecimal.ONE);        
+        FixedRateTR result = null;
+        if (null != percentageRateData.getFixedRateLeg1() ) {
+            result = new FixedRateTR();
+            result.setRate(percentageRateData.getFixedRateLeg1());
+            result.setDayCnt(percentageRateData.getFixedRateDayCount());
+            //TODO mamy to - percentageRateData.getFixedPaymentFreq()           
+            String frqcy = percentageRateData.getFixedPaymentFreq();
+            if (null != frqcy && frqcy.length() > 1) {
+                int length = frqcy.length();
+                result.setPmtFrqcyTmPrd(RateBasis1CodeTR.fromValue(frqcy.substring(length-1)));
+                result.setPmtFrqcyMltplr(BigDecimal.valueOf(Long.parseLong(frqcy.substring(0, length-1)))); 
+            }
+        }
         return result;
     }
     
     protected final FixedRateTR getNewFxd2(PercentageRateData percentageRateData) {
-        FixedRateTR result = new FixedRateTR();
-        result.setRate(percentageRateData.getFixedRateLeg2());
-        result.setDayCnt(percentageRateData.getFixedRateDayCount());
-        //TODO mamy to - percentageRateData.getFixedPaymentFreq()
-        //result.setPmtFrqcyTmPrd(RateBasis1CodeTR.D);
-        //result.setPmtFrqcyMltplr(BigDecimal.ONE);        
+        FixedRateTR result = null;
+        if (null != percentageRateData.getFixedRateLeg2() ) {
+            result = new FixedRateTR();
+            result.setRate(percentageRateData.getFixedRateLeg2());
+            result.setDayCnt(percentageRateData.getFixedRateDayCount());
+            //TODO mamy to - percentageRateData.getFixedPaymentFreq()
+            String frqcy = percentageRateData.getFixedPaymentFreq();
+            if (null != frqcy && frqcy.length() > 1) {
+                int length = frqcy.length();
+                result.setPmtFrqcyTmPrd(RateBasis1CodeTR.fromValue(frqcy.substring(length-1)));
+                result.setPmtFrqcyMltplr(BigDecimal.valueOf(Long.parseLong(frqcy.substring(0, length-1))));  
+            }
+        }
         return result;
     }
     
     protected final FloatingRateTR getNewFltg1(PercentageRateData percentageRateData) {
-        FloatingRateTR result = new FloatingRateTR();
-        result.setRate(percentageRateData.getFloatRateLeg1());
-        //TODO mamy tylko dwie linijki ponizsze
-        //result.setFltgLgPmtFrqcy(null == nullOnEmpty(rateData.getFloatPaymentFreq()) ? null : new Max10TextOrDelete(nullOnEmpty(rateData.getFloatPaymentFreq())));
-        //result.setFltgRateRstFrqcy(null == nullOnEmpty(rateData.getNewPaymentFreq()) ? null : new Max10TextOrDelete(nullOnEmpty(rateData.getNewPaymentFreq())));      
-        
-        //result.setRefFrqcyTmPrd(RateBasis1CodeTR.D);
-        //result.setRefFrqcyMltplr(BigDecimal.ONE);
-        //result.setPmtFrqcyTmPrd(RateBasis1CodeTR.D);
-        //result.setPmtFrqcyMltplr(BigDecimal.ONE);
-        //result.setRstFrqcyTmPrd(RateBasis1CodeTR.D);
-        //result.setRstFrqcyMltplr(BigDecimal.ONE);
+        FloatingRateTR result = null;
+        if (null != percentageRateData.getFloatRateLeg1()) {
+            result = new FloatingRateTR();
+            result.setRate(percentageRateData.getFloatRateLeg1());
+            
+            String frqcy = percentageRateData.getFloatPaymentFreq();
+            if (null != frqcy && frqcy.length() > 1) {
+                int length = frqcy.length();
+                result.setPmtFrqcyTmPrd(RateBasis1CodeTR.fromValue(frqcy.substring(length-1)));
+                result.setPmtFrqcyMltplr(BigDecimal.valueOf(Long.parseLong(frqcy.substring(0, length-1))));  
+            }
+
+            frqcy = percentageRateData.getNewPaymentFreq();
+            if (null != frqcy && frqcy.length() > 1) {
+                int length = frqcy.length();
+                result.setRstFrqcyTmPrd(RateBasis1CodeTR.fromValue(frqcy.substring(length-1)));
+                result.setRstFrqcyMltplr(BigDecimal.valueOf(Long.parseLong(frqcy.substring(0, length-1))));  
+            }
+        }
         return result;
     }
     
     protected final FloatingRateTR getNewFltg2(PercentageRateData percentageRateData) {
-        FloatingRateTR result = new FloatingRateTR();
-        result.setRate(percentageRateData.getFloatRateLeg2());
-        //TODO mamy tylko dwie linijki ponizsze
-        //result.setFltgLgPmtFrqcy(null == nullOnEmpty(rateData.getFloatPaymentFreq()) ? null : new Max10TextOrDelete(nullOnEmpty(rateData.getFloatPaymentFreq())));
-        //result.setFltgRateRstFrqcy(null == nullOnEmpty(rateData.getNewPaymentFreq()) ? null : new Max10TextOrDelete(nullOnEmpty(rateData.getNewPaymentFreq())));     
-        
-        //result.setRefFrqcyTmPrd(RateBasis1CodeTR.D);
-        //result.setRefFrqcyMltplr(BigDecimal.ONE);
-        //result.setPmtFrqcyTmPrd(RateBasis1CodeTR.D);
-        //result.setPmtFrqcyMltplr(BigDecimal.ONE);
-        //result.setRstFrqcyTmPrd(RateBasis1CodeTR.D);
-        //result.setRstFrqcyMltplr(BigDecimal.ONE);
+        FloatingRateTR result = null;
+        if (null != percentageRateData.getFloatRateLeg1()) {
+            result = new FloatingRateTR();
+            result.setRate(percentageRateData.getFloatRateLeg2());
+            String frqcy = percentageRateData.getFloatPaymentFreq();
+            if (null != frqcy && frqcy.length() > 1) {
+                int length = frqcy.length();
+                result.setPmtFrqcyTmPrd(RateBasis1CodeTR.fromValue(frqcy.substring(length-1)));
+                result.setPmtFrqcyMltplr(BigDecimal.valueOf(Long.parseLong(frqcy.substring(0, length-1))));  
+            }
+
+            frqcy = percentageRateData.getNewPaymentFreq();
+            if (null != frqcy && frqcy.length() > 1) {
+                int length = frqcy.length();
+                result.setRstFrqcyTmPrd(RateBasis1CodeTR.fromValue(frqcy.substring(length-1)));
+                result.setRstFrqcyMltplr(BigDecimal.valueOf(Long.parseLong(frqcy.substring(0, length-1))));  
+            }
+        }
         return result;
     }
     
@@ -504,18 +538,16 @@ public class XmlTransactionWriterImpl extends XmlWriterImpl implements Transacti
         result.setDlvrblCrossCcy(currencyTradeData.getCurrencyTradeCode().toString());
         result.setXchgRate(null == currencyTradeData.getCurrTradeExchRate() ? null : currencyTradeData.getCurrTradeExchRate());
         result.setFwdXchgRate(null == currencyTradeData.getCurrTradeFrwdRate() ? null : currencyTradeData.getCurrTradeFrwdRate());
-        //TODO skad to wziac?
         result.setXchgRateBsis(getNewXchgRateBasis(currencyTradeData));
         return result;
     }
     
     protected final ExchangeRateBasis1 getNewXchgRateBasis(CurrencyTradeData currencyTradeData) {
         ExchangeRateBasis1 result = new ExchangeRateBasis1();
-        //TODO jedno z nich jest zle
-        //result.setBaseCcy(currencyTradeData.getCurrTradeBasis());
-        //result.setQtdCcy(currencyTradeData.getCurrTradeBasis());
-        result.setBaseCcy("EUR");
-        result.setQtdCcy("PLN");
+        //TODO to powinno być zrobione lepiej
+        String currencyPair = currencyTradeData.getCurrTradeBasis().trim();
+        result.setBaseCcy(currencyPair.substring(0,3));
+        result.setQtdCcy(currencyPair.substring(4));
         return result;        
     }
     

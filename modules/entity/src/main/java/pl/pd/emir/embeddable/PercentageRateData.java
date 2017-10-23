@@ -89,6 +89,7 @@ public class PercentageRateData implements Serializable {
     }
 
     public String getFixedPaymentFreq() {
+        if (null != fixedPaymentFreq) return fixedPaymentFreq.trim();
         return fixedPaymentFreq;
     }
 
