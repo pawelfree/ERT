@@ -10,10 +10,8 @@ import javax.ejb.Local;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
-import org.apache.poi.ss.formula.eval.NotImplementedException;
 import pl.pd.emir.admin.UserManager;
 import pl.pd.emir.commons.CollectionsUtils;
-import pl.pd.emir.commons.Constants;
 import pl.pd.emir.commons.StringUtil;
 import pl.pd.emir.entity.Transaction;
 import pl.pd.emir.entity.kdpw.FileStatus;
@@ -90,9 +88,6 @@ public class KdpwImportManagerImpl implements KdpwImportManager {
         LOGGER.info("Processing {} transactions", list.size());
         for (ResponseItem responseItem : list) {
             LOGGER.info("Processing msg with msgId = {}", responseItem.getSndrMsgRef());
-            if (responseItem.getSndrMsgRef().startsWith(Constants.TR_C)) {
-                throw new NotImplementedException("TR_C not implemented");
-            } else {
                 KdpwMsgItem requestItem = null;
                 if (StringUtil.isNotEmpty(responseItem.getPrvsSndrMsgRef())) {
                     requestItem = msgItemManager.findKdpwMsgItem(responseItem.getPrvsSndrMsgRef());
@@ -134,7 +129,6 @@ public class KdpwImportManagerImpl implements KdpwImportManager {
                     processTransaction(requestItem, response); // 3 - powiazanie z transakcja
                     result.addItem(response);
                 }
-            }
         }
         saveMessageLog(result, MessageType.TRANSACTION_RESPONSE);
     }

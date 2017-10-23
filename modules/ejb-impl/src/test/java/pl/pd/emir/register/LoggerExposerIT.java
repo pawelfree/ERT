@@ -1,6 +1,5 @@
 package pl.pd.emir.register;
 
-//TODO remove
 //import javax.inject.Inject;
 //import static org.hamcrest.core.Is.is;
 //import org.jboss.arquillian.container.test.api.Deployment;
@@ -18,7 +17,7 @@ package pl.pd.emir.register;
  */
 //@RunWith(Arquillian.class)
 public class LoggerExposerIT {
-//TODO remove
+//TODO loggerExposer
 //    @Inject
 //    LoggerInjectionSupport lis;
 //

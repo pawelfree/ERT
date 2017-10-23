@@ -72,8 +72,6 @@ public class ProtectionImportProcessor extends ImportProcessor implements IImpor
             Transaction transaction = null;
             boolean removed = false;
             if (transactionsToRemoveFromImport.contains(protection.getOriginalId())) {
-                //TODO remove
-                System.out.println("!!! --- protection removed " + protection.getOriginalId());
                 removed = true;
             }
             else {            

@@ -89,7 +89,6 @@ public final class XmlBuilder {
         } catch (XmlParseException ex) {
             throw ex;
         } catch (IOException | JAXBException | SAXException ex) {
-            System.out.println("ex " + ex.getMessage());
             throw new XmlParseException("Error on read message!", ex);
         }
     }

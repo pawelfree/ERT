@@ -1,11 +1,9 @@
 package pl.pd.emir.kdpw.xml.parser;
 
 import javax.ejb.Stateless;
-import pl.pd.emir.commons.Constants;
 import pl.pd.emir.kdpw.xml.builder.XmlBuilder;
 import pl.pd.emir.kdpw.xml.builder.XmlParseException;
 import pl.pd.emir.modules.kdpw.adapter.model.RepositoryResponse;
-import pl.pd.emir.modules.kdpw.adapter.model.TransactionLink;
 import pl.pd.emir.modules.kdpw.adapter.model.TransactionResponse;
 import kdpw.xsd.IKDPWDocument;
 
@@ -22,7 +20,6 @@ public class XmlReader {
             // odpowiedz na komunikat z danymi TRANSAKCJI
             if (kdpwDocument instanceof kdpw.xsd.trar_sts_001.KDPWDocument) {
                 result = new RepositoryResponse(RepositoryResponse.ResponseType.TRANSACTION);
-
                 kdpw.xsd.trar_sts_001.KDPWDocument document = (kdpw.xsd.trar_sts_001.KDPWDocument) kdpwDocument;
                 for (kdpw.xsd.trar_sts_001.TrarSts00103 trar : document.getTrarSts00103()) {
                     TransactionResponse response = new TransactionResponse();
@@ -63,57 +60,8 @@ public class XmlReader {
                             response.setReasonText(status.getRsn().getRsnTxt());
                         }
                     }
-
-                    // TR_C%
-                    if (trar.getGnlInf().getSndrMsgRef().startsWith(Constants.TR_C)) {
-                        if (null != link) {
-                            link.getTradRefId().stream()
-                                    .map((tradeReference) -> {
-                                        TransactionLink transLink = new TransactionLink();
-                                        transLink.setTradeIdId(tradeReference.getUnqTradIdr());
-//TODO to remove                                        
-//                                        transLink.setCtrPtyTRId(tradeReference.getCtrPtyTRId());
-//                                        transLink.setEligDate(XmlUtils.getDate(trar.getGnlInf().getEligDt()));
-                                        return transLink;
-                                    })
-                                    .forEach(transLink -> response.addLink(transLink));
-                        }
-                    }
                     result.addToList(response);
                 }
-
-//            } else // odpoowiedz na komunikat z danymi ZBIORCZYMI
-//            if (kdpwDocument instanceof kdpw.xsd.trar_sts_002.KDPWDocument) {
-//                result = new RepositoryResponse(RepositoryResponse.ResponseType.DATASET);
-//                final kdpw.xsd.trar_sts_002.KDPWDocument document = (kdpw.xsd.trar_sts_002.KDPWDocument) kdpwDocument;
-//
-//                for (kdpw.xsd.trar_sts_002.TrarSts00202 trar : document.getTrarSts00202()) {
-//                    ResponseItem response = new ResponseItem();
-//                    response.setSndrMsgRef(trar.getGnlInf().getSndrMsgRef());
-//                    final kdpw.xsd.trar_sts_002.Linkages link = trar.getGnlInf().getLnk();
-//                    if (link != null && link.getRltdRef() != null) {
-//                        response.setPrvsSndrMsgRef(link.getRltdRef().getPrvsSndrMsgRef());
-//                    }
-//                    if (null != trar.getSts()) {
-//                        final kdpw.xsd.trar_sts_002.Status status = trar.getSts();
-//                        response.setStatusCode(status.getStsCd());
-//                        if (status.getRsn() != null) {
-//                            response.setReasonCode(status.getRsn().getRsnCd());
-//                            response.setReasonText(status.getRsn().getRsnTxt());
-//                        }
-//                    }
-//                    result.addToList(response);
-//                }
-//            } else if (kdpwDocument instanceof kdpw.xsd.trar_rcn_001.KDPWDocument) {
-//                result = new RepositoryResponse(RepositoryResponse.ResponseType.RECONCILIATION);
-//                kdpw.xsd.trar_rcn_001.KDPWDocument document = (kdpw.xsd.trar_rcn_001.KDPWDocument) kdpwDocument;
-//                for (kdpw.xsd.trar_rcn_001.TrarRcn00102 trar : document.getTrarRcn00102()) {
-//                    ResponseItem response = new ResponseItem();
-//                    response.setSndrMsgRef(trar.getGnlInf().getSndrMsgRef());
-//                    if (null != trar.getSts()) {
-//                        response.setStatusCode(trar.getSts().getStsCd());
-//                    }
-//                }
             } else {
                 throw new IllegalArgumentException("Invalid message document type !");
             }
