@@ -285,6 +285,16 @@ public class XmlTransactionWriterImpl extends XmlWriterImpl implements Transacti
     protected final ContractDetailsTRN getNewConntractDetails(ContractDataDetailed contractDetailedData) {
         ContractDetailsTRN result = new ContractDetailsTRN();
         result.setPdctClssfctn(getPdctClssfctn(contractDetailedData.getContractData()));
+        
+        /*------------------------------
+
+        
+        
+        
+        
+        
+        ------------------------------*/
+                
         //TODO to chyba jest w MUFG puste
         result.setPdctId(null);
         //TODO underlying jest puste lub NA MUFG nie uzywa - refactor condition and line length
@@ -375,20 +385,20 @@ public class XmlTransactionWriterImpl extends XmlWriterImpl implements Transacti
         result.setTradConf(getNewTradConf(transaction.getRiskReduce()));
         result.setTradClr(getNewTradClr(transaction.getTransactionClearing()));
         //TODO a to ciekawe - return new TradeAdditionalInformationValidator().nullOnEmpty(result);
-        //TODO to powinno być inaczej rozpoznawane
-        //if (null != transaction.getPercentageRateData())
-        //    result.setIntrstRate(getNewIntrestRate(transaction.getPercentageRateData()));
-        //TODO rozmaite produkty
-        if (null != transaction.getCurrencyTradeData())
+        
+        String assetClass = transaction.getContractDetailedData().getContractData().getProd1Code(); 
+        if (assetClass.equalsIgnoreCase("CU")) {
             result.setCcy(getNewCcy(transaction.getCurrencyTradeData()));
-        else if (null != transaction.getPercentageRateData())
+        }
+        else if (assetClass.equalsIgnoreCase("IR")) {
             result.setIntrstRate(getIntrestRate(transaction.getPercentageRateData()));
+        }        
         else 
             throw new RuntimeException("Product not implemented");
         return result;
     }
   
-        protected final TradeTransactionTRM getModTxData(final Transaction transaction) {
+    protected final TradeTransactionTRM getModTxData(final Transaction transaction) {
         TradeTransactionTRM result = new TradeTransactionTRM();
         TransactionDetails transactionDetails = transaction.getTransactionDetails();
         //TODO trzy linijki z poprzedniego xmla
@@ -416,14 +426,14 @@ public class XmlTransactionWriterImpl extends XmlWriterImpl implements Transacti
         result.setTradConf(getNewTradConf(transaction.getRiskReduce()));
         result.setTradClr(getModTradClr(transaction.getTransactionClearing()));
         //TODO a to ciekawe - return new TradeAdditionalInformationValidator().nullOnEmpty(result);
-        //TODO to powinno być inaczej rozpoznawane
-        //if (null != transaction.getPercentageRateData())
-        //    result.setIntrstRate(getNewIntrestRate(transaction.getPercentageRateData()));
-        //TODO rozmaite produkty
-        if (null != transaction.getCurrencyTradeData())
+        
+        String assetClass = transaction.getContractDetailedData().getContractData().getProd1Code(); 
+        if (assetClass.equalsIgnoreCase("CU")) {
             result.setCcy(getNewCcy(transaction.getCurrencyTradeData()));
-        else if (null != transaction.getPercentageRateData())
+        }
+        else if (assetClass.equalsIgnoreCase("IR")) {
             result.setIntrstRate(getIntrestRate(transaction.getPercentageRateData()));
+        }        
         else 
             throw new RuntimeException("Product not implemented");
         return result;
@@ -440,15 +450,31 @@ public class XmlTransactionWriterImpl extends XmlWriterImpl implements Transacti
     
     protected final InterestRate11Choice1 getNewFrstLeg(PercentageRateData percentageRateData) {
         InterestRate11Choice1 result = new InterestRate11Choice1();
-        result.setFxd(getNewFxd1(percentageRateData));
-        result.setFltg(getNewFltg1(percentageRateData));
+        FixedRateTR fxd = getNewFxd1(percentageRateData);
+        FloatingRateTR fltg = getNewFltg1(percentageRateData);
+        if (null != fxd) {;
+            result.setFxd(fxd);
+        } else if (null != fltg) {
+            result.setFltg(fltg);
+        }
+        else {
+            throw new RuntimeException("First leg is empty");
+        }
         return result;
     }
 
     protected final InterestRate11Choice1 getNewScndLeg(PercentageRateData percentageRateData) {
         InterestRate11Choice1 result = new InterestRate11Choice1();
-        result.setFxd(getNewFxd2(percentageRateData));
-        result.setFltg(getNewFltg2(percentageRateData));
+        FixedRateTR fxd = getNewFxd2(percentageRateData);
+        FloatingRateTR fltg = getNewFltg2(percentageRateData);
+        if (null != fxd) {
+            result.setFxd(fxd);
+        } else if (null != fltg) {
+            result.setFltg(fltg);
+        }
+        else {
+            throw new RuntimeException("Second leg is empty");
+        }
         return result;
     }    
     
@@ -490,7 +516,12 @@ public class XmlTransactionWriterImpl extends XmlWriterImpl implements Transacti
         FloatingRateTR result = null;
         if (null != percentageRateData.getFloatRateLeg1()) {
             result = new FloatingRateTR();
-            result.setRate(percentageRateData.getFloatRateLeg1());
+            //TODO check euri 
+            result.setRate(percentageRateData.getFloatRateLeg1()); 
+            
+            //TODO check if valid
+            result.setRefFrqcyMltplr(BigDecimal.valueOf(3));
+            result.setRefFrqcyTmPrd(RateBasis1CodeTR.M);
             
             String frqcy = percentageRateData.getFloatPaymentFreq();
             if (null != frqcy && frqcy.length() > 1) {
@@ -511,9 +542,15 @@ public class XmlTransactionWriterImpl extends XmlWriterImpl implements Transacti
     
     protected final FloatingRateTR getNewFltg2(PercentageRateData percentageRateData) {
         FloatingRateTR result = null;
-        if (null != percentageRateData.getFloatRateLeg1()) {
+        if (null != percentageRateData.getFloatRateLeg2()) {
             result = new FloatingRateTR();
+            //TODO check euri
             result.setRate(percentageRateData.getFloatRateLeg2());
+
+            //TODO check if valid            
+            result.setRefFrqcyMltplr(BigDecimal.valueOf(3));
+            result.setRefFrqcyTmPrd(RateBasis1CodeTR.M);           
+            
             String frqcy = percentageRateData.getFloatPaymentFreq();
             if (null != frqcy && frqcy.length() > 1) {
                 int length = frqcy.length();
@@ -553,27 +590,13 @@ public class XmlTransactionWriterImpl extends XmlWriterImpl implements Transacti
     
     protected final SecuritiesTransactionPrice7ChoiceTR getNewPric(final TransactionDetails transactionDetails) {
         SecuritiesTransactionPrice7ChoiceTR result = new SecuritiesTransactionPrice7ChoiceTR();
-        //TODO to wymaga wiekszego przemyslenia 
-//        BigDecimal priceOrRate = transactionDetails.getUnitPrice();
-//        String priceNot = XmlUtils.enumName(transactionDetails.getUnitPriceCurrency());        
-//        if (null == priceOrRate || null == priceNot) {
-//            priceOrRate = transactionDetails.getUnitPriceRate();
-//            priceNot = "100";
-//            if (null == priceOrRate) {
-//                priceOrRate = new BigDecimal("999999999999999.99999");
-//                priceNot = "NA";
-//            }
-//        }
-//        result.setPricRt(priceOrRate);
-//        result.setPricNot(priceNot);    
-        //TODO tylko jedno z czterech
-        result.setMntryVal(getNewMntry(transactionDetails));
-        //TODO tego chyba nie uzywamy
-        //result.setPctg(null);
-        //TODO tego chyba nie uzywamy
-        //result.setYld(null);
-        //TODO co to za cudo
-        //result.setPdgPric(null);
+        if ((null != transactionDetails.getUnitPrice()) && (null != transactionDetails.getUnitPriceCurrency())) {
+            result.setMntryVal(getNewMntry(transactionDetails));
+        } else if (null != transactionDetails.getUnitPriceRate()) {
+            result.setPctg(transactionDetails.getUnitPriceRate());
+        } else {
+            throw new RuntimeException("Price calculation not defined");
+        }
         //TODO a to ciekawe - return new PriceChoiceValidator().nullOnEmpty(result);
         return result;
     }

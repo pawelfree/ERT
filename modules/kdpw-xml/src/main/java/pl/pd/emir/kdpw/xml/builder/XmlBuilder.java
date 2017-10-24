@@ -82,6 +82,9 @@ public final class XmlBuilder {
             validator.setErrorHandler(errorHandler);
             validator.validate(new StreamSource(new StringReader(xmlMessage)));
             if (errorHandler.isNotValid() || kdpwDocument == null) {
+                //TODO remove
+                System.out.println("exception " + errorHandler.getException().getMessage());
+                errorHandler.getException().printStackTrace();
                 throw new XmlParseException("Error on read message!", errorHandler.getException());
             }
 
