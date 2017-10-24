@@ -742,7 +742,7 @@ public class XmlTransactionWriterImpl extends XmlWriterImpl implements Transacti
         CounterpartySpecificDataTRV result = new CounterpartySpecificDataTRV();
         result.setCtrPty(getBankCounterpartyV(item));
         result.setValtn(getValtnV(item.getRegistable().getTransaction().getTransactionDetails().getSourceTransId(), item.getRegistable().getTransaction().getValuation(), false));
-        result.setColl(getCollV(item.getRegistable().getTransaction().getDateSupply(), item.getRegistable().getTransaction().getTransactionDetails().getSourceTransId(), item.getRegistable().getTransaction().getProtection(), false));
+        result.setColl(getCollV(item.getRegistable().getTransaction().getTransactionDate(), item.getRegistable().getTransaction().getTransactionDetails().getSourceTransId(), item.getRegistable().getTransaction().getProtection(), false));
         return result;
     }
 
@@ -815,7 +815,7 @@ public class XmlTransactionWriterImpl extends XmlWriterImpl implements Transacti
                 || (clientSide && null != protection.getClientAmount()) || (!clientSide && null != protection.getAmount())))  {
             result = new TradeCollateralReportTRV();
             result.setUnqTradIdr(uniqueTransactionId);
-            result.setEligDt(XmlUtils.formatDate(getUTCDate(transactionDate), Constants.ISO_DATE_TIME_Z));
+            result.setEligDt(XmlUtils.formatDate(transactionDate, Constants.ISO_DATE_TIME_Z));
             if (null != protection.getProtection()) {
                 result.setCollstn(CollateralisationType1Code.fromValue(protection.getProtection().toString()));
             }
@@ -958,7 +958,7 @@ public class XmlTransactionWriterImpl extends XmlWriterImpl implements Transacti
         CounterpartySpecificDataTRV result = new CounterpartySpecificDataTRV();
         result.setCtrPty(getClientCounterpartyV(item));
         result.setValtn(getValtnV(item.getRegistable().getTransaction().getTransactionDetails().getSourceTransId(), item.getRegistable().getTransaction().getValuation(), true));
-        result.setColl(getCollV(item.getRegistable().getTransaction().getDateSupply(), item.getRegistable().getTransaction().getTransactionDetails().getSourceTransId(), item.getRegistable().getTransaction().getProtection(), true));
+        result.setColl(getCollV(item.getRegistable().getTransaction().getTransactionDate(), item.getRegistable().getTransaction().getTransactionDetails().getSourceTransId(), item.getRegistable().getTransaction().getProtection(), true));
         return result;
     }
 
