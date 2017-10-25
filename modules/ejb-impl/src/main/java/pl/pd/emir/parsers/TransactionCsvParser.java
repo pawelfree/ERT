@@ -195,6 +195,7 @@ public class TransactionCsvParser extends BaseCsvParser<Transaction> {
         cal.setTimeInMillis(0);
         cal.set( 2017, 04, 01, 00, 00, 00);
         Date firstMay2017 = cal.getTime(); 
+        //TODO jesli bedzie problem z data to tu sie wywali nullpointer
         tradeExecDateField49 = ImportValidationUtils.validateDateField(data[49], r49, DateUtils.ISO_DATE_TIME_FORMAT, true, "TRADADDTLINF_EXECDTTM", "50", importResult);
         if (tradeExecDateField49.before(firstMay2017)) {
             tradeExecDateField49 = firstMay2017;
