@@ -1747,7 +1747,7 @@ Usage: In the example one GBP equals xxxUSD, the unit currency is GBP.</xs:docum
 			<xs:documentation source="Definition" xml:lang="EN">Information related to a master agreement.</xs:documentation>
 		</xs:annotation>
 		<xs:sequence>
-			<xs:element name="Tp" type="ESMAMax50AlphaNumeric" maxOccurs="1">
+			<xs:element name="Tp" type="Max50Text" maxOccurs="1">
 				<xs:annotation>
 					<xs:documentation source="Name" xml:lang="EN">Type</xs:documentation>
 					<xs:documentation source="Definition" xml:lang="EN">Reference to any master agreement, if existent (such as ISDA Master Agreement; Master Power Purchase and Sale Agreement; International ForEx Master Agreement; European Master Agreement or any local Master Agreements).</xs:documentation>

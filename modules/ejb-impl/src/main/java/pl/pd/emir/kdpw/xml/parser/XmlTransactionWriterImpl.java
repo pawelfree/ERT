@@ -77,6 +77,7 @@ import kdpw.xsd.trar_ins_001.TradeConfirmationTypeRT;
 import kdpw.xsd.trar_ins_001.TradeNewTransactionTR;
 import kdpw.xsd.trar_ins_001.TradeReportChoiceTR;
 import kdpw.xsd.trar_ins_001.TradeTransaction101;
+import kdpw.xsd.trar_ins_001.TradeTransactionCorrectionTR;
 import kdpw.xsd.trar_ins_001.TradeTransactionModificationTR;
 import kdpw.xsd.trar_ins_001.TradeTransactionReportChoiceTR;
 import kdpw.xsd.trar_ins_001.TradeTransactionTRM;
@@ -140,7 +141,9 @@ public class XmlTransactionWriterImpl extends XmlWriterImpl implements Transacti
                     trar.setRpt(getNewTransactionReportChoice(transToRepo));
                 }
                 else if (msgType.isModification()) {
-                    trar.setRpt(getModTransactionReportChoice(transToRepo));
+                    //trar.setRpt(getModTransactionReportChoice(transToRepo));
+                    //TODO correction
+                    trar.setRpt(getCorTransactionReportChoice(transToRepo));
                 } 
                 else if (msgType.isValuation()) {
                     trar.setRpt(getValUpdTransactionReportChoice(transToRepo));
@@ -171,6 +174,12 @@ public class XmlTransactionWriterImpl extends XmlWriterImpl implements Transacti
     protected final TradeReportChoiceTR getModTransactionReportChoice(final TransactionToRepository item) {
         final TradeReportChoiceTR result = new TradeReportChoiceTR();
         result.setTx(getModTransactionReport(item));
+        return result;
+    }
+
+    protected final TradeReportChoiceTR getCorTransactionReportChoice(final TransactionToRepository item) {
+        final TradeReportChoiceTR result = new TradeReportChoiceTR();
+        result.setTx(getCorTransactionReport(item));
         return result;
     }
 
@@ -206,6 +215,12 @@ public class XmlTransactionWriterImpl extends XmlWriterImpl implements Transacti
         return result;
     }
 
+    protected final TradeTransactionReportChoiceTR getCorTransactionReport(TransactionToRepository item) {
+        TradeTransactionReportChoiceTR result = new TradeTransactionReportChoiceTR();
+        result.setCrrctn(getCrrctnTransaction(item));
+        return result;
+    }
+    
     protected final TradeTransactionReportChoiceTR getValUpdTransactionReport(TransactionToRepository item) {
         TradeTransactionReportChoiceTR result = new TradeTransactionReportChoiceTR();
         result.setValtnUpd(getValUpdTransaction(item));
@@ -233,6 +248,18 @@ public class XmlTransactionWriterImpl extends XmlWriterImpl implements Transacti
             result.getCtrPtySpcfcData().add(getClientCounterPartySpecificDataM(item));
         } 
         result.setCmonTradData(getModCmonTradeData(item.getRegistable().getTransaction()));
+        return result;
+    }
+
+    protected final TradeTransactionCorrectionTR getCrrctnTransaction(TransactionToRepository item) {
+        TradeTransactionCorrectionTR result = new TradeTransactionCorrectionTR();
+//        result.setEligDt(XmlUtils.formatDate(item.getRegistable().getTransaction().getTransactionDate(), Constants.ISO_DATE));
+//        final Client client = item.getRegistable().getClient();
+//        result.getCtrPtySpcfcData().add(getBankCounterPartySpecificDataM(item));
+//        if (client.getReported()) {
+//            result.getCtrPtySpcfcData().add(getClientCounterPartySpecificDataM(item));
+//        } 
+//        result.setCmonTradData(getModCmonTradeData(item.getRegistable().getTransaction()));
         return result;
     }
     
@@ -285,15 +312,6 @@ public class XmlTransactionWriterImpl extends XmlWriterImpl implements Transacti
     protected final ContractDetailsTRN getNewConntractDetails(ContractDataDetailed contractDetailedData) {
         ContractDetailsTRN result = new ContractDetailsTRN();
         result.setPdctClssfctn(getPdctClssfctn(contractDetailedData.getContractData()));
-        
-        /*------------------------------
-
-        
-        
-        
-        
-        
-        ------------------------------*/
                 
         //TODO to chyba jest w MUFG puste
         result.setPdctId(null);
@@ -452,7 +470,7 @@ public class XmlTransactionWriterImpl extends XmlWriterImpl implements Transacti
         InterestRate11Choice1 result = new InterestRate11Choice1();
         FixedRateTR fxd = getNewFxd1(percentageRateData);
         FloatingRateTR fltg = getNewFltg1(percentageRateData);
-        if (null != fxd) {;
+        if (null != fxd) {
             result.setFxd(fxd);
         } else if (null != fltg) {
             result.setFltg(fltg);
@@ -1119,7 +1137,7 @@ public class XmlTransactionWriterImpl extends XmlWriterImpl implements Transacti
     
     private OptionParty1Code getTransactionParty(TransactionParty transactionParty, boolean clientSide) {
         //TODO - wyeliminowac transaction party - napisac test
-        TransactionParty result = TransactionParty.ERR;
+        TransactionParty result;
         if (transactionParty == null) {
             logMappingError("TransactionParty");
         } else if (clientSide) {
