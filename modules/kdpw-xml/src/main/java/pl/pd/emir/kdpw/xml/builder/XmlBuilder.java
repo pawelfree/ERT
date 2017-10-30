@@ -40,7 +40,8 @@ public final class XmlBuilder {
         kdpw.xsd.trar_rqs_001.KDPWDocument.class,
         kdpw.xsd.trar_sts_001.KDPWDocument.class,
         kdpw.xsd.trar_sts_002.KDPWDocument.class,
-        kdpw.xsd.trar_sts_003.KDPWDocument.class
+        kdpw.xsd.trar_sts_003.KDPWDocument.class,
+        kdpw.xsd.trar_sts_001_02.KDPWDocument.class
     };
 
     private static final String VALID_SCHEMA_FILE = "validationSchema.properties";
