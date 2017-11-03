@@ -1390,7 +1390,7 @@
 					</xs:appinfo>
 				</xs:annotation>
 			</xs:element>
-			<xs:element name="PricNot" type="Max3Text">
+			<xs:element name="PricNot" type="Max3Text" minOccurs="0">
 				<xs:annotation>
 					<xs:documentation>Oznaczenie ceny. Dopuszczalne wartości: 
 					kod waluty zgodny z ISO4217; oznaczenie '100' (dla wartości wyrażonych w %);  ‘NA’ (gdy wartość jest niedostępna).</xs:documentation>

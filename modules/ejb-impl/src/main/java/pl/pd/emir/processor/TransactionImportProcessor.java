@@ -122,7 +122,7 @@ public class TransactionImportProcessor extends ImportProcessor implements IImpo
             }
             transaction.setFileName(fileName);
             transaction.setImportLog(importLog);
-            transaction.setValidationStatus(validateTransactionCompletness(transaction));
+            transaction.setValidationStatus(validateTransactionCompletness(transaction));            
             if (customersToRemoveFromImport.contains(client.getOriginalId())) {
                 transactionsToRemoveFromImport.add(transaction.getOriginalId());
                 LOGGER.debug(String.format("Transaction with id %s on date %s to save removed from import.",

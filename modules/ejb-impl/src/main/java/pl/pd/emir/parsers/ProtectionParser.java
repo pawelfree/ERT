@@ -35,7 +35,6 @@ public class ProtectionParser extends BaseCsvParser<Protection> {
         String r5 = null;
         YesNo r6 = null;
 
-        //walidacja pod kontem błędów
         if (validateErrors(importResult, data)) {
 
             //walidacja pod kontem ostrzeżeń
