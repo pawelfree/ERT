@@ -176,6 +176,216 @@ Usage: When absent, the amount is positive.</xs:documentation>
 			</xs:choice>
 		</xs:sequence>
 	</xs:complexType>
+	<xs:complexType name="BasketDescription3__1">
+		<xs:annotation>
+			<xs:documentation source="Name" xml:lang="EN">Basket description</xs:documentation>
+			<xs:documentation source="Definition" xml:lang="EN">Describes the constituents of the basket.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="ISIN" type="ISINOct2015Identifier" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation source="Name" xml:lang="EN">ISIN</xs:documentation>
+					<xs:documentation source="Definition" xml:lang="EN">ISIN</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Indx" type="FinancialInstrument58__1">
+				<xs:annotation>
+					<xs:documentation source="Name" xml:lang="EN">Index</xs:documentation>
+					<xs:documentation source="Definition" xml:lang="EN">Index on which the financial instrument is based.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="BenchmarkCurveName5Choice__1">
+		<xs:annotation>
+			<xs:documentation source="Name" xml:lang="EN">Benchmark curve</xs:documentation>
+			<xs:documentation source="Definition" xml:lang="EN">Choice of format for benchmark curve name.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:choice>
+				<xs:element name="Indx" type="BenchmarkCurveName2Code">
+					<xs:annotation>
+						<xs:documentation source="Name" xml:lang="EN">Index</xs:documentation>
+						<xs:documentation source="Definition" xml:lang="EN">Index name where the underlying is an index.</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="Nm" type="ESMA_AlphaNumericAdditionalCharactersMax25_Pattern">
+					<xs:annotation>
+						<xs:documentation source="Name" xml:lang="EN">Name</xs:documentation>
+						<xs:documentation source="Definition" xml:lang="EN">Provides the name that should be used where no ISIN or standardized name of the index exists, including its term (such as ‘EURIBOR6M’, ‘LIBOR3M’).</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+			</xs:choice>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:simpleType name="BenchmarkCurveName2Code">
+		<xs:annotation>
+			<xs:documentation source="Name" xml:lang="EN">Benchmark curve name.</xs:documentation>
+			<xs:documentation source="Definition" xml:lang="EN">Specifies a benchmark curve name.</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="WIBO">
+				<xs:annotation>
+					<xs:documentation source="Name" xml:lang="EN">WIBOR</xs:documentation>
+					<xs:documentation source="Definition" xml:lang="EN">Warsaw Interbank Offered Rate.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="TREA">
+				<xs:annotation>
+					<xs:documentation source="Name" xml:lang="EN">Treasury</xs:documentation>
+					<xs:documentation source="Definition" xml:lang="EN">Treasury benchmark that comes in three types: the yield curve, the par curve, and the spot curve.  All curves also have a constituent time series.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="TIBO">
+				<xs:annotation>
+					<xs:documentation source="Name" xml:lang="EN">TIBOR</xs:documentation>
+					<xs:documentation source="Definition" xml:lang="EN">Tokyo Interbank Offered Rate.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="TLBO">
+				<xs:annotation>
+					<xs:documentation source="Name" xml:lang="EN">TELEBOR</xs:documentation>
+					<xs:documentation source="Definition" xml:lang="EN">Tel Aviv Interbank Offered Rate.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="SWAP">
+				<xs:annotation>
+					<xs:documentation source="Name" xml:lang="EN">SWAP</xs:documentation>
+					<xs:documentation source="Definition" xml:lang="EN">In curve construction, Swap is the long portion of the curve constituting about 3 years to 30 years term.
+
+The exchange of one security, currency or interest rate for another to change the maturity (bonds), or quality of issues (stocks or bonds), or because investment objectives have changed.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="STBO">
+				<xs:annotation>
+					<xs:documentation source="Name" xml:lang="EN">STIBOR</xs:documentation>
+					<xs:documentation source="Definition" xml:lang="EN">Stockholm Interbank Offered Rate.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="PRBO">
+				<xs:annotation>
+					<xs:documentation source="Name" xml:lang="EN">PRIBOR</xs:documentation>
+					<xs:documentation source="Definition" xml:lang="EN">Czech Fixing of Interest Rates on Interbank Deposits.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="PFAN">
+				<xs:annotation>
+					<xs:documentation source="Name" xml:lang="EN">Pfandbriefe</xs:documentation>
+					<xs:documentation source="Definition" xml:lang="EN">Pfandbriefe security is a collateralised bullet bond backed by either mortgage loans or loans to the public sector.  Pfandbriefe differ from traditional asset-backed securities in significant ways.  The most important difference is that Pfandbriefe carry no pre-payment risk since they remain on the balance sheet of the issuing institution.  Therefore, their spreads over sovereign bonds are attributable to liquidity and credit quality alone.  New indices have been created and existing indices have been modified in response to the growing importance of the Pfandbriefe market.  The Deutsche Borse has three synthetic indices called REX, JEX, and PEX.  The Pfandbriefe curve is used as a reference for credit as well as mortgage market.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="NIBO">
+				<xs:annotation>
+					<xs:documentation source="Name" xml:lang="EN">NIBOR</xs:documentation>
+					<xs:documentation source="Definition" xml:lang="EN">Norwegian Interbank Offered Rate.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="MAAA">
+				<xs:annotation>
+					<xs:documentation source="Name" xml:lang="EN">MuniAAA</xs:documentation>
+					<xs:documentation source="Definition" xml:lang="EN">Benchmark curve used for municipals based on the best credit rating for municipal market debt.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="MOSP">
+				<xs:annotation>
+					<xs:documentation source="Name" xml:lang="EN">MOSPRIM</xs:documentation>
+					<xs:documentation source="Definition" xml:lang="EN">Moscow Prime Offered Rate.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="LIBO">
+				<xs:annotation>
+					<xs:documentation source="Name" xml:lang="EN">LIBOR</xs:documentation>
+					<xs:documentation source="Definition" xml:lang="EN">London Interbank Offered Rate, the interest rate that major international banks in London charge each other for borrowing.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="LIBI">
+				<xs:annotation>
+					<xs:documentation source="Name" xml:lang="EN">LIBID</xs:documentation>
+					<xs:documentation source="Definition" xml:lang="EN">Rate at which major international banks are willing to take deposits from one another, is normally 1/8 percent below LIBOR.&#13;
+&#13;
+London InterBank Bid Rate, the rate bid by banks on Eurocurrency deposits; the international rate that banks lend to other banks.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="JIBA">
+				<xs:annotation>
+					<xs:documentation source="Name" xml:lang="EN">JIBAR</xs:documentation>
+					<xs:documentation source="Definition" xml:lang="EN">Johannesburg Interbank Agreed Rate.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="ISDA">
+				<xs:annotation>
+					<xs:documentation source="Name" xml:lang="EN">ISDAFIX</xs:documentation>
+					<xs:documentation source="Definition" xml:lang="EN">Worldwide common reference rate value for fixed interest rate swap rates, as defined by the International Swaps and Derivatives Association (ISDA).</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="GCFR">
+				<xs:annotation>
+					<xs:documentation source="Name" xml:lang="EN">GCFRepo</xs:documentation>
+					<xs:documentation source="Definition" xml:lang="EN">GCF Repo Index, the Depository Trust &amp; Clearing Corporation (DTCC) general collateral finance repurchase agreements index.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="FUSW">
+				<xs:annotation>
+					<xs:documentation source="Name" xml:lang="EN">FutureSWAP</xs:documentation>
+					<xs:documentation source="Definition" xml:lang="EN">Portion of a synthetic curve that is composed of Eurodollar or Treasury or similar Futures and Swap rates.  The term usually begins at 3 months to 2 years for the futures strip component with the Swaps filling in the points to 10 years and beyond.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="EUCH">
+				<xs:annotation>
+					<xs:documentation source="Name" xml:lang="EN">EuroSwiss</xs:documentation>
+					<xs:documentation source="Definition" xml:lang="EN">Swiss Franc LIBOR rate.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="EUUS">
+				<xs:annotation>
+					<xs:documentation source="Name" xml:lang="EN">EURODOLLAR</xs:documentation>
+					<xs:documentation source="Definition" xml:lang="EN">Rate for the eurodollars, time deposits denominated in U.S. dollars at banks outside the United States, and thus are not under the jurisdiction of the Federal Reserve.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="EURI">
+				<xs:annotation>
+					<xs:documentation source="Name" xml:lang="EN">EUROIBOR</xs:documentation>
+					<xs:documentation source="Definition" xml:lang="EN">Euro Interbank Offer Rate is the rate at which Euro inter-bank term deposits within the Euro zone are offered by one prime bank to another prime bank.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="EONS">
+				<xs:annotation>
+					<xs:documentation source="Name" xml:lang="EN">EONIASwaps</xs:documentation>
+					<xs:documentation source="Definition" xml:lang="EN">Euro OverNight Index Average swap rate.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="EONA">
+				<xs:annotation>
+					<xs:documentation source="Name" xml:lang="EN">EONIA</xs:documentation>
+					<xs:documentation source="Definition" xml:lang="EN">Euro OverNight Index Average rate.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="CIBO">
+				<xs:annotation>
+					<xs:documentation source="Name" xml:lang="EN">CIBOR</xs:documentation>
+					<xs:documentation source="Definition" xml:lang="EN">Copenhagen Interbank Offered Rate.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="CDOR">
+				<xs:annotation>
+					<xs:documentation source="Name" xml:lang="EN">CDOR</xs:documentation>
+					<xs:documentation source="Definition" xml:lang="EN">Canadian Dollar Offered Rate.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="BUBO">
+				<xs:annotation>
+					<xs:documentation source="Name" xml:lang="EN">BUBOR</xs:documentation>
+					<xs:documentation source="Definition" xml:lang="EN">Budapest Interbank Offered Rate.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="BBSW">
+				<xs:annotation>
+					<xs:documentation source="Name" xml:lang="EN">BBSW</xs:documentation>
+					<xs:documentation source="Definition" xml:lang="EN">Australian Financial Markets Association (AFMA) Bank-Bill Reference Rate (BBSW).</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+		</xs:restriction>
+	</xs:simpleType>
 	<xs:simpleType name="CFIOct2015Identifier">
 		<xs:annotation>
 			<xs:documentation source="Name" xml:lang="EN">CFIOct2015Identifier</xs:documentation>
@@ -360,8 +570,8 @@ Usage: When absent, the amount is positive.</xs:documentation>
 			</xs:enumeration>
 			<xs:enumeration value="OI">
 				<xs:annotation>
-					<xs:documentation source="Name" xml:lang="EN">OT</xs:documentation>
-					<xs:documentation source="Definition" xml:lang="EN">OT</xs:documentation>
+					<xs:documentation source="Name" xml:lang="EN">OI</xs:documentation>
+					<xs:documentation source="Definition" xml:lang="EN">OI</xs:documentation>
 				</xs:annotation>
 			</xs:enumeration>
 			<xs:enumeration value="NG">
@@ -372,8 +582,8 @@ Usage: When absent, the amount is positive.</xs:documentation>
 			</xs:enumeration>
 			<xs:enumeration value="CO">
 				<xs:annotation>
-					<xs:documentation source="Name" xml:lang="EN">OT</xs:documentation>
-					<xs:documentation source="Definition" xml:lang="EN">OT</xs:documentation>
+					<xs:documentation source="Name" xml:lang="EN">CO</xs:documentation>
+					<xs:documentation source="Definition" xml:lang="EN">CO</xs:documentation>
 				</xs:annotation>
 			</xs:enumeration>
 			<xs:enumeration value="EL">
@@ -476,7 +686,7 @@ Usage: When absent, the amount is positive.</xs:documentation>
 			<xs:documentation source="Definition" xml:lang="EN">Commodities and emission allowances</xs:documentation>
 		</xs:annotation>
 		<xs:sequence>
-			<xs:element name="CmmdtyBase" type="CommodityBase" minOccurs="0">
+			<xs:element name="CmmdtyBase" type="CommodityBase">
 				<xs:annotation>
 					<xs:documentation source="Name" xml:lang="EN">Commodity base</xs:documentation>
 					<xs:documentation source="Definition" xml:lang="EN">Commodity base</xs:documentation>
@@ -578,13 +788,33 @@ Usage: When absent, the amount is positive.</xs:documentation>
 			<xs:documentation source="Definition" xml:lang="EN">Information related to contract and transaction details.</xs:documentation>
 		</xs:annotation>
 		<xs:sequence>
-			<xs:element name="CtrctData" type="ContractType4__2" minOccurs="0" maxOccurs="1">
+			<xs:element name="CtrctData" type="ContractType4__2">
 				<xs:annotation>
 					<xs:documentation source="Name" xml:lang="EN">ContractData</xs:documentation>
 					<xs:documentation source="Definition" xml:lang="EN">Data related to a trade contract.</xs:documentation>
 				</xs:annotation>
 			</xs:element>
 			<xs:element name="TxData" type="TradeTransaction_TR_M">
+				<xs:annotation>
+					<xs:documentation source="Name" xml:lang="EN">TransactionData</xs:documentation>
+					<xs:documentation source="Definition" xml:lang="EN">Data related specifically to a trade transaction.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="CommonTradeDataReport_TR_P_M">
+		<xs:annotation>
+			<xs:documentation source="Name" xml:lang="EN">CommonTradeDataReport13__4</xs:documentation>
+			<xs:documentation source="Definition" xml:lang="EN">Information related to contract and transaction details.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="CtrctData" type="ContractType4__2">
+				<xs:annotation>
+					<xs:documentation source="Name" xml:lang="EN">ContractData</xs:documentation>
+					<xs:documentation source="Definition" xml:lang="EN">Data related to a trade contract.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="TxData" type="TradeTransaction_TR_P_M">
 				<xs:annotation>
 					<xs:documentation source="Name" xml:lang="EN">TransactionData</xs:documentation>
 					<xs:documentation source="Definition" xml:lang="EN">Data related specifically to a trade transaction.</xs:documentation>
@@ -727,7 +957,7 @@ Usage: When absent, the amount is positive.</xs:documentation>
 			<xs:documentation source="Definition" xml:lang="EN">Information related to contract attributes.</xs:documentation>
 		</xs:annotation>
 		<xs:sequence>
-			<xs:element name="PdctClssfctn" type="ProductClassification1Choice" minOccurs="0">
+			<xs:element name="PdctClssfctn" type="ProductClassification1Choice">
 				<xs:annotation>
 					<xs:documentation source="Name" xml:lang="EN">ProductClassification</xs:documentation>
 					<xs:documentation source="Definition" xml:lang="EN">Specifies the classification of the derivative product.</xs:documentation>
@@ -745,13 +975,13 @@ Usage: When absent, the amount is positive.</xs:documentation>
 					<xs:documentation source="Definition" xml:lang="EN">Unique identification to identify the direct underlying instrument based on its type. </xs:documentation>
 				</xs:annotation>
 			</xs:element>
-			<xs:element name="TechUndrlyg" type="ESMAMax50AlphaNumeric" minOccurs="0" maxOccurs="1">
+			<xs:element name="TechUndrlyg" type="Max50Text" minOccurs="0" maxOccurs="1">
 				<xs:annotation>
 					<xs:documentation source="Name" xml:lang="EN">Technical underlying</xs:documentation>
 					<xs:documentation source="Definition" xml:lang="EN">Technical underlying</xs:documentation>
 				</xs:annotation>
 			</xs:element>
-			<xs:element name="NtnlCcyFrstLeg" type="ActiveCurrencyCode" minOccurs="0" maxOccurs="1">
+			<xs:element name="NtnlCcyFrstLeg" type="ActiveCurrencyCode">
 				<xs:annotation>
 					<xs:documentation source="Name" xml:lang="EN">NotionalCurrencyFirstLeg</xs:documentation>
 					<xs:documentation source="Definition" xml:lang="EN">Currency of the notional amount. &#13;
@@ -799,7 +1029,7 @@ Usage: In the case of an interest rate or currency derivative contract, this wil
 					<xs:documentation source="Definition" xml:lang="EN">Unique identification to identify the direct underlying instrument based on its type. </xs:documentation>
 				</xs:annotation>
 			</xs:element>
-			<xs:element name="TechUndrlyg" type="ESMAMax50AlphaNumeric" minOccurs="0" maxOccurs="1">
+			<xs:element name="TechUndrlyg" type="Max50Text" minOccurs="0" maxOccurs="1">
 				<xs:annotation>
 					<xs:documentation source="Name" xml:lang="EN">Technical underlying</xs:documentation>
 					<xs:documentation source="Definition" xml:lang="EN">Technical underlying</xs:documentation>
@@ -853,7 +1083,7 @@ Usage: In the case of an interest rate or currency derivative contract, this wil
 					<xs:documentation source="Definition" xml:lang="EN">Unique identification to identify the direct underlying instrument based on its type. </xs:documentation>
 				</xs:annotation>
 			</xs:element>
-			<xs:element name="TechUndrlyg" type="ESMAMax50AlphaNumeric" minOccurs="0" maxOccurs="1">
+			<xs:element name="TechUndrlyg" type="Max50Text" minOccurs="0" maxOccurs="1">
 				<xs:annotation>
 					<xs:documentation source="Name" xml:lang="EN">Technical underlying</xs:documentation>
 					<xs:documentation source="Definition" xml:lang="EN">Technical underlying</xs:documentation>
@@ -941,19 +1171,19 @@ Usage: In the case of an interest rate or currency derivative contract, this wil
 			<xs:documentation source="Definition" xml:lang="EN">Information related to contract attributes.</xs:documentation>
 		</xs:annotation>
 		<xs:sequence>
-			<xs:element name="CtrctTp" type="FinancialInstrumentContractType2Code" minOccurs="0" maxOccurs="1">
+			<xs:element name="CtrctTp" type="FinancialInstrumentContractType2Code">
 				<xs:annotation>
 					<xs:documentation source="Name" xml:lang="EN">ContractType</xs:documentation>
 					<xs:documentation source="Definition" xml:lang="EN">Classification of information according to contract type.</xs:documentation>
 				</xs:annotation>
 			</xs:element>
-			<xs:element name="AsstClss" type="ProductType4Code__1" minOccurs="0" maxOccurs="1">
+			<xs:element name="AsstClss" type="ProductType4Code__1">
 				<xs:annotation>
 					<xs:documentation source="Name" xml:lang="EN">AssetClass</xs:documentation>
 					<xs:documentation source="Definition" xml:lang="EN">Specifies the classification according to the asset class of the contract.</xs:documentation>
 				</xs:annotation>
 			</xs:element>
-			<xs:element name="CtrctDtls" type="ContractDetails_TR_M" minOccurs="0">
+			<xs:element name="CtrctDtls" type="ContractDetails_TR_M">
 				<xs:annotation>
 					<xs:documentation source="Name" xml:lang="EN">ContractDetails</xs:documentation>
 					<xs:documentation source="Definition" xml:lang="EN">Contract details.</xs:documentation>
@@ -1237,7 +1467,7 @@ Usage: In the case of an interest rate or currency derivative contract, this wil
 					<xs:documentation source="Definition" xml:lang="EN">Unique code identifying the reporting counterparty of the contract.</xs:documentation>
 				</xs:annotation>
 			</xs:element>
-			<xs:element name="CtrPtySd" type="OptionParty1Code" minOccurs="0">
+			<xs:element name="CtrPtySd" type="OptionParty1Code">
 				<xs:annotation>
 					<xs:documentation source="Name" xml:lang="EN">CounterpartySide</xs:documentation>
 					<xs:documentation source="Definition" xml:lang="EN">Identifies whether the reporting counterparty is a buyer or a seller.</xs:documentation>
@@ -1249,7 +1479,7 @@ Usage: In the case of an interest rate or currency derivative contract, this wil
 					<xs:documentation source="Definition" xml:lang="EN">Taxonomy for non-financial counterparties. The categories correspond to the main sections of NACE classification as defined in the regulation.</xs:documentation>
 				</xs:annotation>
 			</xs:element>
-			<xs:element name="Ntr" type="CounterpartyTradeNature_TR" minOccurs="0">
+			<xs:element name="Ntr" type="CounterpartyTradeNature_TR">
 				<xs:annotation>
 					<xs:documentation source="Name" xml:lang="EN">Nature</xs:documentation>
 					<xs:documentation source="Definition" xml:lang="EN">Indicates if the reporting counterparty is a central counterparty, a financial, non-financial counterparty or other type of counterparty in accordance with regulation.</xs:documentation>
@@ -1267,13 +1497,87 @@ Usage: In the case of an interest rate or currency derivative contract, this wil
 					<xs:documentation source="Definition" xml:lang="EN">Identification of the clearing member in the case  where the trade is cleared.</xs:documentation>
 				</xs:annotation>
 			</xs:element>
-			<xs:element name="Bnfcry" type="OrganisationIdentification3Choice__1" minOccurs="0" maxOccurs="1">
+			<xs:element name="Bnfcry" type="OrganisationIdentification3Choice__1">
 				<xs:annotation>
 					<xs:documentation source="Name" xml:lang="EN">Beneficiary</xs:documentation>
 					<xs:documentation source="Definition" xml:lang="EN">Identification of the beneficiary who is subject to the rights and obligations arising from the contract. </xs:documentation>
 				</xs:annotation>
 			</xs:element>
-			<xs:element name="TradgCpcty" type="TradingCapacity7Code" minOccurs="0" maxOccurs="1">
+			<xs:element name="TradgCpcty" type="TradingCapacity7Code">
+				<xs:annotation>
+					<xs:documentation source="Name" xml:lang="EN">TradingCapacity</xs:documentation>
+					<xs:documentation source="Definition" xml:lang="EN">Identifies the trading capacity of the seller.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="CmmrclActvty" type="YesNoIndicator" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation source="Name" xml:lang="EN">CommercialActivity</xs:documentation>
+					<xs:documentation source="Definition" xml:lang="EN">Directly linked to commercial activity or treasury financing</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="ClrTrshld" type="YesNoIndicator" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation source="Name" xml:lang="EN">Clearing treshhold</xs:documentation>
+					<xs:documentation source="Definition" xml:lang="EN">Clearing treshold</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="OthrCtrPty" type="CounterpartyOther_TR_M">
+				<xs:annotation>
+					<xs:documentation source="Name" xml:lang="EN">OtherCounterparty</xs:documentation>
+					<xs:documentation source="Definition" xml:lang="EN">Definition of the other counterparty in the transaction.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="Counterparty_TR_P_M">
+		<xs:annotation>
+			<xs:documentation source="Name" xml:lang="EN">CounterpartyTR</xs:documentation>
+			<xs:documentation source="Definition" xml:lang="EN">Information related to counterparty identification.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="RptgCtrPtyId" type="LEIIdentifier">
+				<xs:annotation>
+					<xs:documentation source="Name" xml:lang="EN">Identification</xs:documentation>
+					<xs:documentation source="Definition" xml:lang="EN">Unique code identifying the reporting counterparty of the contract.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="CtrPtySd" type="OptionParty1Code">
+				<xs:annotation>
+					<xs:documentation source="Name" xml:lang="EN">CounterpartySide</xs:documentation>
+					<xs:documentation source="Definition" xml:lang="EN">Identifies whether the reporting counterparty is a buyer or a seller.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Sctr" type="Max2Text" minOccurs="0" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation source="Name" xml:lang="EN">Sector</xs:documentation>
+					<xs:documentation source="Definition" xml:lang="EN">Taxonomy for non-financial counterparties. The categories correspond to the main sections of NACE classification as defined in the regulation.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Ntr" type="CounterpartyTradeNature_TR">
+				<xs:annotation>
+					<xs:documentation source="Name" xml:lang="EN">Nature</xs:documentation>
+					<xs:documentation source="Definition" xml:lang="EN">Indicates if the reporting counterparty is a central counterparty, a financial, non-financial counterparty or other type of counterparty in accordance with regulation.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Brkr" type="LEIIdentifier" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation source="Name" xml:lang="EN">Broker</xs:documentation>
+					<xs:documentation source="Definition" xml:lang="EN">Identification of the broker as an intermediary for the reporting counterparty. </xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="ClrMmb" type="LEIIdentifier" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation source="Name" xml:lang="EN">ClearingMember</xs:documentation>
+					<xs:documentation source="Definition" xml:lang="EN">Identification of the clearing member in the case  where the trade is cleared.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Bnfcry" type="OrganisationIdentification3Choice__1">
+				<xs:annotation>
+					<xs:documentation source="Name" xml:lang="EN">Beneficiary</xs:documentation>
+					<xs:documentation source="Definition" xml:lang="EN">Identification of the beneficiary who is subject to the rights and obligations arising from the contract. </xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="TradgCpcty" type="TradingCapacity7Code" minOccurs="0">
 				<xs:annotation>
 					<xs:documentation source="Name" xml:lang="EN">TradingCapacity</xs:documentation>
 					<xs:documentation source="Definition" xml:lang="EN">Identifies the trading capacity of the seller.</xs:documentation>
@@ -1447,6 +1751,26 @@ Usage: In the case of an interest rate or currency derivative contract, this wil
 			</xs:element>
 		</xs:sequence>
 	</xs:complexType>
+	<xs:complexType name="Counterparty_TR_E">
+		<xs:annotation>
+			<xs:documentation source="Name" xml:lang="EN">CounterpartyTR</xs:documentation>
+			<xs:documentation source="Definition" xml:lang="EN">Information related to counterparty identification.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="RptgCtrPtyId" type="Max20Text">
+				<xs:annotation>
+					<xs:documentation source="Name" xml:lang="EN">Identification</xs:documentation>
+					<xs:documentation source="Definition" xml:lang="EN">Unique code identifying the reporting counterparty of the contract.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="OthrCtrPty" type="CounterpartyOther_TR">
+				<xs:annotation>
+					<xs:documentation source="Name" xml:lang="EN">OtherCounterparty</xs:documentation>
+					<xs:documentation source="Definition" xml:lang="EN">Definition of the other counterparty in the transaction.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
 	<xs:complexType name="Counterparty_TR_Z">
 		<xs:annotation>
 			<xs:documentation source="Name" xml:lang="EN">CounterpartyTR</xs:documentation>
@@ -1531,13 +1855,13 @@ This field shall be filled from the perspective of the reporting counterparty. I
 </xs:documentation>
 				</xs:annotation>
 			</xs:element>
-			<xs:element name="Ctry" type="CountryCode" minOccurs="0">
+			<xs:element name="Ctry" type="CountryCode">
 				<xs:annotation>
 					<xs:documentation source="Name" xml:lang="EN">Country</xs:documentation>
 					<xs:documentation source="Definition" xml:lang="EN">The code of country where the registered office of the other counterparty is located or country of residence in case that the other counterparty is a natural person.</xs:documentation>
 				</xs:annotation>
 			</xs:element>
-			<xs:element name="EMIROblgtn" type="YesNoIndicator" minOccurs="0">
+			<xs:element name="EMIROblgtn" type="YesNoIndicator">
 				<xs:annotation>
 					<xs:documentation source="Name" xml:lang="EN">Subject to EMIR regulation obligation</xs:documentation>
 					<xs:documentation source="Definition" xml:lang="EN">Is the other counterparty subject to the EMIR regulation reporting obligation?</xs:documentation>
@@ -1614,6 +1938,20 @@ This field shall be filled from the perspective of the reporting counterparty. I
 		</xs:annotation>
 		<xs:sequence>
 			<xs:element name="CtrPty" type="Counterparty_TR_M">
+				<xs:annotation>
+					<xs:documentation source="Name" xml:lang="EN">Counterparty</xs:documentation>
+					<xs:documentation source="Definition" xml:lang="EN">Data specific to counterparties of the reported transaction/position.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="CounterpartySpecificData_TR_P_M">
+		<xs:annotation>
+			<xs:documentation source="Name" xml:lang="EN">CounterpartySpecificData</xs:documentation>
+			<xs:documentation source="Definition" xml:lang="EN">Data related specifically to counterparty.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="CtrPty" type="Counterparty_TR_P_M">
 				<xs:annotation>
 					<xs:documentation source="Name" xml:lang="EN">Counterparty</xs:documentation>
 					<xs:documentation source="Definition" xml:lang="EN">Data specific to counterparties of the reported transaction/position.</xs:documentation>
@@ -1747,6 +2085,20 @@ This field shall be filled from the perspective of the reporting counterparty. I
 			</xs:element>
 		</xs:sequence>
 	</xs:complexType>
+	<xs:complexType name="CounterpartySpecificData_TR_E">
+		<xs:annotation>
+			<xs:documentation source="Name" xml:lang="EN">CounterpartySpecificData</xs:documentation>
+			<xs:documentation source="Definition" xml:lang="EN">Data related specifically to counterparty.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="CtrPty" type="Counterparty_TR_E">
+				<xs:annotation>
+					<xs:documentation source="Name" xml:lang="EN">Counterparty</xs:documentation>
+					<xs:documentation source="Definition" xml:lang="EN">Data specific to counterparties of the reported transaction/position.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
 	<xs:complexType name="CounterpartySpecificData_TR_Z">
 		<xs:annotation>
 			<xs:documentation source="Name" xml:lang="EN">CounterpartySpecificData</xs:documentation>
@@ -1858,7 +2210,7 @@ Usage:The figure varies between 0 and 100.&#13;
 			<xs:documentation source="Definition" xml:lang="EN">Information related specifically to credit derivatives attributes.</xs:documentation>
 		</xs:annotation>
 		<xs:sequence>
-			<xs:element name="Snrty" type="DebtInstrumentSeniorityType2Code" minOccurs="0">
+			<xs:element name="Snrty" type="DebtInstrumentSeniorityType2Code">
 				<xs:annotation>
 					<xs:documentation source="Name" xml:lang="EN">Seniority</xs:documentation>
 					<xs:documentation source="Definition" xml:lang="EN">Classification of seniority in case of contract on index or on a single name entity.&#13;
@@ -1872,13 +2224,13 @@ Usage:The figure varies between 0 and 100.&#13;
 					<xs:documentation source="Definition" xml:lang="EN">Designation of the underlying reference obligation.</xs:documentation>
 				</xs:annotation>
 			</xs:element>
-			<xs:element name="PmtFrqcy" type="Frequency8Code" minOccurs="0">
+			<xs:element name="PmtFrqcy" type="Frequency8Code">
 				<xs:annotation>
 					<xs:documentation source="Name" xml:lang="EN">PaymentFrequency</xs:documentation>
 					<xs:documentation source="Definition" xml:lang="EN">Frequency of payment of the interest rate or coupon.</xs:documentation>
 				</xs:annotation>
 			</xs:element>
-			<xs:element name="ClctnBsis" type="ESMADayCount" minOccurs="0" maxOccurs="1">
+			<xs:element name="ClctnBsis" type="ESMADayCount">
 				<xs:annotation>
 					<xs:documentation source="Name" xml:lang="EN">CalculationBasis</xs:documentation>
 					<xs:documentation source="Definition" xml:lang="EN">Calculation basis of the interest rate, such as Act/360.</xs:documentation>
@@ -1905,7 +2257,7 @@ Usage:The figure varies between 0 and 100.&#13;
 </xs:documentation>
 				</xs:annotation>
 			</xs:element>
-			<xs:element name="Trch" type="TrancheIndicator" minOccurs="0">
+			<xs:element name="Trch" type="TrancheIndicator">
 				<xs:annotation>
 					<xs:documentation source="Name" xml:lang="EN">Tranche</xs:documentation>
 					<xs:documentation source="Definition" xml:lang="EN">Indicates whether the derivative contract  is tranched or not.</xs:documentation>
@@ -2476,6 +2828,14 @@ Currency in which leg 2 of the swap is denominated, in case of swaptions where t
 			<xs:minExclusive value="0"/>
 		</xs:restriction>
 	</xs:simpleType>
+	<xs:simpleType name="ESMA_AlphaNumericAdditionalCharactersMax25_Pattern">
+		<xs:annotation>
+			<xs:documentation source="Name" xml:lang="EN">ESMAAlphaNumericAdditionalCharactersMax25_Pattern</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:pattern value="([A-Z]|[0-9]|%|\?|#| |\+|/){1,25}"/>
+		</xs:restriction>
+	</xs:simpleType>
 	<xs:simpleType name="ESMAMax35AlphaNumeric">
 		<xs:annotation>
 			<xs:documentation source="Name" xml:lang="EN">ESMAMax35AlphaNumeric</xs:documentation>
@@ -2672,6 +3032,26 @@ Usage: In the example one GBP equals xxxUSD, the unit currency is GBP.</xs:docum
 			</xs:enumeration>
 		</xs:restriction>
 	</xs:simpleType>
+	<xs:complexType name="FinancialInstrument58__1">
+		<xs:annotation>
+			<xs:documentation source="Name" xml:lang="EN">Financial instrument</xs:documentation>
+			<xs:documentation source="Definition" xml:lang="EN">Specifies underlying instruments or index a derivative has.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="ISIN" type="ISINOct2015Identifier" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation source="Name" xml:lang="EN">ISIN</xs:documentation>
+					<xs:documentation source="Definition" xml:lang="EN">ISIN</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Nm" type="FloatingInterestRate8__1">
+				<xs:annotation>
+					<xs:documentation source="Name" xml:lang="EN">Index name</xs:documentation>
+					<xs:documentation source="Definition" xml:lang="EN">Name of the index on which the financial instrument is based.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
 	<xs:complexType name="FinancialInstrumentQuantity24Choice__2">
 		<xs:annotation>
 			<xs:documentation source="Name" xml:lang="EN">FinancialInstrumentQuantity24Choice__2</xs:documentation>
@@ -2683,6 +3063,57 @@ Usage: In the example one GBP equals xxxUSD, the unit currency is GBP.</xs:docum
 					<xs:annotation>
 						<xs:documentation source="Name" xml:lang="EN">Unit</xs:documentation>
 						<xs:documentation source="Definition" xml:lang="EN">Quantity expressed as a number, such as a number of shares.</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+			</xs:choice>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="FinancialInstrumentIdentification6Choice__1">
+		<xs:annotation>
+			<xs:documentation source="Name" xml:lang="EN">Instrument identification</xs:documentation>
+			<xs:documentation source="Definition" xml:lang="EN">Choice between formats for the identification of the financial instruments.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:choice>
+				<xs:element name="ISIN" type="ISINOct2015Identifier">
+					<xs:annotation>
+						<xs:documentation source="Name" xml:lang="EN">ISIN</xs:documentation>
+						<xs:documentation source="Definition" xml:lang="EN">ISIN</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="Indx" type="FinancialInstrument58__1">
+					<xs:annotation>
+						<xs:documentation source="Name" xml:lang="EN">Index</xs:documentation>
+						<xs:documentation source="Definition" xml:lang="EN">Index on which the financial instrument is based.</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+			</xs:choice>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="FinancialInstrumentIdentification7Choice__1">
+		<xs:annotation>
+			<xs:documentation source="Name" xml:lang="EN">Underlying instrument</xs:documentation>
+			<xs:documentation source="Definition" xml:lang="EN">Choice for identifying the underlying instruments that a derivative can consist of.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:choice>
+				<xs:element name="Sngl" type="FinancialInstrumentIdentification6Choice__1">
+					<xs:annotation>
+						<xs:documentation source="Name" xml:lang="EN">Single</xs:documentation>
+						<xs:documentation source="Definition" xml:lang="EN">>Instrument consists of single instrument.&#13;
+							&#13;
+							Usage:&#13;
+							Within MiFIR, this is populated where the underlying is at most one instrument.</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="Bskt" type="BasketDescription3__1">
+					<xs:annotation>
+						<xs:documentation source="Name" xml:lang="EN">Basket</xs:documentation>
+						<xs:documentation source="Definition" xml:lang="EN">>Instrument consists of multiple instruments.&#13;
+							&#13;
+							Usage:&#13;
+							Within MiFIR, this is populated where the underlying consists of multiple instruments even if they are not all to be reported.
+						</xs:documentation>
 					</xs:annotation>
 				</xs:element>
 			</xs:choice>
@@ -2716,6 +3147,26 @@ Usage: In the example one GBP equals xxxUSD, the unit currency is GBP.</xs:docum
 				<xs:annotation>
 					<xs:documentation source="Name" xml:lang="EN">PaymentFrequencyMultiplier</xs:documentation>
 					<xs:documentation source="Definition" xml:lang="EN">Payment frequency – multiplier.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="FloatingInterestRate8__1">
+		<xs:annotation>
+			<xs:documentation source="Name" xml:lang="EN">Floating rate</xs:documentation>
+			<xs:documentation source="Definition" xml:lang="EN">Provides the index used to define the rate and optionally the basis point spread.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="RefRate" type="BenchmarkCurveName5Choice__1">
+				<xs:annotation>
+					<xs:documentation source="Name" xml:lang="EN">Reference rate</xs:documentation>
+					<xs:documentation source="Definition" xml:lang="EN">Identifies the reference index for the instrument.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Term" type="InterestRateContractTerm2" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation source="Name" xml:lang="EN">Term of the reference rate.</xs:documentation>
+					<xs:documentation source="Definition" xml:lang="EN">Term of the reference rate.</xs:documentation>
 				</xs:annotation>
 			</xs:element>
 		</xs:sequence>
@@ -2884,6 +3335,26 @@ Note: a zero amount is considered a positive amount.</xs:documentation>
 			<xs:minInclusive value="0"/>
 		</xs:restriction>
 	</xs:simpleType>
+	<xs:complexType name="InterestRateContractTerm2">
+		<xs:annotation>
+			<xs:documentation source="Name" xml:lang="EN">Interest rates reporting rule</xs:documentation>
+			<xs:documentation source="Definition" xml:lang="EN">Describes how interest rates are reported.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="Unit" type="RateBasis1Code">
+				<xs:annotation>
+					<xs:documentation source="Name" xml:lang="EN">Units</xs:documentation>
+					<xs:documentation source="Definition" xml:lang="EN">Unit for the rate basis.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Val" type="Max3Number">
+				<xs:annotation>
+					<xs:documentation source="Name" xml:lang="EN">Value</xs:documentation>
+					<xs:documentation source="Definition" xml:lang="EN">Value of the contract term in number of units.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
 	<xs:complexType name="InterestRate11Choice__1">
 		<xs:annotation>
 			<xs:documentation source="Name" xml:lang="EN">InterestRate11Choice__1</xs:documentation>
@@ -2957,6 +3428,12 @@ Note: a zero amount is considered a positive amount.</xs:documentation>
 					<xs:annotation>
 						<xs:documentation source="Name" xml:lang="EN">Algorithm</xs:documentation>
 						<xs:documentation source="Definition" xml:lang="EN">Identification of an algorithm.</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="ShrtCd" type="ShortCode">
+					<xs:annotation>
+						<xs:documentation source="Name" xml:lang="EN">ShortCode</xs:documentation>
+						<xs:documentation source="Definition" xml:lang="EN">Short code.</xs:documentation>
 					</xs:annotation>
 				</xs:element>
 			</xs:choice>
@@ -3247,10 +3724,16 @@ Note: a zero amount is considered a positive amount.</xs:documentation>
 			<xs:documentation source="Definition" xml:lang="EN">Data set related to MIFIR regulation requirements.</xs:documentation>
 		</xs:annotation>
 		<xs:sequence>
-			<xs:element name="SwpInOutInd" type="YesNoIndicator" minOccurs="0" maxOccurs="1">
+			<xs:element name="FullNm" type="ESMA_AlphaNumericAdditionalCharactersMax350_Pattern" minOccurs="0">
 				<xs:annotation>
-					<xs:documentation source="Name" xml:lang="EN">SwapInOutIndicator</xs:documentation>
-					<xs:documentation source="Definition" xml:lang="EN">If field is provided, value Yes indicates swap-in, value No indicates swap-out.</xs:documentation>
+					<xs:documentation source="Name" xml:lang="EN">Full name or description of the financial instrument</xs:documentation>
+					<xs:documentation source="Definition" xml:lang="EN">Full name or description of the financial instrument.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Swp" type="SwapLegIdentification2__1" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation source="Name" xml:lang="EN">Swap</xs:documentation>
+					<xs:documentation source="Definition" xml:lang="EN">Underlying of a swap transaction.</xs:documentation>
 				</xs:annotation>
 			</xs:element>
 			<xs:element name="AsstClssSpcfcAttrbts" type="AssetClassAttributes1Choice__1" minOccurs="0" maxOccurs="1">
@@ -3361,6 +3844,12 @@ Usage: Only applicable when the conditions for transmission are not satisfied.</
 					<xs:documentation source="Definition" xml:lang="EN">Up front payment currency</xs:documentation>
 				</xs:annotation>
 			</xs:element>
+			<xs:element name="TradPlcMtchgId" type="ESMA_AlphaNumericMax52_Pattern" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation source="Name" xml:lang="EN">Common matching identification when executed on a trade place</xs:documentation>
+					<xs:documentation source="Definition" xml:lang="EN">Common matching identification when executed on a trade place</xs:documentation>
+				</xs:annotation>
+			</xs:element>
 		</xs:sequence>
 	</xs:complexType>
 	<xs:simpleType name="OptionParty1Code">
@@ -3422,20 +3911,20 @@ Usage: Only applicable when the conditions for transmission are not satisfied.</
 			<xs:documentation source="Definition" xml:lang="EN">Option or swaption related attributes.</xs:documentation>
 		</xs:annotation>
 		<xs:sequence>
-			<xs:element name="OptnTp" type="OptionType_TR" minOccurs="0">
+			<xs:element name="OptnTp" type="OptionType_TR">
 				<xs:annotation>
 					<xs:documentation source="Name" xml:lang="EN">OptionType</xs:documentation>
 					<xs:documentation source="Definition" xml:lang="EN">Specifies the type of the Option whether it is a call option (right to purchase a specific underlying asset) or a put option (right to sell a specific underlying asset).&#13;
 			</xs:documentation>
 				</xs:annotation>
 			</xs:element>
-			<xs:element name="OptnExrcStyle" type="OptionStyle_TR" minOccurs="0">
+			<xs:element name="OptnExrcStyle" type="OptionStyle_TR">
 				<xs:annotation>
 					<xs:documentation source="Name" xml:lang="EN">OptionExerciseStyle</xs:documentation>
 					<xs:documentation source="Definition" xml:lang="EN">Indication as to whether the option may be exercised only at a fixed date (European, and Asian style), a series of pre-specified dates (Bermudan) or at any time during the life of the contract (American style). This field does not have to be populated for ISIN instruments.</xs:documentation>
 				</xs:annotation>
 			</xs:element>
-			<xs:element name="StrkPric" type="SecuritiesTransactionPrice7Choice_TR_O" minOccurs="0">
+			<xs:element name="StrkPric" type="SecuritiesTransactionPrice7Choice_TR_O">
 				<xs:annotation>
 					<xs:documentation source="Name" xml:lang="EN">StrikePrice</xs:documentation>
 					<xs:documentation source="Definition" xml:lang="EN">Predetermined price at which the holder will have to buy or sell the underlying instrument.</xs:documentation>
@@ -3877,6 +4366,38 @@ Issuer field will be ignored and should not be populated by reporting parties.</
 				<xs:annotation>
 					<xs:documentation source="Name" xml:lang="EN">Commodity</xs:documentation>
 					<xs:documentation source="Definition" xml:lang="EN">Identifies categories of instruments that are commodities.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="RateBasis1Code">
+		<xs:annotation>
+			<xs:documentation source="Name" xml:lang="EN">Rate basis</xs:documentation>
+			<xs:documentation source="Definition" xml:lang="EN">Specifies a rate basis.</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="DAYS">
+				<xs:annotation>
+					<xs:documentation source="Name" xml:lang="EN">Days</xs:documentation>
+					<xs:documentation source="Definition" xml:lang="EN">Rate is reported in days.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="MNTH">
+				<xs:annotation>
+					<xs:documentation source="Name" xml:lang="EN">Months</xs:documentation>
+					<xs:documentation source="Definition" xml:lang="EN">Rate is reported in months.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="WEEK">
+				<xs:annotation>
+					<xs:documentation source="Name" xml:lang="EN">Weeks</xs:documentation>
+					<xs:documentation source="Definition" xml:lang="EN">Rate is reported in weeks.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="YEAR">
+				<xs:annotation>
+					<xs:documentation source="Name" xml:lang="EN">Years</xs:documentation>
+					<xs:documentation source="Definition" xml:lang="EN">Rate is reported in years.</xs:documentation>
 				</xs:annotation>
 			</xs:enumeration>
 		</xs:restriction>
@@ -4396,6 +4917,26 @@ Usage: Only required for reporting firms reporting transactions on behalf of ord
 			</xs:enumeration>
 		</xs:restriction>
 	</xs:simpleType>
+	<xs:complexType name="SwapLegIdentification2__1">
+		<xs:annotation>
+			<xs:documentation source="Name" xml:lang="EN">Swap</xs:documentation>
+			<xs:documentation source="Definition" xml:lang="EN">Details of the legs of swap transaction.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="SwpIn" type="FinancialInstrumentIdentification7Choice__1" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation source="Name" xml:lang="EN">Swap in</xs:documentation>
+					<xs:documentation source="Definition" xml:lang="EN">Instrument received by the buyer.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="SwpOut" type="FinancialInstrumentIdentification7Choice__1" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation source="Name" xml:lang="EN">Swap out</xs:documentation>
+					<xs:documentation source="Definition" xml:lang="EN">Instrument paid by the buyer.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
 	<xs:complexType name="TradeClearing_TR">
 		<xs:annotation>
 			<xs:documentation source="Name" xml:lang="EN">TradeClearing</xs:documentation>
@@ -4448,7 +4989,7 @@ Usage: When absent, default value is false.</xs:documentation>
 					<xs:documentation source="Definition" xml:lang="EN">Indicates, whether the reported contract belongs to a class of OTC derivatives that has been declared  subject to the clearing obligation and both counterparties to the contract are subject to the clearing obligation, as of the time of execution of the contract.</xs:documentation>
 				</xs:annotation>
 			</xs:element>
-			<xs:element name="Clrd" type="YesNoIndicator" minOccurs="0">
+			<xs:element name="Clrd" type="YesNoIndicator">
 				<xs:annotation>
 					<xs:documentation source="Name" xml:lang="EN">Cleared</xs:documentation>
 					<xs:documentation source="Definition" xml:lang="EN">Cleared</xs:documentation>
@@ -4918,7 +5459,7 @@ Usage:Where variation margin is received on a portfolio basis, this field should
 			<xs:documentation source="Definition" xml:lang="EN">Provides details of an error report on a trade position.</xs:documentation>
 		</xs:annotation>
 		<xs:sequence>
-			<xs:element name="CtrPtySpcfcData" type="CounterpartySpecificData_TR_Z" maxOccurs="2">
+			<xs:element name="CtrPtySpcfcData" type="CounterpartySpecificData_TR_E" maxOccurs="2">
 				<xs:annotation>
 					<xs:documentation source="Name" xml:lang="EN">CounterpartySpecificData</xs:documentation>
 					<xs:documentation source="Definition" xml:lang="EN">Counterparty data details.</xs:documentation>
@@ -4944,13 +5485,13 @@ Usage:Where variation margin is received on a portfolio basis, this field should
 					<xs:documentation source="Definition" xml:lang="EN">Eligible date</xs:documentation>
 				</xs:annotation>
 			</xs:element>
-			<xs:element name="CtrPtySpcfcData" type="CounterpartySpecificData_TR_M" maxOccurs="2">
+			<xs:element name="CtrPtySpcfcData" type="CounterpartySpecificData_TR_P_M" maxOccurs="2">
 				<xs:annotation>
 					<xs:documentation source="Name" xml:lang="EN">CounterpartySpecificData</xs:documentation>
 					<xs:documentation source="Definition" xml:lang="EN">Counterparty data details.</xs:documentation>
 				</xs:annotation>
 			</xs:element>
-			<xs:element name="CmonTradData" type="CommonTradeDataReport13__4">
+			<xs:element name="CmonTradData" type="CommonTradeDataReport_TR_P_M">
 				<xs:annotation>
 					<xs:documentation source="Name" xml:lang="EN">CommonTradeData</xs:documentation>
 					<xs:documentation source="Definition" xml:lang="EN">Trade transaction data details.</xs:documentation>
@@ -5110,7 +5651,7 @@ Usage:Where variation margin is received on a portfolio basis, this field should
 					<xs:documentation source="Definition" xml:lang="EN">Regulation indicator</xs:documentation>
 				</xs:annotation>
 			</xs:element>
-			<xs:element name="CtrPtySpcfcData" type="CounterpartySpecificData_TR_Z" minOccurs="1" maxOccurs="2">
+			<xs:element name="CtrPtySpcfcData" type="CounterpartySpecificData_TR_E" minOccurs="1" maxOccurs="2">
 				<xs:annotation>
 					<xs:documentation source="Name" xml:lang="EN">CounterpartySpecificData</xs:documentation>
 					<xs:documentation source="Definition" xml:lang="EN">Counterparty data details.</xs:documentation>
@@ -5336,7 +5877,7 @@ In case of a contract concluded OTC, it has to be identified using specific MIC 
 Usage: In case of partial terminations, and amortisations and in case of contracts where the notional, due to the characteristics of the contract, varies over time, it shall reflect the remaining notional after the change took place.</xs:documentation>
 				</xs:annotation>
 			</xs:element>
-			<xs:element name="PricMltplr" type="ESMALongDecimalNumberMinExcl0">
+			<xs:element name="PricMltplr" type="Amount20_SimpleType">
 				<xs:annotation>
 					<xs:documentation source="Name" xml:lang="EN">PriceMultiplier</xs:documentation>
 					<xs:documentation source="Definition" xml:lang="EN">Number of units of the underlying instrument represented by a single derivative contract.</xs:documentation>
@@ -5452,7 +5993,7 @@ An early termination shall not be reported in this field.&#13;
 			<xs:documentation source="Definition" xml:lang="EN">Provides details of trade transaction.</xs:documentation>
 		</xs:annotation>
 		<xs:sequence>
-			<xs:element name="UnqTradIdr" type="KDPWMax52AlphaNumericAdditionalCharacters">
+			<xs:element name="UnqTradIdr" type="Max52Text">
 				<xs:annotation>
 					<xs:documentation source="Name" xml:lang="EN">UniqueTradeIdentifier</xs:documentation>
 					<xs:documentation source="Definition" xml:lang="EN">Unique trade Identifier (UTI) as agreed with the other counterparty.</xs:documentation>
@@ -5515,7 +6056,7 @@ In case of a contract concluded OTC, it has to be identified using specific MIC 
 Usage: In case of partial terminations, and amortisations and in case of contracts where the notional, due to the characteristics of the contract, varies over time, it shall reflect the remaining notional after the change took place.</xs:documentation>
 				</xs:annotation>
 			</xs:element>
-			<xs:element name="PricMltplr" type="ESMAImpliedCurrencyAnd20AmountMinExcl0">
+			<xs:element name="PricMltplr" type="Amount20_SimpleType">
 				<xs:annotation>
 					<xs:documentation source="Name" xml:lang="EN">PriceMultiplier</xs:documentation>
 					<xs:documentation source="Definition" xml:lang="EN">Number of units of the underlying instrument represented by a single derivative contract.</xs:documentation>
@@ -5707,13 +6248,13 @@ Usage:Field only applies when the instrument is complex.&#13;
 </xs:documentation>
 				</xs:annotation>
 			</xs:element>
-			<xs:element name="Pric" type="SecuritiesTransactionPrice7Choice_TR" minOccurs="0" maxOccurs="1">
+			<xs:element name="Pric" type="SecuritiesTransactionPrice7Choice_TR">
 				<xs:annotation>
 					<xs:documentation source="Name" xml:lang="EN">Price</xs:documentation>
 					<xs:documentation source="Definition" xml:lang="EN">Indicates the price per derivative excluding, where applicable, commission and accrued interest.</xs:documentation>
 				</xs:annotation>
 			</xs:element>
-			<xs:element name="NtnlAmt" type="Amount20_SimpleType_Negative" minOccurs="0">
+			<xs:element name="NtnlAmt" type="Amount20_SimpleType_Negative">
 				<xs:annotation>
 					<xs:documentation source="Name" xml:lang="EN">NotionalAmount</xs:documentation>
 					<xs:documentation source="Definition" xml:lang="EN">Reference amount from which contractual payments are determined.&#13;
@@ -5721,13 +6262,13 @@ Usage:Field only applies when the instrument is complex.&#13;
 Usage: In case of partial terminations, and amortisations and in case of contracts where the notional, due to the characteristics of the contract, varies over time, it shall reflect the remaining notional after the change took place.</xs:documentation>
 				</xs:annotation>
 			</xs:element>
-			<xs:element name="PricMltplr" type="ESMAImpliedCurrencyAnd20AmountMinExcl0" minOccurs="0" maxOccurs="1">
+			<xs:element name="PricMltplr" type="Amount20_SimpleType" maxOccurs="1">
 				<xs:annotation>
 					<xs:documentation source="Name" xml:lang="EN">PriceMultiplier</xs:documentation>
 					<xs:documentation source="Definition" xml:lang="EN">Number of units of the underlying instrument represented by a single derivative contract.</xs:documentation>
 				</xs:annotation>
 			</xs:element>
-			<xs:element name="Qty" type="Amount20_SimpleType" minOccurs="0">
+			<xs:element name="Qty" type="Amount20_SimpleType">
 				<xs:annotation>
 					<xs:documentation source="Name" xml:lang="EN">Quantity</xs:documentation>
 					<xs:documentation source="Definition" xml:lang="EN">Number of units of the financial instrument, that is, the nominal value.</xs:documentation>
@@ -5741,19 +6282,19 @@ Usage: In case of partial terminations, and amortisations and in case of contrac
 Usage: The negative symbol to be used to indicate that the payment was made, not received. </xs:documentation>
 				</xs:annotation>
 			</xs:element>
-			<xs:element name="DlvryTp" type="PhysicalTransferType4Code" minOccurs="0" maxOccurs="1">
+			<xs:element name="DlvryTp" type="PhysicalTransferType4Code">
 				<xs:annotation>
 					<xs:documentation source="Name" xml:lang="EN">DeliveryType</xs:documentation>
 					<xs:documentation source="Definition" xml:lang="EN">Indicates whether the financial instrument is settled physically or in cash or decided at expiration time by counterparty.</xs:documentation>
 				</xs:annotation>
 			</xs:element>
-			<xs:element name="ExctnDtTm" type="ISONormalisedDateTime" minOccurs="0" maxOccurs="1">
+			<xs:element name="ExctnDtTm" type="ISONormalisedDateTime">
 				<xs:annotation>
 					<xs:documentation source="Name" xml:lang="EN">ExecutionDateTime</xs:documentation>
 					<xs:documentation source="Definition" xml:lang="EN">Indicates the date and time when the contract was executed.</xs:documentation>
 				</xs:annotation>
 			</xs:element>
-			<xs:element name="FctvDt" type="ISODate" minOccurs="0" maxOccurs="1">
+			<xs:element name="FctvDt" type="ISODate">
 				<xs:annotation>
 					<xs:documentation source="Name" xml:lang="EN">EffectiveDate</xs:documentation>
 					<xs:documentation source="Definition" xml:lang="EN">Indicates the date when obligations under the contract come into effect.</xs:documentation>
@@ -5781,13 +6322,159 @@ An early termination shall not be reported in this field.&#13;
 					<xs:documentation source="Definition" xml:lang="EN">Details related to the  Master agreement.</xs:documentation>
 				</xs:annotation>
 			</xs:element>
-			<xs:element name="TradConf" type="TradeConfirmation_TR" minOccurs="0" maxOccurs="1">
+			<xs:element name="TradConf" type="TradeConfirmation_TR">
 				<xs:annotation>
 					<xs:documentation source="Name" xml:lang="EN">TradeConfirmation</xs:documentation>
 					<xs:documentation source="Definition" xml:lang="EN">Provides information on  whether the contract was electronically confirmed, non-electronically confirmed or remains unconfirmed.</xs:documentation>
 				</xs:annotation>
 			</xs:element>
-			<xs:element name="TradClr" type="TradeClearing_TR_M" minOccurs="0" maxOccurs="1">
+			<xs:element name="TradClr" type="TradeClearing_TR_M">
+				<xs:annotation>
+					<xs:documentation source="Name" xml:lang="EN">TradeClearing</xs:documentation>
+					<xs:documentation source="Definition" xml:lang="EN">Information related to clearing  of the reported contract. </xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="IntrstRate" type="InterestRateLegs4__1" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation source="Name" xml:lang="EN">InterestRate</xs:documentation>
+					<xs:documentation source="Definition" xml:lang="EN">Information related to interest rate asset class type.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Ccy" type="CurrencyExchange10__1" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation source="Name" xml:lang="EN">Currency</xs:documentation>
+					<xs:documentation source="Definition" xml:lang="EN">Information related to currency asset class type.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Cmmdty" type="CommodityTrade_M" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation source="Name" xml:lang="EN">Commodity</xs:documentation>
+					<xs:documentation source="Definition" xml:lang="EN">Information related to commodity asset class type.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Optn" type="Option_TR_M" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation source="Name" xml:lang="EN">Option</xs:documentation>
+					<xs:documentation source="Definition" xml:lang="EN">Information related to credit derivative asset class type.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Cdt" type="CreditDerivative_TR_M" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation source="Name" xml:lang="EN">Credit</xs:documentation>
+					<xs:documentation source="Definition" xml:lang="EN">Information related to credit derivative asset class type.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="TradeTransaction_TR_P_M">
+		<xs:annotation>
+			<xs:documentation source="Name" xml:lang="EN">TradeTransaction</xs:documentation>
+			<xs:documentation source="Definition" xml:lang="EN">Provides details of trade transaction.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="UnqTradIdr" type="KDPWMax52AlphaNumericAdditionalCharacters">
+				<xs:annotation>
+					<xs:documentation source="Name" xml:lang="EN">UniqueTradeIdentifier</xs:documentation>
+					<xs:documentation source="Definition" xml:lang="EN">Unique trade Identifier (UTI) as agreed with the other counterparty.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="RptTrckgNb" type="Max52Text" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation source="Name" xml:lang="EN">ReportTrackingNumber</xs:documentation>
+					<xs:documentation source="Definition" xml:lang="EN">Unique number to indicate a group of reports which relate to the same execution.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="CmplxTradId" type="ESMAMax35AlphaNumeric" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation source="Name" xml:lang="EN">ComplexTradeIdentification</xs:documentation>
+					<xs:documentation source="Definition" xml:lang="EN">Identification, internal to the reporting firm to identify all the reports related to the same execution of a combination of financial instruments. The code must be unique for the firm for the group of reports for the execution.&#13;
+&#13;
+Usage:Field only applies when the instrument is complex.&#13;
+&#13;
+</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Pric" type="SecuritiesTransactionPrice7Choice_TR" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation source="Name" xml:lang="EN">Price</xs:documentation>
+					<xs:documentation source="Definition" xml:lang="EN">Indicates the price per derivative excluding, where applicable, commission and accrued interest.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="NtnlAmt" type="Amount20_SimpleType_Negative">
+				<xs:annotation>
+					<xs:documentation source="Name" xml:lang="EN">NotionalAmount</xs:documentation>
+					<xs:documentation source="Definition" xml:lang="EN">Reference amount from which contractual payments are determined.&#13;
+&#13;
+Usage: In case of partial terminations, and amortisations and in case of contracts where the notional, due to the characteristics of the contract, varies over time, it shall reflect the remaining notional after the change took place.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="PricMltplr" type="Amount20_SimpleType" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation source="Name" xml:lang="EN">PriceMultiplier</xs:documentation>
+					<xs:documentation source="Definition" xml:lang="EN">Number of units of the underlying instrument represented by a single derivative contract.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Qty" type="Amount20_SimpleType">
+				<xs:annotation>
+					<xs:documentation source="Name" xml:lang="EN">Quantity</xs:documentation>
+					<xs:documentation source="Definition" xml:lang="EN">Number of units of the financial instrument, that is, the nominal value.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="UpFrntPmt" type="Amount20_SimpleType_Negative" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation source="Name" xml:lang="EN">UpFrontPayment</xs:documentation>
+					<xs:documentation source="Definition" xml:lang="EN">Amount of money of any up-front payment the reporting counterparty made or received.&#13;
+&#13;
+Usage: The negative symbol to be used to indicate that the payment was made, not received. </xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="DlvryTp" type="PhysicalTransferType4Code">
+				<xs:annotation>
+					<xs:documentation source="Name" xml:lang="EN">DeliveryType</xs:documentation>
+					<xs:documentation source="Definition" xml:lang="EN">Indicates whether the financial instrument is settled physically or in cash or decided at expiration time by counterparty.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="ExctnDtTm" type="ISONormalisedDateTime" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation source="Name" xml:lang="EN">ExecutionDateTime</xs:documentation>
+					<xs:documentation source="Definition" xml:lang="EN">Indicates the date and time when the contract was executed.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="FctvDt" type="ISODate" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation source="Name" xml:lang="EN">EffectiveDate</xs:documentation>
+					<xs:documentation source="Definition" xml:lang="EN">Indicates the date when obligations under the contract come into effect.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="MtrtyDt" type="ISODate" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation source="Name" xml:lang="EN">MaturityDate</xs:documentation>
+					<xs:documentation source="Definition" xml:lang="EN">Indicates the original date  of expiry of the reported contract. &#13;
+&#13;
+Usage: &#13;
+An early termination shall not be reported in this field.&#13;
+</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="SttlmDt" type="ISODate" minOccurs="0" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation source="Name" xml:lang="EN">SettlementDate</xs:documentation>
+					<xs:documentation source="Definition" xml:lang="EN">Indicates the date of settlement of the underlying.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="MstrAgrmt" type="MasterAgreement_TR" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation source="Name" xml:lang="EN">MasterAgreement</xs:documentation>
+					<xs:documentation source="Definition" xml:lang="EN">Details related to the  Master agreement.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="TradConf" type="TradeConfirmation_TR">
+				<xs:annotation>
+					<xs:documentation source="Name" xml:lang="EN">TradeConfirmation</xs:documentation>
+					<xs:documentation source="Definition" xml:lang="EN">Provides information on  whether the contract was electronically confirmed, non-electronically confirmed or remains unconfirmed.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="TradClr" type="TradeClearing_TR_M">
 				<xs:annotation>
 					<xs:documentation source="Name" xml:lang="EN">TradeClearing</xs:documentation>
 					<xs:documentation source="Definition" xml:lang="EN">Information related to clearing  of the reported contract. </xs:documentation>
@@ -6038,7 +6725,7 @@ In case of a contract concluded OTC, it has to be identified using specific MIC 
 Usage: In case of partial terminations, and amortisations and in case of contracts where the notional, due to the characteristics of the contract, varies over time, it shall reflect the remaining notional after the change took place.</xs:documentation>
 				</xs:annotation>
 			</xs:element>
-			<xs:element name="PricMltplr" type="ESMAImpliedCurrencyAnd20AmountMinExcl0">
+			<xs:element name="PricMltplr" type="Amount20_SimpleType">
 				<xs:annotation>
 					<xs:documentation source="Name" xml:lang="EN">PriceMultiplier</xs:documentation>
 					<xs:documentation source="Definition" xml:lang="EN">Number of units of the underlying instrument represented by a single derivative contract.</xs:documentation>
@@ -6365,7 +7052,7 @@ An early termination shall not be reported in this field.&#13;
 					<xs:documentation source="Definition" xml:lang="EN">Basket</xs:documentation>
 				</xs:annotation>
 			</xs:enumeration>
-			<xs:enumeration value="I">
+			<xs:enumeration value="X">
 				<xs:annotation>
 					<xs:documentation source="Name" xml:lang="EN">Index</xs:documentation>
 					<xs:documentation source="Definition" xml:lang="EN">Index</xs:documentation>

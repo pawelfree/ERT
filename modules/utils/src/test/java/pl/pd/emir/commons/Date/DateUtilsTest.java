@@ -24,7 +24,7 @@ public class DateUtilsTest {
         Calendar calendar2 = Calendar.getInstance();
         calendar2.set(Calendar.YEAR, Calendar.getInstance().get(Calendar.YEAR) - 1);
         calendar2.set(Calendar.MONTH, 11);
-        calendar2.set(Calendar.DATE, 30);
+        calendar2.set(Calendar.DATE, 29);
         calendar2.set(Calendar.HOUR_OF_DAY, 0);
         calendar2.set(Calendar.MINUTE, 0);
         calendar2.set(Calendar.SECOND, 0);

@@ -312,8 +312,8 @@
 			</xs:enumeration>
 			<xs:enumeration value="OI">
 				<xs:annotation>
-					<xs:documentation source="Name" xml:lang="EN">OT</xs:documentation>
-					<xs:documentation source="Definition" xml:lang="EN">OT</xs:documentation>
+					<xs:documentation source="Name" xml:lang="EN">OI</xs:documentation>
+					<xs:documentation source="Definition" xml:lang="EN">OI</xs:documentation>
 				</xs:annotation>
 			</xs:enumeration>
 			<xs:enumeration value="NG">
@@ -324,8 +324,8 @@
 			</xs:enumeration>
 			<xs:enumeration value="CO">
 				<xs:annotation>
-					<xs:documentation source="Name" xml:lang="EN">OT</xs:documentation>
-					<xs:documentation source="Definition" xml:lang="EN">OT</xs:documentation>
+					<xs:documentation source="Name" xml:lang="EN">CO</xs:documentation>
+					<xs:documentation source="Definition" xml:lang="EN">CO</xs:documentation>
 				</xs:annotation>
 			</xs:enumeration>
 			<xs:enumeration value="EL">
@@ -492,7 +492,7 @@
 					<xs:documentation source="Definition" xml:lang="EN">Unique identification to identify the direct underlying instrument based on its type. </xs:documentation>
 				</xs:annotation>
 			</xs:element>
-			<xs:element name="TechUndrlyg" type="ESMAMax50AlphaNumeric" minOccurs="0" maxOccurs="1">
+			<xs:element name="TechUndrlyg" type="Max50Text" minOccurs="0" maxOccurs="1">
 				<xs:annotation>
 					<xs:documentation source="Name" xml:lang="EN">Technical underlying</xs:documentation>
 					<xs:documentation source="Definition" xml:lang="EN">Technical underlying</xs:documentation>
@@ -582,7 +582,7 @@ Usage: In the case of an interest rate or currency derivative contract, this wil
 			<xs:documentation source="Definition" xml:lang="EN">Information related to counterparty identification.</xs:documentation>
 		</xs:annotation>
 		<xs:sequence>
-			<xs:element name="RptgCtrPtyId" type="LEIIdentifier">
+			<xs:element name="RptgCtrPtyId" type="Max20Text">
 				<xs:annotation>
 					<xs:documentation source="Name" xml:lang="EN">Identification</xs:documentation>
 					<xs:documentation source="Definition" xml:lang="EN">Unique code identifying the reporting counterparty of the contract.</xs:documentation>
@@ -1821,6 +1821,16 @@ Usage: In the example one GBP equals xxxUSD, the unit currency is GBP.</xs:docum
 			<xs:maxLength value="16"/>
 		</xs:restriction>
 	</xs:simpleType>
+	<xs:simpleType name="Max20Text">
+		<xs:annotation>
+			<xs:documentation source="Name" xml:lang="EN">Max20Text</xs:documentation>
+			<xs:documentation source="Definition" xml:lang="EN">Specifies a character string with a maximum length of 20 characters.</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:minLength value="1"/>
+			<xs:maxLength value="20"/>
+		</xs:restriction>
+	</xs:simpleType>
 	<xs:simpleType name="Max50Text">
 		<xs:annotation>
 			<xs:documentation source="Name" xml:lang="EN">Max50Text</xs:documentation>
@@ -2583,13 +2593,13 @@ Usage:Where variation margin is received on a portfolio basis, this field should
 			<xs:documentation source="Definition" xml:lang="EN">Provides details of trade transaction.</xs:documentation>
 		</xs:annotation>
 		<xs:sequence>
-			<xs:element name="UnqTradIdr" type="KDPWMax52AlphaNumericAdditionalCharacters">
+			<xs:element name="UnqTradIdr" type="Max52Text">
 				<xs:annotation>
 					<xs:documentation source="Name" xml:lang="EN">UniqueTradeIdentifier</xs:documentation>
 					<xs:documentation source="Definition" xml:lang="EN">Unique trade Identifier (UTI) as agreed with the other counterparty.</xs:documentation>
 				</xs:annotation>
 			</xs:element>
-			<xs:element name="RptTrckgNb" type="ESMAMax52AlphaNumeric" minOccurs="0">
+			<xs:element name="RptTrckgNb" type="Max52Text" minOccurs="0">
 				<xs:annotation>
 					<xs:documentation source="Name" xml:lang="EN">ReportTrackingNumber</xs:documentation>
 					<xs:documentation source="Definition" xml:lang="EN">Unique number to indicate a group of reports which relate to the same execution.</xs:documentation>
@@ -2793,13 +2803,13 @@ An early termination shall not be reported in this field.&#13;
 			<xs:documentation source="Definition" xml:lang="EN">Trade references</xs:documentation>
 		</xs:annotation>
 		<xs:sequence>
-			<xs:element name="UnqTradIdr" type="KDPWMax52AlphaNumericAdditionalCharacters">
+			<xs:element name="UnqTradIdr" type="Max52Text">
 				<xs:annotation>
 					<xs:documentation source="Name" xml:lang="EN">UniqueTradeIdentifier</xs:documentation>
 					<xs:documentation source="Definition" xml:lang="EN">Unique Trade identifier</xs:documentation>
 				</xs:annotation>
 			</xs:element>
-			<xs:element name="RptgCtrPtyId" type="LEIIdentifier">
+			<xs:element name="RptgCtrPtyId" type="Max20Text">
 				<xs:annotation>
 					<xs:documentation source="Name" xml:lang="EN">CounterpartyIdentication</xs:documentation>
 					<xs:documentation source="Definition" xml:lang="EN">Counterparty identication</xs:documentation>
@@ -2819,7 +2829,7 @@ An early termination shall not be reported in this field.&#13;
 			<xs:documentation source="Definition" xml:lang="EN">Provides details of trade transaction.</xs:documentation>
 		</xs:annotation>
 		<xs:sequence>
-			<xs:element name="UnqTradIdr" type="KDPWMax52AlphaNumericAdditionalCharacters">
+			<xs:element name="UnqTradIdr" type="Max52Text">
 				<xs:annotation>
 					<xs:documentation source="Name" xml:lang="EN">UniqueTradeIdentifier</xs:documentation>
 					<xs:documentation source="Definition" xml:lang="EN">Unique trade Identifier (UTI) as agreed with the other counterparty.</xs:documentation>

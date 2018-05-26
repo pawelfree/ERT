@@ -149,9 +149,9 @@ public class XmlTransactionWriterImpl extends XmlWriterImpl implements Transacti
                     trar.setRpt(getNewTransactionReportChoice(transToRepo));
                 }
                 else if (msgType.isModification()) {
-                    //trar.setRpt(getModTransactionReportChoice(transToRepo));
-                    //TODO correction
-                    trar.setRpt(getCorTransactionReportChoice(transToRepo));
+                    trar.setRpt(getModTransactionReportChoice(transToRepo));
+                    //correction can substitute modification
+                    //trar.setRpt(getCorTransactionReportChoice(transToRepo));
                 } 
                 else if (msgType.isValuation()) {
                     trar.setRpt(getValUpdTransactionReportChoice(transToRepo));
