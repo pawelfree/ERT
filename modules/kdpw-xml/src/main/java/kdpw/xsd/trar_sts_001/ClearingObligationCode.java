@@ -13,42 +13,49 @@ import javax.xml.bind.annotation.XmlType;
 
 
 /**
- * <p>Java class for TrancheIndicator.
+ * <p>Java class for ClearingObligationCode.
  * 
  * <p>The following schema fragment specifies the expected content contained within this class.
  * <p>
  * <pre>
- * &lt;simpleType name="TrancheIndicator"&gt;
+ * &lt;simpleType name="ClearingObligationCode"&gt;
  *   &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string"&gt;
- *     &lt;enumeration value="T"/&gt;
- *     &lt;enumeration value="U"/&gt;
+ *     &lt;enumeration value="Y"/&gt;
+ *     &lt;enumeration value="N"/&gt;
+ *     &lt;enumeration value="X"/&gt;
  *   &lt;/restriction&gt;
  * &lt;/simpleType&gt;
  * </pre>
  * 
  */
-@XmlType(name = "TrancheIndicator")
+@XmlType(name = "ClearingObligationCode")
 @XmlEnum
-public enum TrancheIndicator {
+public enum ClearingObligationCode {
 
 
     /**
-     * T
+     * Y
      * 
      */
-    T,
+    Y,
 
     /**
-     * U
+     * N
      * 
      */
-    U;
+    N,
+
+    /**
+     * X
+     * 
+     */
+    X;
 
     public String value() {
         return name();
     }
 
-    public static TrancheIndicator fromValue(String v) {
+    public static ClearingObligationCode fromValue(String v) {
         return valueOf(v);
     }
 

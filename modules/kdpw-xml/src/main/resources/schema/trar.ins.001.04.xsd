@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns="urn:kdpw:xsd:trar.ins.001.03" targetNamespace="urn:kdpw:xsd:trar.ins.001.03" elementFormDefault="qualified" attributeFormDefault="unqualified">
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns="urn:kdpw:xsd:trar.ins.001.04" targetNamespace="urn:kdpw:xsd:trar.ins.001.04" elementFormDefault="qualified" attributeFormDefault="unqualified">
 	<xs:annotation>
 		<xs:documentation source="Name" xml:lang="EN">Report submission message</xs:documentation>
 		<xs:documentation source="Definition" xml:lang="EN">Report submission message</xs:documentation>
@@ -141,7 +141,7 @@
 				<xs:annotation>
 					<xs:documentation source="Name" xml:lang="EN">Sign</xs:documentation>
 					<xs:documentation source="Definition" xml:lang="EN">Indicates that the amount value is positive or negative.&#13;
-&#13;
+&#13;	
 Usage: When absent, the amount is positive.</xs:documentation>
 				</xs:annotation>
 			</xs:element>
@@ -182,13 +182,13 @@ Usage: When absent, the amount is positive.</xs:documentation>
 			<xs:documentation source="Definition" xml:lang="EN">Describes the constituents of the basket.</xs:documentation>
 		</xs:annotation>
 		<xs:sequence>
-			<xs:element name="ISIN" type="ISINOct2015Identifier" minOccurs="0" maxOccurs="1">
+			<xs:element name="ISIN" type="ISINOct2015Identifier" minOccurs="0" maxOccurs="unbounded">
 				<xs:annotation>
 					<xs:documentation source="Name" xml:lang="EN">ISIN</xs:documentation>
 					<xs:documentation source="Definition" xml:lang="EN">ISIN</xs:documentation>
 				</xs:annotation>
 			</xs:element>
-			<xs:element name="Indx" type="FinancialInstrument58__1">
+			<xs:element name="Indx" type="FinancialInstrument58__1" minOccurs="0" maxOccurs="unbounded">
 				<xs:annotation>
 					<xs:documentation source="Name" xml:lang="EN">Index</xs:documentation>
 					<xs:documentation source="Definition" xml:lang="EN">Index on which the financial instrument is based.</xs:documentation>
@@ -1757,7 +1757,7 @@ Usage: In the case of an interest rate or currency derivative contract, this wil
 			<xs:documentation source="Definition" xml:lang="EN">Information related to counterparty identification.</xs:documentation>
 		</xs:annotation>
 		<xs:sequence>
-			<xs:element name="RptgCtrPtyId" type="Max20Text">
+			<xs:element name="RptgCtrPtyId" type="LEIIdentifier">
 				<xs:annotation>
 					<xs:documentation source="Name" xml:lang="EN">Identification</xs:documentation>
 					<xs:documentation source="Definition" xml:lang="EN">Unique code identifying the reporting counterparty of the contract.</xs:documentation>
@@ -2804,7 +2804,7 @@ Currency in which leg 2 of the swap is denominated, in case of swaptions where t
 			<xs:documentation source="Name" xml:lang="EN">ESMA_EeaEuropeanAlphabetMax140_Pattern</xs:documentation>
 		</xs:annotation>
 		<xs:restriction base="xs:string">
-			<!-- 	<xs:pattern value="([A-Z]|[А-Я]|[Α-Ω]|[ÄÀÁÂÃÅǍĄĂÆÇĆĈČĎĐÐÈÉÊËĚĘĜĢĞĤÌÍÎÏĴĶĹĻŁĽÑŃŇÖÒÓÔÕŐØŒŔŘẞŚŜŞŠȘŤŢÞȚÜÙÚÛŰŨŲŮŴÝŸŶŹŽŻ]|,| |'|-|–){1,140}"/> -->
+			<xs:pattern value="([A-Z]|[А-Я]|[Α-Ω]|[ÄÀÁÂÃÅǍĄĂÆÇĆĈČĎĐÐÈÉÊËĚĘĜĢĞĤÌÍÎÏĴĶĹĻŁĽÑŃŇÖÒÓÔÕŐØŒŔŘẞŚŜŞŠȘŤŢÞȚÜÙÚÛŰŨŲŮŴÝŸŶŹŽŻ]|,| |'|-|–){1,140}"/> 
 		</xs:restriction>
 	</xs:simpleType>
 	<xs:simpleType name="ESMALongDecimalNumberMinExcl0">
@@ -3287,6 +3287,12 @@ Usage: In the example one GBP equals xxxUSD, the unit currency is GBP.</xs:docum
 					<xs:documentation source="Definition" xml:lang="EN">Sender message reference</xs:documentation>
 				</xs:annotation>
 			</xs:element>
+			<xs:element name="RepTmStmp" type="ISONormalisedDateTime">
+				<xs:annotation>
+					<xs:documentation source="Name" xml:lang="EN">ReportingTimestamp</xs:documentation>
+					<xs:documentation source="Definition" xml:lang="EN">Reporting timestamp</xs:documentation>
+				</xs:annotation>
+			</xs:element>
 		</xs:sequence>
 	</xs:complexType>
 	<xs:complexType name="GenericPersonIdentification1__1">
@@ -3480,7 +3486,7 @@ Note: a zero amount is considered a positive amount.</xs:documentation>
 			<xs:documentation source="Definition" xml:lang="EN">KDPW_TR system message </xs:documentation>
 		</xs:annotation>
 		<xs:sequence>
-			<xs:element name="trar.ins.001.03" type="trar.ins.001.03" minOccurs="1" maxOccurs="10000">
+			<xs:element name="trar.ins.001.04" type="trar.ins.001.04" minOccurs="1" maxOccurs="10000">
 				<xs:annotation>
 					<xs:documentation source="Name" xml:lang="EN">Report submission message</xs:documentation>
 					<xs:documentation source="Definition" xml:lang="EN">Report submission message</xs:documentation>
@@ -3724,7 +3730,7 @@ Note: a zero amount is considered a positive amount.</xs:documentation>
 			<xs:documentation source="Definition" xml:lang="EN">Data set related to MIFIR regulation requirements.</xs:documentation>
 		</xs:annotation>
 		<xs:sequence>
-			<xs:element name="FullNm" type="ESMA_AlphaNumericAdditionalCharactersMax350_Pattern" minOccurs="0">
+			<xs:element name="FullNm" type="ESMA_AlphaNumericAdditionalCharactersMax350_Pattern">
 				<xs:annotation>
 					<xs:documentation source="Name" xml:lang="EN">Full name or description of the financial instrument</xs:documentation>
 					<xs:documentation source="Definition" xml:lang="EN">Full name or description of the financial instrument.</xs:documentation>
@@ -3742,6 +3748,12 @@ Note: a zero amount is considered a positive amount.</xs:documentation>
 					<xs:documentation source="Definition" xml:lang="EN">Specific attributes of the underlying asset class of the financial instrument.</xs:documentation>
 				</xs:annotation>
 			</xs:element>
+			<xs:element name="StrkPriceCcy" type="ActiveCurrencyCode" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation source="Name" xml:lang="EN">StrikePriceCcurency</xs:documentation>
+					<xs:documentation source="Definition" xml:lang="EN">Option strike price currency code</xs:documentation>
+				</xs:annotation>
+			</xs:element>
 		</xs:sequence>
 	</xs:complexType>
 	<xs:complexType name="MIFIRReportingData">
@@ -3750,7 +3762,7 @@ Note: a zero amount is considered a positive amount.</xs:documentation>
 			<xs:documentation source="Definition" xml:lang="EN">Data set related to MIFIR regulation requirements.</xs:documentation>
 		</xs:annotation>
 		<xs:sequence>
-			<xs:element name="CtrPtySd" type="OptionParty1Code" minOccurs="0">
+			<xs:element name="CtrPtySd" type="OptionParty1Code">
 				<xs:annotation>
 					<xs:documentation source="Name" xml:lang="EN">CounterpartySide</xs:documentation>
 					<xs:documentation source="Definition" xml:lang="EN">Identifies whether the reporting counterparty is a buyer or a seller.</xs:documentation>
@@ -3806,7 +3818,7 @@ Usage: Only applicable when the conditions for transmission are not satisfied.</
 					<xs:documentation source="Definition" xml:lang="EN">Person or algorithm responsible for the execution of the transaction.</xs:documentation>
 				</xs:annotation>
 			</xs:element>
-			<xs:element name="AddtlAttrbts" type="SecuritiesTransactionIndicator2__1" minOccurs="0">
+			<xs:element name="AddtlAttrbts" type="SecuritiesTransactionIndicator2__1">
 				<xs:annotation>
 					<xs:documentation source="Name" xml:lang="EN">AdditionalAttributes</xs:documentation>
 					<xs:documentation source="Definition" xml:lang="EN">Provides additional indicators on the reported transaction.</xs:documentation>
@@ -5999,6 +6011,12 @@ An early termination shall not be reported in this field.&#13;
 					<xs:documentation source="Definition" xml:lang="EN">Unique trade Identifier (UTI) as agreed with the other counterparty.</xs:documentation>
 				</xs:annotation>
 			</xs:element>
+			<xs:element name="RptTrckgNb" type="Max52Text" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation source="Name" xml:lang="EN">ReportTrackingNumber</xs:documentation>
+					<xs:documentation source="Definition" xml:lang="EN">Unique number to indicate a group of reports which relate to the same execution.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
 		</xs:sequence>
 	</xs:complexType>
 	<xs:complexType name="TradeTransaction11__4">
@@ -7155,7 +7173,7 @@ An early termination shall not be reported in this field.&#13;
 		</xs:annotation>
 		<xs:restriction base="xs:boolean"/>
 	</xs:simpleType>
-	<xs:complexType name="trar.ins.001.03">
+	<xs:complexType name="trar.ins.001.04">
 		<xs:annotation>
 			<xs:documentation source="Name" xml:lang="EN">Report submission message</xs:documentation>
 			<xs:documentation source="Definition" xml:lang="EN">Report submission message</xs:documentation>

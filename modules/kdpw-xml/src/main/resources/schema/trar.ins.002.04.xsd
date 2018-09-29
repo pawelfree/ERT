@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns="urn:kdpw:xsd:trar.ins.002.03" targetNamespace="urn:kdpw:xsd:trar.ins.002.03" elementFormDefault="qualified" attributeFormDefault="unqualified">
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns="urn:kdpw:xsd:trar.ins.002.04" targetNamespace="urn:kdpw:xsd:trar.ins.002.04" elementFormDefault="qualified" attributeFormDefault="unqualified">
 	<xs:annotation>
 		<xs:documentation source="Name" xml:lang="EN">Trade repository valuation report</xs:documentation>
 		<xs:documentation source="Definition" xml:lang="EN">Trade repository valuation report</xs:documentation>
@@ -10,33 +10,13 @@
 			<xs:documentation source="Definition" xml:lang="EN">KDPW_TR system message</xs:documentation>
 		</xs:annotation>
 	</xs:element>
-	<xs:simpleType name="ActiveCurrencyAnd20Amount_SimpleType">
-		<xs:restriction base="xs:decimal">
-			<xs:fractionDigits value="19"/>
-			<xs:totalDigits value="20"/>
-			<xs:minInclusive value="0"/>
-		</xs:restriction>
-	</xs:simpleType>
-	<xs:simpleType name="Amount20_SimpleType">
-		<xs:restriction base="xs:decimal">
-			<xs:fractionDigits value="19"/>
-			<xs:totalDigits value="20"/>
-			<xs:minInclusive value="0"/>
-		</xs:restriction>
-	</xs:simpleType>
-	<xs:simpleType name="Amount20_SimpleType_Negative">
-		<xs:restriction base="xs:decimal">
-			<xs:fractionDigits value="19"/>
-			<xs:totalDigits value="20"/>
-		</xs:restriction>
-	</xs:simpleType>
-	<xs:complexType name="ActiveCurrencyAnd20Amount">
+	<xs:complexType name="ActiveCurrencyAnd20AmountN">
 		<xs:annotation>
 			<xs:documentation source="Name" xml:lang="EN">ActiveCurrencyAnd20Amount</xs:documentation>
 			<xs:documentation source="Definition" xml:lang="EN">A number of monetary units specified in an active currency where the unit of currency is explicit and compliant with ISO 4217.</xs:documentation>
 		</xs:annotation>
 		<xs:simpleContent>
-			<xs:extension base="ActiveCurrencyAnd20Amount_SimpleType">
+			<xs:extension base="ActiveOrHistoricCurrencyAnd20Amount_SimpleType_N">
 				<xs:attribute name="Ccy" type="ActiveCurrencyCode" use="required">
 					<xs:annotation>
 						<xs:documentation source="Name" xml:lang="EN">Currency</xs:documentation>
@@ -46,6 +26,12 @@
 			</xs:extension>
 		</xs:simpleContent>
 	</xs:complexType>
+	<xs:simpleType name="ActiveOrHistoricCurrencyAnd20Amount_SimpleType_N">
+		<xs:restriction base="xs:decimal">
+			<xs:fractionDigits value="19"/>
+			<xs:totalDigits value="20"/>
+		</xs:restriction>
+	</xs:simpleType>
 	<xs:simpleType name="ActiveCurrencyCode">
 		<xs:annotation>
 			<xs:documentation source="Name" xml:lang="EN">ActiveCurrencyCode</xs:documentation>
@@ -72,19 +58,19 @@
 			<xs:documentation source="Definition" xml:lang="EN">Information related to contract valuation.</xs:documentation>
 		</xs:annotation>
 		<xs:sequence>
-			<xs:element name="RptgCtrPtyId" type="LEIIdentifier">
+			<xs:element name="RptgCtrPtyId" type="LEIIdentifier" minOccurs="0">
 				<xs:annotation>
 					<xs:documentation source="Name" xml:lang="EN">Identification</xs:documentation>
 					<xs:documentation source="Definition" xml:lang="EN">Unique code identifying the reporting counterparty of the contract.</xs:documentation>
 				</xs:annotation>
 			</xs:element>
-			<xs:element name="TechUndrlyg" type="ESMAMax50AlphaNumeric">
+			<xs:element name="TechUndrlyg" type="Max50Text">
 				<xs:annotation>
 					<xs:documentation source="Name" xml:lang="EN">Technical underlying</xs:documentation>
 					<xs:documentation source="Definition" xml:lang="EN">Technical underlying</xs:documentation>
 				</xs:annotation>
 			</xs:element>
-			<xs:element name="CtrctVal" type="ActiveCurrencyAnd20Amount">
+			<xs:element name="CtrctVal" type="ActiveCurrencyAnd20AmountN">
 				<xs:annotation>
 					<xs:documentation source="Name" xml:lang="EN">ContractValue</xs:documentation>
 					<xs:documentation source="Definition" xml:lang="EN">Mark to market valuation of the contract, or mark to model valuation where applicable under Article 11(2) of Regulation (EU) No 648/2012. The CCP’s valuation to be used for a cleared trade.</xs:documentation>
@@ -128,15 +114,6 @@
 			</xs:choice>
 		</xs:sequence>
 	</xs:complexType>
-	<xs:simpleType name="ESMAMax50AlphaNumeric">
-		<xs:annotation>
-			<xs:documentation source="Name" xml:lang="EN">ESMAMax50AlphaNumeric</xs:documentation>
-			<xs:documentation source="Definition" xml:lang="EN">A string of up to 50 captial letters (A-Z) or numbers (0-9).</xs:documentation>
-		</xs:annotation>
-		<xs:restriction base="xs:string">
-			<xs:pattern value="[A-Z0-9]{1,50}"/>
-		</xs:restriction>
-	</xs:simpleType>
 	<xs:complexType name="GeneralInformation">
 		<xs:annotation>
 			<xs:documentation source="Name" xml:lang="EN">General information</xs:documentation>
@@ -167,6 +144,12 @@
 					<xs:documentation source="Definition" xml:lang="EN">Level of the details</xs:documentation>
 				</xs:annotation>
 			</xs:element>
+			<xs:element name="RepTmStmp" type="ISONormalisedDateTime">
+				<xs:annotation>
+					<xs:documentation source="Name" xml:lang="EN">ReportingTimestamp</xs:documentation>
+					<xs:documentation source="Definition" xml:lang="EN">Reporting timestamp</xs:documentation>
+				</xs:annotation>
+			</xs:element>
 		</xs:sequence>
 	</xs:complexType>
 	<xs:simpleType name="ISODate">
@@ -183,13 +166,22 @@
 		</xs:annotation>
 		<xs:restriction base="xs:dateTime"/>
 	</xs:simpleType>
+	<xs:simpleType name="ISONormalisedDateTime">
+		<xs:annotation>
+			<xs:documentation source="Name" xml:lang="EN">ISONormalisedDateTime</xs:documentation>
+			<xs:documentation source="Definition" xml:lang="EN">an ISODateTime whereby all timezoned dateTime values are UTC.</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:dateTime">
+			<xs:pattern value=".*Z"/>
+		</xs:restriction>
+	</xs:simpleType>
 	<xs:complexType name="KDPWDocument">
 		<xs:annotation>
 			<xs:documentation source="Name" xml:lang="EN">KDPW_TR system message</xs:documentation>
 			<xs:documentation source="Definition" xml:lang="EN">KDPW_TR system message </xs:documentation>
 		</xs:annotation>
 		<xs:sequence>
-			<xs:element name="trar.ins.002.03" type="trar.ins.002.03" maxOccurs="10000">
+			<xs:element name="trar.ins.002.04" type="trar.ins.002.04" maxOccurs="10000">
 				<xs:annotation>
 					<xs:documentation source="Name" xml:lang="EN">Trade repository valuation report</xs:documentation>
 					<xs:documentation source="Definition" xml:lang="EN">Trade repository valuation report</xs:documentation>
@@ -249,6 +241,16 @@
 			<xs:maxLength value="16"/>
 		</xs:restriction>
 	</xs:simpleType>
+	<xs:simpleType name="Max50Text">
+		<xs:annotation>
+			<xs:documentation source="Name" xml:lang="EN">Max50Text</xs:documentation>
+			<xs:documentation source="Definition" xml:lang="EN">Specifies a character string with a maximum length of 50 characters.</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:minLength value="1"/>
+			<xs:maxLength value="50"/>
+		</xs:restriction>
+	</xs:simpleType>
 	<xs:simpleType name="ValuationType1Code">
 		<xs:annotation>
 			<xs:documentation source="Name" xml:lang="EN">ValuationType1Code</xs:documentation>
@@ -278,7 +280,7 @@
 			</xs:enumeration>
 		</xs:restriction>
 	</xs:simpleType>
-	<xs:complexType name="trar.ins.002.03">
+	<xs:complexType name="trar.ins.002.04">
 		<xs:annotation>
 			<xs:documentation source="Name" xml:lang="EN">Trade repository valuation report</xs:documentation>
 			<xs:documentation source="Definition" xml:lang="EN">Trade repository valuation report</xs:documentation>

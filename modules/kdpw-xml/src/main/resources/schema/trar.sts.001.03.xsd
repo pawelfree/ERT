@@ -163,6 +163,32 @@
 			<xs:pattern value="[A-Z]{6,6}"/>
 		</xs:restriction>
 	</xs:simpleType>
+	<xs:simpleType name="ClearingObligationCode">
+		<xs:annotation>
+			<xs:documentation source="Name" xml:lang="EN">ClearingObligationCode</xs:documentation>
+			<xs:documentation source="Definition" xml:lang="EN">Clearing obligation code.</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="Y">
+				<xs:annotation>
+					<xs:documentation source="Name" xml:lang="EN">Y</xs:documentation>
+					<xs:documentation source="Definition" xml:lang="EN">Y</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="N">
+				<xs:annotation>
+					<xs:documentation source="Name" xml:lang="EN">N</xs:documentation>
+					<xs:documentation source="Definition" xml:lang="EN">N</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="X">
+				<xs:annotation>
+					<xs:documentation source="Name" xml:lang="EN">X</xs:documentation>
+					<xs:documentation source="Definition" xml:lang="EN">X</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+		</xs:restriction>
+	</xs:simpleType>
 	<xs:simpleType name="Code4Text">
 		<xs:annotation>
 			<xs:documentation source="Name" xml:lang="EN">Qualifier</xs:documentation>
@@ -2462,7 +2488,7 @@ Usage: In the example one GBP equals xxxUSD, the unit currency is GBP.</xs:docum
 			<xs:documentation source="Definition" xml:lang="EN">Information related to the clearing of the contract</xs:documentation>
 		</xs:annotation>
 		<xs:sequence>
-			<xs:element name="ClrOblgtn" type="YesNoIndicator" minOccurs="0" maxOccurs="1">
+			<xs:element name="ClrOblgtn" type="ClearingObligationCode" minOccurs="0" maxOccurs="1">
 				<xs:annotation>
 					<xs:documentation source="Name" xml:lang="EN">ClearingObligation</xs:documentation>
 					<xs:documentation source="Definition" xml:lang="EN">Indicates, whether the reported contract belongs to a class of OTC derivatives that has been declared  subject to the clearing obligation and both counterparties to the contract are subject to the clearing obligation, as of the time of execution of the contract.</xs:documentation>

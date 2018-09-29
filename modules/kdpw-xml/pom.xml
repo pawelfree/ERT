@@ -126,7 +126,7 @@
                         <configuration>
                             <strict>false</strict>
                             <schemaIncludes>
-                                <include>schema/trar.ins.001.03.xsd</include>
+                                <include>schema/trar.ins.001.04.xsd</include>
                             </schemaIncludes>
                             <episodeFile>${project.build.directory}/generated-sources/xjc/META-INF/jaxb-ins_001_03.episode</episodeFile>
                             <generatePackage>kdpw.xsd.trar_ins_001</generatePackage>
@@ -140,7 +140,7 @@
                         <configuration>
                             <strict>false</strict>
                             <schemaIncludes>
-                                <include>schema/trar.ins.002.03.xsd</include>
+                                <include>schema/trar.ins.002.04.xsd</include>
                             </schemaIncludes>
                             <episodeFile>${project.build.directory}/generated-sources/xjc/META-INF/jaxb-ins_002_03.episode</episodeFile>
                             <generatePackage>kdpw.xsd.trar_ins_002</generatePackage>
