@@ -109,13 +109,13 @@
                 <p:panelGrid columns="2">
 
                     <emir:labeledOutput id="contrPartyIndustry_out" label="#{msgs['register.client.contrPartyIndustry']}"
-                                        value="#{clientFormBean.entity.contrPartyIndustry}"
+                                        value="#{msgs[clientFormBean.getIndustry(clientFormBean.entity)]}"
                                         rendered="#{clientFormBean.formType eq 'View'}"/>
                     <emir:inputSelect id="contrPartyIndustry" label="#{msgs['register.client.contrPartyIndustry']}"
                                       value="#{clientFormBean.entity.contrPartyIndustry}"
                                       rendered="#{not (clientFormBean.formType eq 'View')}">
                         <f:selectItem itemLabel="#{msgs['commons.select']}" itemValue="#{null}" itemDisabled="false" />
-                        <f:selectItems value="#{clientFormBean.contrPartyIndustries}" itemValue="#{option}" var="option" itemLabel="#{msgs[option.msgKey]}" />
+                        <f:selectItems value="#{clientFormBean.contrPartyIndustries}" />
                     </emir:inputSelect>
 
                     <emir:labeledOutput id="contrPartyType_out" label="#{msgs['register.client.contrPartyType']}"

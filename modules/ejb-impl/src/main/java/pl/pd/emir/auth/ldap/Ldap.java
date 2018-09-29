@@ -76,7 +76,10 @@ public class Ldap {
             login = login + "@" + domainSufix;
         }
 
-        return this.open(login, password);
+        LdapErrorCodes res =  this.open(login, password);
+        
+        System.out.println("!!!!!! - ldap open result " + res.toString() + " (" + login + " " + password + ")");        
+        return res;
     }
 
     public LdapErrorCodes checkUserLogin(String login) {
@@ -152,8 +155,8 @@ public class Ldap {
                 return LdapErrorCodes.ERROR_SUCCESS;
             } catch (AuthenticationException e) {
                 /*
-                 * Zwracany kod b��du Active Directory nale�y skonwertowa� z hex -->
-                 * dec. Lista kod�w znajduje si� na:
+                 * Zwracany kod bledu Active Directory nale�y skonwertowa� z hex -->
+                 * dec. Lista kodow znajduje sie na:
                  * http://msdn.microsoft.com/library/default.asp?url=/library/en-us/debug/base/system_error_codes.asp
                  */
 
@@ -170,8 +173,12 @@ public class Ldap {
 
                 LOGGER.error("Kod bledu hex: '" + errorCode);
                 LOGGER.error(e.getMessage(), e);
+                System.out.println("!!!!!!!!!!! - ldap auth " + e.getMessage());
+                System.out.println("!!!!!!!!!!! - ldap auth " + e.getExplanation());                
                 return LdapErrorCodes.getByHexValue(errorCode);
             } catch (NamingException e) {
+                System.out.println("!!!!!!!!!!! - ldap naming " + e);
+                System.out.println("!!!!!!!!!!! - ldap naming " + e.getExplanation());
                 LOGGER.error(e.getMessage(), e);
                 return LdapErrorCodes.ERROR_INVALID_DOMAIN;
             }

@@ -2,8 +2,8 @@ package pl.pd.emir.entity.kdpw;
 
 public enum MessageType {
 
-    TRANSACTION("trar.ins.001.03", "kdpw.message.type.transaction"),
-    VALUATION("trar.ins.002.03", "kdpw.message.type.valuation"),
+    TRANSACTION("trar.ins.001.04", "kdpw.message.type.transaction"),
+    VALUATION("trar.ins.002.04", "kdpw.message.type.valuation"),
     PROTECTION("trar.ins.003.02", "kdpw.message.type.protection"),
     TRANSACTION_RESPONSE("trar.sts.001.03", "kdpw.message.type.transaction.response"),
     DATA_SET_RESPONSE("trar.sts.002.03", "kdpw.message.type.dataSet.response"),

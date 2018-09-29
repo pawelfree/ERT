@@ -24,6 +24,7 @@ public class UserServiceConfiguration implements Serializable {
         return connector;
     }
 
+    
     public LdapConfig getLdapConfig() {
         return ldapConfig;
     }

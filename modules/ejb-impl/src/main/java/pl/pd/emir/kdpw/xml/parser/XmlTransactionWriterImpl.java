@@ -6,6 +6,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.Objects;
 import java.util.TimeZone;
@@ -91,7 +92,7 @@ import kdpw.xsd.trar_ins_001.TradeTransactionReportChoiceTR;
 import kdpw.xsd.trar_ins_001.TradeTransactionTRM;
 import kdpw.xsd.trar_ins_001.TradeTransactionValuationUpdateTR;
 import kdpw.xsd.trar_ins_001.TradingCapacity7Code;
-import kdpw.xsd.trar_ins_001.TrarIns00103;
+import kdpw.xsd.trar_ins_001.TrarIns00104;
 import kdpw.xsd.trar_ins_001.ValuationType1Code;
 import pl.pd.emir.commons.Constants;
 import pl.pd.emir.commons.NumberUtils;
@@ -140,7 +141,7 @@ public class XmlTransactionWriterImpl extends XmlWriterImpl implements Transacti
             if (transToRepo.getMsgType() != null) {
                 LOGGER.debug("Generate item for type: {}", transToRepo.getMsgType());
 
-                final TrarIns00103 trar = new TrarIns00103();
+                final TrarIns00104 trar = new TrarIns00104();
 
                 trar.setGnlInf(getGeneralInfo(transToRepo.getSndrMsgRef(), institutionId, transToRepo.getRegistable().getClient().getReported()));
                 //TODO pawel a co jesli jednoczesnie modyfikacja i wycena
@@ -157,7 +158,7 @@ public class XmlTransactionWriterImpl extends XmlWriterImpl implements Transacti
                     trar.setRpt(getValUpdTransactionReportChoice(transToRepo));
                 }
 
-                document.getTrarIns00103().add(trar);
+                document.getTrarIns00104().add(trar);
                 transToRepo.setSndrMsgRef(trar.getGnlInf().getSndrMsgRef());
             }
         }
@@ -729,12 +730,23 @@ public class XmlTransactionWriterImpl extends XmlWriterImpl implements Transacti
     }
     
     //TODO dla modyfikacji bylo inaczej niz dla nowej transakcji
-    protected final TradeConfirmationTR getTradConf(RiskReduce riskReduce) {
+    public final TradeConfirmationTR getTradConf(RiskReduce riskReduce) {
         TradeConfirmationTR result = new TradeConfirmationTR();
         Objects.requireNonNull(riskReduce, getClass().getName().concat(" - getTradConf"));
         //TODO przekonwertowac enumy
-        result.setTp(null == riskReduce.getConfirmationType() ? TradeConfirmationTypeRT.N : TradeConfirmationTypeRT.fromValue(riskReduce.getConfirmationType().toString()));        
-        result.setTmStmp(null == riskReduce.getConfirmationDate() ? null : XmlUtils.formatDate(getUTCDate(riskReduce.getConfirmationDate()), Constants.ISO_DATE_TIME_Z));
+        result.setTp(null == riskReduce.getConfirmationType() ? TradeConfirmationTypeRT.N : TradeConfirmationTypeRT.fromValue(riskReduce.getConfirmationType().toString())); 
+        Date date = riskReduce.getConfirmationDate();
+        if ( null == date) {
+            result.setTmStmp(null);
+        }
+        else {
+            GregorianCalendar cal = new GregorianCalendar();
+            cal.setTime(date);
+            if ((cal.get(Calendar.YEAR) != 2017) || (cal.get(Calendar.MONTH) != Calendar.MAY) || (cal.get(Calendar.DAY_OF_MONTH) != 1) || (cal.get(Calendar.HOUR) != 0)) {
+                date = getUTCDate(date);
+            }
+            result.setTmStmp(XmlUtils.formatDate(date, Constants.ISO_DATE_TIME_Z));
+        }
         //TODO to ciekawe - return new RiskMitigationValidator().nullOnEmpty(result);        
         return result;
     }

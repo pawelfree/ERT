@@ -2,9 +2,16 @@ package pl.pd.emir.kdpw.xml.parser;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.TimeZone;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import kdpw.xsd.trar_ins_001.TradeConfirmationTR;
 import pl.pd.emir.commons.Constants;
 import pl.pd.emir.commons.DateUtils;
 import pl.pd.emir.embeddable.TransactionDetails;
@@ -32,6 +39,8 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import org.junit.Test;
+import pl.pd.emir.embeddable.RiskReduce;
+import pl.pd.emir.enums.ConfirmationType;
 
 public class XmlTransactionWriterImplTest {
 
@@ -39,7 +48,21 @@ public class XmlTransactionWriterImplTest {
 
 
     private final XmlTransactionWriterImpl instance = new XmlTransactionWriterImpl();
-
+    
+//    @Test
+//    public void test() {
+//        GregorianCalendar cal = new GregorianCalendar();
+//        cal.set(2018, Calendar.MAY, 1, 0, 0);
+//        System.out.println("date " + cal.getTime());
+//        RiskReduce riskReduce = new RiskReduce(cal.getTime(),ConfirmationType.Y);
+//     
+//        XmlTransactionWriterImpl x = new XmlTransactionWriterImpl();
+//        
+//       TradeConfirmationTR t = x.getTradConf(riskReduce);
+//       
+//        System.out.println("trad conf " + t.getTmStmp().toString());
+//    }
+//    
 //TODO - comment
 //    @Test
 //    public void defaultDateGeneration() {

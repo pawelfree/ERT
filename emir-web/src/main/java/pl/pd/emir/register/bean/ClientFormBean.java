@@ -21,6 +21,7 @@ import pl.pd.emir.register.TransactionManager;
 import pl.pd.emir.resources.EventLogBuilder;
 import org.primefaces.context.RequestContext;
 import pl.pd.emir.admin.EventLogManager;
+import pl.pd.emir.enums.CounterpartyIndustry;
 
 @ManagedBean(name = "clientFormBean")
 @SessionScoped
@@ -101,8 +102,13 @@ public class ClientFormBean extends AbstractFormBean<Client> {
     }
 
     public List<SelectItem> getContrPartyIndustries() {
-        //TODO wypelnic liste
-        return BeanHelper.fillMsgSelectList(null);
+        return BeanHelper.fillValueMsgSelectList(CounterpartyIndustry.values());
+    }
+    
+    public String getIndustry(Client client) {
+        if (null != client )
+            return CounterpartyIndustry.fromStringMsg(client.getContrPartyIndustry());
+        return "";
     }
 
     @Override

@@ -15,6 +15,7 @@ import pl.pd.emir.enums.FormType;
 import pl.pd.emir.enums.MsgEnum;
 import pl.pd.emir.enums.ProcessingStatus;
 import pl.pd.emir.enums.ValidationStatus;
+import pl.pd.emir.enums.ValueMsgEnum;
 
 public final class BeanHelper implements Serializable {
 
@@ -164,6 +165,21 @@ public final class BeanHelper implements Serializable {
         List<SelectItem> result = new ArrayList<>();
         for (T obj : list) {
             result.add(new SelectItem(obj.name(), BeanHelper.getMessage(obj.getMsgKey()), null, obj.name().equals(errValue)));
+        }
+        return result;
+    }
+    
+    public static <T extends Enum<T> & ValueMsgEnum> List<SelectItem> fillValueMsgSelectList(T[] list) {
+        return fillValueMsgSelectList(list, getMessage("commons.errFieldsValue"));
+    }
+
+    public static <T extends Enum<T> & ValueMsgEnum> List<SelectItem> fillValueMsgSelectList(T[] list, String errValue) {
+        if (list == null || list.length == 0) {
+            return null;
+        }
+        List<SelectItem> result = new ArrayList<>();
+        for (T obj : list) {
+            result.add(new SelectItem(obj.getValue(), BeanHelper.getMessage(obj.getMsg()), null, obj.name().equals(errValue)));
         }
         return result;
     }

@@ -30,7 +30,7 @@ public class IDMLoginModule extends AppservPasswordLoginModule {
         }
 
         IDMRealm idmRealm = (IDMRealm) _currentRealm;
-
+  
         doAuthentication(_username, new String(_passwd), idmRealm);
 
         try {
