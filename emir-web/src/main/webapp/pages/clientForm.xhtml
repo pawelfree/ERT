@@ -103,6 +103,19 @@
                             <f:selectItems value="#{clientFormBean.institutionIdTypes}" itemValue="#{option}" var="option" itemLabel="#{option}" />
                         </emir:inputSelect>
 
+                    <emir:labeledOutput id="countryCode_out" label="#{msgs['register.client.institution.institutionAddr.country']}"
+                                        value="#{clientFormBean.entity.countryCode}"
+                                        rendered="#{clientFormBean.formType eq 'View'}"/>
+                    <emir:inputSelect  value="#{clientFormBean.entity.countryCode}"
+                                       filter="true"
+                                       id="countryCode"
+                                       required="true"
+                                       label="#{msgs['register.client.institution.institutionAddr.country']}"
+                                       rendered="#{not (clientFormBean.formType == 'View')}"  allowEmpty="true">
+                        <f:selectItems value="#{clientFormBean.countryCodes}" var="option" itemLabel="#{option}" itemValue="#{option}" />
+                    </emir:inputSelect>                        
+                        
+                        
                     </p:panelGrid>
                 </p:panel>
 

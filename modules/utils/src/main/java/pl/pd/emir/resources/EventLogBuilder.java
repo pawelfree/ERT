@@ -390,6 +390,10 @@ public class EventLogBuilder {
          */
         SETTLEMENT_DATE,
         /**
+         * Data rozrachunku instrumentu bazowego. Dluga noga SWAP
+         */
+        SETTLEMENT_DATE_2,
+        /**
          * Rodzaj umowy ramowej
          */
         FRAMEWORK_AGGR_TYPE,

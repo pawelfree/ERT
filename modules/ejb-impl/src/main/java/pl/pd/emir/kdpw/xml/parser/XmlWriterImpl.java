@@ -31,6 +31,10 @@ public abstract class XmlWriterImpl {
         // pobierana z PARAMETRY_E.RECEIVER_ID
         return parameterManager.getValue(ParameterKey.KDPW_RECEIVER);
     }
+    
+    protected Date getTwoDatesSwapParameter() throws ParseException{
+        return DateUtils.getDateFromString(parameterManager.getValue(ParameterKey.TWO_DATES_SWAP), Constants.ISO_DATE);
+    }
 
     /**
      * Pobranie identifikatora komunikatu.
@@ -71,15 +75,5 @@ public abstract class XmlWriterImpl {
 
     protected static String nullOnEmpty(final String result) {
         return StringUtil.isEmpty(result) ? null : result;
-    }
-
-    protected Date getEligDate(final String dateAsString) {
-        Date result = null;
-        try {
-            result = DateUtils.getDateFromString(dateAsString, Constants.ISO_DATE);
-        } catch (ParseException ex) {
-            LOGGER.error("Cannot parse value: " + dateAsString + " to date (" + Constants.ISO_DATE + ")");
-        }
-        return result;
     }
 }

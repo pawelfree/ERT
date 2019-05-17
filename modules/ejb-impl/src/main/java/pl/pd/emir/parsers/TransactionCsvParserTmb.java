@@ -71,15 +71,15 @@ public class TransactionCsvParserTmb extends TransactionCsvParser {
                     tradeNominalField44, tradeMultiplField45, tradeQtyField46,
                     tradeUppField47, tradeAggrVerField55, optionExecPriceField87,
                     tradeExecDateField49, tradeEffDateField50, tradeMattDateField51,
-                    tradeTermDateField52, tradeSettlDateField53);
-            RiskReduce f10 = ImportValidationUtils.validateRiskReduce(Arrays.copyOfRange(data, 56, 58), r10, importResult, riskConfDateField56); //ryzyko 4.4
-            TransactionClearing f11 = ImportValidationUtils.validateTransactionClearing(Arrays.copyOfRange(data, 58, 63), r11, importResult, settlementDateField60); //rozliczanie 4.5
-            PercentageRateData f12 = ImportValidationUtils.validatePercentageRate(Arrays.copyOfRange(data, 63, 71), r12,
+                    tradeTermDateField52, tradeSettlDateField53, tradeSettlDateField54);
+            RiskReduce f10 = ImportValidationUtils.validateRiskReduce(Arrays.copyOfRange(data, 57, 59), r10, importResult, riskConfDateField56); //ryzyko 4.4
+            TransactionClearing f11 = ImportValidationUtils.validateTransactionClearing(Arrays.copyOfRange(data, 59, 64), r11, importResult, settlementDateField60); //rozliczanie 4.5
+            PercentageRateData f12 = ImportValidationUtils.validatePercentageRate(Arrays.copyOfRange(data, 64, 72), r12,
                     importResult, //stopa procent.
                     percLeg1Field63, percLeg2Field64);
-            CurrencyTradeData f13 = ImportValidationUtils.validateCurrencyTrade(Arrays.copyOfRange(data, 71, 75), r13, importResult,
+            CurrencyTradeData f13 = ImportValidationUtils.validateCurrencyTrade(Arrays.copyOfRange(data, 72, 76), r13, importResult,
                     currRate1Field72, currRate2Field73); //transakcje walut.
-            CommodityTradeData f14 = ImportValidationUtils.validateCommodityTrade(Arrays.copyOfRange(data, 75, 85), r14, importResult,
+            CommodityTradeData f14 = ImportValidationUtils.validateCommodityTrade(Arrays.copyOfRange(data, 76, 86), r14, importResult,
                     delivStartField80, delivEndField81, delivQtyField83, delivPriceField84);
 
             //walidacja zależności pomiędzy ceną a symbolem waluty

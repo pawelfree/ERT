@@ -494,17 +494,17 @@ public final class ImportValidationUtils {
             BigDecimal unitPrice, CurrencyCode unitPriceCurrency, BigDecimal unitPriceRate, BigDecimal tradeNominal,
             Integer tradeMultipl, Integer tradeQty, BigDecimal tradeUpp, Integer tradeAggrVer,
             BigDecimal optionExecPrice, Date tradeExecDate, Date tradeEffDate, Date tradeMattDate, Date tradeTermDate,
-            Date tradeSettlDate) {
+            Date tradeSettlDate, Date tradeSettlDate2 ) {
         return validateTransactionDtls(data, null, importResult, unitPrice, unitPriceCurrency, unitPriceRate,
                 tradeNominal, tradeMultipl, tradeQty, tradeUpp, tradeAggrVer, optionExecPrice, tradeExecDate,
-                tradeEffDate, tradeMattDate, tradeTermDate, tradeSettlDate);
+                tradeEffDate, tradeMattDate, tradeTermDate, tradeSettlDate, tradeSettlDate2);
     }
 
     public static TransactionDetails validateTransactionDtls(String[] data, TransactionDetails replacementValue, ImportResult importResult,
             BigDecimal unitPrice, CurrencyCode unitPriceCurrency, BigDecimal unitPriceRate, BigDecimal tradeNominal,
             Integer tradeMultipl, Integer tradeQty,
             BigDecimal tradeUpp, Integer tradeAggrVer, BigDecimal optionExecPrice,
-            Date tradeExecDate, Date tradeEffDate, Date tradeMattDate, Date tradeTermDate, Date tradeSettlDate) {
+            Date tradeExecDate, Date tradeEffDate, Date tradeMattDate, Date tradeTermDate, Date tradeSettlDate, Date tradeSettlDate2) {
 
         String r1 = null;
         String r2 = null;
@@ -584,6 +584,7 @@ public final class ImportValidationUtils {
                 tradeMattDate, //TRADADDTLINF_MTRTYDT
                 tradeTermDate, //TRADADDTLINF_TRMNTNDT
                 tradeSettlDate, //TRADADDTLINF_STTLMTDT
+                tradeSettlDate2, //TRADADDTLINF_STTMTDT
                 f19,
                 tradeAggrVer, //TRADADDTLINF_MSTRAGRMNTVRSN
                 f21,

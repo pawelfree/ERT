@@ -145,6 +145,13 @@ public class TransactionDetails implements Serializable {
     @TransactionDataChange
     private Date settlementDate;
     /**
+     * TRADADDTLINF_STTLMTDT, Data rozrachunku instrumentu bazowego. Długa noga SWAP
+     */    
+    @Column(name = "SETTLEMENT_DATE_2")
+    @Temporal(TemporalType.TIMESTAMP)
+    @TransactionDataChange
+    private Date settlementDate2;
+    /**
      * TRADADDTLINF_MSTRAGRMNTTP, Rodzaj umowy ramowej. [54]
      */
     @Column(name = "FRAMEWORK_AGGR_TYPE", length = 50)
@@ -189,7 +196,7 @@ public class TransactionDetails implements Serializable {
             Compression compression, BigDecimal unitPrice, CurrencyCode unitPriceCurrency, BigDecimal unitPriceRate,
             BigDecimal nominalAmount, Integer priceMultiplier, Integer contractCount, BigDecimal inAdvanceAmount,
             DeliverType delivType, Date executionDate, Date effectiveDate, Date maturityDate, Date terminationDate,
-            Date settlementDate, String frameworkAggrType, Integer frameworkAggrVer, OptionType optionType,
+            Date settlementDate, Date settlementDate2, String frameworkAggrType, Integer frameworkAggrVer, OptionType optionType,
             OptionExecStyle optionExecStyle, BigDecimal optionExecPrice) {
         super();
         this.sourceTransId = sourceTransId;
@@ -210,6 +217,7 @@ public class TransactionDetails implements Serializable {
         this.maturityDate = maturityDate;
         this.terminationDate = terminationDate;
         this.settlementDate = settlementDate;
+        this.settlementDate2 = settlementDate2;        
         this.frameworkAggrType = frameworkAggrType;
         this.frameworkAggrVer = frameworkAggrVer;
         this.optionType = optionType;
@@ -317,10 +325,18 @@ public class TransactionDetails implements Serializable {
         return settlementDate;
     }
 
+    public Date getSettlementDate2() {
+        return settlementDate2;
+    }
+        
     public void setSettlementDate(Date settlementDate) {
         this.settlementDate = settlementDate;
     }
 
+    public void setSettlementDate2(Date settlementDate2) {
+        this.settlementDate2 = settlementDate2;
+    }
+    
     public String getSourceTransId() {
         return sourceTransId;
     }
@@ -428,6 +444,7 @@ public class TransactionDetails implements Serializable {
             checkFieldsEquals(result, null, newEntity.getMaturityDate(), EventLogBuilder.EventDetailsKey.MATURITY_DATE);
             checkFieldsEquals(result, null, newEntity.getTerminationDate(), EventLogBuilder.EventDetailsKey.TERMINATION_DATE);
             checkFieldsEquals(result, null, newEntity.getSettlementDate(), EventLogBuilder.EventDetailsKey.SETTLEMENT_DATE);
+            checkFieldsEquals(result, null, newEntity.getSettlementDate2(), EventLogBuilder.EventDetailsKey.SETTLEMENT_DATE_2);
             checkFieldsEquals(result, null, newEntity.getFrameworkAggrType(), EventLogBuilder.EventDetailsKey.FRAMEWORK_AGGR_TYPE);
             checkFieldsEquals(result, null, newEntity.getFrameworkAggrVer(), EventLogBuilder.EventDetailsKey.FRAMEWORK_AGGR_VER);
             checkFieldsEquals(result, null, newEntity.getOptionType(), EventLogBuilder.EventDetailsKey.OPTION_TYPE);
@@ -451,6 +468,7 @@ public class TransactionDetails implements Serializable {
             checkFieldsEquals(result, oldEntity.getMaturityDate(), null, EventLogBuilder.EventDetailsKey.MATURITY_DATE);
             checkFieldsEquals(result, oldEntity.getTerminationDate(), null, EventLogBuilder.EventDetailsKey.TERMINATION_DATE);
             checkFieldsEquals(result, oldEntity.getSettlementDate(), null, EventLogBuilder.EventDetailsKey.SETTLEMENT_DATE);
+            checkFieldsEquals(result, oldEntity.getSettlementDate2(), null, EventLogBuilder.EventDetailsKey.SETTLEMENT_DATE_2);
             checkFieldsEquals(result, oldEntity.getFrameworkAggrType(), null, EventLogBuilder.EventDetailsKey.FRAMEWORK_AGGR_TYPE);
             checkFieldsEquals(result, oldEntity.getFrameworkAggrVer(), null, EventLogBuilder.EventDetailsKey.FRAMEWORK_AGGR_VER);
             checkFieldsEquals(result, oldEntity.getOptionType(), null, EventLogBuilder.EventDetailsKey.OPTION_TYPE);
@@ -474,6 +492,7 @@ public class TransactionDetails implements Serializable {
             checkFieldsEquals(result, oldEntity.getMaturityDate(), newEntity.getMaturityDate(), EventLogBuilder.EventDetailsKey.MATURITY_DATE);
             checkFieldsEquals(result, oldEntity.getTerminationDate(), newEntity.getTerminationDate(), EventLogBuilder.EventDetailsKey.TERMINATION_DATE);
             checkFieldsEquals(result, oldEntity.getSettlementDate(), newEntity.getSettlementDate(), EventLogBuilder.EventDetailsKey.SETTLEMENT_DATE);
+            checkFieldsEquals(result, oldEntity.getSettlementDate2(), newEntity.getSettlementDate2(), EventLogBuilder.EventDetailsKey.SETTLEMENT_DATE_2);
             checkFieldsEquals(result, oldEntity.getFrameworkAggrType(), newEntity.getFrameworkAggrType(), EventLogBuilder.EventDetailsKey.FRAMEWORK_AGGR_TYPE);
             checkFieldsEquals(result, oldEntity.getFrameworkAggrVer(), newEntity.getFrameworkAggrVer(), EventLogBuilder.EventDetailsKey.FRAMEWORK_AGGR_VER);
             checkFieldsEquals(result, oldEntity.getOptionType(), newEntity.getOptionType(), EventLogBuilder.EventDetailsKey.OPTION_TYPE);
@@ -502,6 +521,7 @@ public class TransactionDetails implements Serializable {
                 maturityDate,
                 terminationDate,
                 settlementDate,
+                settlementDate2,
                 frameworkAggrType,
                 frameworkAggrVer,
                 optionType,

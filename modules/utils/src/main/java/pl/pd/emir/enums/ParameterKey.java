@@ -20,7 +20,11 @@ public enum ParameterKey implements MsgEnum {
     INSTITUTION_ID,
     
     INSTITUTION_ID_TYPE,
-    CUSTOMERS_TO_SKIP_DURING_IMPORT;
+    CUSTOMERS_TO_SKIP_DURING_IMPORT,
+    /*
+        od kiedy rejestrować swapy z dwoma datami - czyli używać "nowy" plik z AS400
+    */
+    TWO_DATES_SWAP;
 
     @Override
     public String getMsgKey() {

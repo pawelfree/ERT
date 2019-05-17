@@ -120,10 +120,19 @@ import pl.pd.emir.kdpw.xml.builder.XmlUtils;
 @Stateless
 @Local(TransactionWriter.class)
 public class XmlTransactionWriterImpl extends XmlWriterImpl implements TransactionWriter<TransactionToRepository> {
+    
+    private Date twoDatesSwap;
 
     @Override
-    public TransactionWriterResult write(List<TransactionToRepository> list, String institutionId) {
+    public TransactionWriterResult write(List<TransactionToRepository> list, String institutionId){
 
+        try {
+            twoDatesSwap = getTwoDatesSwapParameter();
+        } catch (ParseException ex) {
+            LOGGER.error("Błąd pobierania parametru TWO_DATES_SWAP: " +  ex);
+            twoDatesSwap = null;
+        }
+        
         LOGGER.info("Write xml for transactions: {}", list.size());
         final KDPWDocument document = new KDPWDocument();
         document.setSndr(getSenderParameter());
@@ -143,7 +152,7 @@ public class XmlTransactionWriterImpl extends XmlWriterImpl implements Transacti
 
                 final TrarIns00104 trar = new TrarIns00104();
 
-                trar.setGnlInf(getGeneralInfo(transToRepo.getSndrMsgRef(), institutionId, transToRepo.getRegistable().getClient().getReported()));
+                trar.setGnlInf(getGeneralInfo(transToRepo.getSndrMsgRef(), institutionId, transToRepo.getRegistable().getClient().getReported(), date));
                 //TODO pawel a co jesli jednoczesnie modyfikacja i wycena
                 final TransactionMsgType msgType = transToRepo.getMsgType();
                 if (msgType.isNew()) {
@@ -202,8 +211,9 @@ public class XmlTransactionWriterImpl extends XmlWriterImpl implements Transacti
         return String.format("%s%s", DateUtils.formatDate(date, "yyMMdd"), newNumber);
     }
 
-    protected final GeneralInformation getGeneralInfo(final String senderMessageReference, final String institutionId, final boolean clientReported) {
+    protected final GeneralInformation getGeneralInfo(final String senderMessageReference, final String institutionId, final boolean clientReported, final Date date) {
         final GeneralInformation result = new GeneralInformation();
+        result.setRepTmStmp(XmlUtils.formatDate(getUTCDate(date), Constants.ISO_DATE_TIME_Z));
         //pojedynczy komunikat własnej transakcji puste, inaczej wypełnione
         if (clientReported) {
             result.setRptgNtty(institutionId);
@@ -440,13 +450,31 @@ public class XmlTransactionWriterImpl extends XmlWriterImpl implements Transacti
         result.setExctnDtTm(XmlUtils.formatDate(getUTCDate(transactionDetails.getExecutionDate()), Constants.ISO_DATE_TIME_Z));
         result.setFctvDt(XmlUtils.formatDate(transactionDetails.getEffectiveDate(), Constants.ISO_DATE));
         result.setMtrtyDt(XmlUtils.formatDate(transactionDetails.getMaturityDate(), Constants.ISO_DATE));
-        result.getSttlmDt().add(XmlUtils.formatDate(transactionDetails.getSettlementDate(), Constants.ISO_DATE));
+        
+        String assetClass = transaction.getContractDetailedData().getContractData().getProd1Code(); 
+        String contractType = transaction.getContractDetailedData().getContractData().getProd2Code();
+       
+        if ("CU".equalsIgnoreCase(assetClass) && "SW".equalsIgnoreCase(contractType)) {    
+            // tylko dla SWAP
+            if (null != twoDatesSwap && transactionDetails.getExecutionDate().after(twoDatesSwap)) {
+                //jezeli transakcja po dacie XXX to raportujemy obie daty (krotka i dluga noga) 
+                result.getSttlmDt().add(XmlUtils.formatDate(transactionDetails.getSettlementDate(), Constants.ISO_DATE));
+                result.getSttlmDt().add(XmlUtils.formatDate(transactionDetails.getSettlementDate2(), Constants.ISO_DATE));
+            }
+            else {
+                //jezeli transakcja przed data XXX to raportujemy tylko date settlement_date_2 (tylko dluga noga) lub parametr nie jest ustawiony 
+                result.getSttlmDt().add(XmlUtils.formatDate(transactionDetails.getSettlementDate2(), Constants.ISO_DATE));
+            }
+        }
+        else {
+            // dla nie SWAP
+            result.getSttlmDt().add(XmlUtils.formatDate(transactionDetails.getSettlementDate(), Constants.ISO_DATE));
+        }
         result.setMstrAgrmt(getNewMstrAgrmt(transaction.getTransactionDetails()));
         result.setTradConf(getTradConf(transaction.getRiskReduce()));
         result.setTradClr(getNewTradClr(transaction.getTransactionClearing()));
         //TODO a to ciekawe - return new TradeAdditionalInformationValidator().nullOnEmpty(result);
         
-        String assetClass = transaction.getContractDetailedData().getContractData().getProd1Code(); 
         if (assetClass.equalsIgnoreCase("CU")) {
             result.setCcy(getNewCcy(transaction.getCurrencyTradeData()));
         }

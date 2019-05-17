@@ -39,7 +39,7 @@ public class TransactionCsvParser extends BaseCsvParser<Transaction> {
     protected transient TransactionParty transactionPartyField4;
 
     protected transient Date transactionDateField1,
-            tradeExecDateField49, tradeEffDateField50, tradeMattDateField51, tradeTermDateField52, tradeSettlDateField53,
+            tradeExecDateField49, tradeEffDateField50, tradeMattDateField51, tradeTermDateField52, tradeSettlDateField53, tradeSettlDateField54,
             riskConfDateField56,
             settlementDateField60,
             delivStartField80, delivEndField81;
@@ -87,15 +87,15 @@ public class TransactionCsvParser extends BaseCsvParser<Transaction> {
                     tradeNominalField44, tradeMultiplField45, tradeQtyField46,
                     tradeUppField47, tradeAggrVerField55, optionExecPriceField87,
                     tradeExecDateField49, tradeEffDateField50, tradeMattDateField51,
-                    tradeTermDateField52, tradeSettlDateField53);
-            RiskReduce f10 = ImportValidationUtils.validateRiskReduce(Arrays.copyOfRange(data, 56, 58), null, importResult, riskConfDateField56); //ryzyko 4.4
-            TransactionClearing f11 = ImportValidationUtils.validateTransactionClearing(Arrays.copyOfRange(data, 58, 63), null, importResult, settlementDateField60); //rozliczanie 4.5
-            PercentageRateData f12 = ImportValidationUtils.validatePercentageRate(Arrays.copyOfRange(data, 63, 71), null,
+                    tradeTermDateField52, tradeSettlDateField53,tradeSettlDateField54);
+            RiskReduce f10 = ImportValidationUtils.validateRiskReduce(Arrays.copyOfRange(data, 57, 59), null, importResult, riskConfDateField56); //ryzyko 4.4
+            TransactionClearing f11 = ImportValidationUtils.validateTransactionClearing(Arrays.copyOfRange(data, 59, 64), null, importResult, settlementDateField60); //rozliczanie 4.5
+            PercentageRateData f12 = ImportValidationUtils.validatePercentageRate(Arrays.copyOfRange(data, 64, 72), null,
                     importResult, //stopa procent.
                     percLeg1Field63, percLeg2Field64);
-            CurrencyTradeData f13 = ImportValidationUtils.validateCurrencyTrade(Arrays.copyOfRange(data, 71, 75), null, importResult,
+            CurrencyTradeData f13 = ImportValidationUtils.validateCurrencyTrade(Arrays.copyOfRange(data, 72, 76), null, importResult,
                     currRate1Field72, currRate2Field73); //transakcje walut.
-            CommodityTradeData f14 = ImportValidationUtils.validateCommodityTrade(Arrays.copyOfRange(data, 75, 85), null, importResult,
+            CommodityTradeData f14 = ImportValidationUtils.validateCommodityTrade(Arrays.copyOfRange(data, 76, 86), null, importResult,
                     delivStartField80, delivEndField81, delivQtyField83, delivPriceField84);
 
             //walidacja zależności pomiędzy ceną a symbolem waluty
@@ -164,6 +164,7 @@ public class TransactionCsvParser extends BaseCsvParser<Transaction> {
         Date r51 = null;
         Date r52 = null;
         Date r53 = null;
+        Date r54 = null;
         Date r56 = null;
         Date r60 = null;
         Date r80 = null;
@@ -208,14 +209,15 @@ public class TransactionCsvParser extends BaseCsvParser<Transaction> {
         tradeMattDateField51 = ImportValidationUtils.validateDateField(data[51], r51, DateUtils.ISO_DATE_TIME_FORMAT, false, "TRADADDTLINF_MTRTYDT", "52", importResult);
         tradeTermDateField52 = ImportValidationUtils.validateDateField(data[52], r52, DateUtils.ISO_DATE_TIME_FORMAT, "C".equalsIgnoreCase(data[2]), "TRADADDTLINF_TRMNTNDT", "53", importResult);
         tradeSettlDateField53 = ImportValidationUtils.validateDateField(data[53], r53, DateUtils.ISO_DATE_TIME_FORMAT, false, "TRADADDTLINF_STTLMTDT", "54", importResult);
+        tradeSettlDateField54 = ImportValidationUtils.validateDateField(data[54], r54, DateUtils.ISO_DATE_TIME_FORMAT, false, "TRADADDTLINF_STTLMTDT_2", "55", importResult);
         //TODO usunac obejscie problemu AS
-        riskConfDateField56 = ImportValidationUtils.validateDateField(data[56], r56, DateUtils.ISO_DATE_TIME_FORMAT, false, "RSKMTGTN_CNFRMTNDTTM", "57", importResult);
+        riskConfDateField56 = ImportValidationUtils.validateDateField(data[57], r56, DateUtils.ISO_DATE_TIME_FORMAT, false, "RSKMTGTN_CNFRMTNDTTM", "57", importResult);
         if (Objects.nonNull(riskConfDateField56) && riskConfDateField56.before(firstMay2017)) {
             riskConfDateField56 = firstMay2017;
         }
-        settlementDateField60 = ImportValidationUtils.validateDateField(data[60], r60, DateUtils.ISO_DATE_TIME_FORMAT, false, "CLRGINF_CLRDTTM", "61", importResult);
-        delivStartField80 = ImportValidationUtils.validateDateField(data[80], r80, DateUtils.ISO_DATE_TIME_FORMAT, false, "CMMDTYTRAD_DLVRYSTARTDTTM", "81", importResult);
-        delivEndField81 = ImportValidationUtils.validateDateField(data[81], r81, DateUtils.ISO_DATE_TIME_FORMAT, false, "CMMDTYTRAD_DLVRYENDDTTM", "82", importResult);
+        settlementDateField60 = ImportValidationUtils.validateDateField(data[61], r60, DateUtils.ISO_DATE_TIME_FORMAT, false, "CLRGINF_CLRDTTM", "61", importResult);
+        delivStartField80 = ImportValidationUtils.validateDateField(data[81], r80, DateUtils.ISO_DATE_TIME_FORMAT, false, "CMMDTYTRAD_DLVRYSTARTDTTM", "81", importResult);
+        delivEndField81 = ImportValidationUtils.validateDateField(data[82], r81, DateUtils.ISO_DATE_TIME_FORMAT, false, "CMMDTYTRAD_DLVRYENDDTTM", "82", importResult);
 
         return !importResult.hasErrors();
     }

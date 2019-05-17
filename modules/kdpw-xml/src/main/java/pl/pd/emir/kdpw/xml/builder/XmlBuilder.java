@@ -30,17 +30,10 @@ public final class XmlBuilder {
 
     private static final Class[] BUILDER_CLASSES = new Class[]{
         kdpw.xsd.trar_ins_001.KDPWDocument.class,
-        kdpw.xsd.trar_ins_002.KDPWDocument.class,
-        kdpw.xsd.trar_ins_003.KDPWDocument.class,
-        kdpw.xsd.trar_ins_004.KDPWDocument.class,
-        kdpw.xsd.trar_ins_005.KDPWDocument.class,
-        kdpw.xsd.trar_ins_006.KDPWDocument.class,
         kdpw.xsd.trar_ntf_001.KDPWDocument.class,
         kdpw.xsd.trar_rcn_001.KDPWDocument.class,
         kdpw.xsd.trar_rqs_001.KDPWDocument.class,
         kdpw.xsd.trar_sts_001.KDPWDocument.class,
-        kdpw.xsd.trar_sts_002.KDPWDocument.class,
-        kdpw.xsd.trar_sts_003.KDPWDocument.class,
         kdpw.xsd.trar_sts_001_02.KDPWDocument.class
     };
 

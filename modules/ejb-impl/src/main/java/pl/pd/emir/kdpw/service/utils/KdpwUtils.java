@@ -3,14 +3,12 @@ package pl.pd.emir.kdpw.service.utils;
 import pl.pd.emir.kdpw.api.ChangeRegister;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
-import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 import java.util.Properties;
 import pl.pd.emir.admin.MultiNumberGenerator;
-import pl.pd.emir.commons.Constants;
 import pl.pd.emir.commons.DateUtils;
 import pl.pd.emir.commons.PropertyUtils;
 import pl.pd.emir.entity.Client;
@@ -30,16 +28,6 @@ public class KdpwUtils {
     private static final String PROPERTY_FILE = "kdpw-details.properties";
 
     private static final Properties PROPERTIES = PropertyUtils.getProperties(KdpwUtils.class, PROPERTY_FILE);
-
-    public static Date getEligDate(final String dateAsString) {
-        Date result = null;
-        try {
-            result = DateUtils.getDateFromString(dateAsString, Constants.ISO_DATE);
-        } catch (ParseException ex) {
-            LOGGER.error("Cannot parse value: " + dateAsString + " to date (" + Constants.ISO_DATE + ")");
-        }
-        return result;
-    }
 
     /**
      * Zwraca numer wygenerowanego pliku do KDPW w fomracie yyMMdd + kolejny numer 6-cyfrowy w dniu.
