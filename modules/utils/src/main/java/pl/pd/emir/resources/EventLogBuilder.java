@@ -816,9 +816,6 @@ public class EventLogBuilder {
         INADVANCECURRENCY,
         OPTIONEXECPRICETYPE,
         OPTIONEXECPRICECCY,
-        SOURCEDEALID,
-        SOURCEDEALTYPE,
-        SOURCECONTRACTTYPE,
         ADDITIONALUNITPRICECURRENCY,
         // ==================== Użytkownik ====================
         INITLMRGNPSTD,

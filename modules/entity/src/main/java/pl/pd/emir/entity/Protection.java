@@ -306,7 +306,7 @@ public class Protection extends Extract implements Historable<Protection>, Logab
             checkFieldsEquals(result, oldEntity.getVartnMrgnPstd(), null, EventLogBuilder.EventDetailsKey.VARTNMRGNPSTD);
             checkFieldsEquals(result, oldEntity.getVartnMrgnRcvd(), null, EventLogBuilder.EventDetailsKey.VARTNMRGNRCVD);
             checkFieldsEquals(result, oldEntity.getXcssCollPstd(), null, EventLogBuilder.EventDetailsKey.XCSSCOLLPSTD);
-            checkFieldsEquals(result, oldEntity.getXcssCollRcvd(), null, EventLogBuilder.EventDetailsKey.XCSSCOLLPSTD);            
+            checkFieldsEquals(result, oldEntity.getXcssCollRcvd(), null, EventLogBuilder.EventDetailsKey.XCSSCOLLRCVD);            
         } else {
             checkFieldsEquals(result, oldEntity.getProtection(), newEntity.getProtection(), EventLogBuilder.EventDetailsKey.PROTECTION);
             checkFieldsEquals(result, oldEntity.getWalletProtection(), newEntity.getWalletProtection(), EventLogBuilder.EventDetailsKey.WALLET_PROTECTION);
@@ -319,7 +319,7 @@ public class Protection extends Extract implements Historable<Protection>, Logab
             checkFieldsEquals(result, oldEntity.getVartnMrgnPstd(), newEntity.getVartnMrgnPstd(), EventLogBuilder.EventDetailsKey.VARTNMRGNPSTD);
             checkFieldsEquals(result, oldEntity.getVartnMrgnRcvd(), newEntity.getVartnMrgnRcvd(), EventLogBuilder.EventDetailsKey.VARTNMRGNRCVD);
             checkFieldsEquals(result, oldEntity.getXcssCollPstd(), newEntity.getXcssCollPstd(), EventLogBuilder.EventDetailsKey.XCSSCOLLPSTD);
-            checkFieldsEquals(result, oldEntity.getXcssCollRcvd(), newEntity.getXcssCollRcvd(), EventLogBuilder.EventDetailsKey.XCSSCOLLPSTD);            
+            checkFieldsEquals(result, oldEntity.getXcssCollRcvd(), newEntity.getXcssCollRcvd(), EventLogBuilder.EventDetailsKey.XCSSCOLLRCVD);            
         }
     }
 
