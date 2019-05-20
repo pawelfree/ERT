@@ -38,8 +38,8 @@ public class TransactionCsvParserTmb extends TransactionCsvParser {
         //walidacja pod kontem błędów
         if (validateErrors(importResult, data)) {
 
-            String[] transactionDtls = ArrayUtils.addAll(Arrays.copyOfRange(data, 28, 31), Arrays.copyOfRange(data, 39, 56)); //szczegoly transakcji
-            transactionDtls = ArrayUtils.addAll(transactionDtls, Arrays.copyOfRange(data, 85, 88)); //szczegoly transakcji
+            String[] transactionDtls = ArrayUtils.addAll(Arrays.copyOfRange(data, 28, 31), Arrays.copyOfRange(data, 39, 57)); //szczegoly transakcji
+            transactionDtls = ArrayUtils.addAll(transactionDtls, Arrays.copyOfRange(data, 86, 89)); //szczegoly transakcji
 
             //Wczytanie wartości z szablonu transakcji
             OriginalStatus r3 = null; //STATUS_TR

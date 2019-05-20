@@ -34,7 +34,7 @@ import static pl.pd.emir.imports.utils.ImportValidationUtils.validateEnumField;
 
 public class TransactionCsvParser extends BaseCsvParser<Transaction> {
 
-    protected static final int COLUMN_COUNT = 88;
+    protected static final int COLUMN_COUNT = 89;
 
     protected transient TransactionParty transactionPartyField4;
 
@@ -69,8 +69,8 @@ public class TransactionCsvParser extends BaseCsvParser<Transaction> {
         //walidacja pod kontem błędów
         if (validateErrors(importResult, data)) {
 
-            String[] transactionDtls = ArrayUtils.addAll(Arrays.copyOfRange(data, 28, 31), Arrays.copyOfRange(data, 39, 56)); //szczegoly transakcji
-            transactionDtls = ArrayUtils.addAll(transactionDtls, Arrays.copyOfRange(data, 85, 88)); //szczegoly transakcji
+            String[] transactionDtls = ArrayUtils.addAll(Arrays.copyOfRange(data, 28, 31), Arrays.copyOfRange(data, 39, 57)); //szczegoly transakcji
+            transactionDtls = ArrayUtils.addAll(transactionDtls, Arrays.copyOfRange(data, 86, 89)); //szczegoly transakcji
 
             //walidacja pod kontem ostrzeżeń
             String f1 = ImportValidationUtils.validateStringField(data[0], null, 50, "ID_TR", true, "1", importResult); //ID_TR
@@ -179,14 +179,14 @@ public class TransactionCsvParser extends BaseCsvParser<Transaction> {
         tradeMultiplField45 = ImportValidationUtils.validateIntegerField(data[45], r45, false, "TRADADDTLINF_PRICMLTPLR", "46", importResult);
         tradeQtyField46 = ImportValidationUtils.validateIntegerField(data[46], r46, true, "TRADADDTLINF_QTY", "47", importResult);
         tradeUppField47 = ImportValidationUtils.validateAmountField(data[47], 12, 2, r47, false, true, "TRADADDTLINF_UPPMT", "48", importResult);
-        tradeAggrVerField55 = ImportValidationUtils.validateIntegerField(data[55], r55, false, "TRADADDTLINF_MSTRAGRMNTVRSN", "56", importResult);
-        percLeg1Field63 = ImportValidationUtils.validateAmountField(data[63], 25, 5, r63, false, true, "IRTRAD_FXDRATELG1", "64", importResult);
-        percLeg2Field64 = ImportValidationUtils.validateAmountField(data[64], 25, 5, r64, false, true, "IRTRAD_FXDRATELG2", "65", importResult);
-        currRate1Field72 = ImportValidationUtils.validateAmountField(data[72], 15, 5, r72, false, true, "FXTRAD_XCHGRATE1", "73", importResult);
-        currRate2Field73 = ImportValidationUtils.validateAmountField(data[73], 15, 5, r73, false, true, "FXTRAD_FRWRDXCHGRATE", "74", importResult);
-        delivQtyField83 = ImportValidationUtils.validateAmountField(data[83], 12, 2, r83, false, false, "CMMDTYTRAD_QTY", "84", importResult);
-        delivPriceField84 = ImportValidationUtils.validateAmountField(data[84], 12, 2, r84, false, false, "CMMDTYTRAD_PRIC", "85", importResult);
-        optionExecPriceField87 = ImportValidationUtils.validateAmountField(data[87], 12, 2, r87, false, false, "OPTNTRAD_STRKPRIC", "88", importResult);
+        tradeAggrVerField55 = ImportValidationUtils.validateIntegerField(data[56], r55, false, "TRADADDTLINF_MSTRAGRMNTVRSN", "57", importResult);
+        percLeg1Field63 = ImportValidationUtils.validateAmountField(data[64], 25, 5, r63, false, true, "IRTRAD_FXDRATELG1", "65", importResult);
+        percLeg2Field64 = ImportValidationUtils.validateAmountField(data[65], 25, 5, r64, false, true, "IRTRAD_FXDRATELG2", "66", importResult);
+        currRate1Field72 = ImportValidationUtils.validateAmountField(data[73], 15, 5, r72, false, true, "FXTRAD_XCHGRATE1", "74", importResult);
+        currRate2Field73 = ImportValidationUtils.validateAmountField(data[74], 15, 5, r73, false, true, "FXTRAD_FRWRDXCHGRATE", "75", importResult);
+        delivQtyField83 = ImportValidationUtils.validateAmountField(data[84], 12, 2, r83, false, false, "CMMDTYTRAD_QTY", "85", importResult);
+        delivPriceField84 = ImportValidationUtils.validateAmountField(data[85], 12, 2, r84, false, false, "CMMDTYTRAD_PRIC", "86", importResult);
+        optionExecPriceField87 = ImportValidationUtils.validateAmountField(data[88], 12, 2, r87, false, false, "OPTNTRAD_STRKPRIC", "89", importResult);
 
         
         //kontrola dat

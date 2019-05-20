@@ -462,8 +462,14 @@ public class XmlTransactionWriterImpl extends XmlWriterImpl implements Transacti
                 result.getSttlmDt().add(XmlUtils.formatDate(transactionDetails.getSettlementDate2(), Constants.ISO_DATE));
             }
             else {
-                //jezeli transakcja przed data XXX to raportujemy tylko date settlement_date_2 (tylko dluga noga) lub parametr nie jest ustawiony 
-                result.getSttlmDt().add(XmlUtils.formatDate(transactionDetails.getSettlementDate2(), Constants.ISO_DATE));
+                //jezeli transakcja przed data XXX to raportujemy tylko date settlement_date_2 (tylko dluga noga) lub parametr nie jest ustawiony
+                Date today, s1;
+                today = DateUtils.getDayBegin(new Date());
+                s1 = DateUtils.getDayBegin(transactionDetails.getSettlementDate());      
+                if (today.after(s1))
+                    result.getSttlmDt().add(XmlUtils.formatDate(transactionDetails.getSettlementDate2(), Constants.ISO_DATE));
+                else 
+                    result.getSttlmDt().add(XmlUtils.formatDate(transactionDetails.getSettlementDate(), Constants.ISO_DATE));
             }
         }
         else {

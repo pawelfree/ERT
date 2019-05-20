@@ -61,7 +61,7 @@ public class ImportFaillogUtils {
          */
         EMPTY_FILE,
         /**
-         * Nieprawidłowa struktura pliku - niepoprawna ilość kolumn dla wiersza: %s.
+         * Nieprawidłowa struktura pliku - niepoprawna liczba kolumn dla wiersza: %s.
          */
         INVALID_COLUMN_COUNT_ERROR,
         /**
