@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Objects;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
+import org.primefaces.PrimeFaces;
 import pl.pd.emir.bean.AbstractListBean;
 import pl.pd.emir.bean.BeanHelper;
 import pl.pd.emir.clientutils.MessageDialogType;
@@ -18,7 +19,6 @@ import pl.pd.emir.kdpw.api.KdpwTransactionManager;
 import pl.pd.emir.kdpw.api.ResultItem;
 import pl.pd.emir.kdpw.api.SendingResult;
 import pl.pd.emir.register.KdpwListManager;
-import org.primefaces.context.RequestContext;
 
 public abstract class AbstractKdpwListBean<T extends Selectable<Long>, M extends KdpwListManager<T>, C extends TransactionToKdpwSC> extends AbstractListBean<T, M, C> {
 
@@ -269,14 +269,14 @@ public abstract class AbstractKdpwListBean<T extends Selectable<Long>, M extends
 
     public void showDialog(final String dialogId, final String errorDialog) {
         if (isAnySelected()) {
-            RequestContext.getCurrentInstance().execute("PF('" + dialogId + "').show()");
+            PrimeFaces.current().executeScript("PF('" + dialogId + "').show()");
         } else {
-            RequestContext.getCurrentInstance().execute("PF('" + errorDialog + "').show()");
+            PrimeFaces.current().executeScript("PF('" + errorDialog + "').show()");
         }
     }
 
     public void hideDialog(final String dialogId) {
-        RequestContext.getCurrentInstance().execute("PF('" + dialogId + "').hide()");
+        PrimeFaces.current().executeScript("PF('" + dialogId + "').hide()");
     }
 
     protected TransactionToKdpwSC storeCriteria(TransactionToKdpwSC criteria) {

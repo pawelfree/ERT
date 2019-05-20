@@ -7,7 +7,7 @@ import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import org.apache.commons.io.FilenameUtils;
-import org.primefaces.context.RequestContext;
+import org.primefaces.PrimeFaces;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import pl.pd.emir.clientutils.fileupload.AbstractFileImportBean;
@@ -61,11 +61,11 @@ public class KdpwMessageBean extends AbstractFileImportBean {
     }
 
     private void showDialog(final String dialogId) {
-        RequestContext.getCurrentInstance().execute("PF('" + dialogId + "').show()");
+        PrimeFaces.current().executeScript("PF('" + dialogId + "').show()");
     }
 
     private void hideDialog(final String dialogId) {
-        RequestContext.getCurrentInstance().execute("PF('"+ dialogId + "').hide()");
+        PrimeFaces.current().executeScript("PF('"+ dialogId + "').hide()");
     }
 
     protected final void processImport() {

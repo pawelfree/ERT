@@ -7,6 +7,7 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.SessionScoped;
 import javax.faces.model.SelectItem;
+import org.primefaces.PrimeFaces;
 import pl.pd.emir.bean.BeanHelper;
 import pl.pd.emir.commons.StringUtil;
 import pl.pd.emir.embeddable.BusinessEntity;
@@ -19,7 +20,6 @@ import pl.pd.emir.enums.ValidationStatus;
 import pl.pd.emir.register.ClientManager;
 import pl.pd.emir.register.TransactionManager;
 import pl.pd.emir.resources.EventLogBuilder;
-import org.primefaces.context.RequestContext;
 import pl.pd.emir.admin.EventLogManager;
 import pl.pd.emir.enums.CounterpartyIndustry;
 
@@ -153,24 +153,24 @@ public class ClientFormBean extends AbstractFormBean<Client> {
     }
 
     public void saveStep1() {
-        RequestContext context = RequestContext.getCurrentInstance();
+        PrimeFaces context = PrimeFaces.current();
         if (idNotUniquenessClient() && getFormType().equals(FormType.New)) {
             infoWindow = BeanHelper.getMessage("register.client.duplicateIdOriginal");
-            context.execute("PF('confirmDialogError').show();");
+            context.executeScript("PF('confirmDialogError').show();");
             return;
         }
         if (BeanHelper.isFacesMessage(FacesMessage.SEVERITY_WARN.getOrdinal())) {
             getEntity().setValidationStatus(ValidationStatus.INCOMPLETE);
             if (clientHasTransaction(getEntity()) && getFormType().equals(FormType.Edit)) {
                 infoWindow = BeanHelper.getMessage("register.client.clientMustBeValid");
-                context.execute("PF('confirmDialogError').show();");
+                context.executeScript("PF('confirmDialogError').show();");
             } else {
-                context.execute("PF('confirmDialog').show();");
+                context.executeScript("PF('confirmDialog').show();");
             }
         } else {
-            context.execute("document.getElementById('messages_container').style.visibility = 'hidden';");
+            context.executeScript("document.getElementById('messages_container').style.visibility = 'hidden';");
             getEntity().setValidationStatus(ValidationStatus.VALID);
-            context.execute("PF('confirmDialogOk').show();");
+            context.executeScript("PF('confirmDialogOk').show();");
         }
     }
 

@@ -293,7 +293,7 @@ public class Protection extends Extract implements Historable<Protection>, Logab
             checkFieldsEquals(result, null, newEntity.getVartnMrgnPstd(), EventLogBuilder.EventDetailsKey.VARTNMRGNPSTD);
             checkFieldsEquals(result, null, newEntity.getVartnMrgnRcvd(), EventLogBuilder.EventDetailsKey.VARTNMRGNRCVD);
             checkFieldsEquals(result, null, newEntity.getXcssCollPstd(), EventLogBuilder.EventDetailsKey.XCSSCOLLPSTD);
-            checkFieldsEquals(result, null, newEntity.getXcssCollRcvd(), EventLogBuilder.EventDetailsKey.XCSSCOLLPSTD);
+            checkFieldsEquals(result, null, newEntity.getXcssCollRcvd(), EventLogBuilder.EventDetailsKey.XCSSCOLLRCVD);
         } else if (newEntity == null) {
             checkFieldsEquals(result, oldEntity.getProtection(), null, EventLogBuilder.EventDetailsKey.PROTECTION);
             checkFieldsEquals(result, oldEntity.getWalletProtection(), null, EventLogBuilder.EventDetailsKey.WALLET_PROTECTION);

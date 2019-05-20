@@ -9,6 +9,7 @@ import java.util.stream.Collectors;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
+import org.primefaces.PrimeFaces;
 import pl.pd.emir.embeddable.TransactionDetails;
 import pl.pd.emir.entity.Transaction;
 import pl.pd.emir.register.TransactionManager;
@@ -16,7 +17,6 @@ import pl.pd.emir.reports.enums.ReportType;
 import pl.pd.emir.reports.model.ParametersWrapper;
 import pl.pd.emir.reports.model.RegistrationTransactionWrapper;
 import pl.pd.emir.reports.model.ReportData;
-import org.primefaces.context.RequestContext;
 import pl.pd.emir.enums.Instrument;
 import pl.pd.emir.report.enums.InstrumentType;
 import pl.pd.emir.reports.model.EucTradeDataWrapper;
@@ -148,8 +148,7 @@ public class TransactionListBTMBean extends AbstractTransactionListBaseBean {
             getService().deleteById(id);
             getAction();
         } else {
-            RequestContext context = RequestContext.getCurrentInstance();
-            context.execute("PF('confirmDialogError').show();");
+            PrimeFaces.current().executeScript("PF('confirmDialogError').show();");
         }
         return null;
     }

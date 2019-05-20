@@ -11,6 +11,7 @@ import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.faces.model.SelectItem;
+import org.primefaces.PrimeFaces;
 import pl.pd.emir.admin.ParameterManager;
 import pl.pd.emir.bean.BeanHelper;
 import pl.pd.emir.commons.DateUtils;
@@ -52,7 +53,6 @@ import pl.pd.emir.register.ClientManager;
 import pl.pd.emir.register.ProtectionManager;
 import pl.pd.emir.register.TransactionManager;
 import pl.pd.emir.register.ValuationManager;
-import org.primefaces.context.RequestContext;
 import pl.pd.emir.enums.UnderlyingType;
 
 public class TransactionFormBean extends AbstractFormBean<Transaction> {
@@ -200,16 +200,16 @@ public class TransactionFormBean extends AbstractFormBean<Transaction> {
     }
 
     public void saveStep1() {
-        RequestContext context = RequestContext.getCurrentInstance();
+        PrimeFaces context = PrimeFaces.current();
         if (StringUtil.isEmpty(getEntity().getClient().getOriginalId())) { //sprawdzenie obligatoryjności pola ze względu na klucz obcy
             infoWindow = BeanHelper.getMessage("register.transaction.emptyClientStatus");
-            context.execute("PF('confirmDialogError').show();");
+            context.executeScript("PF('confirmDialogError').show();");
         } else if (checkExistsClient(getEntity().getClient().getOriginalId()) == false) { //sprawdzenie czy istnieje klient o podanym id
             infoWindow = BeanHelper.getMessage("register.transaction.notExistsClient");
-            context.execute("PF('confirmDialogError').show();");
+            context.executeScript("PF('confirmDialogError').show();");
         } else if ((getFormType() != FormType.Edit) && idNotUniquenessTransaction()) { //sprawdzenie unikalności transakcji ze względu na originalId
             infoWindow = BeanHelper.getMessage("register.transaction.uniquenessOriginaIdAndTransactionDate");
-            context.execute("PF('confirmDialogError').show();");
+            context.executeScript("PF('confirmDialogError').show();");
         } else if (!isExistsDuplicate()) {
             if (FormType.New.equals(getFormType())) { //rejestracja nowej transakcji
                 getEntity().setDateSupply(new Date());
@@ -245,10 +245,10 @@ public class TransactionFormBean extends AbstractFormBean<Transaction> {
             //Określenie statusu walidacji
             if (BeanHelper.isFacesMessage(FacesMessage.SEVERITY_WARN.getOrdinal())) {
                 getEntity().setValidationStatus(ValidationStatus.INCOMPLETE);
-                context.execute("PF('confirmDialogIncomplete').show();");
+                context.executeScript("PF('confirmDialogIncomplete').show();");
             } else {
                 getEntity().setValidationStatus(ValidationStatus.VALID);
-                context.execute("PF('confirmDialogOk').show();");
+                context.executeScript("PF('confirmDialogOk').show();");
             }
         }
 
@@ -354,18 +354,18 @@ public class TransactionFormBean extends AbstractFormBean<Transaction> {
         if (getEntity().getProcessingStatus() != null) {
             if (getEntity().getProcessingStatus().equals(ProcessingStatus.NEW)
                     || getEntity().getProcessingStatus().equals(ProcessingStatus.SENT)) {
-                RequestContext context = RequestContext.getCurrentInstance();
+                PrimeFaces context = PrimeFaces.current();
                 String message, dialogName;
                 dialogName = isMutation ? "PF('confirmDialogAddMutation').show();" : "PF('confirmDialogAddValuation').show();";
                 if (getEntity().getProcessingStatus().equals(ProcessingStatus.NEW)) {
                     message = isMutation ? "register.transaction.addMutation.exceptionNew" : "register.transaction.addValuation.exceptionNew";
                     infoWindow = BeanHelper.getMessage(message);
-                    context.execute(dialogName);
+                    context.executeScript(dialogName);
                 }
                 if (getEntity().getProcessingStatus().equals(ProcessingStatus.SENT)) {
                     message = isMutation ? "register.transaction.addMutation.exceptionSent" : "register.transaction.addValuation.exceptionSent";
                     infoWindow = BeanHelper.getMessage(message);
-                    context.execute(dialogName);
+                    context.executeScript(dialogName);
                 }
             } else if (isMutation) {
                 addMutationStep2();
@@ -411,19 +411,19 @@ public class TransactionFormBean extends AbstractFormBean<Transaction> {
     }
 
     protected boolean isExistsDuplicate() {
-        RequestContext context = RequestContext.getCurrentInstance();
+        PrimeFaces context = PrimeFaces.current();
         if (StringUtil.isNotEmpty(getEntity().getOriginalId())) {
             if (((getFormType().equals(FormType.New) && transactionManager.isExistsItemYesterday(getEntity().getId(), getEntity().getOriginalId()))
                     || (getFormType().equals(FormType.Edit) && transactionManager.isNewerVersion(getEntity())))
                     && !mutation) {
                 infoWindow = BeanHelper.getMessage("register.errorDuplicate");
-                context.execute("PF('confirmDialogError').show();");
+                context.executeScript("PF('confirmDialogError').show();");
                 return true;
             }
             //sprawdzenie czy istniej późniejsza/ młodsza mutacja
             if (mutation && transactionManager.isYoungerMutation(getEntity().getOriginalId(), getEntity().getTransactionDate(), getEntity().getExtractVersion())) {
                 infoWindow = BeanHelper.getMessage("register.errorDuplicateMutation");
-                context.execute("PF('confirmDialogError').show();");
+                context.executeScript("PF('confirmDialogError').show();");
                 return true;
             }
         }
