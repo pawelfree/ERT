@@ -451,31 +451,26 @@ public class XmlTransactionWriterImpl extends XmlWriterImpl implements Transacti
         result.setFctvDt(XmlUtils.formatDate(transactionDetails.getEffectiveDate(), Constants.ISO_DATE));
         result.setMtrtyDt(XmlUtils.formatDate(transactionDetails.getMaturityDate(), Constants.ISO_DATE));
         
+        //TODO zmodyfikować jak juz nie bedzie starych (tj z data przed twoDatesSwap) SWAPOW - dwa swapy nowa transakcja
         String assetClass = transaction.getContractDetailedData().getContractData().getProd1Code(); 
         String contractType = transaction.getContractDetailedData().getContractData().getProd2Code();
        
-        if ("CU".equalsIgnoreCase(assetClass) && "SW".equalsIgnoreCase(contractType)) {    
+        if (null != twoDatesSwap && "CU".equalsIgnoreCase(assetClass) && "SW".equalsIgnoreCase(contractType)) {    
             // tylko dla SWAP
-            if (null != twoDatesSwap && transactionDetails.getExecutionDate().after(twoDatesSwap)) {
-                //jezeli transakcja po dacie XXX to raportujemy obie daty (krotka i dluga noga) 
+            if (transactionDetails.getExecutionDate().after(twoDatesSwap)) {
+                //jezeli transakcja po dacie XXX to raportujemy obie daty
                 result.getSttlmDt().add(XmlUtils.formatDate(transactionDetails.getSettlementDate(), Constants.ISO_DATE));
                 result.getSttlmDt().add(XmlUtils.formatDate(transactionDetails.getSettlementDate2(), Constants.ISO_DATE));
             }
-            else {
-                //jezeli transakcja przed data XXX to raportujemy tylko date settlement_date_2 (tylko dluga noga) lub parametr nie jest ustawiony
-                Date today, s1;
-                today = DateUtils.getDayBegin(new Date());
-                s1 = DateUtils.getDayBegin(transactionDetails.getSettlementDate());      
-                if (today.after(s1))
-                    result.getSttlmDt().add(XmlUtils.formatDate(transactionDetails.getSettlementDate2(), Constants.ISO_DATE));
-                else 
-                    result.getSttlmDt().add(XmlUtils.formatDate(transactionDetails.getSettlementDate(), Constants.ISO_DATE));
+            else {   
+                result.getSttlmDt().add(XmlUtils.formatDate(transactionDetails.getSettlementDate(), Constants.ISO_DATE));
             }
         }
         else {
             // dla nie SWAP
             result.getSttlmDt().add(XmlUtils.formatDate(transactionDetails.getSettlementDate(), Constants.ISO_DATE));
-        }
+        }    
+        
         result.setMstrAgrmt(getNewMstrAgrmt(transaction.getTransactionDetails()));
         result.setTradConf(getTradConf(transaction.getRiskReduce()));
         result.setTradClr(getNewTradClr(transaction.getTransactionClearing()));
@@ -515,13 +510,38 @@ public class XmlTransactionWriterImpl extends XmlWriterImpl implements Transacti
         result.setExctnDtTm(XmlUtils.formatDate(getUTCDate(transactionDetails.getExecutionDate()), Constants.ISO_DATE_TIME_Z));
         result.setFctvDt(XmlUtils.formatDate(transactionDetails.getEffectiveDate(), Constants.ISO_DATE));
         result.setMtrtyDt(XmlUtils.formatDate(transactionDetails.getMaturityDate(), Constants.ISO_DATE));
-        result.getSttlmDt().add(XmlUtils.formatDate(transactionDetails.getSettlementDate(), Constants.ISO_DATE));
         result.setMstrAgrmt(getNewMstrAgrmt(transaction.getTransactionDetails()));
         result.setTradConf(getTradConf(transaction.getRiskReduce()));
         result.setTradClr(getModTradClr(transaction.getTransactionClearing()));
         //TODO a to ciekawe - return new TradeAdditionalInformationValidator().nullOnEmpty(result);
         
         String assetClass = transaction.getContractDetailedData().getContractData().getProd1Code(); 
+        String contractType = transaction.getContractDetailedData().getContractData().getProd2Code();
+        
+        if (null != twoDatesSwap && "CU".equalsIgnoreCase(assetClass) && "SW".equalsIgnoreCase(contractType)) {    
+            // tylko dla SWAP
+            if (transactionDetails.getExecutionDate().after(twoDatesSwap)) {
+                //jezeli transakcja po dacie XXX to raportujemy obie daty (krotka i dluga noga) 
+                result.getSttlmDt().add(XmlUtils.formatDate(transactionDetails.getSettlementDate(), Constants.ISO_DATE));
+                result.getSttlmDt().add(XmlUtils.formatDate(transactionDetails.getSettlementDate2(), Constants.ISO_DATE));
+            }
+            else {
+                //jezeli transakcja przed data XXX to raportujemy tylko date settlement_date_2 (tylko dluga noga) lub parametr nie jest ustawiony
+                Date reportDate, s1;
+                reportDate = DateUtils.getDayBegin(DateUtils.getPreviousWorkingDayWithFreeDays(new Date()));
+                s1 = DateUtils.getDayBegin(transactionDetails.getSettlementDate());      
+     
+                if (reportDate.compareTo(s1) >= 0)
+                    result.getSttlmDt().add(XmlUtils.formatDate(transactionDetails.getSettlementDate2(), Constants.ISO_DATE));
+                else 
+                    result.getSttlmDt().add(XmlUtils.formatDate(transactionDetails.getSettlementDate(), Constants.ISO_DATE));
+            }
+        }
+        else {
+            // dla nie SWAP
+            result.getSttlmDt().add(XmlUtils.formatDate(transactionDetails.getSettlementDate(), Constants.ISO_DATE));
+        }        
+        
         if (assetClass.equalsIgnoreCase("CU")) {
             result.setCcy(getNewCcy(transaction.getCurrencyTradeData()));
         }

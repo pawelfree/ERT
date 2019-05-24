@@ -13,11 +13,9 @@ import javax.faces.component.UIComponent;
 import javax.faces.component.UIInput;
 import javax.faces.context.FacesContext;
 import javax.faces.validator.Validator;
-import pl.pd.emir.admin.ParameterManager;
 import pl.pd.emir.bean.BeanHelper;
 import pl.pd.emir.commons.DateUtils;
 import pl.pd.emir.enums.ImportScope;
-import pl.pd.emir.enums.ParameterKey;
 import pl.pd.emir.imports.ImportOverview;
 import pl.pd.emir.imports.ImportCsvManager;
 
@@ -28,8 +26,6 @@ public class ImportBean implements Serializable {
     @EJB
     private transient ImportCsvManager importCsvManager;
 
-    @EJB
-    private ParameterManager parameterManager;
     @ManagedProperty(value = "#{importListBean}")
     private transient ImportListBean importListBean;
 
