@@ -30,7 +30,9 @@
                 <p:panelGrid columns="2" styleClass="gridWithoutBorder" columnClasses="importPanelCol1, importPanelCol2">
 
                     <p:outputLabel value="#{msgs['importPanel.dataDate']}"/>
-                    <p:calendar value="#{importBean.extractDate}" pattern="#{applicationBean.dateFormat}" showOn="button" required="true" />
+                    <h:outputText value="#{importBean.extractDate}">
+                        <f:convertDateTime pattern="#{applicationBean.datePattern}" timeZone="#{applicationBean.timeZone}"/>
+                    </h:outputText>
 
                     <p:outputLabel value="#{msgs['importPanel.importScope']}" />
                     <p:selectManyCheckbox binding="#{importBean.transactionScopeInput}" value="#{importBean.transactionSelectedScope}" layout="pageDirection" converter="importScopeConverter">
