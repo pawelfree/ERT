@@ -202,6 +202,7 @@ public class Protection extends Extract implements Historable<Protection>, Logab
     }
 
     public BigDecimal getAmount() {
+        if (null == amount) return BigDecimal.ZERO;
         return amount;
     }
 
@@ -242,6 +243,7 @@ public class Protection extends Extract implements Historable<Protection>, Logab
     }
 
     public BigDecimal getClientAmount() {
+        if (null == clientAmount) return BigDecimal.ZERO;
         return clientAmount;
     }
 

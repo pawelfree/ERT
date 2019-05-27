@@ -465,11 +465,35 @@
                                     <f:converter converterId="pl.pd.emir.clientutils.converter.BigDecimalConverter"/>
                                     <f:attribute name="maxFractionDigits" value="#{'5'}"/>
                                 </emir:labeledOutput>
+                                <emir:inputText id="protectionAmountInput" rendered="#{not (transactionFormBean.formType == 'View')}"
+                                                value="#{transactionFormBean.entity.protection.amount}"
+                                                label="#{msgs['register.transactionForm.protection.amount']}"
+                                                info="#{msgs['register.transactionForm.tabs.protection']}->#{msgs['register.transactionForm.protection.section.protection']}->#{msgs['register.transactionForm.protection.amount']}"  >
+                                    <f:converter converterId="pl.pd.emir.clientutils.converter.BigDecimalConverter"/>
+                                    <f:attribute name="maxFractionDigits" value="#{'5'}"/>
+                                    <f:validator validatorId="pl.pd.emir.register.bean.validators.MaxIntegerDigitsValidator"/>
+                                    <f:attribute name="maxIntegerDigits" value="#{'20'}"/>
+                                    <f:validator validatorId="pl.pd.emir.clientutils.validators.PositiveNumberValidator"/>
+                                    <f:validator validatorId="pl.pd.emir.register.bean.validators.MaxFractionDigitsValidator"/>
+                                    <p:ajax event="change" update="protectionPg1" partialSubmit="true"/>
+                                </emir:inputText>
                                 <ui:remove><!--Wartość zabezpieczenia kontrahenta--></ui:remove>
                                 <emir:labeledOutput id="protectionAmountClientOutput" value="#{transactionFormBean.entity.protection.clientAmount}" label="#{msgs['register.transactionForm.protection.amountClient']}" rendered="#{transactionFormBean.formType == 'View'}" >
                                     <f:converter converterId="pl.pd.emir.clientutils.converter.BigDecimalConverter"/>
                                     <f:attribute name="maxFractionDigits" value="#{'5'}"/>
-                                </emir:labeledOutput>                                
+                                </emir:labeledOutput>
+                                <emir:inputText id="protectionAmountClientInput" rendered="#{not (transactionFormBean.formType == 'View')}"
+                                                value="#{transactionFormBean.entity.protection.clientAmount}"
+                                                label="#{msgs['register.transactionForm.protection.amountClient']}"
+                                                info="#{msgs['register.transactionForm.tabs.protection']}->#{msgs['register.transactionForm.protection.section.protection']}->#{msgs['register.transactionForm.protection.amountClient']}"  >
+                                    <f:converter converterId="pl.pd.emir.clientutils.converter.BigDecimalConverter"/>
+                                    <f:attribute name="maxFractionDigits" value="#{'5'}"/>
+                                    <f:validator validatorId="pl.pd.emir.register.bean.validators.MaxIntegerDigitsValidator"/>
+                                    <f:attribute name="maxIntegerDigits" value="#{'20'}"/>
+                                    <f:validator validatorId="pl.pd.emir.clientutils.validators.PositiveNumberValidator"/>
+                                    <f:validator validatorId="pl.pd.emir.register.bean.validators.MaxFractionDigitsValidator"/>
+                                    <p:ajax event="change" update="protectionPg1" partialSubmit="true"/>
+                                </emir:inputText>
                             </p:panelGrid>
                         </p:panel>
                     </h:panelGroup>
