@@ -439,7 +439,17 @@ public class XmlTransactionWriterImpl extends XmlWriterImpl implements Transacti
         result.setTradgVn(transactionDetails.getRealizationVenue());
         //TODO zamienic typy
         result.setCmprssn(transactionDetails.getCompression() == Compression.Y);
-        result.setPric(getPric(transactionDetails));
+        
+
+        String assetClass = transaction.getContractDetailedData().getContractData().getProd1Code(); 
+        String contractType = transaction.getContractDetailedData().getContractData().getProd2Code();
+        boolean swap = false;
+        CurrencyTradeData data = null;
+        if (null != twoDatesSwap && "CU".equalsIgnoreCase(assetClass) && "SW".equalsIgnoreCase(contractType) && transactionDetails.getExecutionDate().after(twoDatesSwap)) { 
+            swap = true;
+            data = transaction.getCurrencyTradeData();
+        }
+        result.setPric(getPric(transactionDetails, swap, data));
         result.setNtnlAmt(transactionDetails.getNominalAmount());
         result.setPricMltplr(NumberUtils.integerToBigDecimal(transactionDetails.getPriceMultiplier()));
         result.setQty(NumberUtils.integerToBigDecimal(transactionDetails.getContractCount()));
@@ -452,10 +462,8 @@ public class XmlTransactionWriterImpl extends XmlWriterImpl implements Transacti
         result.setMtrtyDt(XmlUtils.formatDate(transactionDetails.getMaturityDate(), Constants.ISO_DATE));
         
         //TODO zmodyfikować jak juz nie bedzie starych (tj z data przed twoDatesSwap) SWAPOW - dwa swapy nowa transakcja
-        String assetClass = transaction.getContractDetailedData().getContractData().getProd1Code(); 
-        String contractType = transaction.getContractDetailedData().getContractData().getProd2Code();
        
-        if (null != twoDatesSwap && "CU".equalsIgnoreCase(assetClass) && "SW".equalsIgnoreCase(contractType)) {    
+        if (swap) {    
             // tylko dla SWAP
             if (transactionDetails.getExecutionDate().after(twoDatesSwap)) {
                 //jezeli transakcja po dacie XXX to raportujemy obie daty
@@ -499,7 +507,17 @@ public class XmlTransactionWriterImpl extends XmlWriterImpl implements Transacti
         //result.setRptTrckgNb(null);
         //TODO w MUFG puste?
         //result.setCmplxTradId(null);
-        result.setPric(getPric(transactionDetails));
+        
+        //TODO zmodyfikować jak juz nie bedzie starych (tj z data przed twoDatesSwap) SWAPOW - dwa swapy nowa transakcja
+        String assetClass = transaction.getContractDetailedData().getContractData().getProd1Code(); 
+        String contractType = transaction.getContractDetailedData().getContractData().getProd2Code();
+        boolean swap = false;
+        CurrencyTradeData data = null;
+        if (null != twoDatesSwap && "CU".equalsIgnoreCase(assetClass) && "SW".equalsIgnoreCase(contractType) && transactionDetails.getExecutionDate().after(twoDatesSwap)) {
+            swap = true;
+            data = transaction.getCurrencyTradeData();
+        }
+        result.setPric(getPric(transactionDetails, swap, data));
         result.setNtnlAmt(transactionDetails.getNominalAmount());
         result.setPricMltplr(NumberUtils.integerToBigDecimal(transactionDetails.getPriceMultiplier()));
         result.setQty(NumberUtils.integerToBigDecimal(transactionDetails.getContractCount()));
@@ -515,10 +533,7 @@ public class XmlTransactionWriterImpl extends XmlWriterImpl implements Transacti
         result.setTradClr(getModTradClr(transaction.getTransactionClearing()));
         //TODO a to ciekawe - return new TradeAdditionalInformationValidator().nullOnEmpty(result);
         
-        String assetClass = transaction.getContractDetailedData().getContractData().getProd1Code(); 
-        String contractType = transaction.getContractDetailedData().getContractData().getProd2Code();
-        
-        if (null != twoDatesSwap && "CU".equalsIgnoreCase(assetClass) && "SW".equalsIgnoreCase(contractType)) {    
+        if (swap) {    
             // tylko dla SWAP
             if (transactionDetails.getExecutionDate().after(twoDatesSwap)) {
                 //jezeli transakcja po dacie XXX to raportujemy obie daty (krotka i dluga noga) 
@@ -569,7 +584,16 @@ public class XmlTransactionWriterImpl extends XmlWriterImpl implements Transacti
         result.setTradgVn(transactionDetails.getRealizationVenue());
         //TODO zamienic typy
         result.setCmprssn(transactionDetails.getCompression() == Compression.Y);        
-        result.setPric(getPric(transactionDetails));
+        //TODO zmodyfikować jak juz nie bedzie starych (tj z data przed twoDatesSwap) SWAPOW - dwa swapy nowa transakcja
+        String assetClass = transaction.getContractDetailedData().getContractData().getProd1Code(); 
+        String contractType = transaction.getContractDetailedData().getContractData().getProd2Code();
+        boolean swap = false;
+        CurrencyTradeData data = null;
+        if (null != twoDatesSwap && "CU".equalsIgnoreCase(assetClass) && "SW".equalsIgnoreCase(contractType) && transactionDetails.getExecutionDate().after(twoDatesSwap)) {
+            data = transaction.getCurrencyTradeData();
+            swap = true;
+        }
+        result.setPric(getPric(transactionDetails, swap, data));
         result.setNtnlAmt(transactionDetails.getNominalAmount());
         result.setPricMltplr(NumberUtils.integerToBigDecimal(transactionDetails.getPriceMultiplier()));
         result.setQty(NumberUtils.integerToBigDecimal(transactionDetails.getContractCount()));
@@ -580,13 +604,38 @@ public class XmlTransactionWriterImpl extends XmlWriterImpl implements Transacti
         result.setExctnDtTm(XmlUtils.formatDate(getUTCDate(transactionDetails.getExecutionDate()), Constants.ISO_DATE_TIME_Z));
         result.setFctvDt(XmlUtils.formatDate(transactionDetails.getEffectiveDate(), Constants.ISO_DATE));
         result.setMtrtyDt(XmlUtils.formatDate(transactionDetails.getMaturityDate(), Constants.ISO_DATE));
-        result.getSttlmDt().add(XmlUtils.formatDate(transactionDetails.getSettlementDate(), Constants.ISO_DATE));
+//TODO remove ustawione w if ponizej
+//      result.getSttlmDt().add(XmlUtils.formatDate(transactionDetails.getSettlementDate(), Constants.ISO_DATE));
         result.setMstrAgrmt(getNewMstrAgrmt(transaction.getTransactionDetails()));
         result.setTradConf(getTradConf(transaction.getRiskReduce()));
         result.setTradClr(getCorTradClr(transaction.getTransactionClearing()));
         //TODO a to ciekawe - return new TradeAdditionalInformationValidator().nullOnEmpty(result);
         
-        String assetClass = transaction.getContractDetailedData().getContractData().getProd1Code(); 
+        if (swap) {    
+            // tylko dla SWAP
+            if (transactionDetails.getExecutionDate().after(twoDatesSwap)) {
+                //jezeli transakcja po dacie XXX to raportujemy obie daty (krotka i dluga noga) 
+                result.getSttlmDt().add(XmlUtils.formatDate(transactionDetails.getSettlementDate(), Constants.ISO_DATE));
+                result.getSttlmDt().add(XmlUtils.formatDate(transactionDetails.getSettlementDate2(), Constants.ISO_DATE));
+            }
+            else {
+                //jezeli transakcja przed data XXX to raportujemy tylko date settlement_date_2 (tylko dluga noga) lub parametr nie jest ustawiony
+                Date reportDate, s1;
+                reportDate = DateUtils.getDayBegin(DateUtils.getPreviousWorkingDayWithFreeDays(new Date()));
+                s1 = DateUtils.getDayBegin(transactionDetails.getSettlementDate());      
+     
+                if (reportDate.compareTo(s1) >= 0)
+                    result.getSttlmDt().add(XmlUtils.formatDate(transactionDetails.getSettlementDate2(), Constants.ISO_DATE));
+                else 
+                    result.getSttlmDt().add(XmlUtils.formatDate(transactionDetails.getSettlementDate(), Constants.ISO_DATE));
+            }
+        }
+        else {
+            // dla nie SWAP
+            result.getSttlmDt().add(XmlUtils.formatDate(transactionDetails.getSettlementDate(), Constants.ISO_DATE));
+        }            
+        
+        
         if (assetClass.equalsIgnoreCase("CU")) {
             result.setCcy(getNewCcy(transaction.getCurrencyTradeData()));
         }
@@ -747,18 +796,30 @@ public class XmlTransactionWriterImpl extends XmlWriterImpl implements Transacti
         return result;        
     }
     
-    protected final SecuritiesTransactionPrice7ChoiceTR getPric(final TransactionDetails transactionDetails) {
+    protected final SecuritiesTransactionPrice7ChoiceTR getPric(final TransactionDetails transactionDetails, final boolean swap, CurrencyTradeData data) {
         SecuritiesTransactionPrice7ChoiceTR result = new SecuritiesTransactionPrice7ChoiceTR();
-        if ((null != transactionDetails.getUnitPrice()) && (null != transactionDetails.getUnitPriceCurrency())) {
-            result.setMntryVal(getNewMntry(transactionDetails));
-        } else if (null != transactionDetails.getUnitPriceRate()) {
-            result.setPctg(transactionDetails.getUnitPriceRate());
-        } else {
-            throw new RuntimeException("Price calculation not defined");
+        if (swap) {
+            result.setMntryVal(getSwapMntry(data));
+        }
+        else {
+            if ((null != transactionDetails.getUnitPrice()) && (null != transactionDetails.getUnitPriceCurrency())) {
+                result.setMntryVal(getNewMntry(transactionDetails));
+            } else if (null != transactionDetails.getUnitPriceRate()) {
+                result.setPctg(transactionDetails.getUnitPriceRate());
+            } else {
+                throw new RuntimeException("Price calculation not defined");
+            }
         }
         //TODO a to ciekawe - return new PriceChoiceValidator().nullOnEmpty(result);
         return result;
     }
+    
+    protected final ActiveOrHistoricCurrencyAnd20AmountNegative getSwapMntry(final CurrencyTradeData data) {
+        ActiveOrHistoricCurrencyAnd20AmountNegative result = new ActiveOrHistoricCurrencyAnd20AmountNegative();
+        result.setValue(data.getCurrTradeFrwdRate().subtract(data.getCurrTradeExchRate()));
+        result.setCcy(data.getCurrencyTradeCode().toString());
+        return result;
+    }    
     
     protected final ActiveOrHistoricCurrencyAnd20AmountNegative getNewMntry(final TransactionDetails transactionDetails) {
         ActiveOrHistoricCurrencyAnd20AmountNegative result = new ActiveOrHistoricCurrencyAnd20AmountNegative();
