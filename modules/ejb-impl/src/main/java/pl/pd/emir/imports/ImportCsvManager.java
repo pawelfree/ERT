@@ -8,6 +8,7 @@ import java.nio.file.DirectoryStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.EnumMap;
@@ -44,6 +45,7 @@ import pl.pd.emir.register.TransactionManager;
 import pl.pd.emir.resources.ResourceMask;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import pl.pd.emir.commons.Constants;
 
 @Stateless
 public class ImportCsvManager {
@@ -90,14 +92,16 @@ public class ImportCsvManager {
         transactionsToRemoveFromImport = new HashSet<>();
     }
 
-    protected void initParsers() {             
-        parsers.put(ImportScope.TRANSACTION_E, new TransactionCsvParserTmb(clientManager));
+    protected void initParsers() throws ParseException {             
+        parsers.put(ImportScope.TRANSACTION_E, new TransactionCsvParserTmb(clientManager,
+         DateUtils.getDateFromString(parameterManager.getValue(ParameterKey.TWO_DATES_SWAP), Constants.ISO_DATE)
+        ));
         parsers.put(ImportScope.PROTECTION_E, new ProtectionParser());
         parsers.put(ImportScope.VALUATION_E, new ValuationParser());
     }
 
     @TransactionAttribute(TransactionAttributeType.NEVER)
-    public ImportOverview importCsv(List<ImportScope> importScope, Date importFileDate) {
+    public ImportOverview importCsv(List<ImportScope> importScope, Date importFileDate) throws ParseException {
         inputDirectory = Paths.get(parameterManager.getValue(ParameterKey.IMPORT_INPUT_URI));
         LOGGER.info(String.format("Import CSV from %s", inputDirectory.toString()));
 

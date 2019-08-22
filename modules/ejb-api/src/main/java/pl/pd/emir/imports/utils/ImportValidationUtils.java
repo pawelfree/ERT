@@ -561,9 +561,9 @@ public final class ImportValidationUtils {
         String f4 = validateStringField(data[3], r4, 4, "TRADADDTLINF_VENUEOFEXC", false, "40", importResult);
         Compression f5 = validateEnumField(Compression.class, r5, data[4], "TRADADDTLINF_CMPRSSN", false, "41", importResult);
         DeliverType f13 = validateEnumField(DeliverType.class, r13, data[12], "TRADADDTLINF_DLVRYTP", false, "49", importResult);
-        String f19 = validateStringField(data[18], r19, 50, "TRADADDTLINF_MSTRAGRMNTTP", false, "55", importResult);
-        OptionType f21 = validateEnumField(OptionType.class, r21, data[20], "OPTNTRAD_OPTNTP", false, "86", importResult);
-        OptionExecStyle f22 = validateEnumField(OptionExecStyle.class, r22, data[21], "OPTNTRAD_EXRCSTYLE", false, "87", importResult);
+        String f19 = validateStringField(data[19], r19, 50, "TRADADDTLINF_MSTRAGRMNTTP", false, "56", importResult);
+        OptionType f21 = validateEnumField(OptionType.class, r21, data[21], "OPTNTRAD_OPTNTP", false, "87", importResult);
+        OptionExecStyle f22 = validateEnumField(OptionExecStyle.class, r22, data[22], "OPTNTRAD_EXRCSTYLE", false, "88", importResult);
 
         TransactionDetails details = new TransactionDetails(
                 f1,

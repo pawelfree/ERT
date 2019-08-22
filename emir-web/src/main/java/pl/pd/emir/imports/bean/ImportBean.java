@@ -1,6 +1,7 @@
 package pl.pd.emir.imports.bean;
 
 import java.io.Serializable;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -55,7 +56,7 @@ public class ImportBean implements Serializable {
         importOverview = new ImportOverview();
     }
 
-    public void importExtract() {
+    public void importExtract() throws ParseException {
         List<ImportScope> allSelected = new ArrayList<>();
         allSelected.addAll(transactionSelectedScope);
         importOverview = importCsvManager.importCsv(allSelected, DateUtils.getDayBegin(extractDate));

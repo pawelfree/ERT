@@ -606,37 +606,6 @@ public class KdpwTransactionManagerImpl implements KdpwTransactionManager {
 
         if (Objects.nonNull(oldTrans)) {
             changes.addAll(KdpwUtils.getChanges(oldTrans, transaction, TransactionDataChange.class));
-            
-            //TODO usunac jak juz nie bedzie starych (tj z data przed twoDatesSwap) SWAPOW - dwa swapy nowa transakcja
-            //zmiana daty dla SWAP (z krótkiej na długą) - do usunięcia kiedy wszystkie transakcje beda po dacie zmiany
-            if (!Objects.isNull(oldTrans) && !Objects.isNull(transaction)) {
-
-                Date twoDatesSwap;
-
-                try {
-                    twoDatesSwap = DateUtils.getDateFromString(parameterManager.getValue(ParameterKey.TWO_DATES_SWAP), Constants.ISO_DATE);
-                } catch (ParseException ex) {
-                    LOGGER.error("Błąd pobierania parametru TWO_DATES_SWAP (w transaction changes): " +  ex);
-                    twoDatesSwap = null;
-                }
-
-                String assetClass = transaction.getContractDetailedData().getContractData().getProd1Code(); 
-                String contractType = transaction.getContractDetailedData().getContractData().getProd2Code();
-
-                if (null != twoDatesSwap && "CU".equalsIgnoreCase(assetClass) && "SW".equalsIgnoreCase(contractType)) {    
-                    if (!transaction.getTransactionDetails().getExecutionDate().after(twoDatesSwap)) {
-                        //jezeli transakcja przed data XXX to raportujemy tylko date settlement_date_2 (tylko dluga noga) lub parametr nie jest ustawiony
-                        Date reportDate, s1;
-                        reportDate = DateUtils.getDayBegin(DateUtils.getPreviousWorkingDayWithFreeDays(new Date()));
-                        s1 = DateUtils.getDayBegin(transaction.getTransactionDetails().getSettlementDate());     
-                        
-                        if (reportDate.compareTo(s1) == 0)                        
-                            changes.add(new ChangeRegister(transaction.getClass().getSimpleName(),"SETTLEMENT_DATE",
-                                    transaction.getTransactionDetails().getSettlementDate().toString(),
-                                    transaction.getTransactionDetails().getSettlementDate2().toString()));
-                    }
-                }
-            }            
         }
 
         return changes;

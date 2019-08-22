@@ -39,7 +39,7 @@
             <scope>test</scope>
         </dependency>
         <dependency>
-            <groupId>java.net.spnego</groupId>
+            <groupId>net.java.spnego</groupId>
             <artifactId>spnego</artifactId>
             <version>1.1</version>
         </dependency>       

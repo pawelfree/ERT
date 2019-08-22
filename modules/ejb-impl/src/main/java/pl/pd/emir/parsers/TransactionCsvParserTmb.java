@@ -1,6 +1,7 @@
 package pl.pd.emir.parsers;
 
 import java.util.Arrays;
+import java.util.Date;
 import java.util.Objects;
 import pl.pd.emir.commons.StringUtil;
 import pl.pd.emir.embeddable.BusinessEntityData;
@@ -25,9 +26,11 @@ import org.apache.commons.lang3.ArrayUtils;
 public class TransactionCsvParserTmb extends TransactionCsvParser {
 
     private final transient ClientManager clientMng;
+    private final transient Date twoDatesSwap;
 
-    public TransactionCsvParserTmb(ClientManager clientMng) {
+    public TransactionCsvParserTmb(ClientManager clientMng, Date twoDatesSwap) {
         this.clientMng = clientMng;
+        this.twoDatesSwap = twoDatesSwap;
     }
 
     @Override
@@ -97,6 +100,18 @@ public class TransactionCsvParserTmb extends TransactionCsvParser {
             transaction = new Transaction(f1, transactionDateField1, f3, f4, transactionPartyField4, f41, f5, f6, f7, f8, f9,
                     f10, f11, f12, f13, f14, dataType, ProcessingStatus.NEW, ValidationStatus.VALID, new Client(), new Client());
 
+            //TODO usunac w pazdzierniku
+            
+            Date execution = transaction.getTransactionDetails().getExecutionDate();
+
+            if (null != twoDatesSwap && execution.before(twoDatesSwap)) {
+                String assetClass = transaction.getContractDetailedData().getContractData().getProd1Code(); 
+                String contractType = transaction.getContractDetailedData().getContractData().getProd2Code();
+                if("CU".equalsIgnoreCase(assetClass) && "SW".equalsIgnoreCase(contractType)) {
+                    transaction.getTransactionDetails().setSettlementDate(transaction.getTransactionDetails().getSettlementDate2());
+                }
+            }
+            
             transaction.setValidationStatus(importResult.getValidationStatus());
 
         }
