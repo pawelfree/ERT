@@ -478,67 +478,6 @@ public class EventLogBuilder {
          * Podstawa kursu walutowego
          */
         CURR_TRADE_BASIS,
-        /**
-         * Towarowy instrument bazowy
-         */
-        COMM_UNDERL_TYPE,
-        /**
-         * Szczegółowe informacje dotyczące towaru
-         */
-        COMM_UNDERL_DTLS,
-        /**
-         * Miejsce lub strefa dostawy
-         */
-        COMM_VENUE,
-        /**
-         * Punkt połączenia międzysystemowego
-         */
-        COMM_INTERCONN,
-        /**
-         * Rodzaj obciążenia
-         */
-        COMM_LOAD_TYPE,
-        /**
-         * Data i godzina rozpoczęcia dostawy
-         */
-        COMM_DELIV_START_FROM,
-        /**
-         * Data i godzina zakończenia dostawy
-         */
-        COMM_DELIV_END_FROM,
-        /**
-         * Zakontraktowana ilość przypadająca na okres dostawy
-         */
-        COMM_CONTRACT_COUNT,
-        /**
-         * Ilość jednostek
-         */
-        COMM_RATE_COUNT,
-        /**
-         * Cena za ilość w okresie dostawy
-         */
-        COMM_RATA_COUNT,
-        /**
-         * Rodzaj opcji
-         */
-        OPTION_TYPE,
-        /**
-         * Rodzaj opcji (sposób wykonania)
-         */
-        OPTION_EXEC_STYLE,
-        /**
-         * Cena wykonania
-         */
-        OPTION_EXEC_PRICE,
-        /* ==================== Zestawy danych terminacji ======================
-         ==================== Zestawy danych wyceny ==========================
-         ==================== Zestawy danych zabezpieczeń ====================*/
-        //zdefiniowane w Instytucje
-        //COUNTRY_CODE,
-        //SUBJECT_NIP,
-        //SUBJECT_REGON,
-        //INSTITUTION_ID,
-        //INSTITUTION_ID_TYPE,
 
         /**
          * Status transakcji
@@ -814,8 +753,6 @@ public class EventLogBuilder {
         CONTRACTTYPE1,
         CONTRACTTYPE2,
         INADVANCECURRENCY,
-        OPTIONEXECPRICETYPE,
-        OPTIONEXECPRICECCY,
         ADDITIONALUNITPRICECURRENCY,
         // ==================== Użytkownik ====================
         INITLMRGNPSTD,

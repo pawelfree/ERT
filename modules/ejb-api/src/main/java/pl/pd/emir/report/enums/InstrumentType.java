@@ -2,7 +2,6 @@ package pl.pd.emir.report.enums;
 
 public enum InstrumentType {
 
-    COMMODITY("instrument.type.commodity", "CO"),
     CREDIT("instrument.type.credit", "CR"),
     CURRENCY("instrument.type.currency", "CU"),
     CAPITAL("instrument.type.capital", "EQ"),

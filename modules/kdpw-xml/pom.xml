@@ -131,7 +131,7 @@
                             <episodeFile>${project.build.directory}/generated-sources/xjc/META-INF/jaxb-ins_001_03.episode</episodeFile>
                             <generatePackage>kdpw.xsd.trar_ins_001</generatePackage>
                         </configuration>
-                        <id>jaxb-generate-ins_001_03</id>
+                        <id>jaxb-generate-ins_001_04</id>
                     </execution>
                     <execution>
                         <goals>
@@ -145,7 +145,7 @@
                             <episodeFile>${project.build.directory}/generated-sources/xjc/META-INF/jaxb-ins_002_03.episode</episodeFile>
                             <generatePackage>kdpw.xsd.trar_ins_002</generatePackage>
                         </configuration>
-                        <id>jaxb-generate-ins_002_03</id>
+                        <id>jaxb-generate-ins_002_04</id>
                     </execution>
                     <execution>
                         <goals>
@@ -215,7 +215,7 @@
                             <episodeFile>${project.build.directory}/generated-sources/xjc/META-INF/jaxb-ntf_001_02.episode</episodeFile>
                             <generatePackage>kdpw.xsd.trar_ntf_001</generatePackage>
                         </configuration>
-                        <id>jaxb-generate-ins_001_01</id>
+                        <id>jaxb-generate-ntf_001_02</id>
                     </execution>
                     <execution>
                         <goals>
@@ -252,12 +252,12 @@
                         <configuration>
                             <strict>false</strict>
                             <schemaIncludes>
-                                <include>schema/trar.sts.001.03.xsd</include>
+                                <include>schema/trar.sts.001.04.xsd</include>
                             </schemaIncludes>
                             <episodeFile>${project.build.directory}/generated-sources/xjc/META-INF/jaxb-sts_001_03.episode</episodeFile>
                             <generatePackage>kdpw.xsd.trar_sts_001</generatePackage>
                         </configuration>
-                        <id>jaxb-generate-sts_001_03</id>
+                        <id>jaxb-generate-sts_001_04</id>
                     </execution>
                     <execution>
                         <goals>

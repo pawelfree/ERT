@@ -41,7 +41,7 @@ import kdpw.xsd.trar_ins_001.CounterpartySpecificDataTRV;
 import kdpw.xsd.trar_ins_001.CounterpartyTRM;
 import kdpw.xsd.trar_ins_001.CounterpartyTRN;
 import kdpw.xsd.trar_ins_001.CounterpartyTRR;
-import kdpw.xsd.trar_ins_001.CounterpartyTRZ;
+import kdpw.xsd.trar_ins_001.CounterpartyTRV;
 import kdpw.xsd.trar_ins_001.CounterpartyTradeNatureTR;
 import kdpw.xsd.trar_ins_001.CurrencyExchange101;
 import kdpw.xsd.trar_ins_001.ExchangeRateBasis1;
@@ -121,17 +121,9 @@ import pl.pd.emir.kdpw.xml.builder.XmlUtils;
 @Local(TransactionWriter.class)
 public class XmlTransactionWriterImpl extends XmlWriterImpl implements TransactionWriter<TransactionToRepository> {
     
-    private Date twoDatesSwap;
 
     @Override
     public TransactionWriterResult write(List<TransactionToRepository> list, String institutionId){
-
-        try {
-            twoDatesSwap = getTwoDatesSwapParameter();
-        } catch (ParseException ex) {
-            LOGGER.error("Błąd pobierania parametru TWO_DATES_SWAP: " +  ex);
-            twoDatesSwap = null;
-        }
         
         LOGGER.info("Write xml for transactions: {}", list.size());
         final KDPWDocument document = new KDPWDocument();
@@ -444,7 +436,7 @@ public class XmlTransactionWriterImpl extends XmlWriterImpl implements Transacti
         String contractType = transaction.getContractDetailedData().getContractData().getProd2Code();
         boolean swap = false;
         CurrencyTradeData data = null;
-        if (null != twoDatesSwap && "CU".equalsIgnoreCase(assetClass) && "SW".equalsIgnoreCase(contractType) && transactionDetails.getExecutionDate().after(twoDatesSwap)) { 
+        if ("CU".equalsIgnoreCase(assetClass) && "SW".equalsIgnoreCase(contractType)) { 
             swap = true;
             data = transaction.getCurrencyTradeData();
         }
@@ -497,12 +489,11 @@ public class XmlTransactionWriterImpl extends XmlWriterImpl implements Transacti
         //TODO w MUFG puste?
         //result.setCmplxTradId(null);
         
-        //TODO zmodyfikować jak juz nie bedzie starych (tj z data przed twoDatesSwap) SWAPOW - dwa swapy nowa transakcja
         String assetClass = transaction.getContractDetailedData().getContractData().getProd1Code(); 
         String contractType = transaction.getContractDetailedData().getContractData().getProd2Code();
         boolean swap = false;
         CurrencyTradeData data = null;
-        if (null != twoDatesSwap && "CU".equalsIgnoreCase(assetClass) && "SW".equalsIgnoreCase(contractType) && transactionDetails.getExecutionDate().after(twoDatesSwap)) {
+        if ("CU".equalsIgnoreCase(assetClass) && "SW".equalsIgnoreCase(contractType)) {
             swap = true;
             data = transaction.getCurrencyTradeData();
         }
@@ -522,7 +513,7 @@ public class XmlTransactionWriterImpl extends XmlWriterImpl implements Transacti
         result.setTradClr(getModTradClr(transaction.getTransactionClearing()));
         //TODO a to ciekawe - return new TradeAdditionalInformationValidator().nullOnEmpty(result);
         
-        if (swap && transactionDetails.getExecutionDate().after(twoDatesSwap)) {    
+        if (swap) {    
                 result.getSttlmDt().add(XmlUtils.formatDate(transactionDetails.getSettlementDate(), Constants.ISO_DATE));
                 result.getSttlmDt().add(XmlUtils.formatDate(transactionDetails.getSettlementDate2(), Constants.ISO_DATE));
         }
@@ -557,12 +548,11 @@ public class XmlTransactionWriterImpl extends XmlWriterImpl implements Transacti
         result.setTradgVn(transactionDetails.getRealizationVenue());
         //TODO zamienic typy
         result.setCmprssn(transactionDetails.getCompression() == Compression.Y);        
-        //TODO zmodyfikować jak juz nie bedzie starych (tj z data przed twoDatesSwap) SWAPOW - dwa swapy nowa transakcja
         String assetClass = transaction.getContractDetailedData().getContractData().getProd1Code(); 
         String contractType = transaction.getContractDetailedData().getContractData().getProd2Code();
         boolean swap = false;
         CurrencyTradeData data = null;
-        if (null != twoDatesSwap && "CU".equalsIgnoreCase(assetClass) && "SW".equalsIgnoreCase(contractType) && transactionDetails.getExecutionDate().after(twoDatesSwap)) {
+        if ("CU".equalsIgnoreCase(assetClass) && "SW".equalsIgnoreCase(contractType)) {
             data = transaction.getCurrencyTradeData();
             swap = true;
         }
@@ -584,7 +574,7 @@ public class XmlTransactionWriterImpl extends XmlWriterImpl implements Transacti
         result.setTradClr(getCorTradClr(transaction.getTransactionClearing()));
         //TODO a to ciekawe - return new TradeAdditionalInformationValidator().nullOnEmpty(result);
         
-        if (swap && transactionDetails.getExecutionDate().after(twoDatesSwap)) {
+        if (swap) {
             result.getSttlmDt().add(XmlUtils.formatDate(transactionDetails.getSettlementDate(), Constants.ISO_DATE));
             result.getSttlmDt().add(XmlUtils.formatDate(transactionDetails.getSettlementDate2(), Constants.ISO_DATE));
         }
@@ -1272,8 +1262,8 @@ public class XmlTransactionWriterImpl extends XmlWriterImpl implements Transacti
         return result;
     }
     
-    protected final CounterpartyTRZ getBankCounterpartyV(TransactionToRepository item) {
-        CounterpartyTRZ result = new CounterpartyTRZ();
+    protected final CounterpartyTRV getBankCounterpartyV(TransactionToRepository item) {
+        CounterpartyTRV result = new CounterpartyTRV();
         Client client = item.getRegistable().getClient2();
         result.setRptgCtrPtyId(client.getInstitutionId());
         result.setOthrCtrPty(getOthrCtrPtyV(item.getRegistable().getTransaction().getClient().getCountryCode(), item.getRegistable().getTransaction().getClientData(), !item.getRegistable().getTransaction().getClient().getNaturalPerson()));
@@ -1348,8 +1338,8 @@ public class XmlTransactionWriterImpl extends XmlWriterImpl implements Transacti
         return result;
     }
      
-     protected final CounterpartyTRZ getClientCounterpartyV(TransactionToRepository item) {
-        CounterpartyTRZ result = new CounterpartyTRZ();
+     protected final CounterpartyTRV getClientCounterpartyV(TransactionToRepository item) {
+        CounterpartyTRV result = new CounterpartyTRV();
         Client client = item.getRegistable().getClient();
         result.setRptgCtrPtyId(client.getInstitutionId());
         result.setOthrCtrPty(getOthrCtrPtyV(item.getRegistable().getTransaction().getClient2().getCountryCode(), item.getRegistable().getTransaction().getClient2Data(),false));

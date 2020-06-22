@@ -35,7 +35,6 @@ import pl.pd.emir.commons.interfaces.Logable;
 import pl.pd.emir.commons.interfaces.Selectable;
 import pl.pd.emir.commons.interfaces.Validatable;
 import pl.pd.emir.embeddable.BusinessEntityData;
-import pl.pd.emir.embeddable.CommodityTradeData;
 import pl.pd.emir.embeddable.ContractDataDetailed;
 import pl.pd.emir.embeddable.CurrencyTradeData;
 import pl.pd.emir.embeddable.PercentageRateData;
@@ -383,13 +382,6 @@ public class Transaction extends Extract implements Logable<Long>, Selectable<Lo
     private CurrencyTradeData currencyTradeData;
 
     /**
-     * Transakcje towarowe (4.8) [75-84]
-     *
-     */
-    @Embedded
-    private CommodityTradeData commodityTradeData;
-
-    /**
      * Zabezpieczenie transakcji
      */
     @ValidateCompleteness(subjectClass = Transaction.class, checkValuationReporting = true, entry = true)
@@ -471,7 +463,7 @@ public class Transaction extends Extract implements Logable<Long>, Selectable<Lo
             String confirmed, BusinessEntityData client2Data, BusinessEntityData clientData,
             ContractDataDetailed contractDetailedData, TransactionDetails transactionDetails,
             RiskReduce riskReduce, TransactionClearing transactionClearing, PercentageRateData percentageRateData, CurrencyTradeData currencyTradeData,
-            CommodityTradeData commodityTradeData, DataType dataType, ProcessingStatus processingStatus, ValidationStatus validationStatus, 
+            DataType dataType, ProcessingStatus processingStatus, ValidationStatus validationStatus, 
             Client client, Client client2) {
         super();
         setFields(originalId, transactionDate, originalStatus,
@@ -479,7 +471,7 @@ public class Transaction extends Extract implements Logable<Long>, Selectable<Lo
                 StringUtil.isEmpty(confirmed) || confirmed.equals("0") ? ConfirmedStatus.UNCONFIRMED : ConfirmedStatus.CONFIRMED,
                 client2Data, clientData, contractDetailedData, transactionDetails,
                 riskReduce, transactionClearing, percentageRateData, currencyTradeData,
-                commodityTradeData, dataType, processingStatus, validationStatus, client, client2);
+                dataType, processingStatus, validationStatus, client, client2);
         setDataToSend();
     }
 
@@ -526,7 +518,6 @@ public class Transaction extends Extract implements Logable<Long>, Selectable<Lo
             tmp.protection = newProtection.fullClone();
         }
         //Embedded
-        tmp.commodityTradeData = this.commodityTradeData == null ? new CommodityTradeData() : this.commodityTradeData.fullClone();
         tmp.client2Data = this.client2Data == null ? new BusinessEntityData() : this.client2Data.fullClone();
         tmp.clientData = this.clientData == null ? new BusinessEntityData() : this.clientData.fullClone();
         tmp.contractDetailedData = this.contractDetailedData == null ? new ContractDataDetailed() : this.contractDetailedData.fullClone();
@@ -542,7 +533,6 @@ public class Transaction extends Extract implements Logable<Long>, Selectable<Lo
 
     @Override
     public void customize(ClassDescriptor descriptor) {
-        ((AggregateObjectMapping) descriptor.getMappingForAttributeName("commodityTradeData")).setIsNullAllowed(false);
         ((AggregateObjectMapping) descriptor.getMappingForAttributeName("client2Data")).setIsNullAllowed(false);
         ((AggregateObjectMapping) descriptor.getMappingForAttributeName("clientData")).setIsNullAllowed(false);
         ((AggregateObjectMapping) descriptor.getMappingForAttributeName("contractDetailedData")).setIsNullAllowed(false);
@@ -558,7 +548,7 @@ public class Transaction extends Extract implements Logable<Long>, Selectable<Lo
             ConfirmedStatus confirmed, BusinessEntityData client2Data, BusinessEntityData clientData,
             ContractDataDetailed contractDetailedData, TransactionDetails transactionDetails,
             RiskReduce riskReduce, TransactionClearing transactionClearing, PercentageRateData percentageRateData, CurrencyTradeData currencyTradeData,
-            CommodityTradeData commodityTradeData, DataType dataType, ProcessingStatus processingStatus, ValidationStatus validationStatus, 
+            DataType dataType, ProcessingStatus processingStatus, ValidationStatus validationStatus, 
             //TODO PAWEL to jest raczej zbedne
             Client client, Client client2) {
         this.originalId = originalId;
@@ -575,7 +565,6 @@ public class Transaction extends Extract implements Logable<Long>, Selectable<Lo
         this.transactionClearing = transactionClearing;
         this.percentageRateData = percentageRateData;
         this.currencyTradeData = currencyTradeData;
-        this.commodityTradeData = commodityTradeData;
         this.dataType = dataType;
         this.processingStatus = processingStatus;
         this.validationStatus = validationStatus;
@@ -619,9 +608,6 @@ public class Transaction extends Extract implements Logable<Long>, Selectable<Lo
         if (this.currencyTradeData == null) {
             this.currencyTradeData = new CurrencyTradeData();
         }
-        if (this.commodityTradeData == null) {
-            this.commodityTradeData = new CommodityTradeData();
-        }
         if (this.protection == null) {
             this.protection = new Protection();
         }
@@ -648,7 +634,6 @@ public class Transaction extends Extract implements Logable<Long>, Selectable<Lo
         TransactionClearing.checkEntity(result, transactionClearing, newEntity.transactionClearing);
         PercentageRateData.checkEntity(result, percentageRateData, newEntity.percentageRateData);
         CurrencyTradeData.checkEntity(result, currencyTradeData, newEntity.currencyTradeData);
-        CommodityTradeData.checkEntity(result, commodityTradeData, newEntity.commodityTradeData);
         Protection.checkEntity(result, protection, newEntity.protection);
         Valuation.checkEntity(result, valuation, newEntity.valuation);
         //pols proste
@@ -922,10 +907,6 @@ public class Transaction extends Extract implements Logable<Long>, Selectable<Lo
         return originalClientId2;
     }
 
-    public CommodityTradeData getCommodityTradeData() {
-        return commodityTradeData;
-    }
-
     public CurrencyTradeData getCurrencyTradeData() {
         return currencyTradeData;
     }
@@ -1043,10 +1024,6 @@ public class Transaction extends Extract implements Logable<Long>, Selectable<Lo
 
     public void setClientData(final BusinessEntityData value) {
         this.clientData = value;
-    }
-
-    public void setCommodityTradeData(final CommodityTradeData value) {
-        this.commodityTradeData = value;
     }
 
     public void setCurrencyTradeData(final CurrencyTradeData value) {

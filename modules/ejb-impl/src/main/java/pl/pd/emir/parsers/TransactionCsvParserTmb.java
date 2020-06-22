@@ -5,7 +5,6 @@ import java.util.Date;
 import java.util.Objects;
 import pl.pd.emir.commons.StringUtil;
 import pl.pd.emir.embeddable.BusinessEntityData;
-import pl.pd.emir.embeddable.CommodityTradeData;
 import pl.pd.emir.embeddable.ContractDataDetailed;
 import pl.pd.emir.embeddable.CurrencyTradeData;
 import pl.pd.emir.embeddable.PercentageRateData;
@@ -56,8 +55,7 @@ public class TransactionCsvParserTmb extends TransactionCsvParser {
             RiskReduce r10 = null; //ryzyko 4.4
             TransactionClearing r11 = null; //rozliczanie 4.5
             PercentageRateData r12 = null;
-            CurrencyTradeData r13 = null; //transakcje walut.
-            CommodityTradeData r14 = null;
+            CurrencyTradeData r13 = null; 
 
             //walidacja pod kontem ostrzeżeń
             String f1 = ImportValidationUtils.validateStringField(data[0], null, 50, "ID_TR", true, "1", importResult); //ID_TR
@@ -71,8 +69,7 @@ public class TransactionCsvParserTmb extends TransactionCsvParser {
             ContractDataDetailed f8 = ImportValidationUtils.validateContractDetailed(Arrays.copyOfRange(data, 31, 39), r8, importResult); //kontrakt 4.2
             TransactionDetails f9 = ImportValidationUtils.validateTransactionDtls(transactionDtls, r9, importResult,
                     unitPriceField41, unitPriceCurrencyField42, unitPriceRateField43,
-                    tradeNominalField44, tradeMultiplField45, tradeQtyField46,
-                    tradeUppField47, tradeAggrVerField55, optionExecPriceField87,
+                    tradeNominalField44, tradeMultiplField45, tradeQtyField46, tradeUppField47, tradeAggrVerField55,
                     tradeExecDateField49, tradeEffDateField50, tradeMattDateField51,
                     tradeTermDateField52, tradeSettlDateField53, tradeSettlDateField54);
             RiskReduce f10 = ImportValidationUtils.validateRiskReduce(Arrays.copyOfRange(data, 57, 59), r10, importResult, riskConfDateField56); //ryzyko 4.4
@@ -82,8 +79,6 @@ public class TransactionCsvParserTmb extends TransactionCsvParser {
                     percLeg1Field63, percLeg2Field64);
             CurrencyTradeData f13 = ImportValidationUtils.validateCurrencyTrade(Arrays.copyOfRange(data, 72, 76), r13, importResult,
                     currRate1Field72, currRate2Field73); //transakcje walut.
-            CommodityTradeData f14 = ImportValidationUtils.validateCommodityTrade(Arrays.copyOfRange(data, 76, 86), r14, importResult,
-                    delivStartField80, delivEndField81, delivQtyField83, delivPriceField84);
 
             //walidacja zależności pomiędzy ceną a symbolem waluty
             ImportValidationUtils.validateMoneyCompleteness(unitPriceField41, unitPriceCurrencyField42, "TRADADDTLINF_AMT", "TRADADDTLINF_AMT_WAL", "43", importResult);
@@ -98,19 +93,7 @@ public class TransactionCsvParserTmb extends TransactionCsvParser {
 
             //TODO PAWEL transaction party field nie jest nigdzie ustawiany?? !!
             transaction = new Transaction(f1, transactionDateField1, f3, f4, transactionPartyField4, f41, f5, f6, f7, f8, f9,
-                    f10, f11, f12, f13, f14, dataType, ProcessingStatus.NEW, ValidationStatus.VALID, new Client(), new Client());
-
-            //TODO usunac w pazdzierniku
-            
-            Date execution = transaction.getTransactionDetails().getExecutionDate();
-
-            if (null != twoDatesSwap && execution.before(twoDatesSwap)) {
-                String assetClass = transaction.getContractDetailedData().getContractData().getProd1Code(); 
-                String contractType = transaction.getContractDetailedData().getContractData().getProd2Code();
-                if("CU".equalsIgnoreCase(assetClass) && "SW".equalsIgnoreCase(contractType)) {
-                    transaction.getTransactionDetails().setSettlementDate(transaction.getTransactionDetails().getSettlementDate2());
-                }
-            }
+                    f10, f11, f12, f13, dataType, ProcessingStatus.NEW, ValidationStatus.VALID, new Client(), new Client());
             
             transaction.setValidationStatus(importResult.getValidationStatus());
 

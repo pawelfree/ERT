@@ -951,6 +951,20 @@ London InterBank Bid Rate, the rate bid by banks on Eurocurrency deposits; the i
 			</xs:element>
 		</xs:sequence>
 	</xs:complexType>
+	<xs:complexType name="CommonTradeDataReport_TR_C">
+		<xs:annotation>
+			<xs:documentation source="Name" xml:lang="EN">CommonTradeDataReport16__1</xs:documentation>
+			<xs:documentation source="Definition" xml:lang="EN">Information related to contract and transaction details.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="TxData" type="TradeTransaction_TR_Z">
+				<xs:annotation>
+					<xs:documentation source="Name" xml:lang="EN">TransactionData</xs:documentation>
+					<xs:documentation source="Definition" xml:lang="EN">Data related to a trade transaction.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
 	<xs:complexType name="ContractDetails_TR_M">
 		<xs:annotation>
 			<xs:documentation source="Name" xml:lang="EN">ContractDetails</xs:documentation>
@@ -1757,13 +1771,13 @@ Usage: In the case of an interest rate or currency derivative contract, this wil
 			<xs:documentation source="Definition" xml:lang="EN">Information related to counterparty identification.</xs:documentation>
 		</xs:annotation>
 		<xs:sequence>
-			<xs:element name="RptgCtrPtyId" type="LEIIdentifier">
+			<xs:element name="RptgCtrPtyId" type="Max20Text">
 				<xs:annotation>
 					<xs:documentation source="Name" xml:lang="EN">Identification</xs:documentation>
 					<xs:documentation source="Definition" xml:lang="EN">Unique code identifying the reporting counterparty of the contract.</xs:documentation>
 				</xs:annotation>
 			</xs:element>
-			<xs:element name="OthrCtrPty" type="CounterpartyOther_TR">
+			<xs:element name="OthrCtrPty" type="CounterpartyOther_TR_T">
 				<xs:annotation>
 					<xs:documentation source="Name" xml:lang="EN">OtherCounterparty</xs:documentation>
 					<xs:documentation source="Definition" xml:lang="EN">Definition of the other counterparty in the transaction.</xs:documentation>
@@ -1771,7 +1785,27 @@ Usage: In the case of an interest rate or currency derivative contract, this wil
 			</xs:element>
 		</xs:sequence>
 	</xs:complexType>
-	<xs:complexType name="Counterparty_TR_Z">
+	<xs:complexType name="Counterparty_TR_C">
+		<xs:annotation>
+			<xs:documentation source="Name" xml:lang="EN">CounterpartyTR</xs:documentation>
+			<xs:documentation source="Definition" xml:lang="EN">Information related to counterparty identification.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="RptgCtrPtyId" type="Max20Text">
+				<xs:annotation>
+					<xs:documentation source="Name" xml:lang="EN">Identification</xs:documentation>
+					<xs:documentation source="Definition" xml:lang="EN">Unique code identifying the reporting counterparty of the contract.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="OthrCtrPty" type="CounterpartyOther_TR_T">
+				<xs:annotation>
+					<xs:documentation source="Name" xml:lang="EN">OtherCounterparty</xs:documentation>
+					<xs:documentation source="Definition" xml:lang="EN">Definition of the other counterparty in the transaction.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="Counterparty_TR_V">
 		<xs:annotation>
 			<xs:documentation source="Name" xml:lang="EN">CounterpartyTR</xs:documentation>
 			<xs:documentation source="Definition" xml:lang="EN">Information related to counterparty identification.</xs:documentation>
@@ -1899,6 +1933,24 @@ This field shall be filled from the perspective of the reporting counterparty. I
 			</xs:element>
 		</xs:sequence>
 	</xs:complexType>
+	<xs:complexType name="CounterpartyOther_TR_T">
+		<xs:annotation>
+			<xs:documentation source="Name" xml:lang="EN">Counterparty2__1</xs:documentation>
+			<xs:documentation source="Definition" xml:lang="EN">Information related to counterparty identification.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="Id" type="OrganisationIdentification3Choice_TR">
+				<xs:annotation>
+					<xs:documentation source="Name" xml:lang="EN">Identification</xs:documentation>
+					<xs:documentation source="Definition" xml:lang="EN">Unique code identifying the other counterparty of the contract. &#13;
+&#13;
+Usage:&#13;
+This field shall be filled from the perspective of the reporting counterparty. In case of a private individual a client code shall be used in a consistent manner.&#13;
+</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
 	<xs:simpleType name="CounterpartyTradeNature_TR">
 		<xs:annotation>
 			<xs:documentation source="Name" xml:lang="EN">CounterpartyTradeNature</xs:documentation>
@@ -1931,6 +1983,20 @@ This field shall be filled from the perspective of the reporting counterparty. I
 			</xs:enumeration>
 		</xs:restriction>
 	</xs:simpleType>
+	<xs:complexType name="CounterpartySpecificData_TR_Z">
+		<xs:annotation>
+			<xs:documentation source="Name" xml:lang="EN">CounterpartySpecificData</xs:documentation>
+			<xs:documentation source="Definition" xml:lang="EN">Data related specifically to counterparty.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="CtrPty" type="Counterparty_TR_V">
+				<xs:annotation>
+					<xs:documentation source="Name" xml:lang="EN">Counterparty</xs:documentation>
+					<xs:documentation source="Definition" xml:lang="EN">Data specific to counterparties of the reported transaction/position.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
 	<xs:complexType name="CounterpartySpecificData_TR_M">
 		<xs:annotation>
 			<xs:documentation source="Name" xml:lang="EN">CounterpartySpecificData</xs:documentation>
@@ -2065,7 +2131,7 @@ This field shall be filled from the perspective of the reporting counterparty. I
 			<xs:documentation source="Definition" xml:lang="EN">Data related specifically to counterparty.</xs:documentation>
 		</xs:annotation>
 		<xs:sequence>
-			<xs:element name="CtrPty" type="Counterparty_TR_Z">
+			<xs:element name="CtrPty" type="Counterparty_TR_V">
 				<xs:annotation>
 					<xs:documentation source="Name" xml:lang="EN">Counterparty</xs:documentation>
 					<xs:documentation source="Definition" xml:lang="EN">Data specific to counterparties of the reported transaction/position.</xs:documentation>
@@ -2099,13 +2165,13 @@ This field shall be filled from the perspective of the reporting counterparty. I
 			</xs:element>
 		</xs:sequence>
 	</xs:complexType>
-	<xs:complexType name="CounterpartySpecificData_TR_Z">
+	<xs:complexType name="CounterpartySpecificData_TR_C">
 		<xs:annotation>
 			<xs:documentation source="Name" xml:lang="EN">CounterpartySpecificData</xs:documentation>
 			<xs:documentation source="Definition" xml:lang="EN">Data related specifically to counterparty.</xs:documentation>
 		</xs:annotation>
 		<xs:sequence>
-			<xs:element name="CtrPty" type="Counterparty_TR_Z">
+			<xs:element name="CtrPty" type="Counterparty_TR_C">
 				<xs:annotation>
 					<xs:documentation source="Name" xml:lang="EN">Counterparty</xs:documentation>
 					<xs:documentation source="Definition" xml:lang="EN">Data specific to counterparties of the reported transaction/position.</xs:documentation>
@@ -4081,6 +4147,28 @@ Usage: Only applicable when the conditions for transmission are not satisfied.</
 			</xs:choice>
 		</xs:sequence>
 	</xs:complexType>
+	<xs:complexType name="OrganisationIdentification3Choice_TR">
+		<xs:annotation>
+			<xs:documentation source="Name" xml:lang="EN">OrganisationIdentification3Choice__1</xs:documentation>
+			<xs:documentation source="Definition" xml:lang="EN">Provides the identification of the organisation.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:choice>
+				<xs:element name="LEI" type="Max20Text">
+					<xs:annotation>
+						<xs:documentation source="Name" xml:lang="EN">LEI</xs:documentation>
+						<xs:documentation source="Definition" xml:lang="EN">Identification is done through the use of legal entity identifier code. </xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="ClntId" type="Max50Text">
+					<xs:annotation>
+						<xs:documentation source="Name" xml:lang="EN">ClientIdentification</xs:documentation>
+						<xs:documentation source="Definition" xml:lang="EN">Unique and unambiguous client identification of the organisation.</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+			</xs:choice>
+		</xs:sequence>
+	</xs:complexType>
 	<xs:complexType name="PartyIdentification_EMIR_D">
 		<xs:annotation>
 			<xs:documentation source="Name" xml:lang="EN">PartyIdentification76__1</xs:documentation>
@@ -5451,13 +5539,13 @@ Usage:Where variation margin is received on a portfolio basis, this field should
 			<xs:documentation source="Definition" xml:lang="EN">Provides details of an early termination report on a trade position.</xs:documentation>
 		</xs:annotation>
 		<xs:sequence>
-			<xs:element name="CtrPtySpcfcData" type="CounterpartySpecificData_TR_Z" maxOccurs="2">
+			<xs:element name="CtrPtySpcfcData" type="CounterpartySpecificData_TR_C" maxOccurs="2">
 				<xs:annotation>
 					<xs:documentation source="Name" xml:lang="EN">CounterpartySpecificData</xs:documentation>
 					<xs:documentation source="Definition" xml:lang="EN">Counterparty data details.</xs:documentation>
 				</xs:annotation>
 			</xs:element>
-			<xs:element name="CmonTradData" type="CommonTradeDataReport16__1">
+			<xs:element name="CmonTradData" type="CommonTradeDataReport_TR_C">
 				<xs:annotation>
 					<xs:documentation source="Name" xml:lang="EN">CommonTradeData</xs:documentation>
 					<xs:documentation source="Definition" xml:lang="EN">Trade transaction data details.</xs:documentation>
@@ -5637,13 +5725,13 @@ Usage:Where variation margin is received on a portfolio basis, this field should
 			<xs:documentation source="Definition" xml:lang="EN">Provides details of an early termination report on a trade transaction.</xs:documentation>
 		</xs:annotation>
 		<xs:sequence>
-			<xs:element name="CtrPtySpcfcData" type="CounterpartySpecificData_TR_Z" minOccurs="1" maxOccurs="2">
+			<xs:element name="CtrPtySpcfcData" type="CounterpartySpecificData_TR_C" minOccurs="1" maxOccurs="2">
 				<xs:annotation>
 					<xs:documentation source="Name" xml:lang="EN">CounterpartySpecificData</xs:documentation>
 					<xs:documentation source="Definition" xml:lang="EN">Counterparty data details.</xs:documentation>
 				</xs:annotation>
 			</xs:element>
-			<xs:element name="CmonTradData" type="CommonTradeDataReport16__1">
+			<xs:element name="CmonTradData" type="CommonTradeDataReport_TR_C">
 				<xs:annotation>
 					<xs:documentation source="Name" xml:lang="EN">CommonTradeData</xs:documentation>
 					<xs:documentation source="Definition" xml:lang="EN">Trade transaction data details.</xs:documentation>
@@ -6849,6 +6937,26 @@ An early termination shall not be reported in this field.&#13;
 				<xs:annotation>
 					<xs:documentation source="Name" xml:lang="EN">Credit</xs:documentation>
 					<xs:documentation source="Definition" xml:lang="EN">Information related to credit derivative asset class type.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="TradeTransaction_TR_Z">
+		<xs:annotation>
+			<xs:documentation source="Name" xml:lang="EN">TradeTransaction12__1</xs:documentation>
+			<xs:documentation source="Definition" xml:lang="EN">Provides details of trade transaction.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="UnqTradIdr" type="Max52Text">
+				<xs:annotation>
+					<xs:documentation source="Name" xml:lang="EN">UniqueTradeIdentifier</xs:documentation>
+					<xs:documentation source="Definition" xml:lang="EN">Unique trade Identifier (UTI) as agreed with the other counterparty.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="TermntnDt" type="ISODate">
+				<xs:annotation>
+					<xs:documentation source="Name" xml:lang="EN">TerminationDate</xs:documentation>
+					<xs:documentation source="Definition" xml:lang="EN">Indicates the date in the case of an early termination of the reported contract.</xs:documentation>
 				</xs:annotation>
 			</xs:element>
 		</xs:sequence>

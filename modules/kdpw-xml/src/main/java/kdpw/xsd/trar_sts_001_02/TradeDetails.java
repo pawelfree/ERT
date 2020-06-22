@@ -51,9 +51,7 @@ import javax.xml.bind.annotation.XmlType;
     "rskMtgtn",
     "clrgInf",
     "irTrad",
-    "fxTrad",
-    "cmmdtyTrad",
-    "optnTrad"
+    "fxTrad"
 })
 public class TradeDetails {
 
@@ -71,10 +69,6 @@ public class TradeDetails {
     protected InterestRateTrade irTrad;
     @XmlElement(name = "FXTrad")
     protected FXTrade fxTrad;
-    @XmlElement(name = "CmmdtyTrad")
-    protected CommodityTrade cmmdtyTrad;
-    @XmlElement(name = "OptnTrad")
-    protected OptionTrade optnTrad;
 
     /**
      * Gets the value of the tradId property.
@@ -242,54 +236,6 @@ public class TradeDetails {
      */
     public void setFXTrad(FXTrade value) {
         this.fxTrad = value;
-    }
-
-    /**
-     * Gets the value of the cmmdtyTrad property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link CommodityTrade }
-     *     
-     */
-    public CommodityTrade getCmmdtyTrad() {
-        return cmmdtyTrad;
-    }
-
-    /**
-     * Sets the value of the cmmdtyTrad property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link CommodityTrade }
-     *     
-     */
-    public void setCmmdtyTrad(CommodityTrade value) {
-        this.cmmdtyTrad = value;
-    }
-
-    /**
-     * Gets the value of the optnTrad property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link OptionTrade }
-     *     
-     */
-    public OptionTrade getOptnTrad() {
-        return optnTrad;
-    }
-
-    /**
-     * Sets the value of the optnTrad property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link OptionTrade }
-     *     
-     */
-    public void setOptnTrad(OptionTrade value) {
-        this.optnTrad = value;
     }
 
 }

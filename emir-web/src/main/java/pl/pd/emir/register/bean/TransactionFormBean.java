@@ -22,9 +22,6 @@ import pl.pd.emir.entity.Transaction;
 import pl.pd.emir.entity.Valuation;
 import pl.pd.emir.enums.Cleared;
 import pl.pd.emir.enums.ClearingOblig;
-import pl.pd.emir.enums.CommLoadType;
-import pl.pd.emir.enums.CommUnderlDtls;
-import pl.pd.emir.enums.CommUnderlType;
 import pl.pd.emir.enums.CommercialActity;
 import pl.pd.emir.enums.Compression;
 import pl.pd.emir.enums.ConfirmationType;
@@ -38,8 +35,6 @@ import pl.pd.emir.enums.DoProtection;
 import pl.pd.emir.enums.FormType;
 import pl.pd.emir.enums.InstitutionIdType;
 import pl.pd.emir.enums.IntergropuTrans;
-import pl.pd.emir.enums.OptionExecStyle;
-import pl.pd.emir.enums.OptionType;
 import pl.pd.emir.enums.OriginalStatus;
 import pl.pd.emir.enums.ParameterKey;
 import pl.pd.emir.enums.ProcessingStatus;
@@ -547,32 +542,12 @@ public class TransactionFormBean extends AbstractFormBean<Transaction> {
         return BeanHelper.fillSelectList(Cleared.values());
     }
 
-    public List<SelectItem> getImportOptionType() {
-        return BeanHelper.fillSelectList(OptionType.values());
-    }
-
-    public List<SelectItem> getImportOptionExecStyle() {
-        return BeanHelper.fillSelectList(OptionExecStyle.values());
-    }
-
     public List<SelectItem> getImportValuationType() {
         return BeanHelper.fillSelectList(ValuationType.values());
     }
 
     public List<SelectItem> getImportDoProtection() {
         return BeanHelper.fillSelectList(DoProtection.values());
-    }
-
-    public List<SelectItem> getImportCommUnderlType() {
-        return BeanHelper.fillSelectList(CommUnderlType.values());
-    }
-
-    public List<SelectItem> getImportCommUnderlDtls() {
-        return BeanHelper.fillSelectList(CommUnderlDtls.values());
-    }
-
-    public List<SelectItem> getImportCommLoadType() {
-        return BeanHelper.fillSelectList(CommLoadType.values());
     }
 
     public List<SelectItem> getImportTransactionParty() {

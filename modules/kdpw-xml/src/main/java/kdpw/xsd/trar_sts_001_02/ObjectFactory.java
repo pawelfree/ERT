@@ -65,14 +65,6 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link CommodityTrade }
-     * 
-     */
-    public CommodityTrade createCommodityTrade() {
-        return new CommodityTrade();
-    }
-
-    /**
      * Create an instance of {@link ContractType }
      * 
      */

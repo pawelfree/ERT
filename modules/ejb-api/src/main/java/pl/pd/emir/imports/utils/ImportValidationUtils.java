@@ -10,7 +10,6 @@ import pl.pd.emir.commons.StringUtil;
 import pl.pd.emir.commons.ValidationUtils;
 import pl.pd.emir.embeddable.BusinessEntity;
 import pl.pd.emir.embeddable.BusinessEntityData;
-import pl.pd.emir.embeddable.CommodityTradeData;
 import pl.pd.emir.embeddable.ContractData;
 import pl.pd.emir.embeddable.ContractDataDetailed;
 import pl.pd.emir.embeddable.CurrencyTradeData;
@@ -25,9 +24,6 @@ import pl.pd.emir.embeddable.ValuationData;
 import pl.pd.emir.entity.ImportFailLog;
 import pl.pd.emir.enums.Cleared;
 import pl.pd.emir.enums.ClearingOblig;
-import pl.pd.emir.enums.CommLoadType;
-import pl.pd.emir.enums.CommUnderlDtls;
-import pl.pd.emir.enums.CommUnderlType;
 import pl.pd.emir.enums.CommercialActity;
 import pl.pd.emir.enums.Compression;
 import pl.pd.emir.enums.ConfirmationType;
@@ -39,8 +35,6 @@ import pl.pd.emir.enums.DeliverType;
 import pl.pd.emir.enums.ImportStatus;
 import pl.pd.emir.enums.InstitutionIdType;
 import pl.pd.emir.enums.IntergropuTrans;
-import pl.pd.emir.enums.OptionExecStyle;
-import pl.pd.emir.enums.OptionType;
 import pl.pd.emir.enums.OriginalStatus;
 import pl.pd.emir.enums.SettlementThreshold;
 import pl.pd.emir.enums.TransactionType;
@@ -493,17 +487,17 @@ public final class ImportValidationUtils {
     public static TransactionDetails validateTransactionDtls(String[] data, ImportResult importResult,
             BigDecimal unitPrice, CurrencyCode unitPriceCurrency, BigDecimal unitPriceRate, BigDecimal tradeNominal,
             Integer tradeMultipl, Integer tradeQty, BigDecimal tradeUpp, Integer tradeAggrVer,
-            BigDecimal optionExecPrice, Date tradeExecDate, Date tradeEffDate, Date tradeMattDate, Date tradeTermDate,
+            Date tradeExecDate, Date tradeEffDate, Date tradeMattDate, Date tradeTermDate,
             Date tradeSettlDate, Date tradeSettlDate2 ) {
         return validateTransactionDtls(data, null, importResult, unitPrice, unitPriceCurrency, unitPriceRate,
-                tradeNominal, tradeMultipl, tradeQty, tradeUpp, tradeAggrVer, optionExecPrice, tradeExecDate,
+                tradeNominal, tradeMultipl, tradeQty, tradeUpp, tradeAggrVer, 
+                tradeExecDate,
                 tradeEffDate, tradeMattDate, tradeTermDate, tradeSettlDate, tradeSettlDate2);
     }
 
     public static TransactionDetails validateTransactionDtls(String[] data, TransactionDetails replacementValue, ImportResult importResult,
             BigDecimal unitPrice, CurrencyCode unitPriceCurrency, BigDecimal unitPriceRate, BigDecimal tradeNominal,
-            Integer tradeMultipl, Integer tradeQty,
-            BigDecimal tradeUpp, Integer tradeAggrVer, BigDecimal optionExecPrice,
+            Integer tradeMultipl, Integer tradeQty, BigDecimal tradeUpp, Integer tradeAggrVer,
             Date tradeExecDate, Date tradeEffDate, Date tradeMattDate, Date tradeTermDate, Date tradeSettlDate, Date tradeSettlDate2) {
 
         String r1 = null;
@@ -511,48 +505,16 @@ public final class ImportValidationUtils {
         String r3 = null;
         String r4 = null;
         Compression r5 = null;
-//        BigDecimal r6 = null; //TRADADDTLINF_AMT
-//        CurrencyCode r7 = null; //TRADADDTLINF_AMT_WAL
-//        BigDecimal r8 = null; //TRADADDTLINF_PRCNTG
-//        BigDecimal r9 = null; //TRADADDTLINF_NMNLAMT
-//        Integer r10 = null; //TRADADDTLINF_PRICMLTPLR
-//        Integer r11 = null; //TRADADDTLINF_QTY
-//        BigDecimal r12 = null; //TRADADDTLINF_UPPMT
         DeliverType r13 = null;
-//        Date r14 = null; //TRADADDTLINF_EXECDTTM
-//        Date r15 = null; //TRADADDTLINF_FCTYDT
-//        Date r16 = null; //TRADADDTLINF_MTRTYDT
-//        Date r17 = null; //TRADADDTLINF_TRMNTNDT
-//        Date r18 = null; //TRADADDTLINF_STTLMTDT
         String r19 = null;
-//        Integer r20 = null; //TRADADDTLINF_MSTRAGRMNTVRSN
-        OptionType r21 = null;
-        OptionExecStyle r22 = null;
-//        BigDecimal r23 = null; //OPTNTRAD_STRKPRIC
         if (replacementValue != null) {
             r1 = replacementValue.getSourceTransId();
             r2 = replacementValue.getPreviousSourceTransId();
             r3 = replacementValue.getSourceTransRefNr();
             r4 = replacementValue.getRealizationVenue();
             r5 = replacementValue.getCompression();
-//            r6 = replacementValue.getUnitPrice();
-//            r7 = replacementValue.getUnitPriceCurrency();
-//            r8 = replacementValue.getUnitPriceRate();
-//            r9 = replacementValue.getNominalAmount();
-//            r10 = replacementValue.getPriceMultiplier();
-//            r11 = replacementValue.getContractCount();
-//            r12 = replacementValue.getInAdvanceAmount();
             r13 = replacementValue.getDelivType();
-//            r14 = replacementValue.getExecutionDate();
-//            r15 = replacementValue.getEffectiveDate();
-//            r16 = replacementValue.getMaturityDate();
-//            r17 = replacementValue.getTerminationDate();
-//            r18 = replacementValue.getSettlementDate();
             r19 = replacementValue.getFrameworkAggrType();
-//            r20 = replacementValue.getFrameworkAggrVer();
-            r21 = replacementValue.getOptionType();
-            r22 = replacementValue.getOptionExecStyle();
-//            r23 = replacementValue.getOptionExecPrice();
         }
 
         String f1 = validateStringField(data[0], r1, 52, "TRADID_ID", true, "29", importResult);
@@ -562,8 +524,6 @@ public final class ImportValidationUtils {
         Compression f5 = validateEnumField(Compression.class, r5, data[4], "TRADADDTLINF_CMPRSSN", false, "41", importResult);
         DeliverType f13 = validateEnumField(DeliverType.class, r13, data[12], "TRADADDTLINF_DLVRYTP", false, "49", importResult);
         String f19 = validateStringField(data[19], r19, 50, "TRADADDTLINF_MSTRAGRMNTTP", false, "56", importResult);
-        OptionType f21 = validateEnumField(OptionType.class, r21, data[21], "OPTNTRAD_OPTNTP", false, "87", importResult);
-        OptionExecStyle f22 = validateEnumField(OptionExecStyle.class, r22, data[22], "OPTNTRAD_EXRCSTYLE", false, "88", importResult);
 
         TransactionDetails details = new TransactionDetails(
                 f1,
@@ -586,10 +546,7 @@ public final class ImportValidationUtils {
                 tradeSettlDate, //TRADADDTLINF_STTLMTDT
                 tradeSettlDate2, //TRADADDTLINF_STTMTDT
                 f19,
-                tradeAggrVer, //TRADADDTLINF_MSTRAGRMNTVRSN
-                f21,
-                f22,
-                optionExecPrice //OPTNTRAD_STRKPRIC
+                tradeAggrVer //TRADADDTLINF_MSTRAGRMNTVRSN
         );
 
         return details;
@@ -770,44 +727,6 @@ public final class ImportValidationUtils {
                 currRate2, //FXTRAD_FRWRDXCHGRATE
                 validateStringField(data[3], r4, 10, "FXTRAD_XCHGRATEBSIS", false, "75", importResult));
         return currTrade;
-    }
-
-    /**
-     * Walidacja transakcji towarowej
-     */
-    public static CommodityTradeData validateCommodityTrade(String[] data, ImportResult importResult,
-            Date delivStart, Date delivEnd, BigDecimal delivQty, BigDecimal delivPrice) {
-        return validateCommodityTrade(data, null, importResult, delivStart, delivEnd, delivQty, delivPrice);
-    }
-
-    public static CommodityTradeData validateCommodityTrade(String[] data, CommodityTradeData replacementValue, ImportResult importResult,
-            Date delivStart, Date delivEnd, BigDecimal delivQty, BigDecimal delivPrice) {
-
-        CommUnderlType r1 = null;
-        CommUnderlDtls r2 = null;
-        String r3 = null;
-        String r4 = null;
-        CommLoadType r5 = null;
-        String r8 = null;
-        if (replacementValue != null) {
-            r1 = replacementValue.getCommUnderlType();
-            r2 = replacementValue.getCommUnderlDtls();
-            r3 = replacementValue.getCommVenue();
-            r4 = replacementValue.getCommInterconn();
-            r5 = replacementValue.getCommLoadType();
-            r8 = replacementValue.getCommContractCount();
-
-        }
-
-        CommUnderlType f1 = validateEnumField(CommUnderlType.class, r1, data[0], "CMMDTYTRAD_CMMDTYBASE", false, "76", importResult);
-        CommUnderlDtls f2 = validateEnumField(CommUnderlDtls.class, r2, data[1], "CMMDTYTRAD_ CMMDTYDTLS", false, "77", importResult);
-        String f3 = validateStringField(data[2], r3, 16, "CMMDTYTRAD_DLVRYPNT", false, "78", importResult);
-        String f4 = validateStringField(data[3], r4, 50, "CMMDTYTRAD_INTRCNNCTNPNT", false, "79", importResult);
-        CommLoadType f5 = validateEnumField(CommLoadType.class, r5, data[4], "CMMDTYTRAD_LDTP", false, "80", importResult);
-        String f8 = validateStringField(data[7], r8, 50, "CMMDTYTRAD_CNTRCTCPCTY", false, "83", importResult);
-
-        CommodityTradeData trade = new CommodityTradeData(f1, f2, f3, f4, f5, delivStart, delivEnd, f8, delivQty, delivPrice);
-        return trade;
     }
 
     /*

@@ -6,8 +6,7 @@ public enum Instrument {
     FRA("instrument.fra", "FRA"),
     FUTURE("instrument.future", "FU"),
     FORWARD("instrument.forward", "FW"),
-    SWAP("instrument.swap", "SW"),
-    OPTION("instrument.option", "OP");
+    SWAP("instrument.swap", "SW");
 
     private final String msgKey;
     private final String realValue;

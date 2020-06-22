@@ -10,7 +10,6 @@ import org.apache.commons.lang3.ArrayUtils;
 import pl.pd.emir.commons.DateUtils;
 import pl.pd.emir.commons.StringUtil;
 import pl.pd.emir.embeddable.BusinessEntityData;
-import pl.pd.emir.embeddable.CommodityTradeData;
 import pl.pd.emir.embeddable.ContractDataDetailed;
 import pl.pd.emir.embeddable.CurrencyTradeData;
 import pl.pd.emir.embeddable.PercentageRateData;
@@ -40,17 +39,12 @@ public class TransactionCsvParser extends BaseCsvParser<Transaction> {
 
     protected transient Date transactionDateField1,
             tradeExecDateField49, tradeEffDateField50, tradeMattDateField51, tradeTermDateField52, tradeSettlDateField53, tradeSettlDateField54,
-            riskConfDateField56,
-            settlementDateField60,
-            delivStartField80, delivEndField81;
+            riskConfDateField56, settlementDateField60;
 
     protected transient Integer tradeMultiplField45, tradeQtyField46, tradeAggrVerField55;
 
     protected transient BigDecimal unitPriceField41, unitPriceRateField43, tradeNominalField44, tradeUppField47,
-            currRate1Field72, currRate2Field73,
-            delivQtyField83, delivPriceField84,
-            percLeg1Field63, percLeg2Field64,
-            optionExecPriceField87;
+            currRate1Field72, currRate2Field73, percLeg1Field63, percLeg2Field64;
 
     protected transient CurrencyCode unitPriceCurrencyField42;
 
@@ -85,7 +79,7 @@ public class TransactionCsvParser extends BaseCsvParser<Transaction> {
             TransactionDetails f9 = ImportValidationUtils.validateTransactionDtls(transactionDtls, null, importResult,
                     unitPriceField41, unitPriceCurrencyField42, unitPriceRateField43,
                     tradeNominalField44, tradeMultiplField45, tradeQtyField46,
-                    tradeUppField47, tradeAggrVerField55, optionExecPriceField87,
+                    tradeUppField47, tradeAggrVerField55,
                     tradeExecDateField49, tradeEffDateField50, tradeMattDateField51,
                     tradeTermDateField52, tradeSettlDateField53,tradeSettlDateField54);
             RiskReduce f10 = ImportValidationUtils.validateRiskReduce(Arrays.copyOfRange(data, 57, 59), null, importResult, riskConfDateField56); //ryzyko 4.4
@@ -95,8 +89,6 @@ public class TransactionCsvParser extends BaseCsvParser<Transaction> {
                     percLeg1Field63, percLeg2Field64);
             CurrencyTradeData f13 = ImportValidationUtils.validateCurrencyTrade(Arrays.copyOfRange(data, 72, 76), null, importResult,
                     currRate1Field72, currRate2Field73); //transakcje walut.
-            CommodityTradeData f14 = ImportValidationUtils.validateCommodityTrade(Arrays.copyOfRange(data, 76, 86), null, importResult,
-                    delivStartField80, delivEndField81, delivQtyField83, delivPriceField84);
 
             //walidacja zależności pomiędzy ceną a symbolem waluty
             ImportValidationUtils.validateMoneyCompleteness(unitPriceField41, unitPriceCurrencyField42, "TRADADDTLINF_AMT", "TRADADDTLINF_AMT_WAL", "43", importResult);
@@ -110,7 +102,7 @@ public class TransactionCsvParser extends BaseCsvParser<Transaction> {
             }
 
             transaction = new Transaction(f1, transactionDateField1, f3, f4, transactionPartyField4, f41 ,f5, f6, f7, f8, f9,
-                    f10, f11, f12, f13, f14, dataType, ProcessingStatus.NEW, ValidationStatus.VALID, new Client(), new Client());
+                    f10, f11, f12, f13, dataType, ProcessingStatus.NEW, ValidationStatus.VALID, new Client(), new Client());
 
             transaction.setValidationStatus(importResult.getValidationStatus());
 
@@ -184,10 +176,6 @@ public class TransactionCsvParser extends BaseCsvParser<Transaction> {
         percLeg2Field64 = ImportValidationUtils.validateAmountField(data[65], 25, 5, r64, false, true, "IRTRAD_FXDRATELG2", "66", importResult);
         currRate1Field72 = ImportValidationUtils.validateAmountField(data[73], 15, 5, r72, false, true, "FXTRAD_XCHGRATE1", "74", importResult);
         currRate2Field73 = ImportValidationUtils.validateAmountField(data[74], 15, 5, r73, false, true, "FXTRAD_FRWRDXCHGRATE", "75", importResult);
-        delivQtyField83 = ImportValidationUtils.validateAmountField(data[84], 12, 2, r83, false, false, "CMMDTYTRAD_QTY", "85", importResult);
-        delivPriceField84 = ImportValidationUtils.validateAmountField(data[85], 12, 2, r84, false, false, "CMMDTYTRAD_PRIC", "86", importResult);
-        optionExecPriceField87 = ImportValidationUtils.validateAmountField(data[88], 12, 2, r87, false, false, "OPTNTRAD_STRKPRIC", "89", importResult);
-
         
         //kontrola dat
         transactionDateField1 = ImportValidationUtils.validateDateField(data[1], null, DateUtils.ISO_DATE_FORMAT, true, "DATA_TR", "2", importResult);
@@ -216,8 +204,6 @@ public class TransactionCsvParser extends BaseCsvParser<Transaction> {
             riskConfDateField56 = firstMay2017;
         }
         settlementDateField60 = ImportValidationUtils.validateDateField(data[61], r60, DateUtils.ISO_DATE_TIME_FORMAT, false, "CLRGINF_CLRDTTM", "61", importResult);
-        delivStartField80 = ImportValidationUtils.validateDateField(data[81], r80, DateUtils.ISO_DATE_TIME_FORMAT, false, "CMMDTYTRAD_DLVRYSTARTDTTM", "81", importResult);
-        delivEndField81 = ImportValidationUtils.validateDateField(data[82], r81, DateUtils.ISO_DATE_TIME_FORMAT, false, "CMMDTYTRAD_DLVRYENDDTTM", "82", importResult);
 
         return !importResult.hasErrors();
     }

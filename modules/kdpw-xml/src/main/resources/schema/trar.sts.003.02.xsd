@@ -27,7 +27,7 @@
 			<xs:documentation source="Definition" xml:lang="EN">Information related to counterparty identification.</xs:documentation>
 		</xs:annotation>
 		<xs:sequence>
-			<xs:element name="RptgCtrPtyId" type="LEIIdentifier">
+			<xs:element name="RptgCtrPtyId" type="Max20Text">
 				<xs:annotation>
 					<xs:documentation source="Name" xml:lang="EN">Identification</xs:documentation>
 					<xs:documentation source="Definition" xml:lang="EN">Unique code identifying the reporting counterparty of the contract.</xs:documentation>
@@ -249,6 +249,16 @@ This field shall be filled from the perspective of the reporting counterparty. I
 			<xs:maxLength value="16"/>
 		</xs:restriction>
 	</xs:simpleType>
+	<xs:simpleType name="Max20Text">
+		<xs:annotation>
+			<xs:documentation source="Name" xml:lang="EN">Max20Text</xs:documentation>
+			<xs:documentation source="Definition" xml:lang="EN">Specifies a character string with a maximum length of 20 characters.</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:minLength value="1"/>
+			<xs:maxLength value="20"/>
+		</xs:restriction>
+	</xs:simpleType>
 	<xs:simpleType name="Max50Text">
 		<xs:annotation>
 			<xs:documentation source="Name" xml:lang="EN">Max50Text</xs:documentation>
@@ -286,7 +296,7 @@ This field shall be filled from the perspective of the reporting counterparty. I
 		</xs:annotation>
 		<xs:sequence>
 			<xs:choice>
-				<xs:element name="LEI" type="LEIIdentifier">
+				<xs:element name="LEI" type="Max20Text">
 					<xs:annotation>
 						<xs:documentation source="Name" xml:lang="EN">LEI</xs:documentation>
 						<xs:documentation source="Definition" xml:lang="EN">Identification is done through the use of legal entity identifier code. </xs:documentation>
@@ -425,19 +435,19 @@ This field shall be filled from the perspective of the reporting counterparty. I
 			<xs:documentation source="Definition" xml:lang="EN">Trade references</xs:documentation>
 		</xs:annotation>
 		<xs:sequence>
-			<xs:element name="UnqTradIdr" type="KDPWMax52AlphaNumericAdditionalCharacters">
+			<xs:element name="UnqTradIdr" type="Max52Text">
 				<xs:annotation>
 					<xs:documentation source="Name" xml:lang="EN">UniqueTradeIdentifier</xs:documentation>
 					<xs:documentation source="Definition" xml:lang="EN">Unique Trade identifier</xs:documentation>
 				</xs:annotation>
 			</xs:element>
-			<xs:element name="RptgCtrPtyId" type="LEIIdentifier">
+			<xs:element name="RptgCtrPtyId" type="Max20Text">
 				<xs:annotation>
 					<xs:documentation source="Name" xml:lang="EN">CounterpartyIdentication</xs:documentation>
 					<xs:documentation source="Definition" xml:lang="EN">Counterparty identication</xs:documentation>
 				</xs:annotation>
 			</xs:element>
-			<xs:element name="OthrCtrPtyId" type="ESMAMax50AlphaNumeric">
+			<xs:element name="OthrCtrPtyId" type="Max50Text">
 				<xs:annotation>
 					<xs:documentation source="Name" xml:lang="EN">OtherCounterpartyIdentication</xs:documentation>
 					<xs:documentation source="Definition" xml:lang="EN">Other counterparty identication</xs:documentation>
@@ -451,7 +461,7 @@ This field shall be filled from the perspective of the reporting counterparty. I
 			<xs:documentation source="Definition" xml:lang="EN">Provides details of trade transaction.</xs:documentation>
 		</xs:annotation>
 		<xs:sequence>
-			<xs:element name="UnqTradIdr" type="KDPWMax52AlphaNumericAdditionalCharacters">
+			<xs:element name="UnqTradIdr" type="Max52Text">
 				<xs:annotation>
 					<xs:documentation source="Name" xml:lang="EN">UniqueTradeIdentifier</xs:documentation>
 					<xs:documentation source="Definition" xml:lang="EN">Unique trade Identifier (UTI) as agreed with the other counterparty.</xs:documentation>

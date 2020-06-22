@@ -18,8 +18,6 @@ import static pl.pd.emir.entity.utils.HistoryUtils.checkFieldsEquals;
 import pl.pd.emir.enums.Compression;
 import pl.pd.emir.enums.CurrencyCode;
 import pl.pd.emir.enums.DeliverType;
-import pl.pd.emir.enums.OptionExecStyle;
-import pl.pd.emir.enums.OptionType;
 import pl.pd.emir.resources.EventLogBuilder;
 import pl.pd.emir.entity.annotations.TransactionDataChange;
 
@@ -163,30 +161,6 @@ public class TransactionDetails implements Serializable {
     @Column(name = "FRAMEWORK_AGGR_VER")
     @TransactionDataChange
     private Integer frameworkAggrVer;
-    //Pozostale wlasciwosci (4.9)
-    /**
-     * OPTNTRAD_OPTNTP, Rodzaj opcji. [85]
-     *
-     */
-    @Column(name = "OPTION_TYPE", length = 3)
-    @Enumerated(EnumType.STRING)
-    @TransactionDataChange
-    private OptionType optionType;
-    /**
-     * OPTNTRAD_EXRCSTYLE, Rodzaj opcji (sposób wykonania). [86]
-     *
-     */
-    @Column(name = "OPTION_EXEX_STYLE", length = 3)
-    @Enumerated(EnumType.STRING)
-    @TransactionDataChange
-    private OptionExecStyle optionExecStyle;
-    /**
-     * OPTNTRAD_STRKPRIC, Cena wykonania (górny/dolny pułap). [87]
-     *
-     */
-    @Column(name = "OPTION_EXEC_PRICE", precision = 12, scale = 2)
-    @TransactionDataChange
-    private BigDecimal optionExecPrice;
 
     public TransactionDetails() {
         super();
@@ -196,8 +170,7 @@ public class TransactionDetails implements Serializable {
             Compression compression, BigDecimal unitPrice, CurrencyCode unitPriceCurrency, BigDecimal unitPriceRate,
             BigDecimal nominalAmount, Integer priceMultiplier, Integer contractCount, BigDecimal inAdvanceAmount,
             DeliverType delivType, Date executionDate, Date effectiveDate, Date maturityDate, Date terminationDate,
-            Date settlementDate, Date settlementDate2, String frameworkAggrType, Integer frameworkAggrVer, OptionType optionType,
-            OptionExecStyle optionExecStyle, BigDecimal optionExecPrice) {
+            Date settlementDate, Date settlementDate2, String frameworkAggrType, Integer frameworkAggrVer) {
         super();
         this.sourceTransId = sourceTransId;
         this.previousSourceTransId = previousSourceTransId;
@@ -220,9 +193,6 @@ public class TransactionDetails implements Serializable {
         this.settlementDate2 = settlementDate2;        
         this.frameworkAggrType = frameworkAggrType;
         this.frameworkAggrVer = frameworkAggrVer;
-        this.optionType = optionType;
-        this.optionExecStyle = optionExecStyle;
-        this.optionExecPrice = optionExecPrice;
     }
 
     public Compression getCompression() {
@@ -393,30 +363,6 @@ public class TransactionDetails implements Serializable {
         this.unitPriceRate = unitPriceRate;
     }
 
-    public BigDecimal getOptionExecPrice() {
-        return optionExecPrice;
-    }
-
-    public void setOptionExecPrice(BigDecimal optionExecPrice) {
-        this.optionExecPrice = optionExecPrice;
-    }
-
-    public OptionExecStyle getOptionExecStyle() {
-        return optionExecStyle;
-    }
-
-    public void setOptionExecStyle(OptionExecStyle optionExecStyle) {
-        this.optionExecStyle = optionExecStyle;
-    }
-
-    public OptionType getOptionType() {
-        return optionType;
-    }
-
-    public void setOptionType(OptionType optionType) {
-        this.optionType = optionType;
-    }
-
     public void initFields() {
         //EMPTY
     }
@@ -447,9 +393,6 @@ public class TransactionDetails implements Serializable {
             checkFieldsEquals(result, null, newEntity.getSettlementDate2(), EventLogBuilder.EventDetailsKey.SETTLEMENT_DATE_2);
             checkFieldsEquals(result, null, newEntity.getFrameworkAggrType(), EventLogBuilder.EventDetailsKey.FRAMEWORK_AGGR_TYPE);
             checkFieldsEquals(result, null, newEntity.getFrameworkAggrVer(), EventLogBuilder.EventDetailsKey.FRAMEWORK_AGGR_VER);
-            checkFieldsEquals(result, null, newEntity.getOptionType(), EventLogBuilder.EventDetailsKey.OPTION_TYPE);
-            checkFieldsEquals(result, null, newEntity.getOptionExecStyle(), EventLogBuilder.EventDetailsKey.OPTION_EXEC_STYLE);
-            checkFieldsEquals(result, null, newEntity.getOptionExecPrice(), EventLogBuilder.EventDetailsKey.OPTION_EXEC_PRICE);
         } else if (newEntity == null) {
             checkFieldsEquals(result, oldEntity.getSourceTransId(), null, EventLogBuilder.EventDetailsKey.SOURCE_TRANS_ID);
             checkFieldsEquals(result, oldEntity.getPreviousSourceTransId(), null, EventLogBuilder.EventDetailsKey.PREVIOUS_SOURCE_TRANS_ID);
@@ -471,9 +414,6 @@ public class TransactionDetails implements Serializable {
             checkFieldsEquals(result, oldEntity.getSettlementDate2(), null, EventLogBuilder.EventDetailsKey.SETTLEMENT_DATE_2);
             checkFieldsEquals(result, oldEntity.getFrameworkAggrType(), null, EventLogBuilder.EventDetailsKey.FRAMEWORK_AGGR_TYPE);
             checkFieldsEquals(result, oldEntity.getFrameworkAggrVer(), null, EventLogBuilder.EventDetailsKey.FRAMEWORK_AGGR_VER);
-            checkFieldsEquals(result, oldEntity.getOptionType(), null, EventLogBuilder.EventDetailsKey.OPTION_TYPE);
-            checkFieldsEquals(result, oldEntity.getOptionExecStyle(), null, EventLogBuilder.EventDetailsKey.OPTION_EXEC_STYLE);
-            checkFieldsEquals(result, oldEntity.getOptionExecPrice(), null, EventLogBuilder.EventDetailsKey.OPTION_EXEC_PRICE);
         } else {
             checkFieldsEquals(result, oldEntity.getSourceTransId(), newEntity.getSourceTransId(), EventLogBuilder.EventDetailsKey.SOURCE_TRANS_ID);
             checkFieldsEquals(result, oldEntity.getPreviousSourceTransId(), newEntity.getPreviousSourceTransId(), EventLogBuilder.EventDetailsKey.PREVIOUS_SOURCE_TRANS_ID);
@@ -495,9 +435,6 @@ public class TransactionDetails implements Serializable {
             checkFieldsEquals(result, oldEntity.getSettlementDate2(), newEntity.getSettlementDate2(), EventLogBuilder.EventDetailsKey.SETTLEMENT_DATE_2);
             checkFieldsEquals(result, oldEntity.getFrameworkAggrType(), newEntity.getFrameworkAggrType(), EventLogBuilder.EventDetailsKey.FRAMEWORK_AGGR_TYPE);
             checkFieldsEquals(result, oldEntity.getFrameworkAggrVer(), newEntity.getFrameworkAggrVer(), EventLogBuilder.EventDetailsKey.FRAMEWORK_AGGR_VER);
-            checkFieldsEquals(result, oldEntity.getOptionType(), newEntity.getOptionType(), EventLogBuilder.EventDetailsKey.OPTION_TYPE);
-            checkFieldsEquals(result, oldEntity.getOptionExecStyle(), newEntity.getOptionExecStyle(), EventLogBuilder.EventDetailsKey.OPTION_EXEC_STYLE);
-            checkFieldsEquals(result, oldEntity.getOptionExecPrice(), newEntity.getOptionExecPrice(), EventLogBuilder.EventDetailsKey.OPTION_EXEC_PRICE);
         }
     }
 
@@ -523,9 +460,6 @@ public class TransactionDetails implements Serializable {
                 settlementDate,
                 settlementDate2,
                 frameworkAggrType,
-                frameworkAggrVer,
-                optionType,
-                optionExecStyle,
-                optionExecPrice);
+                frameworkAggrVer);
     }
 }
